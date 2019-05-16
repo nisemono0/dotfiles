@@ -1,0 +1,16 @@
+bdf-tewi-git
+discord
+i3lock-color
+nerd-fonts-inconsolata
+nerd-fonts-inconsolata-go
+nerd-fonts-ricty
+polybar
+siji-git
+simple-mtpfs
+termsyn-font
+tiv
+ttf-migu
+ttf-monapo
+ttf-mononoki
+xcalib
+xcolor
