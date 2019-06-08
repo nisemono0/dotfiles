@@ -1,62 +1,65 @@
-! XTerm
+*foreground:        #e9dece
+*background:        #180d0c
+*.foreground:       #e9dece
+*.background:       #180d0c
+URxvt*foreground:   #e9dece
+XTerm*foreground:   #e9dece
+UXTerm*foreground:  #e9dece
+URxvt*background:   [80]#180d0c
+XTerm*background:   #180d0c
+UXTerm*background:  #180d0c
+URxvt*cursorColor:  #e9dece
+XTerm*cursorColor:  #e9dece
+UXTerm*cursorColor: #e9dece
+URxvt*borderColor:  [100]#180d0c
+*fading:			8
+*fadeColor:			black
 
-XTerm*background:        #222D31
-XTerm*foreground:        #d8d8d8
-XTerm*pointerColor:      #1ABB9B
-XTerm*faceName:          Fixed
-XTerm*faceSize:          11
 
-*background:                      #222D31
-*foreground:                      #d8d8d8
-*fading:                          8
-*fadeColor:                       black
-*cursorColor:                     #1ABB9B
-*pointerColorBackground:          #2B2C2B
-*pointerColorForeground:          #16A085
+*.color0: #180d0c
+*color0:  #180d0c
+*.color1: #B2A496
+*color1:  #B2A496
+*.color2: #CDB795
+*color2:  #CDB795
+*.color3: #E2B797
+*color3:  #E2B797
+*.color4: #DCC19D
+*color4:  #DCC19D
+*.color5: #C0C0AC
+*color5:  #C0C0AC
+*.color6: #D8C7A9
+*color6:  #D8C7A9
+*.color7: #e9dece
+*color7:  #e9dece
+*.color8: #a39b90
+*color8:  #a39b90
+*.color9: #B2A496
+*color9:  #B2A496
+*.color10: #CDB795
+*color10:  #CDB795
+*.color11: #E2B797
+*color11:  #E2B797
+*.color12: #DCC19D
+*color12:  #DCC19D
+*.color13: #C0C0AC
+*color13:  #C0C0AC
+*.color14: #D8C7A9
+*color14:  #D8C7A9
+*.color15: #e9dece
+*color15:  #e9dece
 
-!! black dark/light
-*color0:                          #222D31
-*color8:                          #585858
-
-!! red dark/light
-*color1:                          #ab4642
-*color9:                          #ab4642
-
-!! green dark/light
-*color2:                          #7E807E
-*color10:                         #8D8F8D
-
-!! yellow dark/light
-*color3:                          #f7ca88
-*color11:                         #f7ca88
-
-!! blue dark/light
-*color4:                          #7cafc2
-*color12:                         #7cafc2
-
-!! magenta dark/light
-*color5:                          #ba8baf
-*color13:                         #ba8baf
-
-!! cyan dark/light
-*color6:                          #1ABB9B
-*color14:                         #1ABB9B
-
-!! white dark/light
-*color7:                          #d8d8d8
-*color15:                         #f8f8f8
-
+! Black color that will not be affected by bold highlighting.
+*.color66: #180d0c
+*color66:  #180d0c
 
 ! alternative font settings with 'terminus':
 URxvt*font:      -xos4-terminus-medium-r-normal--16-160-72-72-c-80-iso10646-1
 !URxvt*font: -xos4-terminus-bold-r-normal--16-160-72-72-c-80-iso10646-1
 URxvt*depth:                      32
-URxvt.background:                 [70]#222D31
 URxvt*scrollBar:                  false
 URxvt*mouseWheelScrollPage:       false
 URxvt*cursorBlink:                false
-URxvt*background:                 rgba:0000/0000/0200/c800
-URxvt*foreground:                 grey
 URxvt*saveLines:                  5000
 
 ! Normal copy-paste keybindings without perls
@@ -82,10 +85,4 @@ Xft.hintstyle: hintslight
 Xft.hinting: 1
 Xft.antialias: 1
 Xft.rgba: rgb
-
-
-
-
-
-
 
