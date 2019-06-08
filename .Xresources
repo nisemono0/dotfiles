@@ -52,15 +52,6 @@ URxvt*borderColor:  [80]#180d0c
 *.color66: #180d0c
 *color66:  #180d0c
 
-! Xclock colors.
-XClock*foreground: #e9dece
-XClock*background: #180d0c
-XClock*majorColor:  rgba:e9/de/ce/ff
-XClock*minorColor:  rgba:e9/de/ce/ff
-XClock*hourColor:   rgba:e9/de/ce/ff
-XClock*minuteColor: rgba:e9/de/ce/ff
-XClock*secondColor: rgba:e9/de/ce/ff
-
 ! alternative font settings with 'terminus':
 URxvt*font:      -xos4-terminus-medium-r-normal--16-160-72-72-c-80-iso10646-1
 !URxvt*font: -xos4-terminus-bold-r-normal--16-160-72-72-c-80-iso10646-1
