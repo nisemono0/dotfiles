@@ -1,8 +1,8 @@
 ! X colors.
-*foreground:        #e9dece
-*background:        #180d0c
-*.foreground:       #e9dece
-*.background:       #180d0c
+!*foreground:        #e9dece
+!*background:        #180d0c
+!*.foreground:       #e9dece
+!*.background:       #180d0c
 URxvt*foreground:   #e9dece
 XTerm*foreground:   #e9dece
 UXTerm*foreground:  #e9dece
