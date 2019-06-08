@@ -14,7 +14,7 @@ font pango:InconsolataGo Nerd Font 10
 
 ##---Windows Rules---##
 # Use xprop to find the window class
-for_window [class=".*"] border pixel 0
+for_window [class=".*"] border pixel 1
 for_window [class="floating"] move position center
 
 ##---Autostart---##
@@ -23,9 +23,8 @@ exec --no-startup-id ~/.scripts/tools/startup/urxvt-load.sh
 exec --no-startup-id ~/.scripts/tools/startup/monitor-setup.sh
 exec --no-startup-id compton -CG &
 exec --no-startup-id dunst &
-#exec_always --no-startup-id hsetroot -full ~/.config/wallpaper.png
+exec_always --no-startup-id hsetroot -full ~/.config/wallpaper.png
 exec_always --no-startup-id ~/.config/polybar/launch.sh
-exec_always --no-startup-id wal -R &
 
 ##---Basic Keys---##
 floating_modifier $mod
