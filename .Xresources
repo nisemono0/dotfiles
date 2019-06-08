@@ -12,9 +12,6 @@ URxvt*cursorColor:  #e9dece
 XTerm*cursorColor:  #e9dece
 UXTerm*cursorColor: #e9dece
 URxvt*borderColor:  [100]#180d0c
-*fading:			8
-*fadeColor:			black
-
 
 *.color0: #180d0c
 *color0:  #180d0c
