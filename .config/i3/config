@@ -10,6 +10,7 @@ hide_edge_borders on
 set $mod Mod4
 set $term --no-startup-id /usr/bin/urxvt
 set $ranger --no-startup-id /usr/bin/urxvt -e /usr/bin/ranger
+set $thunar --no-startup-id /usr/bin/thunar &
 font pango:InconsolataGo Nerd Font 10
 
 ##---Windows Rules---##
@@ -33,6 +34,7 @@ bindsym $mod+t split toggle
 bindsym $mod+slash split vertical ;; exec $term
 bindsym $mod+shift+slash split horizontal ;; exec $term
 bindsym $mod+Shift+Return exec $ranger
+bindsym $mod+Shift+Control+Return exec $thunar
 bindsym $mod+q kill
 bindsym $mod+d exec --no-startup-id ~/.scripts/i3cmds/dmenu-bind.sh
 bindsym $mod+Shift+c reload
