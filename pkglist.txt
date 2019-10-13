@@ -9,6 +9,7 @@ betterdiscord-rauenzi-git
 betterdiscordctl-git
 binutils
 bison
+bleachbit
 bzip2
 catimg
 clang
@@ -169,14 +170,18 @@ xcalib
 xclip
 xcolor
 xdg-user-dirs
+xdotool
 xf86-video-amdgpu
 xfsprogs
 xorg-server
+xorg-xdpyinfo
 xorg-xev
 xorg-xfontsel
 xorg-xinit
 xorg-xlsfonts
+xorg-xprop
 xorg-xrandr
+xorg-xwininfo
 youtube-dl
 youtube-viewer
 zip
