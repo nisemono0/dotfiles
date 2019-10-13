@@ -5,6 +5,8 @@ automake
 bash
 bdf-tewi-git
 bdf-unifont
+betterdiscord-rauenzi-git
+betterdiscordctl-git
 binutils
 bison
 bzip2
@@ -21,6 +23,7 @@ dhcpcd
 diffutils
 dina-font
 discord
+discord-rpc-api-git
 dmenu
 dunst
 e2fsprogs
@@ -48,6 +51,7 @@ gnu-free-fonts
 grep
 groff
 grub
+gvfs
 gzip
 hsetroot
 i3-gaps
@@ -67,6 +71,7 @@ linux-firmware
 logrotate
 lolcat
 lvm2
+lxsession
 m4
 make
 man-db
@@ -75,6 +80,7 @@ mdadm
 mesa-vdpau
 mpc
 mpd
+mpd-rich-presence-discord-git
 mpv
 nano
 ncmpcpp
@@ -89,6 +95,7 @@ noto-fonts-cjk
 noto-fonts-emoji
 noto-fonts-extra
 ntfs-3g
+openssh
 os-prober
 otf-ipafont
 pacman
