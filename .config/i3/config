@@ -11,6 +11,7 @@ set $mod Mod4
 set $term --no-startup-id /usr/bin/urxvt
 set $ranger --no-startup-id /usr/bin/urxvt -e /usr/bin/ranger
 set $thunar --no-startup-id /usr/bin/thunar &
+set $ncmpcpp --no-startup-id  /usr/bin/urxvt -e /usr/bin/ncmpcpp
 font pango:InconsolataGo Nerd Font 10
 
 ##---Windows Rules---##
@@ -111,7 +112,7 @@ bindsym $mod+F5 exec --no-startup-id notify-send F5
 bindsym $mod+F6 exec --no-startup-id notify-send F6
 bindsym $mod+F7 exec --no-startup-id notify-send F7
 bindsym $mod+F8 exec --no-startup-id notify-send F8
-bindsym $mod+F9 exec --no-startup-id notify-send F9
+bindsym $mod+F9 exec --no-startup-id $ncmpcpp
 bindsym $mod+F10 exec --no-startup-id ~/.scripts/i3cmds/lock-screen.sh
 bindsym $mod+F11 exec --no-startup-id ~/.scripts/i3cmds/dmenumount.sh
 bindsym $mod+F12 exec --no-startup-id ~/.scripts/i3cmds/dmenuumount.sh
