@@ -47,5 +47,11 @@ toggle_fixed_geometry g
 toggle_menu m
 size_to_image w
 toggle_keep_vp k
+
+
+zoom_default asterisk
+zoom_fit slash
+zoom_fill plus
+
 # This leaves some conflicts with existing default bindings, but you should
 # get the idea.  And I'm not gonna fix the conflicts, I don't use qwerty ;-)
