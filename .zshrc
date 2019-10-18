@@ -103,3 +103,4 @@ alias sudo="sudo -E"
 alias shutdown="sudo shutdown now"
 alias reboot="sudo reboot"
 alias feh="feh -T normal"
+#cat ~/.cache/wal/sequences
