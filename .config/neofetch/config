@@ -7,7 +7,7 @@ print_info() {
 	prin "Hello World"
 	info underline
 	info "OS" distro
-    info "Host" model
+   # info "Host" model
     info "Kernel" kernel
     info "Uptime" uptime
     info "Packages" packages
@@ -30,7 +30,7 @@ print_info() {
     # info "Battery" battery
     # info "Font" font
     # info "Song" song
-    # [[ $player ]] && prin "Music Player" "$player"
+     [[ $player ]] && prin "Music Player" "$player"
     # info "Local IP" local_ip
     # info "Public IP" public_ip
     # info "Users" users
@@ -691,7 +691,7 @@ ascii_bold="on"
 # Default:  'off'
 # Values:   'on', 'off'
 # Flag:     --loop
-image_loop="on"
+image_loop="off"
 
 # Thumbnail directory
 #
