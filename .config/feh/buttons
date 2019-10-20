@@ -8,9 +8,11 @@
 # For instance, C-1 would be Ctrl + Left click, 4-2 Mod4 + Middle click,
 # et cetera.
 
-# Switch menu and zoom keys, useful for two-button touchpads
+# Click-next, right click-prev, middle-menu 
 menu 2
-zoom 3
+next_img 1
+prev_img 3
+
 
 # make scroll wheel (mousewheel up and down) zoom, instead of flipping images
 zoom_in 4
