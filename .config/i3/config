@@ -23,7 +23,7 @@ for_window [class="floating"] move position center
 exec --no-startup-id ~/.config/mpd/launch.sh
 exec --no-startup-id ~/.scripts/tools/startup/urxvt-load.sh
 exec --no-startup-id ~/.scripts/tools/startup/monitor-setup.sh
-exec --no-startup-id compton -CG &
+exec --no-startup-id compton -CG -b 
 exec --no-startup-id dunst &
 exec_always --no-startup-id hsetroot -full ~/.config/wallpaper.png
 exec_always --no-startup-id ~/.config/polybar/launch.sh
@@ -125,7 +125,7 @@ bindsym Ctrl+Shift+Print exec --no-startup-id ~/.scripts/tools/scrot/scrot-area-
 
 
 ##---Color: border, background, text, indicater, child_border---##
-client.focused			#283838 #2f343f #283838 #bf616a #d8dee8
+client.focused			#283838 #fb3f00 #283838 #bf616a #d8dee8
 client.focused_inactive	#283838 #2f343f #283838 #2f343f #2f343f
 client.unfocused		#283838 #2f343f #283838 #2f343f #2f343f
 client.urgent			#283838 #2f343f #283838 #2f343f #2f343f
