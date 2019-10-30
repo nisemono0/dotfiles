@@ -47,6 +47,7 @@ gawk
 gcc
 gcc-libs
 gettext
+gimp
 git
 glibc
 gnu-free-fonts
@@ -120,6 +121,7 @@ pulsemixer
 py3status
 python-pip
 python-pywal
+qalculate-gtk
 qbittorrent
 ranger
 reiserfsprogs
@@ -143,6 +145,7 @@ texinfo
 thunar
 timidity++
 tiv
+tk
 tree
 ttf-arphic-uming
 ttf-bitstream-vera
