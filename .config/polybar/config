@@ -199,7 +199,7 @@ label = %percentage:2%%
 [module/cpu-temp-script]
 type = custom/script
 exec = ~/.scripts/tools/polybar-scripts/cpu-temp.sh 
-interval = 20
+interval = 5
 
 format-prefix = " "
 format-prefix-foreground = ${colors.foreground-alt}
