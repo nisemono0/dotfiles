@@ -118,11 +118,12 @@ bindsym $mod+F11 exec --no-startup-id ~/.scripts/i3cmds/dmenumount.sh
 bindsym $mod+F12 exec --no-startup-id ~/.scripts/i3cmds/dmenuumount.sh
 
 ##---Screenshot Keys---##
+# Full screen
 bindsym Print exec --no-startup-id ~/.scripts/tools/scrot/scrot.sh
 bindsym Shift+Print exec --no-startup-id ~/.scripts/tools/scrot/scrot-clip.sh
+# Window
 bindsym Ctrl+Print exec --no-startup-id ~/.scripts/tools/scrot/scrot-area.sh
 bindsym Ctrl+Shift+Print exec --no-startup-id ~/.scripts/tools/scrot/scrot-area-clip.sh
-
 
 ##---Color: border, background, text, indicater, child_border---##
 client.focused			#283838 #fb3f00 #283838 #bf616a #d8dee8
