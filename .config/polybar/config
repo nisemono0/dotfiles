@@ -54,9 +54,9 @@ module-margin-left = 1
 module-margin-right = 1
 
 font-0 = "xos4 Terminus:style=Regular;2"
-font-1 = unifont:fontformat=truetype:size=8:antialias=false;0
-font-2 = siji:pixelsize=10;1
-font-3 = "Ricty Nerd Font:style=Regular:size=10:antialas=false;0" 
+font-1 = unifont:fontformat=truetype:size=8:antialias=false;2
+font-2 = siji:pixelsize=10;2
+font-3 = "Ricty Nerd Font:style=Regular:size=10:antialas=false;2" 
 modules-left = mpd
 modules-center = i3
 modules-right = filesystem alsa xkeyboard memory cpu cpu-temp-script eth date powermenu
@@ -74,30 +74,49 @@ format = <label-state> <label-mode>
 index-sort = true
 wrapping-scroll = false
 
+; Workspace icons
+ws-icon-0 = 1;
+ws-icon-1 = 2;
+ws-icon-2 = 3;
+ws-icon-3 = 4;
+ws-icon-4 = 5;
+ws-icon-5 = 6;
+ws-icon-6 = 7;
+ws-icon-7 = 8;
+ws-icon-8 = 9;
+ws-icon-9 = 10;
+ws-icon-default = :D
+
+
 label-mode-padding = 2
 label-mode-foreground = #000
 label-mode-background = ${colors.primary}
 
 ; focused = Active workspace on focused monitor
-label-focused = %index%
+label-focused = %icon%
 label-focused-background = ${colors.background-alt}
 label-focused-underline = ${colors.primary}
 label-focused-padding = 2
 
 ; unfocused = Inactive workspace on any monitor
-label-unfocused = %index%
+label-unfocused = %icon%
 label-unfocused-padding = 2
 
 ; visible = Active workspace on unfocused monitor
-label-visible = %index%
+label-visible = %icon%
 label-visible-background = ${self.label-focused-background}
 label-visible-underline = ${self.label-focused-underline}
 label-visible-padding = ${self.label-focused-padding}
 
 ; urgent = Workspace with urgency hint set
-label-urgent = %index%
+label-urgent = %icono%
 label-urgent-background = ${colors.alert}
 label-urgent-padding = 2
+
+label-separator = 
+label-separator-padding = 0
+label-separator-foreground = ${self.label-focused-background}
+
 
 ; Middle-mpd
 [module/mpd]
@@ -105,11 +124,11 @@ type = internal/mpd
 
 label = <label-song> <icon-[random|repeat|repeatone]> <bar-progress>
 
-format-online = <label-song> <icon-prev> <icon-stop> <toggle> <icon-next> <bar-progress> <label-time>
-label-song = %artist% - %title%
+format-online = <label-song><icon-seekb> <icon-prev> <icon-stop> <toggle> <icon-next> <icon-seekf><bar-progress> <label-time>
+label-song = "%artist% - %title%"
 label-song-font = 3
 bar-progress-width = 15
-bar-progress-indicator = |
+bar-progress-indicator = 
 bar-progress-fill = ─
 bar-progress-empty = ─
 
@@ -119,14 +138,16 @@ icon-stop = 
 icon-play = 
 icon-pause = 
 icon-next = 
-label-song-maxlen = 23
+icon-seekb = 
+icon-seekf = 
+label-song-maxlen = 35
 label-song-ellipsis = true
 
 
 ; Right-filesystem
 [module/filesystem]
 type = internal/fs
-interval = 25
+interval = 30
 
 mount-0 = /
 
@@ -213,7 +234,7 @@ interval = 2
 ;format-connected-underline = ${colors.secondary}
 format-connected-prefix = " "
 format-connected-prefix-foreground = ${colors.foreground-alt}
-label-connected = DL: %downspeed% UP: %upspeed%
+label-connected = :%downspeed% :%upspeed%
 
 ;format-disconnected-underline = ${self.format-connected-underline}
 format-disconnected = <label-disconnected>
