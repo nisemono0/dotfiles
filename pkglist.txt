@@ -8,6 +8,7 @@ bdf-tewi-git
 bdf-unifont
 betterdiscord-rauenzi-git
 betterdiscordctl-git
+bind-tools
 binutils
 bison
 bleachbit
@@ -43,6 +44,7 @@ flex
 font-bh-ttf
 font-mathematica
 freepats-general-midi
+freetype2-demos
 gawk
 gcc
 gcc-libs
@@ -55,6 +57,7 @@ grep
 groff
 grub
 gvfs
+gwaterfall
 gzip
 hsetroot
 htop
@@ -178,9 +181,12 @@ xdg-user-dirs
 xdotool
 xf86-video-amdgpu
 xfsprogs
+xorg-fonts-misc
 xorg-server
+xorg-xclipboard
 xorg-xdpyinfo
 xorg-xev
+xorg-xfd
 xorg-xfontsel
 xorg-xinit
 xorg-xlsfonts
