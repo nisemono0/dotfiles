@@ -86,7 +86,6 @@ mdadm
 mesa-vdpau
 mpc
 mpd
-mpd-rich-presence-discord-git
 mpv
 nano
 ncmpcpp
@@ -144,7 +143,6 @@ termsyn-font
 texinfo
 thunar
 timidity++
-tiv
 tk
 tree
 ttf-arphic-uming
