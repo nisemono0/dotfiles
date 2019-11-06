@@ -73,6 +73,7 @@ lame
 less
 lib32-mesa
 lib32-vulkan-radeon
+libreoffice-still
 libtool
 licenses
 linux
@@ -164,6 +165,7 @@ ttf-ubuntu-font-family
 tumbler
 unrar
 unzip
+urxvt-perls
 usbutils
 util-linux
 vi
@@ -193,6 +195,7 @@ xorg-xlsfonts
 xorg-xprop
 xorg-xrandr
 xorg-xwininfo
+xsel
 youtube-dl
 youtube-viewer
 zip
