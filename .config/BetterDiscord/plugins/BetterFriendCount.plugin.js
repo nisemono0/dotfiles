@@ -3,7 +3,7 @@
 class BetterFriendCount {
 	getName () {return "BetterFriendCount";}
 
-	getVersion () {return "1.1.9";}
+	getVersion () {return "1.2.0";}
 
 	getAuthor () {return "DevilBro";}
 
@@ -15,8 +15,8 @@ class BetterFriendCount {
 		};
 
 		this.patchModules = {
-			"TabBar":"render",
-			"FriendRow":["componentWillMount","componentWillUnmount"]
+			TabBar: "render",
+			FriendRow: ["componentWillMount","componentWillUnmount"]
 		};
 	}
 
@@ -43,7 +43,10 @@ class BetterFriendCount {
 			document.head.appendChild(libraryScript);
 		}
 		else if (global.BDFDB && typeof BDFDB === "object" && BDFDB.loaded) this.initialize();
-		this.startTimeout = setTimeout(() => {this.initialize();}, 30000);
+		this.startTimeout = setTimeout(() => {
+			try {return this.initialize();}
+			catch (err) {console.error(`%c[${this.getName()}]%c`, "color: #3a71c1; font-weight: 700;", "", "Fatal Error: Could not initiate plugin! " + err);}
+		}, 30000);
 	}
 
 	initialize () {
@@ -53,7 +56,7 @@ class BetterFriendCount {
 
 			BDFDB.ModuleUtils.forceAllUpdates(this, "TabBar");
 		}
-		else console.error(`%c[${this.getName()}]%c`, 'color: #3a71c1; font-weight: 700;', '', 'Fatal Error: Could not load BD functions!');
+		else console.error(`%c[${this.getName()}]%c`, "color: #3a71c1; font-weight: 700;", "", "Fatal Error: Could not load BD functions!");
 	}
 
 	stop () {
@@ -77,29 +80,29 @@ class BetterFriendCount {
 				let newchildren = [Array.isArray(child.props.children) ? child.props.children[0] : child.props.children];
 				switch (child.props.id) {
 					case "ALL":
-						newchildren.push(BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.NumberBadge, {
+						newchildren.push(BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.BadgeComponents.NumberBadge, {
 							className: BDFDB.disCN.settingstabbarbadge,
 							count: relationshipCount.FRIEND
 						}));
 						break;
 					case "ONLINE":
-						newchildren.push(BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.NumberBadge, {
+						newchildren.push(BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.BadgeComponents.NumberBadge, {
 							className: BDFDB.disCN.settingstabbarbadge,
 							count: BDFDB.LibraryModules.StatusMetaUtils.getOnlineFriendCount()
 						}));
 						break;
 					case "PENDING":
-						newchildren.push(BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.NumberBadge, {
+						newchildren.push(BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.BadgeComponents.NumberBadge, {
 							className: BDFDB.disCN.settingstabbarbadge,
 							count: relationshipCount.PENDING_INCOMING
 						}));
-						newchildren.push(BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.NumberBadge, {
+						newchildren.push(BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.BadgeComponents.NumberBadge, {
 							className: BDFDB.disCN.settingstabbarbadge,
 							count: relationshipCount.PENDING_OUTGOING
 						}));
 						break;
 					case "BLOCKED":
-						newchildren.push(BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.NumberBadge, {
+						newchildren.push(BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.BadgeComponents.NumberBadge, {
 							className: BDFDB.disCN.settingstabbarbadge,
 							count: relationshipCount.BLOCKED
 						}));
@@ -111,8 +114,8 @@ class BetterFriendCount {
 	}
 
 	processFriendRow () {
-		clearTimeout(this.rerenderTimeout);
-		this.rerenderTimeout = setTimeout(() => {
+		BDFDB.TimeUtils.clear(this.rerenderTimeout);
+		this.rerenderTimeout = BDFDB.TimeUtils.timeout(() => {
 			delete this.rerenderTimeout;
 			BDFDB.ModuleUtils.forceAllUpdates(this, "TabBar");
 		}, 1000);
