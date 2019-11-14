@@ -62,4 +62,4 @@ thumb_b_nt --thumbnails --cache-thumbnails --thumb-width 256 --thumb-height 256 
 
 
 # My themes
-normal --scale-down --auto-zoom --info 'printf "File Name: %n [%u/%l] \nImage Size: %S\nDimensions: %wx%h\nZoom: %z"'
+feh --scale-down --auto-zoom --info 'printf "File Name: %n [%u/%l] \nImage Size: %S\nDimensions: %wx%h\nZoom: %z"'
