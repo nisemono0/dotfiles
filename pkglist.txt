@@ -59,6 +59,7 @@ grub
 gvfs
 gwaterfall
 gzip
+hdf5
 hsetroot
 htop
 i3-gaps
