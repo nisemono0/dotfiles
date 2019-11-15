@@ -29,7 +29,8 @@ class archive_view(Command):
     
     def _show(self, folder):
         descr = "Opening"    
-        obj = CommandLoader(args=['feh'] + ["/tmp/archive_view"], descr=descr, read=False)
+        feh_flags = ['-r']
+        obj = CommandLoader(args=['feh'] + feh_flags + ["/tmp/archive_view"], descr=descr, read=False)
         self.fm.loader.add(obj)
 
     def _extract(self, archive, folder):
