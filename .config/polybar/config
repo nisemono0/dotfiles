@@ -59,7 +59,7 @@ font-2 = siji:pixelsize=10;2
 font-3 = "Ricty Nerd Font:style=Regular:size=10:antialas=false;2" 
 modules-left = mpd
 modules-center = i3
-modules-right = filesystem alsa xkeyboard memory cpu cpu-temp-script eth date powermenu
+modules-right = updates-arch filesystem alsa xkeyboard memory cpu cpu-temp-script eth date powermenu
 
 tray-position = right
 tray-padding = 2
@@ -143,6 +143,11 @@ icon-seekf = 
 label-song-maxlen = 35
 label-song-ellipsis = true
 
+; Right-updates-arch
+[module/updates-arch]
+type = custom/script
+exec = ~/.scripts/tools/polybar-scripts/update-arch.sh
+interval = 600
 
 ; Right-filesystem
 [module/filesystem]
