@@ -4,6 +4,7 @@ atool
 autoconf
 automake
 bash
+bat
 bdf-tewi-git
 bdf-unifont
 betterdiscord-rauenzi-git
