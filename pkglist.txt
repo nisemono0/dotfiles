@@ -18,7 +18,6 @@ catimg
 clang
 cmatrix
 code
-compton
 coreutils
 cowsay
 cryptsetup
@@ -114,6 +113,7 @@ pacman-contrib
 patch
 pciutils
 perl
+picom
 pkgconf
 polybar
 powerline
