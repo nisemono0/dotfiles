@@ -3,15 +3,22 @@
 class MessageUtilities {
 	getName () {return "MessageUtilities";}
 
-	getVersion () {return "1.5.9";}
+	getVersion () {return "1.6.3";}
 
 	getAuthor () {return "DevilBro";}
 
 	getDescription () {return "Offers a number of useful message options. Remap the keybindings in the settings.";}
 
 	constructor () {
-		this.patchModules = {
-			"MessageContextMenu":["componentDidMount","componentDidUpdate"]
+		this.changelog = {
+			"fixed":[["New WYSIWYG Textarea","Fixed for the new WYSIWYG Textarea that is hidden by experiments"]],
+			"improved":[["New Library Structure & React","Restructured my Library and switched to React rendering instead of DOM manipulation"]]
+		};
+		
+		this.patchedModules = {
+			after: {
+				MessageContextMenu: ["componentDidMount","componentDidUpdate"]
+			}
 		};
 	}
 
@@ -20,13 +27,8 @@ class MessageUtilities {
 
 		this.firedEvents = [];
 
-		this.clickMap = ["CLICK" /*[0]*/, "DBLCLICK" /*[1]*/];
+		this.clickMap = ["CLICK", "DBLCLICK"];
 
-		this.keyboardMap = [
-			"NONE" /*[0]*/, "" /*[1]*/, "" /*[2]*/, "CANCEL" /*[3]*/, "" /*[4]*/, "" /*[5]*/, "HELP" /*[6]*/, "" /*[7]*/, "BACK_SPACE" /*[8]*/, "TAB" /*[9]*/, "" /*[10]*/, "" /*[11]*/, "CLEAR" /*[12]*/, "ENTER" /*[13]*/, "ENTER_SPECIAL" /*[14]*/, "" /*[15]*/, "SHIFT" /*[16]*/, "CONTROL" /*[17]*/, "ALT" /*[18]*/, "PAUSE" /*[19]*/, "CAPS_LOCK" /*[20]*/, "KANA" /*[21]*/, "EISU" /*[22]*/, "JUNJA" /*[23]*/, "FINAL" /*[24]*/, "HANJA" /*[25]*/, "" /*[26]*/, "ESCAPE" /*[27]*/, "CONVERT" /*[28]*/, "NONCONVERT" /*[29]*/, "ACCEPT" /*[30]*/, "MODECHANGE" /*[31]*/, "SPACE" /*[32]*/, "PAGE_UP" /*[33]*/, "PAGE_DOWN" /*[34]*/, "END" /*[35]*/, "HOME" /*[36]*/, "LEFT" /*[37]*/, "UP" /*[38]*/, "RIGHT" /*[39]*/, "DOWN" /*[40]*/, "SELECT" /*[41]*/, "PRINT" /*[42]*/, "EXECUTE" /*[43]*/, "PRINTSCREEN" /*[44]*/, "INSERT" /*[45]*/, "DELETE" /*[46]*/, "" /*[47]*/,"0" /*[48]*/, "1" /*[49]*/, "2" /*[50]*/, "3" /*[51]*/, "4" /*[52]*/, "5" /*[53]*/, "6" /*[54]*/, "7" /*[55]*/, "8" /*[56]*/, "9" /*[57]*/, "COLON" /*[58]*/, "SEMICOLON" /*[59]*/, "LESS_THAN" /*[60]*/, "EQUALS" /*[61]*/, "GREATER_THAN" /*[62]*/, "QUESTION_MARK" /*[63]*/, "AT" /*[64]*/, "A" /*[65]*/, "B" /*[66]*/, "C" /*[67]*/, "D" /*[68]*/, "E" /*[69]*/, "F" /*[70]*/, "G" /*[71]*/, "H" /*[72]*/, "I" /*[73]*/, "J" /*[74]*/, "K" /*[75]*/, "L" /*[76]*/, "M" /*[77]*/, "N" /*[78]*/, "O" /*[79]*/, "P" /*[80]*/, "Q" /*[81]*/, "R" /*[82]*/, "S" /*[83]*/, "T" /*[84]*/, "U" /*[85]*/, "V" /*[86]*/, "W" /*[87]*/, "X" /*[88]*/, "Y" /*[89]*/, "Z" /*[90]*/, "OS_KEY" /*[91]*/, "" /*[92]*/, "CONTEXT_MENU" /*[93]*/, "" /*[94]*/, "SLEEP" /*[95]*/, "NUMPAD0" /*[96]*/, "NUMPAD1" /*[97]*/, "NUMPAD2" /*[98]*/, "NUMPAD3" /*[99]*/, "NUMPAD4" /*[100]*/, "NUMPAD5" /*[101]*/, "NUMPAD6" /*[102]*/, "NUMPAD7" /*[103]*/, "NUMPAD8" /*[104]*/, "NUMPAD9" /*[105]*/, "MULTIPLY" /*[106]*/, "ADD" /*[107]*/, "SEPARATOR" /*[108]*/, "SUBTRACT" /*[109]*/, "DECIMAL" /*[110]*/, "DIVIDE" /*[111]*/, "F1" /*[112]*/, "F2" /*[113]*/, "F3" /*[114]*/, "F4" /*[115]*/, "F5" /*[116]*/, "F6" /*[117]*/, "F7" /*[118]*/, "F8" /*[119]*/, "F9" /*[120]*/, "F10" /*[121]*/, "F11" /*[122]*/, "F12" /*[123]*/, "F13" /*[124]*/, "F14" /*[125]*/, "F15" /*[126]*/, "F16" /*[127]*/, "F17" /*[128]*/, "F18" /*[129]*/, "F19" /*[130]*/, "F20" /*[131]*/, "F21" /*[132]*/, "F22" /*[133]*/, "F23" /*[134]*/, "F24" /*[135]*/, "" /*[136]*/, "" /*[137]*/, "" /*[138]*/, "" /*[139]*/, "" /*[140]*/, "" /*[141]*/, "" /*[142]*/, "" /*[143]*/, "NUM_LOCK" /*[144]*/, "SCROLL_LOCK" /*[145]*/, "WIN_OEM_FJ_JISHO" /*[146]*/, "WIN_OEM_FJ_MASSHOU" /*[147]*/, "WIN_OEM_FJ_TOUROKU" /*[148]*/, "WIN_OEM_FJ_LOYA" /*[149]*/, "WIN_OEM_FJ_ROYA" /*[150]*/, "" /*[151]*/, "" /*[152]*/, "" /*[153]*/, "" /*[154]*/, "" /*[155]*/, "" /*[156]*/, "" /*[157]*/, "" /*[158]*/, "" /*[159]*/, "CIRCUMFLEX" /*[160]*/, "EXCLAMATION" /*[161]*/, "DOUBLE_QUOTE" /*[162]*/, "HASH" /*[163]*/, "DOLLAR" /*[164]*/, "PERCENT" /*[165]*/, "AMPERSAND" /*[166]*/, "UNDERSCORE" /*[167]*/, "OPEN_PAREN" /*[168]*/, "CLOSE_PAREN" /*[169]*/, "ASTERISK" /*[170]*/, "PLUS" /*[171]*/, "PIPE" /*[172]*/, "HYPHEN_MINUS" /*[173]*/, "OPEN_CURLY_BRACKET" /*[174]*/, "CLOSE_CURLY_BRACKET" /*[175]*/, "TILDE" /*[176]*/, "" /*[177]*/, "" /*[178]*/, "" /*[179]*/, "" /*[180]*/, "VOLUME_MUTE" /*[181]*/, "VOLUME_DOWN" /*[182]*/, "VOLUME_UP" /*[183]*/, "" /*[184]*/, "" /*[185]*/, "SEMICOLON" /*[186]*/, "EQUALS" /*[187]*/, "COMMA" /*[188]*/, "MINUS" /*[189]*/, "PERIOD" /*[190]*/, "SLASH" /*[191]*/, "BACK_QUOTE" /*[192]*/, "" /*[193]*/, "" /*[194]*/, "" /*[195]*/, "" /*[196]*/, "" /*[197]*/, "" /*[198]*/, "" /*[199]*/, "" /*[200]*/, "" /*[201]*/, "" /*[202]*/, "" /*[203]*/, "" /*[204]*/, "" /*[205]*/, "" /*[206]*/, "" /*[207]*/, "" /*[208]*/, "" /*[209]*/, "" /*[210]*/, "" /*[211]*/, "" /*[212]*/, "" /*[213]*/, "" /*[214]*/, "" /*[215]*/, "" /*[216]*/, "" /*[217]*/, "" /*[218]*/, "OPEN_BRACKET" /*[219]*/, "BACK_SLASH" /*[220]*/, "CLOSE_BRACKET" /*[221]*/, "QUOTE" /*[222]*/, "" /*[223]*/, "META" /*[224]*/, "ALTGR" /*[225]*/, "" /*[226]*/, "WIN_ICO_HELP" /*[227]*/, "WIN_ICO_00" /*[228]*/, "" /*[229]*/, "WIN_ICO_CLEAR" /*[230]*/, "" /*[231]*/,"" /*[232]*/, "WIN_OEM_RESET" /*[233]*/, "WIN_OEM_JUMP" /*[234]*/, "WIN_OEM_PA1" /*[235]*/, "WIN_OEM_PA2" /*[236]*/, "WIN_OEM_PA3" /*[237]*/, "WIN_OEM_WSCTRL" /*[238]*/,"WIN_OEM_CUSEL" /*[239]*/, "WIN_OEM_ATTN" /*[240]*/, "WIN_OEM_FINISH" /*[241]*/, "WIN_OEM_COPY" /*[242]*/, "WIN_OEM_AUTO" /*[243]*/, "WIN_OEM_ENLW" /*[244]*/, "WIN_OEM_BACKTAB" /*[245]*/, "ATTN" /*[246]*/, "CRSEL" /*[247]*/, "EXSEL" /*[248]*/, "EREOF" /*[249]*/, "PLAY" /*[250]*/, "ZOOM" /*[251]*/, "" /*[252]*/, "PA1" /*[253]*/, "WIN_OEM_CLEAR" /*[254]*/, "" /*[255]*/
-		];
-
-		this.keys = 	["key1","key2"];
 		this.defaults = {
 			settings: {
 				"addHints":					{value:true, 	description:"Add keycombo hints to contextmenus:"},
@@ -34,17 +36,17 @@ class MessageUtilities {
 			},
 			toasts: {},
 			bindings: {
-				"Edit_Message":				{name:"Edit Message",									func:this.doEdit,			value:{click:1, 	key1:0, 	key2:0}},
-				"Delete_Message":			{name:"Delete Message",									func:this.doDelete,			value:{click:0, 	key1:46, 	key2:0}},
-				"Pin/Unpin_Message":		{name:"Pin/Unpin Message",								func:this.doPinUnPin,		value:{click:0, 	key1:17, 	key2:0}},
-				"React_to_Message":			{name:"React to Message",								func:this.doOpenReact,		value:{click:0, 	key1:17, 	key2:83}},
-				"Copy_Raw":					{name:"Copy raw Message",								func:this.doCopyRaw,		value:{click:0, 	key1:17, 	key2:68}},
-				"Copy_Link":				{name:"Copy Message Link",								func:this.doCopyLink,		value:{click:0, 	key1:17, 	key2:81}},
-				"__Note_Message":			{name:"Note Message (Pesonal Pins)",					func:this.doNote,			value:{click:0, 	key1:16, 	key2:0}, 	plugin:"PersonalPins"},
-				"__Translate_Message":		{name:"Translate Message (Google Translate Option)",	func:this.doTranslate,		value:{click:0, 	key1:20, 	key2:0}, 	plugin:"GoogleTranslateOption"},
-				"__Quote_Message":			{name:"Quote Message (Quoter)",							func:this.doQuote,			value:{click:0, 	key1:17, 	key2:87}, 	plugin:"Quoter"},
-				"__Citate_Message":			{name:"Quote Message (Citador)",						func:this.doCitate,			value:{click:0, 	key1:17, 	key2:78}, 	plugin:"Citador"},
-				"__Reveal_Spoilers":		{name:"Reveal All Spoilers (RevealAllSpoilersOption)",	func:this.doReveal,			value:{click:0, 	key1:17, 	key2:74}, 	plugin:"RevealAllSpoilersOption"}
+				"Edit_Message":				{name:"Edit Message",									func:this.doEdit,			value:{click:1, 	keycombo:[]}		},
+				"Delete_Message":			{name:"Delete Message",									func:this.doDelete,			value:{click:0, 	keycombo:[46]}		},
+				"Pin/Unpin_Message":		{name:"Pin/Unpin Message",								func:this.doPinUnPin,		value:{click:0, 	keycombo:[17]}		},
+				"React_to_Message":			{name:"React to Message",								func:this.doOpenReact,		value:{click:0, 	keycombo:[17,83]}	},
+				"Copy_Raw":					{name:"Copy raw Message",								func:this.doCopyRaw,		value:{click:0, 	keycombo:[17,68]}	},
+				"Copy_Link":				{name:"Copy Message Link",								func:this.doCopyLink,		value:{click:0, 	keycombo:[17,81]}	},
+				"__Note_Message":			{name:"Note Message (Pesonal Pins)",					func:this.doNote,			value:{click:0, 	keycombo:[16]}, 	plugin:"PersonalPins"},
+				"__Translate_Message":		{name:"Translate Message (Google Translate Option)",	func:this.doTranslate,		value:{click:0, 	keycombo:[20]}, 	plugin:"GoogleTranslateOption"},
+				"__Quote_Message":			{name:"Quote Message (Quoter)",							func:this.doQuote,			value:{click:0, 	keycombo:[17,87]}, 	plugin:"Quoter"},
+				"__Citate_Message":			{name:"Quote Message (Citador)",						func:this.doCitate,			value:{click:0, 	keycombo:[17,78]}, 	plugin:"Citador"},
+				"__Reveal_Spoilers":		{name:"Reveal All Spoilers (RevealAllSpoilersOption)",	func:this.doReveal,			value:{click:0, 	keycombo:[17,74]}, 	plugin:"RevealAllSpoilersOption"}
 			}
 		};
 		for (let type in this.defaults.bindings) {
@@ -56,39 +58,88 @@ class MessageUtilities {
 
 	getSettingsPanel () {
 		if (!global.BDFDB || typeof BDFDB != "object" || !BDFDB.loaded || !this.started) return;
-		let settings = BDFDB.DataUtils.get(this, "settings"); 
-		let toasts = BDFDB.DataUtils.get(this, "toasts"); 
+		let settings = BDFDB.DataUtils.get(this, "settings");
 		let bindings = BDFDB.DataUtils.get(this, "bindings");
-		let settingshtml = `<div class="${this.name}-settings BDFDB-settings"><div class="${BDFDB.disCNS.titledefault + BDFDB.disCNS.titlesize18 + BDFDB.disCNS.height24 + BDFDB.disCNS.weightnormal + BDFDB.disCN.marginbottom8}">${this.name}</div><div class="BDFDB-settings-inner">`;
-		for (let key in settings) {
-			if (this.defaults.settings[key].description) settingshtml += `<div class="${BDFDB.disCNS.flex + BDFDB.disCNS.horizontal + BDFDB.disCNS.justifystart + BDFDB.disCNS.aligncenter + BDFDB.disCNS.nowrap + BDFDB.disCN.marginbottom8}" style="flex: 1 1 auto;"><h3 class="${BDFDB.disCNS.titledefault + BDFDB.disCNS.marginreset + BDFDB.disCNS.weightmedium + BDFDB.disCNS.titlesize16 + BDFDB.disCNS.height24 + BDFDB.disCN.flexchild}" style="flex: 1 1 auto;">${this.defaults.settings[key].description}</h3><div class="${BDFDB.disCNS.flexchild + BDFDB.disCNS.switchenabled + BDFDB.disCNS.switch + BDFDB.disCNS.switchvalue + BDFDB.disCNS.switchsizedefault + BDFDB.disCNS.switchsize + BDFDB.disCN.switchthemedefault}" style="flex: 0 0 auto;"><input type="checkbox" value="settings ${key}" class="${BDFDB.disCNS.switchinnerenabled + BDFDB.disCN.switchinner} settings-switch"${settings[key] ? " checked" : ""}></div></div>`;
+		let toasts = BDFDB.DataUtils.get(this, "toasts");
+		let settingsitems = [];
+		
+		for (let key in settings) if (this.defaults.settings[key].description) settingsitems.push(BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.SettingsSaveItem, {
+			className: BDFDB.disCN.marginbottom8,
+			type: "Switch",
+			plugin: this,
+			keys: ["settings", key],
+			label: this.defaults.settings[key].description,
+			value: settings[key]
+		}));
+		settingsitems.push(BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.FormComponents.FormDivider, {
+			className: BDFDB.disCN.marginbottom8
+		}));
+		for (let action in bindings) if (!this.defaults.bindings[action].plugin || BDFDB.BDUtils.isPluginEnabled(this.defaults.bindings[action].plugin)) {
+			settingsitems.push(BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.Flex, {
+				className: BDFDB.disCN.marginbottom8,
+				align: BDFDB.LibraryComponents.Flex.Align.CENTER,
+				direction: BDFDB.LibraryComponents.Flex.Direction.HORIZONTAL,
+				children: [
+					BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.SettingsLabel, {
+						label: this.defaults.bindings[action].name
+					}),
+					toasts[action] != undefined ? BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.SettingsSaveItem, {
+						type: "Switch",
+						mini: true,
+						plugin: this,
+						keys: ["toasts", action],
+						grow: 0,
+						label: "Toast:",
+						value: toasts[action]
+					}) : null
+				].filter(n => n)
+			}));
+			settingsitems.push(BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.SettingsSaveItem, {
+				className: BDFDB.disCN.marginbottom8,
+				type: "Switch",
+				dividerbottom: true,
+				mini: true,
+				plugin: this,
+				keys: ["settings", action],
+				value: settings[action],
+				labelchildren: BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.Flex, {
+					direction: BDFDB.LibraryComponents.Flex.Direction.HORIZONTAL,
+					children: [
+						BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.Select, {
+							value: bindings[action].click,
+							options: this.clickMap.map((label, i) => {return {value:i, label:label}}),
+							onChange: choice => {
+								bindings[action].click = choice.value;
+								BDFDB.DataUtils.save(bindings, this, "bindings");
+							}
+						}),
+						BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.KeybindRecorder, {
+							defaultValue: bindings[action].keycombo.filter(n => n),
+							reset: true,
+							onChange: keycombo => {
+								bindings[action].keycombo = keycombo;
+								BDFDB.DataUtils.save(bindings, this, "bindings");
+							}
+						})
+					]
+				})
+			}));
 		}
-		for (let action in bindings) {
-			if (!this.defaults.bindings[action].plugin || BDFDB.BDUtils.isPluginEnabled(this.defaults.bindings[action].plugin)) {
-				settingshtml += `<div class="${BDFDB.disCNS.divider + BDFDB.disCN.marginbottom4}"></div>`;
-				settingshtml += `<div class="${action}-key-settings"><div class="${BDFDB.disCNS.flex + BDFDB.disCNS.horizontal + BDFDB.disCNS.justifystart + BDFDB.disCNS.aligncenter + BDFDB.disCNS.nowrap + BDFDB.disCN.marginbottom8}" style="flex: 1 1 auto;"><h3 class="${BDFDB.disCNS.titledefault + BDFDB.disCNS.marginreset + BDFDB.disCNS.weightmedium + BDFDB.disCNS.titlesize16 + BDFDB.disCNS.height24 + BDFDB.disCN.flexchild}" style="flex: 1 1 auto;">${this.defaults.bindings[action].name}:</h3>${toasts[action] != undefined ? `<h5 class="${BDFDB.disCNS.flexchild + BDFDB.disCNS.h5 + BDFDB.disCNS.title + BDFDB.disCNS.titlesize12 + BDFDB.disCNS.height16 + BDFDB.disCNS.weightsemibold + BDFDB.disCNS.h5defaultmargin}" style="flex: 0 0 auto;">Toast:</h5><div class="${BDFDB.disCNS.flexchild + BDFDB.disCNS.switchenabled + BDFDB.disCNS.switch + BDFDB.disCNS.switchvalue + BDFDB.disCNS.switchsizedefault + BDFDB.disCNS.switchsize + BDFDB.disCN.switchthemedefault}" style="flex: 0 0 auto;"><input type="checkbox" value="toasts ${action}" class="${BDFDB.disCNS.switchinnerenabled + BDFDB.disCN.switchinner} settings-switch"${toasts[action] ? " checked" : ""}></div>` : ''}<h5 class="${BDFDB.disCNS.flexchild + BDFDB.disCNS.h5 + BDFDB.disCNS.title + BDFDB.disCNS.titlesize12 + BDFDB.disCNS.height16 + BDFDB.disCNS.weightsemibold + BDFDB.disCNS.h5defaultmargin}" style="flex: 0 0 auto;">Enabled:</h5><div class="${BDFDB.disCNS.flexchild + BDFDB.disCNS.switchenabled + BDFDB.disCNS.switch + BDFDB.disCNS.switchvalue + BDFDB.disCNS.switchsizedefault + BDFDB.disCNS.switchsize + BDFDB.disCN.switchthemedefault}" style="flex: 0 0 auto;"><input type="checkbox" value="settings ${action}" class="${BDFDB.disCNS.switchinnerenabled + BDFDB.disCN.switchinner} settings-switch"${settings[action] ? " checked" : ""}></div></div><div class="${BDFDB.disCNS.flex + BDFDB.disCNS.horizontal + BDFDB.disCNS.justifystart + BDFDB.disCNS.aligncenter + BDFDB.disCNS.nowrap + BDFDB.disCN.marginbottom8}" style="flex: 1 1 auto;">`;
-				settingshtml += `<div class="${BDFDB.disCN.flexchild}" style="flex: 1 1 20%;"><h5 class="${BDFDB.disCNS.h5 + BDFDB.disCNS.title + BDFDB.disCNS.titlesize12 + BDFDB.disCNS.height16 + BDFDB.disCNS.weightsemibold + BDFDB.disCNS.h5defaultmargin + BDFDB.disCN.marginbottom4}">Click:</h5>${BDFDB.createSelectMenu(this.createSelectChoice(bindings[action].click), bindings[action].click, action + " click")}</div>`;
-				for (let key of this.keys) {
-					settingshtml += `<div class="${BDFDB.disCN.flexchild}" style="flex: 1 1 40%;"><h5 class="${BDFDB.disCNS.h5 + BDFDB.disCNS.title + BDFDB.disCNS.titlesize12 + BDFDB.disCNS.height16 + BDFDB.disCNS.weightsemibold + BDFDB.disCNS.h5defaultmargin + BDFDB.disCN.marginbottom4}">${key}:<label class="reset-recorder" style="float: right; padding-right: 5px; cursor: pointer;">✖</label></h5><div type="${action}" option="${key}" value="${bindings[action][key]}" class="${BDFDB.disCNS.hotkeycontainer + BDFDB.disCNS.hotkeycontainer2 + BDFDB.disCN.hotkeyhasvalue}"><div class="${BDFDB.disCNS.flex + BDFDB.disCNS.horizontal + BDFDB.disCNS.justifystart + BDFDB.disCNS.alignstretch + BDFDB.disCNS.nowrap + BDFDB.disCNS.hotkeylayout + BDFDB.disCN.hotkeylayout2}" style="flex: 1 1 auto;"><input type="text" placeholder="${this.keyboardMap[bindings[action][key]]}" readonly="" value="${this.keyboardMap[bindings[action][key]]}" class="${BDFDB.disCNS.hotkeyinput + BDFDB.disCNS.hotkeyinput2 + BDFDB.disCN.hotkeybase}" style="flex: 1 1 auto;"></input><div class="${BDFDB.disCNS.flex + BDFDB.disCNS.horizontal + BDFDB.disCNS.justifystart + BDFDB.disCNS.alignstretch + BDFDB.disCN.nowrap}" style="flex: 0 1 auto; margin: 0px;"><button type="button" class="${BDFDB.disCNS.hotkeybutton + BDFDB.disCNS.hotkeybutton2 + BDFDB.disCNS.button + BDFDB.disCNS.buttonlookghost + BDFDB.disCNS.buttoncolorgrey + BDFDB.disCNS.buttonsizemin + BDFDB.disCN.buttongrow}"><div class="${BDFDB.disCN.buttoncontents}"><span class="${BDFDB.disCN.hotkeytext}">${BDFDB.LanguageUtils.LanguageStrings.SHORTCUT_RECORDER_BUTTON_EDIT}</span><span class="${BDFDB.disCN.hotkeyediticon}"/></div></button></div></div></div></div>`;
-				}
-				settingshtml += `</div></div>`;
-			}
-		}
-		settingshtml += `<div class="${BDFDB.disCNS.flex + BDFDB.disCNS.horizontal + BDFDB.disCNS.justifystart + BDFDB.disCNS.aligncenter + BDFDB.disCNS.nowrap + BDFDB.disCN.marginbottom20}" style="flex: 0 0 auto;"><h3 class="${BDFDB.disCNS.titledefault + BDFDB.disCNS.marginreset + BDFDB.disCNS.weightmedium + BDFDB.disCNS.titlesize16 + BDFDB.disCNS.height24 + BDFDB.disCN.flexchild}" style="flex: 1 1 auto;">Reset all key bindings.</h3><button type="button" class="${BDFDB.disCNS.flexchild + BDFDB.disCNS.button + BDFDB.disCNS.buttonlookfilled + BDFDB.disCNS.buttoncolorred + BDFDB.disCNS.buttonsizemedium + BDFDB.disCN.buttongrow} reset-button" style="flex: 0 0 auto;"><div class="${BDFDB.disCN.buttoncontents}">Reset</div></button></div>`;
-		settingshtml += `</div></div>`;
-
-		let settingspanel = BDFDB.DOMUtils.create(settingshtml);
-
-		BDFDB.initElements(settingspanel, this);
-
-		BDFDB.ListenerUtils.add(this, settingspanel, "click", BDFDB.dotCN.hotkeycontainer, e => {this.startRecording(settingspanel, e);});
-		BDFDB.ListenerUtils.add(this, settingspanel, "click", ".reset-recorder", e => {this.resetRecorder(settingspanel, e);});
-		BDFDB.ListenerUtils.add(this, settingspanel, "click", ".reset-button", () => {this.resetAll(settingspanel);});
-		BDFDB.ListenerUtils.add(this, settingspanel, "click", BDFDB.dotCN.selectcontrol, e => {
-			BDFDB.openDropdownMenu(e, this.saveSelectChoice.bind(this), this.createSelectChoice.bind(this), this.clickMap);
-		});
-
-		return settingspanel;
+		settingsitems.push(BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.SettingsItem, {
+			type: "Button",
+			className: BDFDB.disCN.marginbottom8,
+			color: BDFDB.LibraryComponents.Button.Colors.RED,
+			label: "Reset all Key Bindings",
+			onClick: (e, instance) => {
+				BDFDB.ModalUtils.confirm(this, "Are you sure you want to reset all Key Bindings?", _ => {
+					BDFDB.DataUtils.remove(this, "bindings");
+					BDFDB.ReactUtils.forceUpdate(BDFDB.ReactUtils.findOwner(instance, {key: `${this.name}-settingspanel`, up: true}));
+				});
+			},
+			children: BDFDB.LanguageUtils.LanguageStrings.RESET
+		}));
+		
+		return BDFDB.PluginUtils.createSettingsPanel(this, settingsitems);
 	}
 
 	//legacy
@@ -109,13 +160,23 @@ class MessageUtilities {
 			document.head.appendChild(libraryScript);
 		}
 		else if (global.BDFDB && typeof BDFDB === "object" && BDFDB.loaded) this.initialize();
-		this.startTimeout = setTimeout(() => {this.initialize();}, 30000);
+		this.startTimeout = setTimeout(() => {
+			try {return this.initialize();}
+			catch (err) {console.error(`%c[${this.getName()}]%c`, "color: #3a71c1; font-weight: 700;", "", "Fatal Error: Could not initiate plugin! " + err);}
+		}, 30000);
 	}
 
 	initialize () {
 		if (global.BDFDB && typeof BDFDB === "object" && BDFDB.loaded) {
 			if (this.started) return;
 			BDFDB.PluginUtils.init(this);
+			
+			// REMOVE 15.11.2019
+			let bindings = BDFDB.DataUtils.load(this, "bindings");
+			if (bindings[Object.keys(bindings)[0]].keycombo == undefined) {
+				for (let key in bindings) bindings[key] = {click: bindings[key].click, keycombo: [bindings[key].key1, bindings[key].key2].filter(n => n)};
+				BDFDB.DataUtils.save(bindings, this, "bindings");
+			}
 
 			BDFDB.ListenerUtils.add(this, document, "click", BDFDB.dotCN.messagegroup + "> [aria-disabled]," + BDFDB.dotCN.messagegroup + "> * > [aria-disabled]," + BDFDB.dotCN.messagesystem, e => {
 				this.onClick(e, 0, "onSglClick");
@@ -123,11 +184,11 @@ class MessageUtilities {
 			BDFDB.ListenerUtils.add(this, document, "dblclick", BDFDB.dotCN.messagegroup + "> [aria-disabled]," + BDFDB.dotCN.messagegroup + "> * > [aria-disabled]," + BDFDB.dotCN.messagesystem, e => {
 				this.onClick(e, 1, "onDblClick");
 			});
-			BDFDB.ListenerUtils.add(this, document, "keydown", BDFDB.dotCN.textareawrapchat, e => {
-				this.onKeyDown(e, e.which, "onKeyDown");
+			BDFDB.ListenerUtils.add(this, document, "keydown", e => {
+				if (BDFDB.DOMUtils.getParent(BDFDB.dotCN.textareawrapchat, document.activeElement)) this.onKeyDown(document.activeElement, e.which, "onKeyDown");
 			});
 		}
-		else console.error(`%c[${this.getName()}]%c`, 'color: #3a71c1; font-weight: 700;', '', 'Fatal Error: Could not load BD functions!');
+		else console.error(`%c[${this.getName()}]%c`, "color: #3a71c1; font-weight: 700;", "", "Fatal Error: Could not load BD functions!");
 	}
 
 	stop () {
@@ -141,122 +202,43 @@ class MessageUtilities {
 
 	//begin of own functions
 	
-	processMessageContextMenu (instance, menu, returnvalue) {
-		if (instance.props && instance.props.message && instance.props.channel && instance.props.target) {
-			let changed = false;
-			for (let itemlabel of menu.querySelectorAll(BDFDB.dotCN.contextmenulabel)) {
+	processMessageContextMenu (e) {
+		if (e.instance.props.message && e.instance.props.channel && e.instance.props.target) {
+			for (let itemlabel of e.node.querySelectorAll(BDFDB.dotCN.contextmenulabel)) {
 				let hint = itemlabel.parentElement.querySelector(BDFDB.dotCN.contextmenuhint);
-				if (hint && !BDFDB.DOMUtils.containsClass(hint, "BDFDB-contextMenuItemHint")) {
-					let action = null;
-					switch (itemlabel.innerText) {
-						case BDFDB.LanguageUtils.LanguageStrings.COPY_MESSAGE_LINK:
-							action = "Copy_Link";
-							break;
-						case BDFDB.LanguageUtils.LanguageStrings.EDIT_MESSAGE:
-							action = "Edit_Message";
-							break;
-						case BDFDB.LanguageUtils.LanguageStrings.PIN_MESSAGE:
-						case BDFDB.LanguageUtils.LanguageStrings.UNPIN_MESSAGE:
-							action = "Pin/Unpin_Message";
-							break;
-						case BDFDB.LanguageUtils.LanguageStrings.DELETE_MESSAGE:
-							action = "Delete_Message";
-							break;
+				if (hint) {
+					let hintlabel;
+					if (itemlabel.innerText == BDFDB.LanguageUtils.LanguageStrings.MARK_UNREAD) {
+						if (BDFDB.DataUtils.get(this, "settings", "addHints")) hintlabel = `${this.clickMap[0]}+${BDFDB.LibraryModules.KeyCodeUtils.getString(18)}`;
 					}
-					if (action) {
-						let hintlabel = this.getActiveShortcutString(action);
-						if (hintlabel) {
-							hint.style.setProperty("width", "42px");
-							hint.style.setProperty("max-width", "42px");
-							hint.style.setProperty("margin-left", "8px");
-							BDFDB.ReactUtils.render(BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.TextScroller, {speed: 2, children: hintlabel}), hint);
+					else {
+						let action = null;
+						switch (itemlabel.innerText) {
+							case BDFDB.LanguageUtils.LanguageStrings.COPY_MESSAGE_LINK:
+								action = "Copy_Link";
+								break;
+							case BDFDB.LanguageUtils.LanguageStrings.EDIT_MESSAGE:
+								action = "Edit_Message";
+								break;
+							case BDFDB.LanguageUtils.LanguageStrings.PIN_MESSAGE:
+							case BDFDB.LanguageUtils.LanguageStrings.UNPIN_MESSAGE:
+								action = "Pin/Unpin_Message";
+								break;
+							case BDFDB.LanguageUtils.LanguageStrings.DELETE_MESSAGE:
+								action = "Delete_Message";
+								break;
 						}
+						if (action) hintlabel = this.getActiveShortcutString(action);
+					}
+					if (hintlabel) {
+						hint.style.setProperty("width", "42px");
+						hint.style.setProperty("max-width", "42px");
+						hint.style.setProperty("margin-left", "8px");
+						BDFDB.ReactUtils.render(BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.TextScroller, {speed: 2, children: hintlabel}), hint);
 					}
 				}
 			}
-			if (changed) BDFDB.initElements(menu);
 		}
-	}
-
-	resetAll (settingspanel) {
-		BDFDB.openConfirmModal(this, "Are you sure you want to delete all key bindings?", () => {
-			BDFDB.DataUtils.remove(this, "bindings");
-			let bindings = BDFDB.DataUtils.get(this, "bindings");
-			settingspanel.querySelectorAll(BDFDB.dotCN.select).forEach(wrap => {
-				let type = wrap.getAttribute("type").split(" ");
-				wrap.setAttribute("value", bindings[type[0]][type[1]]);
-				wrap.querySelector(BDFDB.dotCN.title).innerText = this.clickMap[bindings[type[0]][type[1]]];
-			});
-			settingspanel.querySelectorAll(BDFDB.dotCN.hotkeycontainer).forEach(wrap => {
-				let action = wrap.getAttribute("type");
-				let option = wrap.getAttribute("option");
-				wrap.setAttribute("value", bindings[action][option]);
-				wrap.querySelector("input").setAttribute("value", this.keyboardMap[bindings[action][option]]);
-			});
-		});
-	}
-
-	saveSelectChoice (selectWrap, type, choice) {
-		if (type && choice) {
-			selectWrap.querySelector(BDFDB.dotCN.title).innerText = this.clickMap[choice];
-			type = type.split(" ");
-			let binding = BDFDB.DataUtils.get(this, "bindings", type[0]);
-			binding[type[1]] = parseInt(choice);
-			BDFDB.DataUtils.save(binding, this, "bindings", type[0]);
-		}
-	}
-
-	createSelectChoice (key) {
-		return `<div class="${BDFDB.disCNS.title + BDFDB.disCNS.medium + BDFDB.disCNS.primary + BDFDB.disCNS.weightnormal + BDFDB.disCN.cursorpointer}" style="padding: 0;">${this.clickMap[key]}</div>`;
-	}
-
-	startRecording (settingspanel, e) {
-		let recorderWrap = e.currentTarget;
-		if (BDFDB.DOMUtils.containsClass(recorderWrap, BDFDB.disCN.hotkeyrecording)) return;
-
-		let recorderInput = recorderWrap.querySelector("input");
-		let recorderText = recorderWrap.querySelector(BDFDB.dotCN.hotkeytext);
-		let action = recorderWrap.getAttribute("type");
-		let option = recorderWrap.getAttribute("option");
-
-		BDFDB.DOMUtils.addClass(recorderWrap, BDFDB.disCN.hotkeyrecording);
-		BDFDB.DOMUtils.removeClass(recorderWrap, BDFDB.disCN.hotkeyhasvalue);
-		recorderText.innerText = BDFDB.LanguageUtils.LanguageStrings.SHORTCUT_RECORDER_BUTTON_RECORDING;
-
-
-		var saveRecording = e => {
-			recorderWrap.setAttribute("value", e.which);
-			recorderInput.setAttribute("value", this.keyboardMap[e.which]);
-		};
-
-		var stopRecording = e => {
-			document.removeEventListener("mousedown", stopRecording);
-			document.removeEventListener("keydown", saveRecording);
-			let binding = BDFDB.DataUtils.get(this, "bindings", action);
-			binding[option] = parseInt(recorderWrap.getAttribute("value"));
-			BDFDB.DataUtils.save(binding, this, "bindings", action);
-			setTimeout(() => {
-				BDFDB.DOMUtils.removeClass(recorderWrap, BDFDB.disCN.hotkeyrecording);
-				BDFDB.DOMUtils.addClass(recorderWrap, BDFDB.disCN.hotkeyhasvalue);
-				recorderText.innerText = BDFDB.LanguageUtils.LanguageStrings.SHORTCUT_RECORDER_BUTTON_EDIT;
-			},100);
-		};
-
-		document.addEventListener("mousedown", stopRecording);
-		document.addEventListener("keydown", saveRecording);
-	}
-
-	resetRecorder (settingspanel, e) {
-		let resetButton = e.currentTarget;
-		let recorderWrap = e.currentTarget.parentElement.parentElement.querySelector(BDFDB.dotCN.hotkeycontainer);
-		let recorderInput = recorderWrap.querySelector("input");
-		let action = recorderWrap.getAttribute("type");
-		let option = recorderWrap.getAttribute("option");
-		recorderWrap.setAttribute("value", 0);
-		recorderInput.setAttribute("value", this.keyboardMap[0]);
-		let binding = BDFDB.DataUtils.get(this, "bindings", action);
-		binding[option] = parseInt(recorderWrap.getAttribute("value"));
-		BDFDB.DataUtils.save(binding, this, "bindings", action);
 	}
 
 	onClick (e, click, name) {
@@ -268,18 +250,18 @@ class MessageUtilities {
 			for (let action in bindings) {
 				let binding = bindings[action];
 				let prioritybinding = bindings[priorityaction];
-				if (this.checkIfBindingIsValid(binding, click) && (!bindings[priorityaction] || binding.click > prioritybinding.click || binding.key2 != 0 && prioritybinding.key2 == 0)) priorityaction = action;
+				if (this.checkIfBindingIsValid(binding, click) && (!bindings[priorityaction] || binding.click > prioritybinding.click || binding.keycombo.length > prioritybinding.keycombo.length)) priorityaction = action;
 			}
 			if (priorityaction) {
 				let {messagediv, pos, message} = this.getMessageData(e.currentTarget);
 				if (messagediv && pos > -1 && message) {
 					BDFDB.ListenerUtils.stopEvent(e);
-					clearTimeout(this.clickTimeout);
+					BDFDB.TimeUtils.clear(this.clickTimeout);
 					if (!this.hasDoubleClickOverwrite(bindings, bindings[priorityaction])) {
-						this.defaults.bindings[priorityaction].func.bind(this)({messagediv, pos, message}, priorityaction);
+						this.defaults.bindings[priorityaction].func.apply(this, [{messagediv, pos, message}, priorityaction]);
 					}
-					else this.clickTimeout = setTimeout(() => {
-						this.defaults.bindings[priorityaction].func.bind(this)({messagediv, pos, message}, priorityaction);
+					else this.clickTimeout = BDFDB.TimeUtils.timeout(() => {
+						this.defaults.bindings[priorityaction].func.apply(this, [{messagediv, pos, message}, priorityaction]);
 					}, 500);
 				}
 			}
@@ -290,7 +272,7 @@ class MessageUtilities {
 	checkIfBindingIsValid (binding, doneclick) {
 		let valid = true;
 		if (binding.click != doneclick) valid = false;
-		for (let key of this.keys) if (!BDFDB.pressedKeys.includes(binding[key]) && binding[key] != 0) valid = false;
+		for (let key of binding.keycombo) if (!BDFDB.InternalData.pressedKeys.includes(key)) valid = false;
 		return valid;
 	}
 
@@ -300,8 +282,7 @@ class MessageUtilities {
 		for (let dblaction in dblbindings) {
 			let dblbndg = dblbindings[dblaction];
 			let overwrite = true;
-			for (let key of this.keys) if (binding[key] != dblbndg[key]) overwrite = false;
-			if (overwrite) return true;
+			if (BDFDB.equals(binding.keycombo, dblbndg.keycombo)) return true;
 		}
 		return false;
 	}
@@ -398,12 +379,12 @@ class MessageUtilities {
 		}
 	}
 
-	onKeyDown (e, key, name) {
+	onKeyDown (target, key, name) {
 		if (!this.isEventFired(name)) {
 			this.fireEvent(name);
 			if (key == 27 && BDFDB.DataUtils.get(this, "settings", "clearOnEscape")) {
-				let instance = BDFDB.ReactUtils.findOwner(BDFDB.DOMUtils.getParent(BDFDB.dotCNS.chat + "form", e.currentTarget), {name:"ChannelTextAreaForm", up:true});
-				if (instance) instance.setState({textValue:""});
+				let instance = BDFDB.ReactUtils.findOwner(BDFDB.DOMUtils.getParent(BDFDB.dotCNS.chat + "form", target), {name:"ChannelTextAreaForm", up:true});
+				if (instance) instance.setState({textValue:"", richValue:BDFDB.LibraryModules.SlateUtils.deserialize("")});
 			}
 			this.cancelEvent(name);
 		}
@@ -414,16 +395,17 @@ class MessageUtilities {
 		let str = "", settings = BDFDB.DataUtils.get(this, "settings");
 		if (settings.addHints && settings[action]) {
 			let binding = BDFDB.DataUtils.get(this, "bindings", action);
-			if (binding) for (let type in binding) {
-				let typename = type == "click" ? this.clickMap[binding[type]] : this.keyboardMap[binding[type]];
-				if (typename && typename != "NONE") str += typename + "+";
+			if (binding) {
+				str += this.clickMap[binding.click];
+				if (binding.keycombo.length) str += " + " + BDFDB.LibraryModules.KeyCodeUtils.getString(binding.keycombo);
 			}
 		}
-		return str ? str.slice(0,-1) : null;
+		return str.replace(/ /g, "");
 	}
 
 	getMessageData (target) {
 		let messagediv = BDFDB.DOMUtils.getParent(BDFDB.dotCN.messagegroup + "> [aria-disabled]", target) || BDFDB.DOMUtils.getParent(BDFDB.dotCN.messagegroup + "> * > [aria-disabled]", target) || BDFDB.DOMUtils.getParent(BDFDB.dotCN.messagesystem, target);
+		if (messagediv && messagediv.querySelector(BDFDB.dotCN.textareaedit)) return {messagediv: null, pos: -1, message: null};
 		let pos = messagediv ? Array.from(messagediv.parentElement.childNodes).filter(n => n.nodeType != Node.TEXT_NODE).indexOf(messagediv) : -1;
 		let instance = BDFDB.ReactUtils.getInstance(messagediv);
 		let message = instance ? BDFDB.ReactUtils.findValue(instance, "message", {up:true}) : null;
@@ -439,6 +421,6 @@ class MessageUtilities {
 	}
 
 	cancelEvent (name) {
-		setImmediate(() => {BDFDB.ArrayUtils.remove(this.firedEvents, name)});
+		BDFDB.TimeUtils.timeout(_ => {BDFDB.ArrayUtils.remove(this.firedEvents, name)});
 	}
 }
