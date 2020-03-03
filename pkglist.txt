@@ -43,6 +43,7 @@ firefox
 flex
 font-bh-ttf
 font-mathematica
+freeglut
 freepats-general-midi
 freetype2-demos
 gawk
