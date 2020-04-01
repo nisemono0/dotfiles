@@ -7,7 +7,7 @@ const CustomMediaSupport = (function() {
 	const script = {
 		name: "Custom Media Support",
 		file: "CustomMediaSupport",
-		version: "3.1.8",
+		version: "3.2.7",
 		author: "Orrie",
 		desc: "Makes Discord better for shitlords, entities, genderfluids and otherkin, by adding extensive support for media embedding and previews of popular sites with pictures",
 		url: "https://github.com/Orrielel/BetterDiscordAddons/tree/master/Plugins/CustomMediaSupport",
@@ -23,8 +23,8 @@ const CustomMediaSupport = (function() {
 			audio:  "wrapperAudio-1jDe0Q wrapper-2TxpI8",
 			img:    "imageWrapper-2p5ogY noScroll-3xWe_g",
 			iframe: "imageWrapper-2p5ogY noScroll-3xWe_g",
-			messages: ".markup-2BOw-j > a:not(.customIgnore), .containerCozy-B4noqO:not(.media-replace) .metadataDownload-1fk90V",
-			metadata: ".containerCozy-B4noqO:not(.media-replace) .metadataDownload-1fk90V:not(.customIgnore), .containerCozy-B4noqO:not(.media-replace) .embedVideo-3nf0O9:not(.customIgnore)"
+			messages: ".markupRtl-3M0hmN > a:not(.customIgnore), .container-1ov-mD:not(.media-replace) .metadataDownload-1fk90V, .container-1ov-mD:not(.media-replace) .fileNameLink-9GuxCo",
+			metadata: ".container-1ov-mD:not(.media-replace) .metadataDownload-1fk90V:not(.customIgnore), .container-1ov-mD:not(.media-replace) .embedVideo-3nf0O9:not(.customIgnore)"
 		},
 		headers: {
 			imgur: {"Authorization": "Client-ID b975f50eb16a396"},
@@ -32,9 +32,10 @@ const CustomMediaSupport = (function() {
 		},
 		media: {
 			types: {
-				mp4: "video", m4v: "video", ogv: "video", ogm: "video", webm: "video", webp: "video", mov: "video",
+				mp4: "video", m4v: "video", ogv: "video", ogm: "video", webm: "video", mov: "video",
 				mp3: "audio", ogg: "audio", oga: "audio", wav: "audio", wma: "audio", m4a: "audio", aac: "audio", flac: "audio",
-				pdf: "iframe"
+				pdf: "iframe",
+				jfif: "img"
 			},
 			sites: {
 				"exhentai.org": {
@@ -45,14 +46,14 @@ const CustomMediaSupport = (function() {
 						if (script.settings.sadpanda && /\/g\//.test(data.href)) {
 							const galleryKey = `${data.hrefSplit[4]}_${data.hrefSplit[5]}`;
 							if (!data.message.getElementsByClassName(`gallery${galleryKey}`).length) {
-								const entry  = script.archive.sadpanda[galleryKey];
+								const entry = script.archive.sadpanda[galleryKey];
 								if (entry && entry.html) {
-									data.message.insertBefore(_createElement("div", {className: `containerCozy-B4noqO container-1e22Ot customMedia customSadpanda gallery${galleryKey}`, innerHTML: entry.html}), data.message_body.nextSibling);
+									data.message.insertBefore(_createElement("div", {className: `container-1ov-mD container-1e22Ot customMedia customSadpanda gallery${galleryKey}`, innerHTML: entry.html}), data.media_container);
 									scrollElement(data.message.scrollHeight);
 								}
 								else {
 									data.apiData = `{"method":"gdata","gidlist":[["${data.hrefSplit[4]}","${data.hrefSplit[5]}"]],"namespace":1}`;
-									request({name: "sadpanda", api: "https://e-hentai.org/api.php", method: "POST", data}, function(resp, {message, message_body}) {
+									request({name: "sadpanda", api: "https://e-hentai.org/api.php", method: "POST", data}, function(resp, {message, media_container}) {
 										// fetch sadpanda gallery information
 										const gallery = resp.gmetadata[0];
 										if (gallery) {
@@ -76,8 +77,8 @@ const CustomMediaSupport = (function() {
 												}
 											}
 											const galleryKey = `${gallery.gid}_${gallery.token}`,
-											container = _createElement("div", {className: `containerCozy-B4noqO container-1e22Ot customMedia customSadpanda gallery${galleryKey}`, innerHTML: `<div class='embed-IeVjo6 flex-1O1GKY embed'><div class='embedPill-1Zntps cat-${gallery.category}'></div><div class='embedInner-1-fpTo'><table><tr><td colspan='2'><div><a class='embedProvider-3k5pfl size12-3R0845 weightNormal-WI4TcG customIgnore' href='https://exhentai.org/' target='_blank' rel='noreferrer'>ExHentai</a></div><div class='marginTop4-2BNfKC marginBottom4-2qk4Hy'><a class='embedTitleLink-1Zla9e embedLink-1G1K1D embedTitle-3OXDkz size14-3iUx6q weightMedium-2iZe9B customIgnore' href='https://exhentai.org/g/${gallery.gid}/${gallery.token}/' target='_blank' rel='noreferrer'>${gallery.title}</a>${gallery.expunged ? " <span class='custom_warning'>(Expunged)</span>" : ""}</div></td></tr><tr><td class='gallery_preview'><img class='image' src='${gallery.thumb}'></td><td class='gallery_info'><table><tr><td>Category:</td><td class='desc cat-${gallery.category}'>${gallery.category}</td></tr><tr><td>Rating:</td><td class='desc'>${gallery.rating}</td></tr><tr><td>Images:</td><td class='desc'>${gallery.filecount}</td></tr><tr><td>Uploaded:</td><td class='desc'>${new Date(gallery.posted*1000).toLocaleString('en-GB')}</td></tr><tr><td>Tags:</td><td><table>${tagsString}</table></td></tr><tr><td>Size:</td><td class='desc'>${mediaSize(gallery.filesize)}</td></tr><tr><td>Torrent:</td><td class='desc'><a class='customIgnore' href='https://exhentai.org/gallerytorrents.php?gid=${gallery.gid}&t=${gallery.token}' target='_blank' rel='noreferrer'>Search</a></td></tr></table></td></tr></table></div></div>`});
-											message.insertBefore(container, message_body.nextSibling);
+											container = _createElement("div", {className: `container-1ov-mD container-1e22Ot customMedia customSadpanda gallery${galleryKey}`, innerHTML: `<div class='embedWrapper-3AbfJJ embedFull-2tM8-- embed-IeVjo6 markup-2BOw-j embed cat-${gallery.category.toLowerCase().replace(" ","")}'><div class='grid-1nZz7S'/><table><tr><td colspan='2'><div><a class='embedProvider-3k5pfl size12-3R0845 weightNormal-WI4TcG customIgnore' href='https://exhentai.org/' target='_blank' rel='noreferrer'>ExHentai</a></div><div class='marginTop4-2BNfKC marginBottom4-2qk4Hy'><a class='embedTitleLink-1Zla9e embedLink-1G1K1D embedTitle-3OXDkz size14-3iUx6q weightMedium-2iZe9B customIgnore' href='https://exhentai.org/g/${gallery.gid}/${gallery.token}/' target='_blank' rel='noreferrer'>${gallery.title}</a>${gallery.expunged ? " <span class='custom_warning'>(Expunged)</span>" : ""}</div></td></tr><tr><td class='gallery_preview'><img class='image' src='${gallery.thumb}'></td><td class='gallery_info'><table><tr><td>Category:</td><td class='desc cat-${gallery.category.toLowerCase().replace(" ","")}'>${gallery.category}</td></tr><tr><td>Rating:</td><td class='desc'>${gallery.rating}</td></tr><tr><td>Images:</td><td class='desc'>${gallery.filecount}</td></tr><tr><td>Uploaded:</td><td class='desc'>${new Date(gallery.posted*1000).toLocaleString('en-GB')}</td></tr><tr><td>Tags:</td><td><table>${tagsString}</table></td></tr><tr><td>Size:</td><td class='desc'>${mediaSize(gallery.filesize)}</td></tr><tr><td>Torrent:</td><td class='desc'><a class='customIgnore' href='https://exhentai.org/gallerytorrents.php?gid=${gallery.gid}&t=${gallery.token}' target='_blank' rel='noreferrer'>Search</a></td></tr></table></td></tr></table></div></div>`});
+											message.insertBefore(container, media_container);
 											// cache embed html in database
 											script.archive.sadpanda[galleryKey] = {html: container.innerHTML, tags: tagsFilter.join(" ")};
 											BdApi.saveData(script.file, "archive", script.archive);
@@ -111,39 +112,41 @@ const CustomMediaSupport = (function() {
 							data.postnumber = data.hrefSplit[5].match(/\d+/g);
 							const threadKey = `${data.hrefSplit[3]}_${data.postnumber[1] ? data.hrefSplit[5].replace("#","_") : data.hrefSplit[5]}`;
 							if (!data.message.getElementsByClassName(`post${threadKey}`).length) {
-								const entry  = script.archive.chan[threadKey];
+								const entry = script.archive.chan[threadKey];
 								if (entry && entry.html) {
-									data.message.insertBefore(_createElement("div", {className: `containerCozy-B4noqO container-1e22Ot customMedia customChan post${threadKey}`, innerHTML: entry.html}), data.message_body.nextSibling);
+									data.message.insertBefore(_createElement("div", {className: `container-1ov-mD container-1e22Ot customMedia customChan post${threadKey}`, innerHTML: entry.html}), data.media_container);
 									scrollElement(data.message.scrollHeight);
 								}
 								else {
 									data.archive = archiveCheck(data.hrefSplit[3]);
 									if (data.archive) {
-										request({name: "4chan", api: `${data.archive}/_/api/chan/thread/?board=${data.hrefSplit[3]}&num=${data.postnumber[0]}`, method: "GET", cors: true, data}, function(resp, {archive, message, message_body, href, hrefSplit, postnumber}) {
+										request({name: "4chan", api: `${data.archive}/_/api/chan/thread/?board=${data.hrefSplit[3]}&num=${data.postnumber[0]}`, method: "GET", cors: true, data}, function(resp, {archive, message, media_container, href, hrefSplit, postnumber}) {
 											// fetch knitting image board information
-											const thread = resp[postnumber[0]],
-											post = thread.posts && thread.posts[postnumber[1]] ? thread.posts[postnumber[1]] : thread.op,
-											threadKey = `${post.board.shortname}_${postnumber[1] ? `${postnumber[0]}_p${postnumber[1]}` : postnumber[0]}`,
-											isReply = thread.posts && thread.posts[postnumber[1]] ? true : false,
-											isNotSafe = script.chan.nsfw.includes(hrefSplit[3]),
-											boardUrl = `https://boards.${isNotSafe ? "4chan" : "4channel"}.org/${post.board.shortname}/`,
-											counts = thread.posts ? (function(posts) {
-												let reply = 0, media = 1;
-												for (let _p_k=Object.keys(posts), _p=_p_k.length; _p--;) {
-													reply++;
-													if (posts[_p_k[_p]].media) {
-														media++;
+											if (!resp.error) {
+												const thread = resp[postnumber[0]],
+												post = thread.posts && thread.posts[postnumber[1]] ? thread.posts[postnumber[1]] : thread.op,
+												threadKey = `${post.board.shortname}_${postnumber[1] ? `${postnumber[0]}_p${postnumber[1]}` : postnumber[0]}`,
+												isReply = thread.posts && thread.posts[postnumber[1]] ? true : false,
+												isNotSafe = script.chan.nsfw.includes(hrefSplit[3]),
+												boardUrl = `https://boards.${isNotSafe ? "4chan" : "4channel"}.org/${post.board.shortname}/`,
+												counts = thread.posts ? (function(posts) {
+													let reply = 0, media = 1;
+													for (let _p_k=Object.keys(posts), _p=_p_k.length; _p--;) {
+														reply++;
+														if (posts[_p_k[_p]].media) {
+															media++;
+														}
 													}
-												}
-												return [reply, media];
-											})(thread.posts) : [0,1],
-											container = _createElement("div", {className: `containerCozy-B4noqO container-1e22Ot customMedia customChan post${threadKey}`, innerHTML: `<div class='embed-IeVjo6 flex-1O1GKY embed'><div class='embedPill-1Zntps ${isNotSafe ? "board-nsfw" : "board-sfw"}'></div><div class='embedInner-1-fpTo'><table><tr><td colspan='4'><div class='thread_head'><a class='embedProvider-3k5pfl size12-3R0845 weightNormal-WI4TcG customIgnore' href='${boardUrl}' target='_blank' rel='noreferrer'>4chan /${post.board.shortname}/ - ${post.board.name}</a><table class='thread_data'><tr><td rowspan='2'><span class='thread_posttype'>${isReply ? "Reply" : "OP"}</span></td><td>Replies:</td><td>${counts[0]}</td></tr><tr><td>Images:</td><td>${counts[1]}</td></tr></table></div><div class='thread_link marginTop4-2BNfKC '>Thread: <a class='customIgnore' href='${boardUrl}thread/${postnumber[0]}' target='_blank' rel='noreferrer'>${boardUrl}thread/${postnumber[0]}</a><span class='size14-3iUx6q weightMedium-2iZe9B custom_warning'>${post.deleted == "1" ? "(Deleted)" : post.locked == "1" ? "(Locked)" : ""}</span></div><div class='thread_info marginTop4-2BNfKC marginBottom4-2qk4Hy'>${post.title_processed ? `<span class='thread_title' title='${post.title_processed}'>${post.title_processed}</span>` : ""}<span class='thread_creator'>${post.name_processed}</span> <span class='thread_time'>${new Date(post.timestamp*1000).toLocaleString("en-GB")}</span> <span class='thread_postid'><a class='customIgnore' href='${href}' target='_blank' rel='noreferrer'>No.${post.num}</a></span></div></td></tr><tr><td class='thread_preview'>${post.media && post.media.thumb_link ? `<a class='customIgnore' href='${post.media.remote_media_link}' target='_blank' rel='noreferrer'><img class='image' src='${post.media.thumb_link}'></a>` : ""}</td><td class='thread_comment' colspan='3'>${post.comment_processed}</td></tr><tr><td class='thread_foot' colspan='4'>Data from <a class='customIgnore' href='${archive}' target='_blank' rel='noreferrer'>${archive}</a></td></tr></table></div></div>`});
-											message.insertBefore(container, message_body.nextSibling);
-											mediaReplace(message);
-											// cache embed html in database
-											script.archive.chan[threadKey] = {html: container.innerHTML, tags: post.board.shortname};
-											BdApi.saveData(script.file, "archive", script.archive);
-											scrollElement(message.scrollHeight);
+													return [reply, media];
+												})(thread.posts) : [0,1],
+												container = _createElement("div", {className: `container-1ov-mD container-1e22Ot customMedia customChan post${threadKey}`, innerHTML: `<div class='embedWrapper-3AbfJJ embedFull-2tM8-- embed-IeVjo6 markup-2BOw-j ${isNotSafe ? "board-nsfw" : "board-sfw"} embed'><div class='grid-1nZz7S'><table><tr><td colspan='4'><div class='thread_head'><a class='embedProvider-3k5pfl size12-3R0845 weightNormal-WI4TcG customIgnore' href='${boardUrl}' target='_blank' rel='noreferrer'>4chan /${post.board.shortname}/ - ${post.board.name}</a><table class='thread_data'><tr><td rowspan='2'><span class='thread_posttype'>${isReply ? "Reply" : "OP"}</span></td><td>Replies:</td><td>${counts[0]}</td></tr><tr><td>Images:</td><td>${counts[1]}</td></tr></table></div><div class='thread_link marginTop4-2BNfKC '>Thread: <a class='customIgnore' href='${boardUrl}thread/${postnumber[0]}' target='_blank' rel='noreferrer'>${boardUrl}thread/${postnumber[0]}</a><span class='size14-3iUx6q weightMedium-2iZe9B custom_warning'>${post.deleted == "1" ? "(Deleted)" : post.locked == "1" ? "(Locked)" : ""}</span></div><div class='thread_info marginTop4-2BNfKC marginBottom4-2qk4Hy'>${post.title_processed ? `<span class='thread_title' title='${post.title_processed}'>${post.title_processed}</span>` : ""}<span class='thread_creator'>${post.name_processed}</span><span class='thread_time'>${new Date(post.timestamp*1000).toLocaleString("en-GB")}</span><span class='thread_postid'><a class='customIgnore' href='${href}' target='_blank' rel='noreferrer'>No.${post.num}</a></span></div></td></tr><tr><td class='thread_preview'>${post.media && post.media.thumb_link ? `<a class='customIgnore' href='${post.media.remote_media_link}' target='_blank' rel='noreferrer'><img class='image' src='${post.media.thumb_link}'></a>` : ""}</td><td class='thread_comment' colspan='3'><div class='thread_comment_scroller scrollerWrap-2lJEkd scrollerThemed-2oenus themeGhostHairline-DBD-2d scrollerFade-1Ijw5y'><div class='scroller-3sQKXg scroller-2FKFPG'>${post.comment_processed}</div></div></td></tr><tr><td class='thread_foot' colspan='4'>Data from <a class='customIgnore' href='${archive}' target='_blank' rel='noreferrer'>${archive}</a></td></tr></table></div></div>`});
+												message.insertBefore(container, media_container);
+												mediaReplace(message);
+												// cache embed html in database
+												script.archive.chan[threadKey] = {html: container.innerHTML, tags: post.board.shortname};
+												BdApi.saveData(script.file, "archive", script.archive);
+												scrollElement(message.scrollHeight);
+											}
 										});
 									}
 								}
@@ -210,8 +213,8 @@ const CustomMediaSupport = (function() {
 					}
 				},
 				"gfycat.com": {
-					data({href, fileName}) {
-						return {fileMedia: "video", fileName: fileName.replace("-mobile",""), fileReplace: true, href};
+					data({fileLink, fileName}) {
+						return {fileMedia: "video", fileLink: fileLink.replace(/-[\w-]+$/m,""), fileName: fileName.replace(/-[\w-]+$/m,""), fileReplace: true};
 					},
 					api(data) {
 						request({name: "gfycat", api: `https://api.gfycat.com/v1/gfycats/${data.fileName}`, method: "GET", cors: true, fallback: true, data}, function({gfyItem}, data) {
@@ -241,14 +244,14 @@ const CustomMediaSupport = (function() {
 						const fileKey = data.href.match(/\d+/g)[0],
 						nameKey = `steam${fileKey}`;
 						if (!data.message.getElementsByClassName(nameKey).length) {
-							const entry  = script.archive.steam[nameKey];
+							const entry = script.archive.steam[nameKey];
 							if (entry && entry.html) {
-								data.message.insertBefore(_createElement("div", {className: `containerCozy-B4noqO container-1e22Ot customMedia customSteam ${nameKey}`, innerHTML: entry.html}), data.message_body.nextSibling);
+								data.message.insertBefore(_createElement("div", {className: `container-1ov-mD container-1e22Ot customMedia customSteam ${nameKey}`, innerHTML: entry.html}), data.media_container);
 								scrollElement(data.message.scrollHeight);
 							}
 							else {
 								data.apiData = `itemcount=1&publishedfileids[0]=${fileKey}&format=json`;
-								request({name: "steam", api: `https://api.steampowered.com/ISteamRemoteStorage/GetPublishedFileDetails/v1/`, method: "POST", cors: true, data}, function({response}, {message, message_body}) {
+								request({name: "steam", api: `https://api.steampowered.com/ISteamRemoteStorage/GetPublishedFileDetails/v1/`, method: "POST", cors: true, data}, function({response}, {message, media_container}) {
 									// fetch knitting image board information
 									const file = response.publishedfiledetails[0];
 									let container;
@@ -256,15 +259,15 @@ const CustomMediaSupport = (function() {
 										const tags = file.tags.map(({tag}) => tag),
 										game = script.workshop[file.creator_app_id] ? script.workshop[file.creator_app_id] : "Unspecified Game";
 										tags.unshift(game);
-										container = _createElement("div", {className: `containerCozy-B4noqO container-1e22Ot customMedia customSteam ${nameKey}`, innerHTML: `<div class='embed-IeVjo6 flex-1O1GKY embed'><div class='embedPill-1Zntps'></div><div class='embedInner-1-fpTo'><div class='embedContentInner-FBnk7v'><div><a tabindex='0' class='anchor-3Z-8Bb embedProviderLink-2Pq1Uw embedLink-1G1K1D embedProvider-3k5pfl size12-3R0845 weightNormal-WI4TcG' href='https://steamcommunity.com/app/${file.creator_app_id}/workshop/' rel='noreferrer noopener' target='_blank' role='button'>Steam Workshop - ${game}</a></div><div class='marginTop4-2BNfKC'><a tabindex='0' class='anchor-3Z-8Bb embedTitleLink-1Zla9e embedLink-1G1K1D embedTitle-3OXDkz size14-3iUx6q weightMedium-2iZe9B customMediaLink customIgnore' href='https://steamcommunity.com/sharedfiles/filedetails/?id=${file.publishedfileid}' rel='noreferrer noopener' target='_blank' role='button'>${file.title}</a></div><div class='scrollerWrap-2lJEkd embedInner-1-fpTo scrollerThemed-2oenus themeGhostHairline-DBD-2d marginTop4-2BNfKC'><div class='scroller-2FKFPG embedDescription-1Cuq9a marginTop4-2BNfKC markup-2BOw-j textParserProcessed'>${file.description.replace(/\[[\w=:/.?&+*]+\]/g,"")}</div></div><div class='embedFields-2IPs5Z flex-1O1GKY directionRow-3v3tfG wrap-ZIn9Iy marginTop4-2BNfKC'><div class='embedField-1v-Pnh marginTop4-2BNfKC embedFieldInline-3-e-XX'><div class='embedFieldName-NFrena marginBottom4-2qk4Hy size14-3iUx6q weightMedium-2iZe9B'>Subscriptions</div><div class='embedFieldValue-nELq2s textParserProcessed'>${file.subscriptions}</div></div><div class='embedField-1v-Pnh marginTop4-2BNfKC embedFieldInline-3-e-XX'><div class='embedFieldName-NFrena marginBottom4-2qk4Hy size14-3iUx6q weightMedium-2iZe9B'>Size</div><div class='embedFieldValue-nELq2s textParserProcessed'>${mediaSize(file.file_size)}</div></div></div><div class='embedFields-2IPs5Z flex-1O1GKY directionRow-3v3tfG wrap-ZIn9Iy marginTop4-2BNfKC'><div class='embedField-1v-Pnh marginTop4-2BNfKC embedFieldInline-3-e-XX'><div class='embedFieldName-NFrena marginBottom4-2qk4Hy size14-3iUx6q weightMedium-2iZe9B'>Time Created</div><div class='embedFieldValue-nELq2s textParserProcessed'>${new Date(file.time_created*1000).toLocaleDateString("en-GB")} @ ${new Date(file.time_created*1000).toLocaleTimeString("en-GB")}</div></div><div class='embedField-1v-Pnh marginTop4-2BNfKC embedFieldInline-3-e-XX'><div class='embedFieldName-NFrena marginBottom4-2qk4Hy size14-3iUx6q weightMedium-2iZe9B'>Last Updated</div><div class='embedFieldValue-nELq2s textParserProcessed'>${new Date(file.time_updated*1000).toLocaleDateString("en-GB")} @ ${new Date(file.time_updated*1000).toLocaleTimeString("en-GB")}</div></div></div></div><div class='embedImage-2W1cML embedMarginLarge-YZDCEs marginTop8-1DLZ1n'><img class='image' src='${file.preview_url}'></div><div class='embedContentInner-FBnk7v'><div class='embedFields-2IPs5Z flex-1O1GKY directionRow-3v3tfG wrap-ZIn9Iy marginTop4-2BNfKC'><div class='embedFieldName-NFrena size14-3iUx6q weightMedium-2iZe9B'>Tags</div><div class='embedFieldValue-nELq2s size14-3iUx6q weightNormal-WI4TcG marginLeft4-3VaXdt textParserProcessed'>${tags.join(", ")}</div></div></div></div></div>`});
+										container = _createElement("div", {className: `container-1ov-mD container-1e22Ot customMedia customSteam ${nameKey}`, innerHTML: `<div class='embedWrapper-3AbfJJ embedFull-2tM8-- embed-IeVjo6 markup-2BOw-j embed'><div class='grid-1nZz7S'><div><a tabindex='0' class='anchor-3Z-8Bb embedProviderLink-2Pq1Uw embedLink-1G1K1D embedProvider-3k5pfl size12-3R0845 weightNormal-WI4TcG' href='https://steamcommunity.com/app/${file.creator_app_id}/workshop/' rel='noreferrer noopener' target='_blank' role='button'>Steam Workshop - ${game}</a></div><div class='marginTop4-2BNfKC'><a tabindex='0' class='anchor-3Z-8Bb embedTitleLink-1Zla9e embedLink-1G1K1D embedTitle-3OXDkz size14-3iUx6q weightMedium-2iZe9B customMediaLink customIgnore' href='https://steamcommunity.com/sharedfiles/filedetails/?id=${file.publishedfileid}' rel='noreferrer noopener' target='_blank' role='button'>${file.title}</a></div><div class='scrollerWrap-2lJEkd embedInner-1-fpTo scrollerThemed-2oenus themeGhostHairline-DBD-2d marginTop4-2BNfKC'><div class='scroller-2FKFPG embedDescription-1Cuq9a marginTop4-2BNfKC markup-2BOw-j textParserProcessed'>${file.description.replace(/\[[\w=:/.?&+*]+\]/g,"")}</div></div><div class='embedFields-2IPs5Z embedFields-even marginTop4-2BNfKC'><div class='embedField-1v-Pnh marginTop4-2BNfKC embedFieldInline-3-e-XX'><div class='embedFieldName-NFrena marginBottom4-2qk4Hy size14-3iUx6q weightMedium-2iZe9B'>Subscriptions</div><div class='embedFieldValue-nELq2s textParserProcessed'>${file.subscriptions}</div></div><div class='embedField-1v-Pnh marginTop4-2BNfKC embedFieldInline-3-e-XX'><div class='embedFieldName-NFrena marginBottom4-2qk4Hy size14-3iUx6q weightMedium-2iZe9B'>Size</div><div class='embedFieldValue-nELq2s textParserProcessed'>${mediaSize(file.file_size)}</div></div></div><div class='embedFields-2IPs5Z embedFields-even marginTop4-2BNfKC'><div class='embedField-1v-Pnh marginTop4-2BNfKC embedFieldInline-3-e-XX'><div class='embedFieldName-NFrena marginBottom4-2qk4Hy size14-3iUx6q weightMedium-2iZe9B'>Time Created</div><div class='embedFieldValue-nELq2s textParserProcessed'>${new Date(file.time_created*1000).toLocaleDateString("en-GB")} @ ${new Date(file.time_created*1000).toLocaleTimeString("en-GB")}</div></div><div class='embedField-1v-Pnh marginTop4-2BNfKC embedFieldInline-3-e-XX'><div class='embedFieldName-NFrena marginBottom4-2qk4Hy size14-3iUx6q weightMedium-2iZe9B'>Last Updated</div><div class='embedFieldValue-nELq2s textParserProcessed'>${new Date(file.time_updated*1000).toLocaleDateString("en-GB")} @ ${new Date(file.time_updated*1000).toLocaleTimeString("en-GB")}</div></div></div><div class="embedWrapper-3AbfJJ embedMedia-1guQoW embedImage-2W1cML"><img class='image' src='${file.preview_url}'></div><div class='embedFields-2IPs5Z embedFields-minMax marginTop4-2BNfKC'><div class='embedFieldName-NFrena size14-3iUx6q weightMedium-2iZe9B'>Tags</div><div class='embedFieldValue-nELq2s size14-3iUx6q weightNormal-WI4TcG marginLeft4-3VaXdt textParserProcessed'>${tags.join(", ")}</div></div></div></div>`});
 										// cache embed html in database
 										script.archive.steam[nameKey] = {html: container.innerHTML, tags: tags.join(" ")};
 										BdApi.saveData(script.file, "archive", script.archive);
 									}
 									else if (!message.getElementsByClassName("customMediaError").length) {
-										container = _createElement("div", {className: `containerCozy-B4noqO container-1e22Ot customMedia steam ${nameKey}`, innerHTML: `<div class='embed-IeVjo6 flex-1O1GKY embed'><div class='customMediaError'>That item does not exist. It may have been removed by the author.</div></div>`});
+										container = _createElement("div", {className: `container-1ov-mD container-1e22Ot customMedia steam ${nameKey}`, innerHTML: `<div class='embed-IeVjo6 flex-1O1GKY embed'><div class='customMediaError'>That item does not exist. It may have been removed by the author.</div></div>`});
 									}
-									message.insertBefore(container, message_body.nextSibling);
+									message.insertBefore(container, media_container);
 									mediaReplace(message);
 									scrollElement(message.scrollHeight);
 								});
@@ -351,9 +354,9 @@ const CustomMediaSupport = (function() {
 		chan: {
 			nsfw: ["aco","b","bant","d","e","gif","h","hc","hm","hr","pol","r","r9k","s","s4s","soc","t","u","y"],
 			archives: {
-				"https://archived.moe": ["3","a","aco","adv","an","asp","b","biz","c","cgl","ck","cm","co","con","d","diy","e","f","fa","fit","g","gd","gif","h","hc","his","hm","hr","i","ic","int","jp","k","lgbt","lit","m","mlp","mu","n","news","o","out","p","po","pol","q","qa","qst","r","r9k","s","s4s","sci","soc","sp","t","tg","toy","trash","trv","tv","u","v","vg","vip","vp","vr","w","wg","wsg","wsr","x","y"],
+				"https://archived.moe": ["bant", "3","a","aco","adv","an","asp","b","biz","c","cgl","ck","cm","co","con","d","diy","e","f","fa","fit","g","gd","gif","h","hc","his","hm","hr","i","ic","int","jp","k","lgbt","lit","m","mlp","mu","n","news","o","out","p","po","pol","q","qa","qst","r","r9k","s","s4s","sci","soc","sp","t","tg","toy","trash","trv","tv","u","v","vg","vip","vp","vr","w","wg","wsg","wsr","x","y"],
 				"https://desuarchive.org": ["a","aco","an","c","co","d","fit","gif","his","int","k","m","mlp","qa","r9k","tg","trash","vr","wsg"],
-				"https://boards.fireden.net": ["a","cm","ic","sci","tg","v","vg","y"],
+				"https://boards.fireden.net": ["cm","ic","sci","tg","y"],
 				"https://archiveofsins.com": ["h","hc","hm","r","s","soc"],
 				"https://archive.nyafuu.org": ["bant","asp","c","e","n","news","out","p","toy","vip","vp","w","wg","wsr"],
 				"https://archive.loveisover.me": ["c","d","e","i","lgbt","t","u"]
@@ -381,8 +384,11 @@ const CustomMediaSupport = (function() {
 /* custom embeds */
 .customMedia {color: hsla(0,0%,100%,0.7);}
 .messageCozy-2JPAPA .customMedia {padding: 0; position: relative; margin-bottom: 0;}
+.customMedia .grid-1nZz7S {grid-auto-rows: min-content; grid-template-rows: unset;}
 .customMedia table {border-spacing: 0;}
 .customMedia table td {font-size: 0.875rem; vertical-align: top;}
+.customMedia .embedFields-even {grid-template-columns: 50% 50%;}
+.customMedia .embedFields-minMax {grid-template-columns: min-content auto;}
 .customMedia .embed-IeVjo6 {max-width: unset;}
 .customMedia .customMediaError {color: #F04747; margin: 0; max-width: 75vh; padding: 5px 10px;}
 .customMedia .metadata-13NcHb {border-radius: 3px; display: flex; height: auto; margin: 0; padding: 10px 12px 35px; top: -1px;}
@@ -398,13 +404,13 @@ const CustomMediaSupport = (function() {
 .customMedia .metadataButtonPopout {background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAVCAYAAABc6S4mAAAAbklEQVR4AWP4//8/dkwdYEIVC0Yt2AjEDiTgWlItmA7ik4AD6W5BBRAfwcAI8BzEJ4C34LOgmgqReWHkWLCERHwPv72YFnCSkmLoYwEiiCqxYEGqWYBLDckWjFqwlUT8lTgLKAaELbhLIT6GywIA5SnsLtcbhqwAAAAASUVORK5CYII=) no-repeat center / 18px;}
 .customMedia .metadataButtonExpand {background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAVCAYAAABc6S4mAAAAO0lEQVR4AWP4//9/8n/aAR+SLRi1IBKIHSjE2fgsUARiBgqx5WC3YNSCUQtGLRi1YCuVMP3rg7s0wj4AGC3DMn4UuAEAAAAASUVORK5CYII=) no-repeat center / 18px;}
 .customMedia.customAudio .audioControls-2HsaU6 {vertical-align: middle; width: 25vw; min-width: 500px;}
-.customMedia.customImg img {margin-top: 40px; min-height: 50px; min-width: 400px;}
+.customMedia.customImg img {cursor: pointer; min-height: 50px; max-width: 400px; max-height: 300px;}
 .customMedia.customImg .imageWrapper-2p5ogY img {position: static;}
-.customMedia.customVideo video {align-self: center; cursor: pointer; border-radius: 3px 3px 0 0; margin: 0; vertical-align: middle; width: auto; max-width: 25vw; max-height: 50vh; min-width: 300px;}
+.customMedia.customVideo video {align-self: center; cursor: pointer; border-radius: 3px 3px 0 0; margin: 0; vertical-align: middle; width: auto; max-width: 25vw; max-height: 25vh; min-width: 300px;}
 .customMedia.customVideo video::-webkit-media-controls {padding-top: 32px;}
 .customMedia.customVideo.customMediaHorizontal video {max-width: calc(100vw - 740px); min-height: 35vh;}
 .customMedia.customVideo.customMediaVertical video {height: 60vh; max-width: 100%; max-height: unset;}
-.customMedia.customVideo.customMediaHorizontal .metadataButtonExpand::after, .customMedia.customVideo.customMediaVertical .metadataButtonExpand::after {border: 3px solid #3A71C1; content: ''; display: inline-flex; height: 9px; margin-left: 1px; vertical-align: middle; width: 13px;}
+.customMedia.customVideo.customMediaHorizontal .metadataButtonExpand::after, .customMedia.customVideo.customMediaVertical .metadataButtonExpand::after {border: 3px solid #3A71C1; content: ''; display: inline-flex; height: 10px; margin-left: 2px; vertical-align: middle; width: 12px;}
 .customMedia.customVideo .metadata-13NcHb {background: none; display: none; padding: 10px 10px 0;}
 .customMedia.customVideo .imageWrapper-2p5ogY {display: flex; flex-direction: column; min-width: 400px; overflow: visible;}
 .customMedia.customVideo .imageWrapper-2p5ogY:hover .metadata-13NcHb {display: flex;}
@@ -412,19 +418,20 @@ const CustomMediaSupport = (function() {
 .customMedia.customIframe .metadata-13NcHb {max-width: 100%; min-width: 500px;}
 .theme-dark .customMedia.customIframe iframe {background-color: rgba(46,48,54,.3); border: 1px solid rgba(46,48,54,.6);}
 .theme-light .customMedia.customIframe iframe {background: hsla(0,0%,98%,.3); border: 1px solid hsla(0,0%,80%,.3);}
-.CustomMediaSupportModal.orriePluginModal .modal-yWgWj- {overflow: auto; resize: both; width: 1525px; max-width: 95vw; max-height: 100%;}
+.CustomMediaSupportModal.orriePluginModal .modal-yWgWj- {overflow: auto; resize: both; width: 2270px; max-width: 95vw; max-height: 95vh; min-height: 820px; backface-visibility: hidden;}
 .CustomMediaSupportModal .customMedia.customVideo video {max-height: 80vh; min-height: 50vh; max-width: 90vw;}
 .CustomMediaSupportModal .customMedia.customIframe iframe {height: 80vh !important; width: 90vw !important; max-height: unset; max-width: unset; resize: none;}
+.CustomMediaSupportModal .customMedia.customImg img {cursor: unset;}
 .CustomMediaSupportModal .customModalText {margin: 8px auto 0;}
-.containerCozy-B4noqO.media-replace .customMedia.customVideo video {object-fit: fill; width: 100%;}
-.containerCozy-B4noqO.media-replace .metadataButtonExpand {display: none;}
+.container-1ov-mD.media-replace .customMedia.customVideo video {object-fit: fill; width: 100%;}
+.container-1ov-mD.media-replace .metadataButtonExpand {display: none;}
 .customMediaToggled {display: none !important;}
 /* player style */
 .customMedia .audioVolumeWrapper-2t9juP, .customMedia .videoVolumeWrapper-3syuC- {align-self: stretch; display: flex; bottom: unset; position: unset; right: unset; transform: unset;}
 .customMedia .mediaBarInteractionVolume-3QZqYd {background-color: unset; width: 90px;}
 .customMedia .mediaBarWrapper-3D7r67 {width: 90px;}
 .customMedia .videoControls-2kcYic {bottom: 0px; display: flex; padding-bottom: 0px; position: initial;}
-.customMedia.customVideo .customMediaHover .videoControls-2kcYic {display: none; margin-top: -30px; z-index: 1;}
+.customMedia.customVideo .customMediaHover .videoControls-2kcYic {display: none; margin-top: -32px; z-index: 1;}
 .customMedia.customVideo .customMediaHover:hover .videoControls-2kcYic {display: flex;}
 .customMedia .customMediaNoSound path {fill: #FF0404;}
 /*
@@ -441,42 +448,43 @@ const CustomMediaSupport = (function() {
 .customMedia.customVideo ::-webkit-media-controls-enclosure {width: calc(100% + 32px);margin-left: auto;}
 */
 /* exhentai previews */
-.customSadpanda {display: inline-flex;}
-.customSadpanda .gallery_info {background-color: #2E3033; border-radius: 5px; padding: 5px 5px 10px; width: 100%;}
+.customSadpanda {}
+.customSadpanda .embedTitle-3OXDkz {max-width: 694px; overflow: hidden; text-overflow: ellipsis; vertical-align: bottom; white-space: nowrap;}
+.customSadpanda .gallery_info {background-color: hsla(0,0%,0%,0.15); border-radius: 5px; padding: 5px 5px 10px; width: 100%;}
 .customSadpanda .gallery_info .desc {color: #FFFFFF;}
 .customSadpanda .gallery_info .tag {display: inline-block; margin: 0 3px;}
 .customSadpanda .gallery_info .tag::after{content: ',';}
 .customSadpanda .gallery_info .tag:last-child::after {content: '';}
 .customSadpanda .gallery_preview {padding: 0; width: 1px;}
-.customSadpanda .gallery_preview img {max-height: 250px;}
+.customSadpanda .gallery_preview img {max-height: 300px;}
 .customSadpanda .embed-IeVjo6 {max-width: 750px;}
 .customSadpanda .embedInner-1-fpTo {flex-grow: 1;}
-.customSadpanda .embedPill-1Zntps.cat-Doujinshi {background-color: #FF2525;}
-.customSadpanda .embedPill-1Zntps.cat-Manga {background-color: #FFB225;}
-.customSadpanda .embedPill-1Zntps.cat-Artistcg {background-color: #E8D825;}
-.customSadpanda .embedPill-1Zntps.cat-Gamecg {background-color: #259225;}
-.customSadpanda .embedPill-1Zntps.cat-Western {background-color: #9AFF38;}
-.customSadpanda .embedPill-1Zntps.cat-Non-H {background-color: #38ACFF;}
-.customSadpanda .embedPill-1Zntps.cat-Imageset {background-color: #2525FF;}
-.customSadpanda .embedPill-1Zntps.cat-Cosplay {background-color: #652594;}
-.customSadpanda .embedPill-1Zntps.cat-Asianporn {background-color: #F2A7F2;}
-.customSadpanda .embedPill-1Zntps.cat-Misc {background-colorcolor: #D3D3D3;}
-.customSadpanda .gallery_info .cat-Doujinshi {color: #FF2525;}
-.customSadpanda .gallery_info .cat-Manga {color: #FFB225;}
-.customSadpanda .gallery_info .cat-Artistcg {color: #E8D825;}
-.customSadpanda .gallery_info .cat-Gamecg {color: #259225;}
-.customSadpanda .gallery_info .cat-Western {color: #9AFF38;}
-.customSadpanda .gallery_info .cat-Non-H {color: #38ACFF;}
-.customSadpanda .gallery_info .cat-Imageset {color: #2525FF;}
-.customSadpanda .gallery_info .cat-Cosplay {color: #652594;}
-.customSadpanda .gallery_info .cat-Asianporn {color: #F2A7F2;}
-.customSadpanda .gallery_info .cat-Misc {color: #D3D3D3;}
+.customSadpanda .embedFull-2tM8--.cat-doujinshi {border-color: #FF2525;}
+.customSadpanda .embedFull-2tM8--.cat-manga {border-color: #FFB225;}
+.customSadpanda .embedFull-2tM8--.cat-artistcg {border-color: #E8D825;}
+.customSadpanda .embedFull-2tM8--.cat-aamecg {border-color: #259225;}
+.customSadpanda .embedFull-2tM8--.cat-western {border-color: #9AFF38;}
+.customSadpanda .embedFull-2tM8--.cat-non-h {border-color: #38ACFF;}
+.customSadpanda .embedFull-2tM8--.cat-imageset {border-color: #2525FF;}
+.customSadpanda .embedFull-2tM8--.cat-cosplay {border-color: #652594;}
+.customSadpanda .embedFull-2tM8--.cat-asianporn {border-color #F2A7F2;}
+.customSadpanda .embedFull-2tM8--.cat-misc {border-color: #D3D3D3;}
+.customSadpanda .gallery_info .cat-doujinshi {color: #FF2525;}
+.customSadpanda .gallery_info .cat-manga {color: #FFB225;}
+.customSadpanda .gallery_info .cat-artistcg {color: #E8D825;}
+.customSadpanda .gallery_info .cat-gamecg {color: #259225;}
+.customSadpanda .gallery_info .cat-western {color: #9AFF38;}
+.customSadpanda .gallery_info .cat-non-h {color: #38ACFF;}
+.customSadpanda .gallery_info .cat-imageset {color: #2525FF;}
+.customSadpanda .gallery_info .cat-cosplay {color: #652594;}
+.customSadpanda .gallery_info .cat-asianporn {color: #F2A7F2;}
+.customSadpanda .gallery_info .cat-misc {color: #D3D3D3;}
 /* 4chan previews */
 .customChan {color: #AAAAAA; display: inline-flex;}
 .customChan .embed-IeVjo6 {max-width: 640px; min-width: 520px;}
+.customChan .embedFull-2tM8--.board-sfw {border-color: #9099D0;}
+.customChan .embedFull-2tM8--.board-nsfw {border-color: #FFBEAF;}
 .customChan .embedInner-1-fpTo {flex-grow: 1;}
-.customChan .embed-IeVjo6 .board-sfw {background-color: #9099D0;}
-.customChan .embed-IeVjo6 .board-nsfw {background-color: #FFBEAF;}
 .customChan .thread_head {position: relative;}
 .customChan .thread_head .thread_posttype {font-weight: bold; line-height: 30px; margin: 0 5px;}
 .customChan .thread_head .thread_data {display: inline; position: absolute; right: 0;}
@@ -484,21 +492,26 @@ const CustomMediaSupport = (function() {
 .customChan .thread_link {font-weight: 500; white-space: nowrap;}
 .customChan .thread_link span {display: inline; margin: 0 5px;}
 .customChan .thread_info {white-space: nowrap;}
+.customChan .thread_info span {margin-right: 3px;}
 .customChan .thread_info .thread_title {display: inline-block; font-weight: bold; max-width: 278px; overflow: hidden; text-overflow: ellipsis; vertical-align: bottom;}
 .customChan .thread_info .thread_creator {color: #30A75C;}
 .customChan .thread_preview {padding: 0; width: 1px;}
 .customChan .thread_preview img {border-radius: 5px; display: inline-block; height: unset; max-height: 200px; max-width: 200px;}
-.customChan .thread_comment {background-color: #2E3033; border-radius: 5px; padding: 5px 5px 10px; width: 100%; word-break: break-word;}
+.customChan .thread_comment {background-color: hsla(0,0%,0%,0.15); border-radius: 5px; padding: 5px 5px 10px; width: 100%; word-break: break-word;}
 .customChan .thread_comment a {word-break: break-word;}
+.customChan .thread_comment br {display: none;}
+.customChan .thread_comment .thread_comment_scroller {max-height: 280px;}
+.customChan .thread_comment .thread_comment_scroller .scroller-2FKFPG {overflow-y: auto;}
 .customChan .thread_foot {padding: 10px 2px 0;}
 .custom_warning {color: #F32323;}
 /* steam workshop previews */
 .customSteam {display: inline-flex;}
 .customSteam .embed-IeVjo6 {max-width: 426px}
+.customSteam .grid-1nZz7S {grid-auto-columns: 390px; grid-template-columns: unset;}
 .customSteam .embedInner-1-fpTo {flex-grow: 1;}
-.customSteam .embedPill-1Zntps {background-color: #1B2838;}
+.customSteam .embedFull-2tM8-- {border-color: #1B2838;}
 .customSteam img.image {max-height: 250px; max-width: 330px; margin: 0 auto;}
-.customSteam .scrollerWrap-2lJEkd {height: 100px;}
+.customSteam .scrollerWrap-2lJEkd {background-color: hsla(0,0%,0%,0.15); height: 100px; padding-left: 4px;}
 .customSteam .embedDescription-1Cuq9a {white-space: pre-line; word-wrap: break-word;}
 /* greentext */
 .greentext {color: #709900;}
@@ -512,30 +525,30 @@ const CustomMediaSupport = (function() {
 .customMenuIcon:hover {opacity: 1;}
 .customArchiveContent {background-color: unset;}
 .customArchiveHeader > div {margin: 0 5px; width: 195px;}
+.customArchiveHeader > div:hover {color: var(--text-normal);}
 .customArchiveFilter {padding-bottom: 8px;}
 .customArchiveFilter .input-cIJ7To {padding: 0 10px; width: 250px;}
+.customArchiveFilter .customArchiveClean {align-items: center; color: hsla(0,0%,100%,0.7);}
 .customArchiveCleanMenu {align-self: center; position: absolute; right: 30px; z-index: 10;}
 .customArchiveCleanMenu .customArchiveCleanMenuButtons {display: none; position: absolute; right: -10px;}
-.theme-dark .customArchiveCleanMenu .customArchiveCleanMenuButtons {background: rgba(32,34,37,0.95);}
-.customArchiveCleanMenu .customArchiveCleanMenuButton::after {content: ""; border: 1px solid rgba(255, 255, 255, 0.25); display: flex;}
 .customArchiveCleanMenu:hover .customArchiveCleanMenuButtons {display: block;}
-.customArchiveCleanMenu .customArchiveCleanMenuButton {margin-bottom: 0;}
 .customArchiveCleanMenu .orrie-tooltip .tooltipLeft-3EDOk1 {right: calc(100% + 10px);}
 .customArchiveCleanMenu .orrie-tooltip .tooltipRight-2JM5PQ {left: calc(100% + 10px);}
 .customArchiveActiveButton .divider-3573oO {background-color: #a5a5a5;}
 .customArchiveContainer > div {display: none;}
 .customArchiveContainer .customArchiveActive {display: flex}
 .customArchiveContainer .customMedia {margin: 5px 10px; position: relative;}
-.customArchiveContainer .customMedia .embed-IeVjo6 {flex-grow: 1; height: 100%; max-width: unset;}
-.customArchiveContainer .customMedia.customSteam .embed-IeVjo6 {max-width: 350px;}
+.customArchiveContainer .customMedia .embed-IeVjo6 {flex-grow: 1; height: 100%; max-width: unset; width: inherit;}
+.customArchiveContainer .customMedia.customSteam .embed-IeVjo6 {max-width: 400px;}
 .customArchiveDelete {position: absolute; top: 3px; right: 3px;}
 .customArchiveDelete:hover .close-hhyjWJ, .customArchiveClean:hover .close-hhyjWJ {background-color: rgba(240, 71, 71, 0.5);}
 .customArchiveDelete .close-hhyjWJ {height: 18px;}
 .customArchiveEmpty {height: 24px; text-align: center; padding: 8px;}
-#customArchiveSadpanda .customSadpanda {width: 475px;}
+#customArchiveSadpanda .customSadpanda {width: 730px;}
 #customArchiveChan .customChan {width: 620px;}
 #customArchiveChan .thread_head .thread_data {right: 30px;}
-#customArchiveSteam .customSteam {width: 350px;}
+#customArchiveSteam .customSteam {width: 400px;}
+#customArchiveSteam .customSteam .grid-1nZz7S {grid-auto-columns: 368px; grid-template-columns: unset;}
 			`,
 			shared: `
 .orriePluginModal .backdrop-1wrmKB {background-color: #000000; opacity: 0.85;}
@@ -602,7 +615,7 @@ const CustomMediaSupport = (function() {
 	log = function(method, title, data) {
 		// logging function
 		if (script.settings.debug || method == "error") {
-			console[method](`%c[${script.file}]%c ${title}`, "color: purple; font-weight: bold;", "", new Date().toLocaleTimeString("en-GB"), data ? data : "");
+			console[method](`%c[${script.file}]%c ${new Date().toLocaleTimeString("en-GB")}: ${title}`, "color: purple; font-weight: bold;", "", data ? data : "");
 		}
 	},
 	scrollElement = function(scrollDistance = 0, parentClass = "messages-3amgkR", forceScroll = false) {
@@ -624,7 +637,7 @@ const CustomMediaSupport = (function() {
 			}
 			modal.remove();
 		},
-		modalParent = document.getElementById("app-mount").lastElementChild.lastElementChild;
+		modalParent = document.getElementsByClassName("popouts-2bnG9Z")[0].nextElementSibling;
 		// modify modalContent if there's relevant data
 		if (data) {
 			modalContent.appendChild(_createElement("div", {className: "description-3_Ncsb userSelectText-1o1dQ7 customModalText", textContent: `${data.fileTitle}${data.fileSize ? ` - ${data.fileSize}` : ""}${data.fileRes ? ` - ${data.fileRes}` : ""}`}));
@@ -640,11 +653,11 @@ const CustomMediaSupport = (function() {
 		if (button) {
 			button.addEventListener('click', function() {removeModal(modal);}, false);
 		}
-		if (modalParent.classList.contains("layerContainer-yqaFcK")) {
-			modalParent.previousElementSibling.appendChild(modal);
+		if (modalParent) {
+			modalParent.appendChild(modal);
 		}
 		else {
-			modalParent.appendChild(modal);
+			log("error", "modal insertion", modalContent);
 		}
 	},
 	mediaCheck = function(message, fileFilter) {
@@ -664,13 +677,13 @@ const CustomMediaSupport = (function() {
 	mediaReplace = function(message) {
 		if (!script.check.replace) {
 			script.check.replace = true;
-			const mediaAll = message.querySelectorAll(`.containerCozy-B4noqO:not(.customMedia) video[src]:not([src=""]), .containerCozy-B4noqO:not(.customMedia) source, .containerCozy-B4noqO:not(.customMedia) a`);
+			const mediaAll = message.querySelectorAll(`.container-1ov-mD:not(.customMedia) video[src]:not([src=""]), .container-1ov-mD:not(.customMedia) source, .container-1ov-mD:not(.customMedia) a`);
 			for (let _rm=mediaAll.length; _rm--;) {
 				const media = mediaAll[_rm],
 				url = decodeURI(encodeURI((media.tagName == "VIDEO" || media.tagName == "SOURCE" ? media.getAttribute("src") : media.getAttribute("href")).replace("%2B","+"))),
 				fileFilter = url.split("/").slice(-2).join("/");
 				if (media && script.archive.filter.includes(fileFilter)) {
-					let wrapper = media.closest(".containerCozy-B4noqO > div");
+					let wrapper = media.closest(".container-1ov-mD > div");
 					if (wrapper) {
 						wrapper.classList.add("customMediaToggled");
 					}
@@ -714,13 +727,13 @@ const CustomMediaSupport = (function() {
 		}
 		return false;
 	},
-	mediaConvert = function(type, node) {
+	mediaConvert = function(type, node, name) {
 		// main media function -- checks every anchor element in messages
 		if (!script.check.media) {
 			script.check.media = true;
-			let parent = type == "metadata" ? node.closest(".messageCozy-2JPAPA") : node;
+			let parent = type == "metadata" ? node.closest(".message-2qnXI6") : node;
 			const links = parent ? parent.querySelectorAll(script.classes[type]) : false;
-			log("info", `mediaConvert ${type}`, {parent, links});
+			log("info", `mediaConvert - ${type} - ${name}`, {parent, links});
 			for (let _l=links.length; _l--;) {
 				const link = links[_l];
 				if (link.tagName == "VIDEO" && !link.getAttribute("src") && link.getElementsByTagName("SOURCE").length) {
@@ -730,16 +743,18 @@ const CustomMediaSupport = (function() {
 					const fileLink = link.tagName == "VIDEO" || link.tagName == "SOURCE" ? link.getAttribute("src") : link.getAttribute("href"),
 					href = decodeURI(encodeURI((/\/external\//.test(fileLink) && fileLink.match(/(https\/[\w-./\\_]+)/g) ? fileLink.match(/(https\/[\w-./\\_]+)/g)[0].replace("https/","https://") : fileLink).replace("http:", "https:").replace("www.","").replace(".gifv", ".mp4"))),
 					hrefSplit = href.split("/"),
-					message = link.closest(".contentCozy-3XX413"),
+					message = link.closest(".container-3FojY8"),
 					fileType = href.match(/\.(\w+$)/) ? href.match(/\.(\w+$)/)[1] : false;
 					let hostName = hrefSplit[2].match(/([\w\-]+\.\w+)$/) ? hrefSplit[2].match(/([\w\-]+\.\w+)$/)[0] : false;
 					if (hostName && script.media.clone[hostName]) {
 						hostName = script.media.clone[hostName];
 					}
 					if (!script.media.blacklist.includes(hostName) && script.settings.embedding && message && fileType || script.media.whitelist.includes(hostName)) {
-						const message_body = message.firstElementChild,
+						const media_container = message.getElementsByClassName("container-1ov-mD").length ? message.getElementsByClassName("container-1ov-mD")[0] : false,
+						media = media_container.getElementsByTagName("video"),
 						fileSite = script.media.sites[hostName] || false;
-						let data = {
+						let media_length = media.length,
+						data = {
 							fileMedia: fileType ? script.media.types[fileType.toLowerCase()] : false,
 							fileName: hrefSplit[hrefSplit.length-1] ? hrefSplit[hrefSplit.length-1].match(/[^\.]*/)[0] : "",
 							fileFilter: hrefSplit.slice(-2).join("/"),
@@ -747,8 +762,14 @@ const CustomMediaSupport = (function() {
 							fileReplace: false,
 							fileSize: message.getElementsByClassName("metadataSize-2UOOLK").length ? message.getElementsByClassName("metadataSize-2UOOLK")[0].textContent : "",
 							fileTitle: message.getElementsByClassName("embedTitleLink-1Zla9e").length ? message.getElementsByClassName("embedTitleLink-1Zla9e")[0].innerHTML : decodeURIComponent(hrefSplit[hrefSplit.length-1]),
-							fileLink, fileType, href, hrefSplit, hostName, link, message, message_body
+							fileDiscord: "",
+							fileLink, fileType, href, hrefSplit, hostName, link, message, media_container
 						};
+						if (media_length > 1) {
+							while (media_length--) {
+								data.fileDiscord =  new RegExp(data.fileFilter).test(media[media_length].src) ? media[media_length].src : "";
+							};
+						}
 						if (fileSite && fileSite.data) {
 							data = Object.assign(data, fileSite.data(data));
 							if (data.href) {
@@ -778,7 +799,7 @@ const CustomMediaSupport = (function() {
 	},
 	mediaEmbedding = function(data, mode) {
 		log("info", "mediaEmbedding", data);
-		const {fileMedia, fileTitle, fileType, fileSize, filePoster, fileReplace, fileFilter, href, hostName, message, message_body} = data,
+		const {fileMedia, fileTitle, fileType, fileSize, filePoster, fileReplace, fileFilter, fileDiscord, href, hostName, message, media_container} = data,
 		previewReplace = script.media.replace.includes(hostName);
 		let metaDataElement, mediaProperties, mediaControls;
 		switch(fileMedia) {
@@ -975,6 +996,8 @@ const CustomMediaSupport = (function() {
 				]);
 				break;
 			case "img":
+				mediaProperties = {"className": fileMedia, src: fileType == "pdf" ? `https://docs.google.com/gview?url=${href}&embedded=true` : href, allowFullscreen: true, onclick() {mode !== "return" ? modalHandler(mediaEmbedding(data, "return"), data) : ""}};
+				break;
 			case "iframe":
 				if (mode !== "return") {
 					metaDataElement = _createElement("div", {className: "metadata-13NcHb", innerHTML: `<div class='metadataContent-3c_ZXw userSelectText-1o1dQ7'><div class='metadataName-14STf-'><a class='white-2qwKC7' href='${href}'>${fileTitle}</a></div><div class='metadataSize-2UOOLK'>${fileSize}</div></div>`}, [
@@ -990,15 +1013,19 @@ const CustomMediaSupport = (function() {
 			default:
 				log("error", "mediaEmbed", href);
 		}
-		const container = _createElement("div", {className: `containerCozy-B4noqO container-1e22Ot customMedia custom${fileMedia.replace(/\w/, c => c.toUpperCase())}`, fileFilter}, [
+		const container = _createElement("div", {className: `container-1ov-mD container-1e22Ot customMedia custom${fileMedia.replace(/\w/, c => c.toUpperCase())}`, fileFilter}, [
 			_createElement("div", {className: `${script.classes[fileMedia]} ${script.settings.controls && fileMedia == "video" ? "customMediaHover" : "customMediaBelow"}`}, [
 				metaDataElement,
 				_createElement(fileMedia, mediaProperties,
-					_createElement("source", {src: href,
+					fileMedia !== "img" ? _createElement("source", {src: href,
 						onerror() {
 							if (!previewReplace) {
 								const proxy = script.archive.proxy[fileFilter];
-								if (proxy && proxy !== "ERROR" && this.src !== proxy) {
+								if (fileDiscord) {
+									this.src = fileDiscord;
+									this.parentNode.load();
+								}
+								else if (proxy && proxy !== "ERROR" && this.src !== proxy) {
 									this.src = proxy;
 									this.parentNode.load();
 								}
@@ -1010,7 +1037,7 @@ const CustomMediaSupport = (function() {
 								}
 							}
 						}
-					})
+					}) : ""
 				),
 				mediaControls
 			]),
@@ -1023,14 +1050,14 @@ const CustomMediaSupport = (function() {
 			const video = message.querySelector(`video[poster*='${filePoster}']`),
 			embed = video ? video.closest(".embedVideo-3nf0O9") : false;
 			if (embed) {
-				embed.closest(".containerCozy-B4noqO").classList.add("media-replace");
+				embed.closest(".container-1ov-mD").classList.add("media-replace");
 				embed.firstElementChild.classList.add("customMediaToggled");
 				embed.appendChild(container);
 				embed.style.height = "auto";
 			}
 		}
 		else {
-			message.insertBefore(container, message_body.nextSibling);
+			message.insertBefore(container, media_container);
 		}
 		// replace original accessory previews if they exist
 		if ((fileReplace || (fileMedia == "video" || fileMedia == "audio")) && !previewReplace) {
@@ -1073,9 +1100,9 @@ const CustomMediaSupport = (function() {
 			if (archiveName !== "all") {
 				archivesInfo.all.count += archiveInfo.count;
 			}
-			cleanMenuFragments.appendChild(_createElement("div", {className: `customArchiveCleanMenuButton itemDefault-3Jdr52 item-PXvHYJ ${archiveInfo.tooltip ? "orrie-tooltip" : ""}`, innerHTML: `${archiveInfo.name} (<span>${archiveInfo.count}</span>) ${archiveInfo.tooltip ? `<div class='tooltip-2QfLtc tooltipBlack-PPG47z tooltipLeft-3EDOk1'><div class='tooltipPointer-3ZfirK'></div>${archiveInfo.tooltip}</div>` : ""}`, onclick() {archiveClean(archiveName, archiveInfo.id, this);}}));
+			cleanMenuFragments.appendChild(_createElement("div", {className: `item-1Yvehc itemBase-tz5SeC clickable-11uBi- ${archiveInfo.tooltip ? "orrie-tooltip" : ""}`, innerHTML: `<div class='label-JWQiNe'>${archiveInfo.name}</div><div class='hint-22uc-R'/>(${archiveInfo.count})</div>${archiveInfo.tooltip ? `<div class='tooltip-2QfLtc tooltipBlack-PPG47z tooltipLeft-3EDOk1'><div class='tooltipPointer-3ZfirK'></div>${archiveInfo.tooltip}</div>` : ""}`, onclick() {archiveClean(archiveName, archiveInfo.id, this);}}));
 		}
-		return _createElement("div", {className: "modal-yWgWj- userSelectText-1o1dQ7 sizeMedium-1fwIF2", innerHTML: "<div class='flex-1O1GKY directionRow-3v3tfG justifyStart-2NDFzi alignCenter-1dQNNs noWrap-3jynv6 header-2tA9Os' style='flex: 0 0 auto;'><div class='flexChild-faoVW3' style='flex: 1 1 auto;'><h4 class='h4-AQvcAz title-3sZWYQ size16-14cGz5 height20-mO2eIN weightSemiBold-NJexzi defaultColor-1_ajX0 defaultMarginh4-2vWMG5 marginReset-236NPn'>Archive Manager</h4></div><svg class='customModalCancel close-hhyjWJ flexChild-faoVW3' xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 12 12'><g fill='none' fill-rule='evenodd'><path d='M0 0h12v12H0'></path><path class='fill' fill='currentColor' d='M9.5 3.205L8.795 2.5 6 5.295 3.205 2.5l-.705.705L5.295 6 2.5 8.795l.705.705L6 6.705 8.795 9.5l.705-.705L6.705 6'></path></g></svg></div>"}, [
+		return _createElement("div", {className: "modal-yWgWj- userSelectText-1o1dQ7 sizeMedium-1fwIF2", innerHTML: "<div class='flex-1O1GKY directionRow-3v3tfG justifyStart-2NDFzi alignCenter-1dQNNs noWrap-3jynv6 header-2tA9Os' style='flex: 0 0 auto;'><div class='flexChild-faoVW3' style='flex: 1 1 auto;'><h4 class='h4-AQvcAz title-3sZWYQ size16-14cGz5 height20-mO2eIN weightSemiBold-NJexzi defaultColor-1_ajX0 defaultMarginh4-2vWMG5 marginReset-236NPn'>Archive Manager</h4></div><button aria-label='Close' type='button' class='customModalCancel close-1kwMUs flexChild-faoVW3 button-38aScr lookBlank-3eh9lL colorBrand-3pXr91 grow-q77ONN'><div class='contents-18-Yxp'><svg name='Close' aria-hidden='false' width='18' height='18' viewBox='0 0 12 12' style='flex: 0 1 auto;'><g fill='none' fill-rule='evenodd'><path d='M0 0h12v12H0'></path><path class='fill' fill='currentColor' d='M9.5 3.205L8.795 2.5 6 5.295 3.205 2.5l-.705.705L5.295 6 2.5 8.795l.705.705L6 6.705 8.795 9.5l.705-.705L6.705 6'></path></g></svg></div></button></div>"}, [
 			_createElement("div", {className: "flex-1O1GKY directionRow-3v3tfG justifyCenter-3D2jYp inner-3wn6Q5 customArchiveHeader", style: "flex: 0 0 auto;"}, headerFragments),
 			_createElement("div", {className: "flex-1O1GKY directionRow-3v3tfG justifyCenter-3D2jYp inner-3wn6Q5 border-2AhmKo customArchiveFilter noScroll-3xWe_g", style: "flex: 0 0 auto;"}, [
 				_createElement("div", {className: "flex-1O1GKY directionRow-3v3tfG"}, [
@@ -1094,7 +1121,9 @@ const CustomMediaSupport = (function() {
 				]),
 				_createElement("div", {className: "customArchiveCleanMenu"},
 					_createElement("div", {className: "customArchiveCleanMenu-wrapper orrie-tooltip orrie-relative", innerHTML: "<button type='button' class='userInfoViewingButton-2-jbH9 button-38aScr lookFilled-1Gx00P colorBrand-3pXr91 sizeSmall-2cSMqn grow-q77ONN'><div class='contents-18-Yxp'>Cleaning Menu</div></button><div class='tooltip-2QfLtc tooltipBlack-PPG47z tooltipTop-XDDSxx'><div class='tooltipPointer-3ZfirK'></div>Be very, very careful now!</div>"},
-						_createElement("div", {className: "customArchiveCleanMenuButtons cardPrimary-1Hv-to card-3Qj_Yx side-8zPYf6"}, cleanMenuFragments)
+						_createElement("div", {className: "customArchiveCleanMenuButtons contextMenu-HLZMGh"},
+							_createElement("div", {className: "itemGroup-1tL0uz"}, cleanMenuFragments)
+						)
 					)
 				)
 			]),
@@ -1154,18 +1183,18 @@ const CustomMediaSupport = (function() {
 			}), menuAnchor.firstChild);
 		}
 	},
-	textParser = function(node) {
+	textParser = function(node, name) {
 		// parse messages for text conversion
 		if (!script.check.textParser) {
 			script.check.textParser = true;
-			const messages = (node.classList.contains("edited-DL9ECl") ? node.closest(".containerCozy-336-Cz") : node).querySelectorAll(".markup-2BOw-j:not(.textParserProcessed)");
-			log("info", "textParser", messages);
+			const messages = node.classList.contains("markup-2BOw-j") ? [node] : node.querySelectorAll(".markup-2BOw-j:not(.textParserProcessed)");
+			log("info", `textParser - ${name}`, messages);
 			for (let _m=messages.length; _m--;) {
 				const elem = messages[_m];
 				if (elem.firstElementChild && elem.firstElementChild.tagName == "PRE") {
 					continue;
 				}
-				if (elem.innerHTML.match(/&gt;|magnet:\?/)) {
+				if (/&gt;|magnet:\?/.test(elem.innerHTML)) {
 					const textSplit = elem.innerHTML.split("\n");
 					for (let _t=textSplit.length; _t--;) {
 						let line = textSplit[_t];
@@ -1331,41 +1360,43 @@ const CustomMediaSupport = (function() {
 			insertCustomMenu("customMenuIcon", `${script.name} Archive`);
 			const messages = document.getElementsByClassName("messages-3amgkR")[0];
 			if (messages) {
-				mediaConvert("messages", messages);
-				textParser(messages);
+				mediaConvert("messages", messages, "start");
+				textParser(messages, "start");
 			}
 		}
 		observer({addedNodes}) {
 			if (addedNodes.length > 0 && document.getElementsByClassName("messages-3amgkR").length) {
 				const node = addedNodes[0];
 				if (node.nodeType == 1 && node.className) {
-					//if (node.closest(".messagesWrapper-3lZDfY")) {
+					//if (node.closest(".chatContent-a9vAAp")) {
 					//	console.log(node.classList[0], node);
 					//}
-					switch(node.classList[0]) {
+					const name = node.classList[0];
+					switch(name) {
+						case "chatContent-a9vAAp":
 						case "chat-3bRxxu":
-						case "content-yTz4x3":
 							if (!document.getElementsByClassName("customMenuIcon")[0]) {
 								insertCustomMenu("customMenuIcon", `${script.name} Archive`);
 							}
 							/* falls through */
-						case "containerCozyBounded-1rKFAn":
-						case "messageCozy-2JPAPA":
-							mediaConvert("messages", node);
+						case "containerCozy-336-Cz":
+						case "message-2qnXI6":
+							mediaConvert("messages", node, name);
 							mediaReplace(node);
-							textParser(node);
+							textParser(node, name);
 							break;
 						case "metadataIcon-2FyCKU":
 						case "iconPlay-2kgvwV":
-							mediaConvert("metadata", node);
+						case "gifTag-31zFY8":
+							mediaConvert("metadata", node, name);
 							mediaReplace(node);
 							break;
 						case "wrapperPaused-19pWuK":
 						case "embedGIFV-3_ebID":
 							mediaReplace(node);
 							break;
-						case "edited-DL9ECl":
-							textParser(node);
+						case "markup-2BOw-j":
+							textParser(node, name);
 							break;
 					}
 				}
