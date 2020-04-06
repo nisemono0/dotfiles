@@ -7,17 +7,23 @@ gaps inner 10
 gaps outer 5
 smart_borders on
 hide_edge_borders on
+
 set $mod Mod4
 set $term --no-startup-id /usr/bin/urxvt
 set $ranger --no-startup-id /usr/bin/urxvt -e /usr/bin/ranger
 set $thunar --no-startup-id /usr/bin/thunar &
 set $ncmpcpp --no-startup-id /usr/bin/urxvt -e /usr/bin/ncmpcpp
+set $lockscreen --no-startup-id ~/.scripts/i3cmds/lock-screen.sh
+set $dmenumount --no-startup-id ~/.scripts/i3cmds/dmenumount.sh
+set $dmenuumount --no-startup-id ~/.scripts/i3cmds/dmenuumount.sh
+
 font pango:InconsolataGo Nerd Font 10
 
 ##---Windows Rules---##
 # Use xprop to find the window class
 for_window [class=".*"] border pixel 3
 for_window [class="floating"] move position center
+for_window [title="ncmpcpp"] floating enable sticky enable focus
 
 ##---Autostart---##
 exec --no-startup-id ~/.config/mpd/launch.sh
@@ -112,10 +118,10 @@ bindsym $mod+F5 exec --no-startup-id notify-send F5
 bindsym $mod+F6 exec --no-startup-id notify-send F6
 bindsym $mod+F7 exec --no-startup-id notify-send F7
 bindsym $mod+F8 exec --no-startup-id notify-send F8
-bindsym $mod+F9 exec --no-startup-id $ncmpcpp
-bindsym $mod+F10 exec --no-startup-id ~/.scripts/i3cmds/lock-screen.sh
-bindsym $mod+F11 exec --no-startup-id ~/.scripts/i3cmds/dmenumount.sh
-bindsym $mod+F12 exec --no-startup-id ~/.scripts/i3cmds/dmenuumount.sh
+bindsym $mod+F9 exec $ncmpcpp
+bindsym $mod+F10 exec $lockscreen
+bindsym $mod+F11 exec $dmenumount
+bindsym $mod+F12 exec $dmenuumount
 
 ##---Media Keys---##
 bindsym XF86AudioPrev exec --no-startup-id mpc prev &
