@@ -1,4 +1,12 @@
-//META{"name":"ImageToClipboard","displayName":"ImageToClipboard","website":"https://github.com/rauenzi/BetterDiscordAddons/tree/master/Plugins/ImageToClipboard","source":"https://raw.githubusercontent.com/rauenzi/BetterDiscordAddons/master/Plugins/ImageToClipboard/ImageToClipboard.plugin.js"}*//
+/**
+ * @name ImageToClipboard
+ * @invite TyFxKer
+ * @authorLink https://twitter.com/ZackRauen
+ * @donate https://paypal.me/ZackRauen
+ * @patreon https://patreon.com/Zerebos
+ * @website https://github.com/rauenzi/BetterDiscordAddons/tree/master/Plugins/ImageToClipboard
+ * @source https://raw.githubusercontent.com/rauenzi/BetterDiscordAddons/master/Plugins/ImageToClipboard/ImageToClipboard.plugin.js
+ */
 /*@cc_on
 @if (@_jscript)
 	
@@ -23,8 +31,8 @@
 
 @else@*/
 
-var ImageToClipboard = (() => {
-    const config = {"info":{"name":"ImageToClipboard","authors":[{"name":"Zerebos","discord_id":"249746236008169473","github_username":"rauenzi","twitter_username":"ZackRauen"}],"version":"0.3.4","description":"Copies images (png/jpg) directly to clipboard. Support Server: bit.ly/ZeresServer","github":"https://github.com/rauenzi/BetterDiscordAddons/tree/master/Plugins/ImageToClipboard","github_raw":"https://raw.githubusercontent.com/rauenzi/BetterDiscordAddons/master/Plugins/ImageToClipboard/ImageToClipboard.plugin.js"},"defaultConfig":[{"type":"switch","id":"typing","name":"Typing","note":"Toggles colorizing of typing notifications.","value":true}],"strings":{"es":{"contextMenuLabel":"Copiar Imagen","modalLabel":"Copiar Original","copySuccess":"Imagen copiada al portapapeles.","copyFailed":"Hubo un problema al copiar la imagen.","invalidType":"No se puede copiar este tipo de imagen.","settings":{"typing":{"name":"No estoy Typing","note":"Doesn't colorize caca."}}},"pt":{"contextMenuLabel":"Copiar imagem","modalLabel":"Copiar original","copySuccess":"Imagem copiada para a área de transferência","copyFailed":"Houve um problema ao copiar a imagem","invalidType":"Não é possível copiar este tipo de imagem"},"de":{"contextMenuLabel":"Kopiere das Bild","modalLabel":"Original Kopieren","copySuccess":"Bild in die Zwischenablage kopiert.","copyFailed":"Beim Kopieren des Bildes ist ein Problem aufgetreten.","invalidType":"Dieser Bildtyp kann nicht kopiert werden"},"en":{"contextMenuLabel":"Copy Image","modalLabel":"Copy Original","copySuccess":"Image copied to clipboard.","copyFailed":"There was an issue copying the image.","invalidType":"Cannot copy this image type.","settings":{"typing":{"name":"Not Typing","note":"Doesn't colorize shit."}}}},"changelog":[{"title":"Fixes","type":"fixed","items":["It works again!","Won't make you think it copied when it didn't.","Won't tell you that it's BlurNSFW when it's not."]},{"title":"Improved","type":"improved","items":["Both the context menu and image preview buttons will show as disabled for unsupported image types.","Attempting to copy invalid types will give you a warning."]}],"main":"index.js"};
+module.exports = (() => {
+    const config = {info:{name:"ImageToClipboard",authors:[{name:"Zerebos",discord_id:"249746236008169473",github_username:"rauenzi",twitter_username:"ZackRauen"}],version:"0.3.5",description:"Copies images (png/jpg) directly to clipboard.",github:"https://github.com/rauenzi/BetterDiscordAddons/tree/master/Plugins/ImageToClipboard",github_raw:"https://raw.githubusercontent.com/rauenzi/BetterDiscordAddons/master/Plugins/ImageToClipboard/ImageToClipboard.plugin.js"},changelog:[{title:"Fixes",type:"fixed",items:["Both context menus and image modals have the buttons again."]},{title:"Improved",type:"improved",items:["Position in the image modal has swapped to the other side."]}],defaultConfig:[{type:"switch",id:"typing",name:"Typing",note:"Toggles colorizing of typing notifications.",value:true}],strings:{es:{contextMenuLabel:"Copiar Imagen",modalLabel:"Copiar Original",copySuccess:"Imagen copiada al portapapeles.",copyFailed:"Hubo un problema al copiar la imagen.",invalidType:"No se puede copiar este tipo de imagen.",settings:{typing:{name:"No estoy Typing",note:"Doesn't colorize caca."}}},pt:{contextMenuLabel:"Copiar imagem",modalLabel:"Copiar original",copySuccess:"Imagem copiada para a área de transferência",copyFailed:"Houve um problema ao copiar a imagem",invalidType:"Não é possível copiar este tipo de imagem"},de:{contextMenuLabel:"Kopiere das Bild",modalLabel:"Original Kopieren",copySuccess:"Bild in die Zwischenablage kopiert.",copyFailed:"Beim Kopieren des Bildes ist ein Problem aufgetreten.",invalidType:"Dieser Bildtyp kann nicht kopiert werden"},en:{contextMenuLabel:"Copy Image",modalLabel:"Copy Original",copySuccess:"Image copied to clipboard.",copyFailed:"There was an issue copying the image.",invalidType:"Cannot copy this image type.",settings:{typing:{name:"Not Typing",note:"Doesn't colorize shit."}}}},main:"index.js"};
 
     return !global.ZeresPluginLibrary ? class {
         constructor() {this._config = config;}
@@ -33,42 +41,28 @@ var ImageToClipboard = (() => {
         getDescription() {return config.info.description;}
         getVersion() {return config.info.version;}
         load() {
-            const title = "Library Missing";
-            const ModalStack = BdApi.findModuleByProps("push", "update", "pop", "popWithKey");
-            const TextElement = BdApi.findModuleByProps("Sizes", "Weights");
-            const ConfirmationModal = BdApi.findModule(m => m.defaultProps && m.key && m.key() == "confirm-modal");
-            if (!ModalStack || !ConfirmationModal || !TextElement) return BdApi.alert(title, `The library plugin needed for ${config.info.name} is missing.<br /><br /> <a href="https://betterdiscord.net/ghdl?url=https://raw.githubusercontent.com/rauenzi/BDPluginLibrary/master/release/0PluginLibrary.plugin.js" target="_blank">Click here to download the library!</a>`);
-            ModalStack.push(function(props) {
-                return BdApi.React.createElement(ConfirmationModal, Object.assign({
-                    header: title,
-                    children: [BdApi.React.createElement(TextElement, {color: TextElement.Colors.PRIMARY, children: [`The library plugin needed for ${config.info.name} is missing. Please click Download Now to install it.`]})],
-                    red: false,
-                    confirmText: "Download Now",
-                    cancelText: "Cancel",
-                    onConfirm: () => {
-                        require("request").get("https://rauenzi.github.io/BDPluginLibrary/release/0PluginLibrary.plugin.js", async (error, response, body) => {
-                            if (error) return require("electron").shell.openExternal("https://betterdiscord.net/ghdl?url=https://raw.githubusercontent.com/rauenzi/BDPluginLibrary/master/release/0PluginLibrary.plugin.js");
-                            await new Promise(r => require("fs").writeFile(require("path").join(ContentManager.pluginsFolder, "0PluginLibrary.plugin.js"), body, r));
-                        });
-                    }
-                }, props));
+            BdApi.showConfirmationModal("Library Missing", `The library plugin needed for ${config.info.name} is missing. Please click Download Now to install it.`, {
+                confirmText: "Download Now",
+                cancelText: "Cancel",
+                onConfirm: () => {
+                    require("request").get("https://rauenzi.github.io/BDPluginLibrary/release/0PluginLibrary.plugin.js", async (error, response, body) => {
+                        if (error) return require("electron").shell.openExternal("https://betterdiscord.net/ghdl?url=https://raw.githubusercontent.com/rauenzi/BDPluginLibrary/master/release/0PluginLibrary.plugin.js");
+                        await new Promise(r => require("fs").writeFile(require("path").join(BdApi.Plugins.folder, "0PluginLibrary.plugin.js"), body, r));
+                    });
+                }
             });
         }
         start() {}
         stop() {}
     } : (([Plugin, Api]) => {
         const plugin = (Plugin, Api) => {
-    const {Patcher, WebpackModules, DiscordModules, Toasts, PluginUtilities, Utilities} = Api;
+    const {Patcher, WebpackModules, DiscordModules, Toasts, PluginUtilities, Utilities, DCM} = Api;
 
     const request = window.require("request");
     const fs = require("fs");
     const {clipboard, nativeImage} = require("electron");
     const path = require("path");
     const process = require("process");
-
-    const MediaContextGroup = WebpackModules.getByDisplayName("NativeLinkGroup");
-    const ContextMenuItem = WebpackModules.getByRegex(/.label\b.*\.hint\b.*\.action\b/);
-    const ContextMenuActions = WebpackModules.getByProps("closeContextMenu");
 
     const ImageModal = WebpackModules.getModule(m => m.prototype && m.prototype.render && m.prototype.render.toString().includes("downloadLink"));
     const DownloadLink = WebpackModules.getModule(m => typeof m == "function" && m.toString && m.toString().includes("isSafeRedirect"));
@@ -81,59 +75,8 @@ var ImageToClipboard = (() => {
     opacity: 0.3;
     cursor: not-allowed;
 }`, {downloadLink: DLClasses.downloadLink.split(" ").join(".")}));
-
-            const index = WebpackModules.getIndexByModule(MediaContextGroup);
-            const groupModule = WebpackModules.getByIndex(index);
-
-            Patcher.after(groupModule, "default", (_, [props], returnValue) => {
-                if (!returnValue) return returnValue;
-                const image = props.href || props.src;
-                if (!this.isImage(image)) return;
-                const isValid = this.isValid(image);
-                returnValue.props.children.push(DiscordModules.React.createElement(ContextMenuItem, {
-                    label: this.strings.contextMenuLabel,
-                    action: () => {
-                        ContextMenuActions.closeContextMenu();
-                        this.copyToClipboard(props.href || props.src);
-                    },
-                    disabled: !isValid
-                }));
-            });
-
-            Patcher.after(ImageModal.prototype, "render", (thisObject, args, returnValue) => {
-                if (!returnValue) return returnValue;
-                const image = thisObject.props.original;
-                if (!this.isImage(image)) return;
-
-                const components = returnValue.props.children;
-                const openOriginal = components[components.length - 1];
-
-                const separator = DiscordModules.React.createElement("span", {
-                    className: DLClasses.downloadLink,
-                    style: {margin: "0 5px"}
-                }, " | ");
-
-                const isValid = this.isValid(image);
-                const copyOriginal = DiscordModules.React.createElement(DownloadLink, {
-                    className: DLClasses.downloadLink + (isValid ? "" : " link-disabled"),
-                    title: this.strings.modalLabel,
-                    target: "_blank",
-                    rel: "noreferrer noopener",
-                    href: image,
-                    onClick: (e) => {
-                        e.preventDefault();
-                        e.stopPropagation();
-                        if (isValid) return this.copyToClipboard(image);
-                        Toasts.warning(this.strings.invalidType);
-                    }
-                }, this.strings.modalLabel);
-
-                const wrapper = DiscordModules.React.createElement("div", {
-                    className: ""
-                }, openOriginal, separator, copyOriginal);
-
-                components[components.length - 1] = wrapper;
-            });
+            this.patchImageModal();
+            this.patchContextMenu();
         }
 
         onStop() {
@@ -170,6 +113,42 @@ var ImageToClipboard = (() => {
 
         getSettingsPanel() {
             return this.buildSettingsPanel().getElement();
+        }
+
+        patchContextMenu() {
+            const MediaContextGroup = WebpackModules.getModule(m => m.default && m.default.toString && m.default.toString().includes("copy-native-link"));
+            Patcher.after(MediaContextGroup, "default", (_, [url], retVal) => {
+                if (!this.isImage(url)) return;
+                const isValid = this.isValid(url);
+                retVal.push(DCM.buildMenuItem({label: this.strings.contextMenuLabel, disabled: !isValid, action: () => {
+                    this.copyToClipboard(url);
+                }}));
+            });
+        }
+
+        patchImageModal() {
+            Patcher.after(ImageModal.prototype, "render", (thisObject, args, returnValue) => {
+                if (!returnValue) return returnValue;
+                const image = thisObject.props.original;
+                if (!this.isImage(image)) return;
+
+                const isValid = this.isValid(image);
+                const copyOriginal = DiscordModules.React.createElement(DownloadLink, {
+                    className: DLClasses.downloadLink + (isValid ? "" : " link-disabled"),
+                    title: this.strings.modalLabel,
+                    target: "_blank",
+                    rel: "noreferrer noopener",
+                    href: image,
+                    style: {right: "0"},
+                    onClick: (e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        if (isValid) return this.copyToClipboard(image);
+                        Toasts.warning(this.strings.invalidType);
+                    }
+                }, this.strings.modalLabel);
+                returnValue.props.children.push(copyOriginal);
+            });
         }
     };
 };

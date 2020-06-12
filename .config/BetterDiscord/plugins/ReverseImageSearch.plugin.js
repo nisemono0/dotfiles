@@ -6,7 +6,7 @@ var ReverseImageSearch = (_ => {
 	return class ReverseImageSearch {
 		getName () {return "ReverseImageSearch";}
 
-		getVersion () {return "3.5.4";}
+		getVersion () {return "3.5.6";}
 
 		getAuthor () {return "DevilBro";}
 
@@ -14,7 +14,7 @@ var ReverseImageSearch = (_ => {
 
 		constructor () {
 			this.changelog = {
-				"fixed":[["Avatar Search", "Fixed a small issue with the user avatar search entry"]]
+				"fixed":[["Context Menu Update","Fixes for the context menu update, yaaaaaay"]]
 			};
 		}
 
@@ -80,7 +80,7 @@ var ReverseImageSearch = (_ => {
 			return settingsPanel = BDFDB.PluginUtils.createSettingsPanel(this, settingsItems);
 		}
 
-		//legacy
+		// Legacy
 		load () {}
 
 		start () {
@@ -121,12 +121,12 @@ var ReverseImageSearch = (_ => {
 		}
 
 
-		// begin of own functions
+		// Begin of own functions
 
 		onGuildContextMenu (e) {
 			if (e.instance.props.guild && e.instance.props.target) {
-				let guildicon = BDFDB.DOMUtils.containsClass(e.instance.props.target, BDFDB.disCN.avataricon) ? e.instance.props.target : e.instance.props.target.querySelector(BDFDB.dotCN.guildicon);
-				if (guildicon && BDFDB.DataUtils.get(this, "settings", "addGuildIconEntry")) this.injectItem(e, guildicon.tagName == "IMG" ? guildicon.getAttribute("src") :  guildicon.style.getPropertyValue("background-image"));
+				let guildIcon = BDFDB.DOMUtils.containsClass(e.instance.props.target, BDFDB.disCN.avataricon) ? e.instance.props.target : e.instance.props.target.querySelector(BDFDB.dotCN.guildicon);
+				if (guildIcon && BDFDB.DataUtils.get(this, "settings", "addGuildIconEntry")) this.injectItem(e, guildIcon.tagName == "IMG" ? guildIcon.getAttribute("src") :  guildIcon.style.getPropertyValue("background-image"));
 			}
 		}
 
@@ -138,7 +138,7 @@ var ReverseImageSearch = (_ => {
 		}
 
 		onNativeContextMenu (e) {
-			if (e.instance.props.type == BDFDB.DiscordConstants.ContextMenuTypes.NATIVE_IMAGE && (e.instance.props.href || e.instance.props.src)) {
+			if (e.type == "NativeImageContextMenu" && (e.instance.props.href || e.instance.props.src)) {
 				this.injectItem(e, e.instance.props.href || e.instance.props.src);
 			}
 		}
@@ -165,20 +165,24 @@ var ReverseImageSearch = (_ => {
 				let enabledEngines = BDFDB.ObjectUtils.filter(BDFDB.DataUtils.get(this, "engines"), n => n);
 				let enginesWithoutAll = BDFDB.ObjectUtils.filter(enabledEngines, n => n != "_all", true);
 				let engineKeys = Object.keys(enginesWithoutAll);
-				let [children, index] = BDFDB.ReactUtils.findChildren(e.returnvalue, {name:["FluxContainer(MessageDeveloperModeGroup)", "DeveloperModeGroup"]});
-				if (engineKeys.length == 1) children.splice(index > -1 ? index : children.length, 0, BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.ContextMenuItems.Item, {
-					label: this.labels.context_reverseimagesearch_text.replace("...", this.defaults.engines[engineKeys[0]].name),
-					action: event => {
-						let useChromium = BDFDB.DataUtils.get(this, "settings", "useChromium");
-						if (!event.shiftKey) BDFDB.ContextMenuUtils.close(e.instance);
-						BDFDB.DiscordUtils.openLink(this.defaults.engines[engineKeys[0]].url.replace(imgUrlReplaceString, encodeURIComponent(url)), useChromium, event.shiftKey);
-					}
-				}));
+				let [children, index] = BDFDB.ContextMenuUtils.findItem(e.returnvalue, {id: "devmode-copy-id", group: true});
+				if (engineKeys.length == 1) {
+					children.splice(index > -1 ? index : children.length, 0, BDFDB.ContextMenuUtils.createItem(BDFDB.LibraryComponents.MenuItems.MenuItem, {
+						label: this.labels.context_reverseimagesearch_text.replace("...", this.defaults.engines[engineKeys[0]].name),
+						id: BDFDB.ContextMenuUtils.createItemId(this.name, "single-search"),
+						action: event => {
+							let useChromium = BDFDB.DataUtils.get(this, "settings", "useChromium");
+							if (!event.shiftKey) BDFDB.ContextMenuUtils.close(e.instance);
+							BDFDB.DiscordUtils.openLink(this.defaults.engines[engineKeys[0]].url.replace(imgUrlReplaceString, encodeURIComponent(url)), useChromium, event.shiftKey);
+						}
+					}));
+				}
 				else {
 					let items = [];
-					for (let key in enabledEngines) items.push(BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.ContextMenuItems.Item, {
+					for (let key in enabledEngines) items.push(BDFDB.ContextMenuUtils.createItem(BDFDB.LibraryComponents.MenuItems.MenuItem, {
 						label: this.defaults.engines[key].name,
-						danger: key == "_all",
+						id: BDFDB.ContextMenuUtils.createItemId(this.name, "search", key),
+						color: key == "_all" ? BDFDB.LibraryComponents.MenuItems.Colors.DANGER : BDFDB.LibraryComponents.MenuItems.Colors.DEFAULT,
 						action: event => {
 							let useChromium = BDFDB.DataUtils.get(this, "settings", "useChromium");
 							if (!event.shiftKey) BDFDB.ContextMenuUtils.close(e.instance);
@@ -188,14 +192,16 @@ var ReverseImageSearch = (_ => {
 							else BDFDB.DiscordUtils.openLink(this.defaults.engines[key].url.replace(imgUrlReplaceString, encodeURIComponent(url)), useChromium, event.shiftKey);
 						}
 					}));
-					if (!items.length) items.push(BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.ContextMenuItems.Item, {
+					if (!items.length) items.push(BDFDB.ContextMenuUtils.createItem(BDFDB.LibraryComponents.MenuItems.MenuItem, {
 						label: this.labels.submenu_disabled_text,
+						id: BDFDB.ContextMenuUtils.createItemId(this.name, "disabled"),
 						disabled: true
 					}));
-					children.splice(index > -1 ? index : children.length, 0, BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.ContextMenuItems.Group, {
-						children: BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.ContextMenuItems.Sub, {
+					children.splice(index > -1 ? index : children.length, 0, BDFDB.ContextMenuUtils.createItem(BDFDB.LibraryComponents.MenuItems.MenuGroup, {
+						children: BDFDB.ContextMenuUtils.createItem(BDFDB.LibraryComponents.MenuItems.MenuItem, {
 							label: this.labels.context_reverseimagesearch_text,
-							render: items
+							id: BDFDB.ContextMenuUtils.createItemId(this.name, "submenu-search"),
+							children: items
 						})
 					}));
 				}

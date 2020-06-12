@@ -1,10 +1,18 @@
 //META{"name":"OwnerTag","authorId":"278543574059057154","invite":"Jx3TjNS","donate":"https://www.paypal.me/MircoWittrien","patreon":"https://www.patreon.com/MircoWittrien","website":"https://github.com/mwittrien/BetterDiscordAddons/tree/master/Plugins/OwnerTag","source":"https://raw.githubusercontent.com/mwittrien/BetterDiscordAddons/master/Plugins/OwnerTag/OwnerTag.plugin.js"}*//
 
 var OwnerTag = (_ => {
+	const userTypes = {
+		NONE: 0,
+		ADMIN: 1,
+		OWNER: 2
+	};
+	
+	var settings = {};
+	
 	return class OwnerTag {
 		getName () {return "OwnerTag";}
 
-		getVersion () {return "1.2.7";}
+		getVersion () {return "1.2.9";}
 
 		getAuthor () {return "DevilBro";}
 
@@ -12,7 +20,7 @@ var OwnerTag = (_ => {
 
 		constructor () {
 			this.changelog = {
-				"fixed":[["Messages Popout","Now works in popouts like the recent mentions popout"]]
+				"added":[["Ignore bots","Added options to not add admin tag for bots with admin rights"]]
 			};
 
 			this.patchedModules = {
@@ -54,7 +62,8 @@ var OwnerTag = (_ => {
 					useBlackFont:			{value:false, 	inner:false,	description:"Instead of darkening the Rolecolor on bright colors use black font."},
 					useCrown:				{value:false, 	inner:false,	description:"Use the Crown Icon instead of the OwnerTag."},
 					hideNativeCrown:		{value:true, 	inner:false,	description:"Hide the native Crown Icon (not the Plugin one)."},
-					addForAdmins:			{value:false, 	inner:false,	description:"Also add the Tag for any user with Admin rights."}
+					addForAdmins:			{value:false, 	inner:false,	description:"Also add an Admin Tag for any user with Admin rights."},
+					ignoreBotAdmins:		{value:false, 	inner:false,	description:"Do not add the Admin tag for bots with Admin rights."}
 				},
 				inputs: {
 					ownTagName:				{value:"Owner", 	description:"Owner Tag Text for Owners"},
@@ -99,7 +108,7 @@ var OwnerTag = (_ => {
 			return settingsPanel = BDFDB.PluginUtils.createSettingsPanel(this, settingsItems);
 		}
 
-		//legacy
+		// Legacy
 		load () {}
 
 		start () {
@@ -144,7 +153,7 @@ var OwnerTag = (_ => {
 		}
 
 
-		// begin of own functions
+		// Begin of own functions
 
 		onSettingsClosed () {
 			if (this.SettingsUpdated) {
@@ -154,65 +163,75 @@ var OwnerTag = (_ => {
 		}
 
 		processMemberListItem (e) {
-			let usertype = this.getUserType(e.instance.props.user);
-			if (usertype && BDFDB.DataUtils.get(this, "settings", "addInMemberList")) {
-				this.injectOwnerTag(BDFDB.ReactUtils.getValue(e.returnvalue, "props.decorators.props.children"), e.instance.props.user, usertype, 1, BDFDB.disCN.bottagmember);
+			let userType = this.getUserType(e.instance.props.user);
+			if (userType && settings.addInMemberList) {
+				this.injectOwnerTag(BDFDB.ReactUtils.getValue(e.returnvalue, "props.decorators.props.children"), e.instance.props.user, userType, 1, {
+					tagClass: BDFDB.disCN.bottagmember
+				});
 			}
 		}
 
 		processMessageHeader (e) {
-			if (e.instance.props.message && BDFDB.DataUtils.get(this, "settings", "addInChatWindow")) {
-				let usertype = this.getUserType(e.instance.props.message.author);
-				if (usertype) {
+			if (e.instance.props.message && settings.addInChatWindow) {
+				let userType = this.getUserType(e.instance.props.message.author);
+				if (userType) {
 					let [children, index] = BDFDB.ReactUtils.findChildren(e.returnvalue.props.children.slice(1), {name: "Popout", props: [["className", BDFDB.disCN.messageusername]]});
-					if (index > -1) this.injectOwnerTag(children, e.instance.props.message.author, usertype, e.instance.props.compact ? 0 : 2, e.instance.props.compact ? BDFDB.disCN.messagebottagcompact : BDFDB.disCN.messagebottagcozy);
+					if (index > -1) this.injectOwnerTag(children, e.instance.props.message.author, userType, e.instance.props.compact ? 0 : 2, {
+						tagClass: e.instance.props.compact ? BDFDB.disCN.messagebottagcompact : BDFDB.disCN.messagebottagcozy,
+						useRem: true
+					});
 				}
 			}
 		}
 
 		processNameTag (e) {
 			if (e.instance.props.user && e.instance.props.className) {
-				let usertype = this.getUserType(e.instance.props.user);
-				if (usertype) {
-					let inject = false, bottag = "";
+				let userType = this.getUserType(e.instance.props.user);
+				if (userType) {
+					let inject = false, tagClass = "";
 					switch (e.instance.props.className) {
 						case BDFDB.disCN.userpopoutheadertagnonickname:
-							inject = BDFDB.DataUtils.get(this, "settings", "addInUserPopout");
-							bottag = BDFDB.disCN.bottagnametag;
+							inject = settings.addInUserPopout;
+							tagClass = BDFDB.disCN.bottagnametag;
 							break;
 						case BDFDB.disCN.userprofilenametag:
-							inject = BDFDB.DataUtils.get(this, "settings", "addInUserProfile");
-							bottag = BDFDB.disCNS.userprofilebottag + BDFDB.disCN.bottagnametag;
+							inject = settings.addInUserProfile;
+							tagClass = BDFDB.disCNS.userprofilebottag + BDFDB.disCN.bottagnametag;
 							break;
 					}
-					if (inject) this.injectOwnerTag(e.returnvalue.props.children, e.instance.props.user, usertype, 2, bottag);
+					if (inject) this.injectOwnerTag(e.returnvalue.props.children, e.instance.props.user, userType, 2, {
+						tagClass: tagClass,
+						useRem: e.instance.props.useRemSizes,
+						inverted: e.instance.props.invertBotTagColor
+					});
 				}
 			}
 		}
 
 		processUserPopout (e) {
-			if (e.instance.props.user && BDFDB.DataUtils.get(this, "settings", "addInUserPopout")) {
-				let usertype = this.getUserType(e.instance.props.user);
-				if (usertype) {
+			if (e.instance.props.user && settings.addInUserPopout) {
+				let userType = this.getUserType(e.instance.props.user);
+				if (userType) {
 					let [children, index] = BDFDB.ReactUtils.findChildren(e.returnvalue, {props: [["className", BDFDB.disCN.userpopoutheadertagwithnickname]]});
-					if (index > -1) this.injectOwnerTag(children, e.instance.props.user, usertype, 2, BDFDB.disCNS.userpopoutheaderbottagwithnickname + BDFDB.disCN.bottagnametag);
+					if (index > -1) this.injectOwnerTag(children, e.instance.props.user, userType, 2, {
+						tagClass: BDFDB.disCNS.userpopoutheaderbottagwithnickname + BDFDB.disCN.bottagnametag
+					});
 				}
 			}
 		}
 
-		injectOwnerTag (children, user, usertype, insertindex, tagclass = "", inverted = false) {
+		injectOwnerTag (children, user, userType, insertIndex, config = {}) {
 			if (!BDFDB.ArrayUtils.is(children) || !user) return;
-			let settings = BDFDB.DataUtils.get(this, "settings");
 			if (settings.useCrown || settings.hideNativeCrown) {
 				let [_, index] = BDFDB.ReactUtils.findChildren(children, {props: [["text",[BDFDB.LanguageUtils.LanguageStrings.GROUP_OWNER, BDFDB.LanguageUtils.LanguageStrings.GUILD_OWNER]]]});
 				if (index > -1) children[index] = null;
 			}
 			let channel = BDFDB.LibraryModules.ChannelStore.getChannel(BDFDB.LibraryModules.LastChannelStore.getChannelId());
 			let member = settings.useRoleColor ? (BDFDB.LibraryModules.MemberStore.getMember(channel.guild_id, user.id) || {}) : {};
-			let isOwner = usertype == 2;
+			let isOwner = userType == userTypes.OWNER;
 			let tag = null;
 			if (settings.useCrown) {
-				let label = isOwner ? (channel.type == 3 ? BDFDB.LanguageUtils.LanguageStrings.GROUP_OWNER : BDFDB.LanguageUtils.LanguageStrings.GUILD_OWNER) : BDFDB.LanguageUtils.LanguageStrings.ADMINISTRATOR;
+				let label = isOwner ? (channel.type == BDFDB.DiscordConstants.ChannelTypes.GROUP_DM ? BDFDB.LanguageUtils.LanguageStrings.GROUP_OWNER : BDFDB.LanguageUtils.LanguageStrings.GUILD_OWNER) : BDFDB.LanguageUtils.LanguageStrings.ADMINISTRATOR;
 				tag = BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.TooltipContainer, {
 					text: label,
 					children: BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.SvgIcon, {
@@ -223,33 +242,36 @@ var OwnerTag = (_ => {
 				});
 			}
 			else {
-				let tagcolor = BDFDB.ColorUtils.convert(member.colorString, "RGBA");
-				let isbright = BDFDB.ColorUtils.isBright(tagcolor);
-				tagcolor = isbright ? (settings.useBlackFont ? tagcolor : BDFDB.ColorUtils.change(tagcolor, -0.3)) : tagcolor;
+				let tagColor = BDFDB.ColorUtils.convert(member.colorString, "RGBA");
+				let isBright = BDFDB.ColorUtils.isBright(tagColor);
+				tagColor = isBright ? (settings.useBlackFont ? tagColor : BDFDB.ColorUtils.change(tagColor, -0.3)) : tagColor;
 				tag = BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.BotTag, {
-					className: tagclass,
-					tag: BDFDB.DataUtils.get(this, "inputs", isOwner ? "ownTagName" : "ownAdminTagName"),
-					invertColor: inverted,
+					className: config.tagClass,
+					useRemSizes: config.useRem,
+					invertColor: config.inverted,
 					style: {
-						backgroundColor: inverted ? (isbright && settings.useBlackFont ? "black" : null) : tagcolor,
-						color: !inverted ? (isbright && settings.useBlackFont ? "black" : null) : tagcolor
-					}
+						backgroundColor: config.inverted ? (isBright && settings.useBlackFont ? "black" : null) : tagColor,
+						color: !config.inverted ? (isBright && settings.useBlackFont ? "black" : null) : tagColor
+					},
+					tag: BDFDB.DataUtils.get(this, "inputs", isOwner ? "ownTagName" : "ownAdminTagName")
 				});
 			}
-			children.splice(insertindex, 0, tag);
+			children.splice(insertIndex, 0, tag);
 		}
 		
 		getUserType (user) {
-			if (!user) return 0;
+			if (!user) return userTypes.NONE;
 			let channel = BDFDB.LibraryModules.ChannelStore.getChannel(BDFDB.LibraryModules.LastChannelStore.getChannelId());
-			if (!channel) return 0;
+			if (!channel) return userTypes.NONE;
 			let guild = BDFDB.LibraryModules.GuildStore.getGuild(channel.guild_id);
-			let isowner = channel.ownerId == user.id || guild && guild.ownerId == user.id;
-			if (!(isowner || (BDFDB.DataUtils.get(this, "settings", "addForAdmins") && BDFDB.UserUtils.can("ADMINISTRATOR", user.id)))) return 0;
-			return isowner ? 2 : 1;
+			let isOwner = channel.ownerId == user.id || guild && guild.ownerId == user.id;
+			if (!(isOwner || (settings.addForAdmins && BDFDB.UserUtils.can("ADMINISTRATOR", user.id) && !(settings.ignoreBotAdmins && user.bot)))) return userTypes.NONE;
+			return isOwner ? userTypes.OWNER : userTypes.ADMIN;
 		}
 	
 		forceUpdateAll () {
+			settings = BDFDB.DataUtils.get(this, "settings");
+			
 			BDFDB.ModuleUtils.forceAllUpdates(this);
 			BDFDB.MessageUtils.rerenderAll();
 		}
