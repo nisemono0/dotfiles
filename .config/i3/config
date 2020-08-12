@@ -16,6 +16,7 @@ set $ncmpcpp --no-startup-id /usr/bin/urxvt -e /usr/bin/ncmpcpp
 set $lockscreen --no-startup-id ~/.scripts/i3cmds/lock-screen.sh
 set $dmenumount --no-startup-id ~/.scripts/i3cmds/dmenumount.sh
 set $dmenuumount --no-startup-id ~/.scripts/i3cmds/dmenuumount.sh
+set $switchaudio --no-startup-id ~/.scripts/i3cmds/switchsinks.sh
 
 font pango:InconsolataGo Nerd Font 10
 
@@ -117,7 +118,7 @@ bindsym $mod+F4 exec --no-startup-id notify-send F4
 bindsym $mod+F5 exec --no-startup-id notify-send F5
 bindsym $mod+F6 exec --no-startup-id notify-send F6
 bindsym $mod+F7 exec --no-startup-id notify-send F7
-bindsym $mod+F8 exec --no-startup-id notify-send F8
+bindsym $mod+F8 exec $switchaudio
 bindsym $mod+F9 exec $ncmpcpp
 bindsym $mod+F10 exec $lockscreen
 bindsym $mod+F11 exec $dmenumount

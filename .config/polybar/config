@@ -59,7 +59,7 @@ font-2 = siji:pixelsize=10;2
 font-3 = "Ricty Nerd Font:style=Regular:size=10:antialas=false;2" 
 modules-left = mpd
 modules-center = i3
-modules-right = updates-arch filesystem alsa xkeyboard memory cpu cpu-temp-script eth date powermenu
+modules-right = updates-arch filesystem pulseaudio xkeyboard memory cpu cpu-temp-script eth date powermenu
 
 tray-position = right
 tray-padding = 2
@@ -161,9 +161,12 @@ label-unmounted = %mountpoint% not mounted
 label-unmounted-foreground = ${colors.foreground-alt}
 
 
-; Right-alsa
-[module/alsa]
-type = internal/alsa
+; Right-pulseaudio
+[module/pulseaudio]
+type = internal/pulseaudio
+
+use-ui-max = false
+interval = 2
 
 format-volume = <label-volume> <bar-volume>
 label-volume = VOL %percentage%%
@@ -189,7 +192,6 @@ bar-volume-fill-font = 0
 bar-volume-empty = ─
 bar-volume-empty-font = 0
 bar-volume-empty-foreground = ${colors.foreground-alt}
-
 
 ; Right-keyboard
 [module/xkeyboard]
