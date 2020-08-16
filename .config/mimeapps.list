@@ -1,0 +1,18 @@
+[Default Applications]
+x-scheme-handler/discord-474605546457137157=discord-474605546457137157.desktop
+text/html=chromium.desktop
+x-scheme-handler/http=chromium.desktop
+x-scheme-handler/https=chromium.desktop
+x-scheme-handler/about=chromium.desktop
+x-scheme-handler/unknown=chromium.desktop
+image/jpeg=feh.desktop
+image/png=feh.desktop
+image/webp=feh.desktop
+
+[Added Associations]
+application/force-download=firefox.desktop;
+application/pdf=libreoffice-draw.desktop;
+inode/directory=code-oss.desktop;
+image/jpeg=feh.desktop;
+image/png=feh.desktop;
+image/webp=feh.desktop;
