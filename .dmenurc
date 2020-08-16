@@ -1,10 +1,9 @@
 #!/bin/bash
 
-HEIGHT="15"
 FN="Noto-9:bold"
 NF="#C7C7C7"
 NB="#1C1C1C"
 SF="#595859"
 SB="#C7C7C7"
-OPTIONS="-b -i -l $HEIGHT -fn $FN -nf $NF -nb $NB -sf $SF -sb $SB"
-export HEIGHT FN NF NB SF SB OPTIONS
+OPTIONS="-b -i -fn $FN -nf $NF -nb $NB -sf $SF -sb $SB"
+export OPTIONS
