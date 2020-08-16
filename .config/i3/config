@@ -20,13 +20,12 @@ set $switchaudio --no-startup-id ~/.scripts/i3cmds/switchsinks.sh
 
 set_from_resource $fg foreground
 set_from_resource $bg background
-set_from_resource $fbg color8
 
 font pango:InconsolataGo Nerd Font 10
 
 ##---Windows Rules---##
 # Use xprop to find the window class
-for_window [class=".*"] border pixel 3
+for_window [class=".*"] border pixel 0
 for_window [class="floating"] move position center
 for_window [title="ncmpcpp"] floating enable sticky enable focus
 
@@ -145,7 +144,7 @@ bindsym Ctrl+Print exec --no-startup-id ~/.scripts/tools/scrot/scrot-area.sh
 bindsym Ctrl+Shift+Print exec --no-startup-id ~/.scripts/tools/scrot/scrot-area-clip.sh
 
 ##---Color: border, background, text, indicater, child_border---##
-client.focused          $fbg $fbg $fbg $fbg
+client.focused          $fg  $fg  $fg  $fg
 client.focused_inactive $bg  $bg  $bg  $bg
 client.unfocused        $bg  $bg  $bg  $bg
 client.urgent           $bg  $bg  $bg  $bg
