@@ -6,13 +6,13 @@
 URxvt*foreground:   #c8c5c4
 XTerm*foreground:   #c8c5c4
 UXTerm*foreground:  #c8c5c4
-URxvt*background:   [98]#241915
+URxvt*background:   [99]#241915
 XTerm*background:   #241915
 UXTerm*background:  #241915
 URxvt*cursorColor:  #c8c5c4
 XTerm*cursorColor:  #c8c5c4
 UXTerm*cursorColor: #c8c5c4
-URxvt*borderColor:  [98]#241915
+URxvt*borderColor:  [99]#241915
 
 ! Colors 0-15.
 *.color0: #241915
