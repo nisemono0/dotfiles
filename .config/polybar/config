@@ -41,11 +41,14 @@ background = ${self.color0}
 background-alt = ${self.color1}
 
 foreground = ${self.color7}
-foreground-alt = ${self.color3}
+foreground-alt = ${self.color5}
+
+; Workspace colors
+ws-selected = ${self.color6}
 
 ; ==================== i3 ====================
 i3-focused-bg = ${self.background}
-i3-focused-fg = ${self.foreground-alt}
+i3-focused-fg = ${self.ws-selected}
 
 i3-unfocused-bg = ${self.background}
 i3-unfocused-fg = ${self.foreground}
