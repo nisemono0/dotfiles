@@ -10,7 +10,7 @@ image/png=feh.desktop
 image/webp=feh.desktop
 
 [Added Associations]
-application/force-download=firefox.desktop;
+application/force-download=chromium.desktop;
 application/pdf=libreoffice-draw.desktop;
 inode/directory=code-oss.desktop;
 image/jpeg=feh.desktop;
