@@ -18,14 +18,14 @@ set $dmenumount --no-startup-id ~/.scripts/i3cmds/dmenumount.sh
 set $dmenuumount --no-startup-id ~/.scripts/i3cmds/dmenuumount.sh
 set $switchaudio --no-startup-id ~/.scripts/i3cmds/switchsinks.sh
 
-set_from_resource $fg foreground
+set $fg #C5C8C673
 set_from_resource $bg background
 
 font pango:InconsolataGo Nerd Font 10
 
 ##---Windows Rules---##
 # Use xprop to find the window class
-for_window [class=".*"] border pixel 0
+for_window [class=".*"] border pixel 7
 for_window [class="floating"] move position center
 for_window [title="ncmpcpp"] floating enable sticky enable focus
 
