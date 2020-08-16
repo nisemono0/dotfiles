@@ -409,7 +409,7 @@ label-foreground = ${colors.cputemp-label-fg}
 [module/eth]
 type = internal/network
 interface = enp30s0
-interval = 2 
+interval = 1
 format-connected-prefix = " "
 format-connected-prefix-background = ${colors.eth-format-connected-prefix-bg}
 format-connected-prefix-foreground = ${colors.eth-format-connected-prefix-fg}
