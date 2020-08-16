@@ -249,7 +249,7 @@ label-maxlen = 50
 [module/mpd]
 type = internal/mpd
 
-format-online = <toggle> - <label-song> - <label-time>
+format-online = <toggle> <label-song> <label-time>
 
 format-online-prefix = ""
 format-online-suffix = ""
@@ -258,8 +258,8 @@ format-online-prefix-foreground = ${colors.mpd-online-prefix-fg}
 format-online-suffix-background = ${colors.mpd-online-suffix-bg}
 format-online-suffix-foreground = ${colors.mpd-online-suffix-fg}
 
-icon-play = 
-icon-pause = 
+icon-play = ""
+icon-pause = ""
 icon-play-background = ${colors.mpd-icon-play-bg}
 icon-play-foreground = ${colors.mpd-icon-play-fg}
 icon-pause-background = ${colors.mpd-icon-pause-bg}
@@ -272,6 +272,7 @@ label-song-foreground = ${colors.mpd-label-song-fg}
 label-song-maxlen = 35
 label-song-ellipsis = true
 
+label-time = %elapsed%%total%
 label-time-background = ${colors.mpd-label-time-bg}
 label-time-foreground = ${colors.mpd-label-time-fg}
 
