@@ -18,6 +18,10 @@ set $dmenumount --no-startup-id ~/.scripts/i3cmds/dmenumount.sh
 set $dmenuumount --no-startup-id ~/.scripts/i3cmds/dmenuumount.sh
 set $switchaudio --no-startup-id ~/.scripts/i3cmds/switchsinks.sh
 
+set_from_resource $fg foreground
+set_from_resource $bg background
+set_from_resource $fbg color8
+
 font pango:InconsolataGo Nerd Font 10
 
 ##---Windows Rules---##
@@ -32,7 +36,7 @@ exec --no-startup-id ~/.scripts/tools/startup/urxvt-load.sh
 exec --no-startup-id ~/.scripts/tools/startup/monitor-setup.sh
 exec --no-startup-id compton -CG -b 
 exec --no-startup-id dunst &
-exec_always --no-startup-id hsetroot -full ~/.config/wallpaper.png
+exec_always --no-startup-id hsetroot -full ~/.config/wallpaper.jpg
 exec_always --no-startup-id ~/.config/polybar/launch.sh
 
 ##---Basic Keys---##
@@ -141,9 +145,8 @@ bindsym Ctrl+Print exec --no-startup-id ~/.scripts/tools/scrot/scrot-area.sh
 bindsym Ctrl+Shift+Print exec --no-startup-id ~/.scripts/tools/scrot/scrot-area-clip.sh
 
 ##---Color: border, background, text, indicater, child_border---##
-client.focused			#283838 #fb3f00 #283838 #bf616a #d8dee8
-client.focused_inactive	#283838 #2f343f #283838 #2f343f #2f343f
-client.unfocused		#283838 #2f343f #283838 #2f343f #2f343f
-client.urgent			#283838 #2f343f #283838 #2f343f #2f343f
-client.placeholder		#283838 #2f343f #283838 #2f343f #2f343f
-client.background 		#283838
+client.focused          $fbg $fbg $fbg $fbg
+client.focused_inactive $bg  $bg  $bg  $bg
+client.unfocused        $bg  $bg  $bg  $bg
+client.urgent           $bg  $bg  $bg  $bg
+client.placeholder		$bg  $bg  $bg  $bg
