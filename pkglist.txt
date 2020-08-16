@@ -114,6 +114,7 @@ pacman-contrib
 patch
 pciutils
 perl
+perl-file-mimeinfo
 picom
 pkgconf
 polybar
