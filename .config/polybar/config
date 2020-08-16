@@ -1,37 +1,155 @@
-;==========================================================
-;
-;
-;   ██████╗  ██████╗ ██╗  ██╗   ██╗██████╗  █████╗ ██████╗
-;   ██╔══██╗██╔═══██╗██║  ╚██╗ ██╔╝██╔══██╗██╔══██╗██╔══██╗
-;   ██████╔╝██║   ██║██║   ╚████╔╝ ██████╔╝███████║██████╔╝
-;   ██╔═══╝ ██║   ██║██║    ╚██╔╝  ██╔══██╗██╔══██║██╔══██╗
-;   ██║     ╚██████╔╝███████╗██║   ██████╔╝██║  ██║██║  ██║
-;   ╚═╝      ╚═════╝ ╚══════╝╚═╝   ╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═╝
-;
-;
-;   To learn more about how to configure Polybar
-;   go to https://github.com/jaagr/polybar
-;
-;   The README contains alot of information
-;
-;==========================================================
+; https://github.com/jaagr/polybar
 
+
+; ==========================================================================
+; ================================= COLORS =================================
+; ==========================================================================
 [colors]
-; Bar color
-background = ${xrdb:color0}
-background-alt = #444
 
-; Bar color alternative
-foreground = ${xrdb:color7}
-foreground-alt = #555
+; ==================== General ====================
+; Transparency
+alpha = #0000000
+
+; Xresources colors
+xrdbbg = ${xrdb:background}
+xrdbfg = ${xrdb:foreground}
+color0 = ${xrdb:color0}
+color1 = ${xrdb:color1}
+color2 = ${xrdb:color2}
+color3 = ${xrdb:color3}
+color4 = ${xrdb:color4}
+color5 = ${xrdb:color5}
+color6 = ${xrdb:color6}
+color7 = ${xrdb:color7}
+color8 = ${xrdb:color8}
+color9 = ${xrdb:color9}
+color10 = ${xrdb:color10}
+color11 = ${xrdb:color11}
+color12 = ${xrdb:color12}
+color13 = ${xrdb:color13}
+color14 = ${xrdb:color14}
+color15 = ${xrdb:color15}
 
 ; Underline color
-primary = ${xrdb:color5}
-secondary = #FFF
+underline = ${self.color3}
 
 ; Alert color
-alert = #bd2c40
+alert = #bd2c40 
 
+; Background & Foreground
+background = ${self.color0}
+background-alt = ${self.color1}
+
+foreground = ${self.color7}
+foreground-alt = ${self.color3}
+
+; ==================== i3 ====================
+i3-focused-bg = ${self.background}
+i3-focused-fg = ${self.foreground-alt}
+
+i3-unfocused-bg = ${self.background}
+i3-unfocused-fg = ${self.foreground}
+
+i3-urgent-bg = ${self.background}
+i3-urgent-fg = ${self.alert}
+
+; ==================== xwindow ====================
+xwindow-title-bg = ${self.background}
+xwindow-title-fg = ${self.foreground-alt}
+
+
+; ==================== mpd ====================
+mpd-online-prefix-bg = ${self.background}
+mpd-online-prefix-fg = ${self.foreground}
+mpd-online-suffix-bg = ${self.background}
+mpd-online-suffix-fg = ${self.foreground}
+
+mpd-icon-play-bg = ${self.background}
+mpd-icon-play-fg = ${self.foreground}
+mpd-icon-pause-bg = ${self.background}
+mpd-icon-pause-fg = ${self.foreground}
+
+mpd-label-song-bg = ${self.background}
+mpd-label-song-fg = ${self.foreground}
+
+mpd-label-time-bg = ${self.background}
+mpd-label-time-fg = ${self.foreground}
+
+mpd-label-offline-bg = ${self.background}
+mpd-label-offline-fg = ${self.alert}
+
+; ==================== System updates ====================
+updates-label-bg = ${self.background}
+updates-label-fg = ${self.foreground-alt}
+
+; ==================== pulseaudio ====================
+pulse-format-volume-prefix-bg = ${self.background}
+pulse-format-volume-prefix-fg = ${self.foreground-alt}
+
+pulse-label-volume-bg = ${self.background}
+pulse-label-volume-fg = ${self.foreground}
+
+pulse-format-muted-prefix-bg = ${self.background}
+pulse-format-muted-prefix-fg = ${self.foreground-alt}
+
+pulse-label-muted-bg = ${self.background}
+pulse-label-muted-fg = ${self.foreground-alt}
+
+; ==================== xkeyboard ====================
+xkey-format-prefix-bg = ${self.background}
+xkey-format-prefix-fg = ${self.foreground-alt}
+
+xkey-label-indicator-caps-bg = ${self.background}
+xkey-label-indicator-caps-fg = ${self.foreground-alt}
+xkey-label-indicator-caps-underline = ${self.underline}
+
+; ==================== memory ====================
+mem-format-prefix-bg = ${self.background}
+mem-format-prefix-fg = ${self.foreground-alt}
+
+mem-label-bg = ${self.background}
+mem-label-fg = ${self.foreground}
+
+; ==================== cpu ====================
+cpu-format-prefix-bg = ${self.background}
+cpu-format-prefix-fg = ${self.foreground-alt}
+
+cpu-label-bg = ${self.background}
+cpu-label-fg = ${self.foreground}
+
+; ==================== cpu temp script ====================
+cputemp-format-prefix-bg = ${self.background}
+cputemp-format-prefix-fg = ${self.foreground-alt}
+
+cputemp-label-bg = ${self.background}
+cputemp-label-fg = ${self.foreground}
+
+; ==================== eth ====================
+eth-format-connected-prefix-bg = ${self.background}
+eth-format-connected-prefix-fg = ${self.foreground-alt}
+
+eth-label-connected-bg = ${self.background}
+eth-label-connected-fg = ${self.foreground}
+
+eth-format-disconnected-prefix-bg = ${self.foreground-alt}
+eth-format-disconnected-prefix-fg = ${self.background}
+
+eth-label-disconnected-bg = ${self.background}
+eth-label-disconnected-fg = ${self.foreground-alt}
+eth-label-disconnected-underline = ${self.underline}
+
+
+; ==================== date ====================
+date-format-prefix-bg = ${self.background}
+date-format-prefix-fg = ${self.foreground-alt}
+
+date-label-bg = ${self.background}
+date-label-fg = ${self.foreground}
+
+
+; =======================================================================
+; ================================= BAR =================================
+; =======================================================================
 [bar/top-bar]
 width = 100%
 height = 27
@@ -45,7 +163,7 @@ line-size = 3
 line-color = #f00
 
 border-size = 4
-border-color = #00000000
+border-color = ${colors.alpha}
 
 padding-left = 1
 padding-right = 1
@@ -57,9 +175,9 @@ font-0 = "xos4 Terminus:style=Regular;2"
 font-1 = unifont:fontformat=truetype:size=8:antialias=false;2
 font-2 = siji:pixelsize=10;2
 font-3 = "Ricty Nerd Font:style=Regular:size=10:antialas=false;2" 
-modules-left = mpd
-modules-center = i3
-modules-right = updates-arch filesystem pulseaudio xkeyboard memory cpu cpu-temp-script eth date powermenu
+modules-left = i3 xwindow
+modules-center = mpd
+modules-right = updates-arch filesystem pulseaudio xkeyboard memory cpu cpu-temp-script eth date
 
 tray-position = right
 tray-padding = 2
@@ -67,14 +185,15 @@ cursor-click = pointer
 cursor-scroll = ns-resize
 
 
-; Left-Workspace
+; =======================================================================
+; ================================= i3 ==================================
+; =======================================================================
 [module/i3]
 type = internal/i3
 format = <label-state> <label-mode>
 index-sort = true
 wrapping-scroll = false
 
-; Workspace icons
 ws-icon-0 = 1;
 ws-icon-1 = 2;
 ws-icon-2 = 3;
@@ -87,214 +206,242 @@ ws-icon-8 = 9;
 ws-icon-9 = 10;
 ws-icon-default = :D
 
-
-label-mode-padding = 2
-label-mode-foreground = #000
-label-mode-background = ${colors.primary}
-
-; focused = Active workspace on focused monitor
 label-focused = %icon%
-label-focused-background = ${colors.background-alt}
-label-focused-underline = ${colors.primary}
+label-focused-background = ${colors.i3-focused-bg}
+label-focused-foreground = ${colors.i3-focused-fg}
 label-focused-padding = 2
 
-; unfocused = Inactive workspace on any monitor
 label-unfocused = %icon%
+label-unfocused-background = ${colors.i3-unfocused-bg}
+label-unfocused-foreground = ${colors.i3-unfocused-fg}
 label-unfocused-padding = 2
 
-; visible = Active workspace on unfocused monitor
-label-visible = %icon%
-label-visible-background = ${self.label-focused-background}
-label-visible-underline = ${self.label-focused-underline}
-label-visible-padding = ${self.label-focused-padding}
-
-; urgent = Workspace with urgency hint set
-label-urgent = %icon%
-label-urgent-background = ${colors.alert}
+label-urgent = [%icon%]
+label-urgent-background = ${colors.i3-urgent-bg}
+label-urgent-foreground = ${colors.i3-urgent-fg}
 label-urgent-padding = 2
 
-label-separator = 
-label-separator-padding = 0
-label-separator-foreground = ${self.label-focused-background}
+
+; ===========================================================================
+; ================================= XWINDOW =================================
+; ===========================================================================
+[module/xwindow]
+type = internal/xwindow
+
+format = <label>
+format-padding = 0
+
+label = %title%
+label-background = ${colors.xwindow-title-bg}
+label-foreground = ${colors.xwindow-title-fg}
+label-maxlen = 50
 
 
-; Middle-mpd
+; =======================================================================
+; ================================= MPD =================================
+; =======================================================================
 [module/mpd]
 type = internal/mpd
 
-label = <label-song> <icon-[random|repeat|repeatone]> <bar-progress>
+format-online = <toggle> - <label-song> - <label-time>
 
-format-online = <label-song><icon-seekb> <icon-prev> <icon-stop> <toggle> <icon-next> <icon-seekf><bar-progress> <label-time>
+format-online-prefix = ""
+format-online-suffix = ""
+format-online-prefix-background = ${colors.mpd-online-prefix-bg}
+format-online-prefix-foreground = ${colors.mpd-online-prefix-fg}
+format-online-suffix-background = ${colors.mpd-online-suffix-bg}
+format-online-suffix-foreground = ${colors.mpd-online-suffix-fg}
+
+icon-play = 
+icon-pause = 
+icon-play-background = ${colors.mpd-icon-play-bg}
+icon-play-foreground = ${colors.mpd-icon-play-fg}
+icon-pause-background = ${colors.mpd-icon-pause-bg}
+icon-pause-foreground = ${colors.mpd-icon-pause-fg}
+
 label-song = "%artist% - %title%"
-label-song-font = 3
-bar-progress-width = 15
-bar-progress-indicator = 
-bar-progress-fill = ─
-bar-progress-empty = ─
-
-label-offline = 🎜 mpd is offline
-icon-prev = 
-icon-stop = 
-icon-play = 
-icon-pause = 
-icon-next = 
-icon-seekb = 
-icon-seekf = 
+label-sont-font = 3
+label-song-background = ${colors.mpd-label-song-bg}
+label-song-foreground = ${colors.mpd-label-song-fg}
 label-song-maxlen = 35
 label-song-ellipsis = true
 
-; Right-updates-arch
+label-time-background = ${colors.mpd-label-time-bg}
+label-time-foreground = ${colors.mpd-label-time-fg}
+
+label-offline =  mpd is offline
+label-offline-background = ${colors.mpd-labe-offline-bg}
+label-offline-foreground = ${colors.mpd-labe-offline-fg}
+
+
+; ===============================================================================
+; ================================= SYS UPDATES =================================
+; ===============================================================================
 [module/updates-arch]
 type = custom/script
 exec = ~/.scripts/tools/polybar-scripts/update-arch.sh
 interval = 600
 
-; Right-filesystem
+label-background = ${colors.updates-label-bg}
+label-foreground = ${colors.updates-label-fg}
+
+
+; ==============================================================================
+; ================================= FILESYSTEM =================================
+; ==============================================================================
 [module/filesystem]
 type = internal/fs
 interval = 30
 
 mount-0 = /
 
+format-mounted = <label-mounted>
 label-mounted = %{F#0a81f5}%mountpoint%%{F-}: %percentage_used%%
 label-unmounted = %mountpoint% not mounted
-label-unmounted-foreground = ${colors.foreground-alt}
+label-unmounted-foreground = #000
 
 
-; Right-pulseaudio
+; ==============================================================================
+; ================================= PULSEAUDIO =================================
+; ==============================================================================
 [module/pulseaudio]
 type = internal/pulseaudio
 
 use-ui-max = false
-interval = 2
+interval = 5
 
-format-volume = <label-volume> <bar-volume>
-label-volume = VOL %percentage%%
-label-volume-foreground = ${colors.foreground}
+format-volume = <label-volume>
+format-volume-prefix = " "
+format-volume-prefix-background = ${colors.pulse-format-volume-prefix-bg}
+format-volume-prefix-foreground = ${colors.pulse-format-volume-prefix-fg}
+
+label-volume = %percentage%%
+label-volume-background = ${colors.pulse-label-volume-bg}
+label-volume-foreground = ${colors.pulse-label-volume-fg}
 
 format-muted-prefix = " "
-format-muted-foreground = ${colors.foreground-alt}
-label-muted = sound muted
+format-muted-prefix-background = ${colors.pulse-format-muted-prefix-bg}
+format-muted-prefix-foreground = ${colors.pulse-format-muted-prefix-fg}
 
-bar-volume-width = 10
-bar-volume-foreground-0 = #55aa55
-bar-volume-foreground-1 = #55aa55
-bar-volume-foreground-2 = #55aa55
-bar-volume-foreground-3 = #55aa55
-bar-volume-foreground-4 = #55aa55
-bar-volume-foreground-5 = #f5a70a
-bar-volume-foreground-6 = #ff5555
-bar-volume-gradient = false
-bar-volume-indicator = |
-bar-volume-indicator-font = 0
-bar-volume-fill = ─
-bar-volume-fill-font = 0
-bar-volume-empty = ─
-bar-volume-empty-font = 0
-bar-volume-empty-foreground = ${colors.foreground-alt}
+label-muted = muted
+label-muted-background = ${colors.pulse-label-muted-bg}
+label-muted-foreground = ${colors.pulse-label-muted-fg}
 
-; Right-keyboard
+
+; =============================================================================
+; ================================= XKEYBOARD =================================
+; =============================================================================
 [module/xkeyboard]
 type = internal/xkeyboard
 blacklist-0 = num lock
 
 format-prefix = " "
-format-prefix-foreground = ${colors.foreground-alt}
-;format-prefix-underline = ${colors.secondary}
+format-prefix-background = ${colors.xkey-format-prefix-bg}
+format-prefix-foreground = ${colors.xkey-format-prefix-fg}
 
 label-layout = %layout%
-;label-layout-underline = ${colors.secondary}
-label-indicator-underline = ${colors.secondary}
+label-indicator-on-capslock = "CAPS" 
+label-indicator-on-capslock-background = ${colors.xkey-label-indicator-caps-bg}
+label-indicator-on-capslock-foreground = ${colors.xkey-label-indicator-caps-fg}
+label-indicator-on-capslock-underline = ${colors.xkey-label-indicator-caps-underline}
 
 
-; Right-memory
+; ==========================================================================
+; ================================= MEMORY =================================
+; ==========================================================================
 [module/memory]
 type = internal/memory
 interval = 2
-format-prefix = " "
-format-prefix-foreground = ${colors.foreground-alt}
-;format-underline = ${colors.secondary}
-label = %percentage_used%%
 
-; Right-cpu
+format = <label>
+format-prefix = " "
+format-prefix-background = ${colors.mem-format-prefix-bg}
+format-prefix-foreground = ${colors.mem-format-prefix-fg}
+
+label = %percentage_used%%
+label-background = ${colors.mem-label-bg}
+label-foreground = ${colors.mem-label-fg}
+
+
+; =======================================================================
+; ================================= CPU =================================
+; =======================================================================
 [module/cpu]
 type = internal/cpu
-interval = 2
-format-prefix = " "
-format-prefix-foreground = ${colors.foreground-alt}
-;format-underline = ${colors.secondary}
-label = %percentage:2%%
+interval = 0.5
 
-; Right-temp
+format = <label>
+format-prefix = " "
+format-prefix-background = ${colors.cpu-format-prefix-bg}
+format-prefix-foreground = ${colors.cpu-format-prefix-fg}
+
+label = %percentage%%
+label-background = ${colors.cpu-label-bg}
+label-foreground = ${colors.cpu-label-fg}
+
+
+; ============================================================================
+; ================================= CPU TEMP =================================
+; ============================================================================
 [module/cpu-temp-script]
 type = custom/script
 exec = ~/.scripts/tools/polybar-scripts/cpu-temp.sh 
 interval = 2
 
 format-prefix = " "
-format-prefix-foreground = ${colors.foreground-alt}
-;format-underline = ${colors.secondary}
+format-prefix-background = ${colors.cputemp-format-prefix-bg}
+format-prefix-foreground = ${colors.cputemp-format-prefix-fg}
 
-; Right-eth
+label-background = ${colors.cputemp-label-bg}
+label-foreground = ${colors.cputemp-label-fg}
+
+
+; =======================================================================
+; ================================= ETH =================================
+; =======================================================================
 [module/eth]
 type = internal/network
 interface = enp30s0
 interval = 2 
-;format-connected-underline = ${colors.secondary}
 format-connected-prefix = " "
-format-connected-prefix-foreground = ${colors.foreground-alt}
+format-connected-prefix-background = ${colors.eth-format-connected-prefix-bg}
+format-connected-prefix-foreground = ${colors.eth-format-connected-prefix-fg}
+
 label-connected = :%downspeed% :%upspeed%
+label-connected-background = ${colors.eth-label-connected-bg}
+label-connected-foreground = ${colors.eth-label-connected-fg}
 
-;format-disconnected-underline = ${self.format-connected-underline}
 format-disconnected = <label-disconnected>
-label-disconnected = no internet
-label-disconnected-foreground = ${colors.foreground-alt}
+format-disconnected-prefix-background = ${colors.eth-format-disconnected-prefix-bg}
+format-disconnected-prefix-foreground = ${colors.eth-format-disconnected-prefix-fg}
 
-; Right-date
+label-disconnected = no internet
+label-disconnected-background = ${colors.eth-label-disconnected-bg}
+label-disconnected-foreground = ${colors.eth-label-disconnected-fg}
+label-disconnected-underline = ${colors.eth-label-disconnected-underline}
+
+format-connected-padding = 2
+format-disconnected-padding = 0
+
+
+; ========================================================================
+; ================================= DATE =================================
+; ========================================================================
 [module/date]
 type = internal/date
 interval = 5
 
-date =
 date-alt = " %Y-%m-%d"
 
 time = %H:%M
 time-alt = %H:%M:%S
 
 format-prefix = 
-format-prefix-foreground = ${colors.foreground-alt}
-;format-underline = ${colors.secondary}
+format-prefix-background = ${colors.date-format-prefix-bg}
+format-prefix-foreground = ${colors.date-format-prefix-fg}
 
 label = %date% %time%
-
-; Right-powermenu
-[module/powermenu]
-type = custom/menu
-
-expand-right = true
-
-format-spacing = 1
-
-label-open = 
-label-open-foreground = #e60053
-label-close =  cancel
-label-close-foreground = #e60053
-label-separator = |
-label-separator-foreground = ${colors.foreground-alt}
-
-menu-0-0 = reboot
-menu-0-0-exec = menu-open-1
-menu-0-1 = power off
-menu-0-1-exec = menu-open-2
-
-menu-1-0 = cancel
-menu-1-0-exec = menu-open-0
-menu-1-1 = reboot
-menu-1-1-exec = sudo reboot
-
-menu-2-0 = power off
-menu-2-0-exec = sudo poweroff
-menu-2-1 = cancel
-menu-2-1-exec = menu-open-0
+label-background = ${colors.date-label-bg}
+label-foreground = ${colors.date-label-fg}
 
 ; vim:ft=dosini
