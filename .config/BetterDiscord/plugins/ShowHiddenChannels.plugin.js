@@ -1,8 +1,8 @@
 //META{"name":"ShowHiddenChannels","authorId":"278543574059057154","invite":"Jx3TjNS","donate":"https://www.paypal.me/MircoWittrien","patreon":"https://www.patreon.com/MircoWittrien","website":"https://github.com/mwittrien/BetterDiscordAddons/tree/master/Plugins/ShowHiddenChannels","source":"https://raw.githubusercontent.com/mwittrien/BetterDiscordAddons/master/Plugins/ShowHiddenChannels/ShowHiddenChannels.plugin.js"}*//
 
 var ShowHiddenChannels = (_ => {
-	var blacklist = [], hiddenCategory;
-			
+	var blacklist = [], collapselist = [], hiddenCategory, overrideTypes = [];
+	
 	const settingsMap = {
 		GUILD_TEXT: "showText",
 		GUILD_VOICE: "showVoice",
@@ -14,7 +14,8 @@ var ShowHiddenChannels = (_ => {
 		GUILD_TEXT: "TEXT_CHANNEL",
 		GUILD_VOICE: "VOICE_CHANNEL",
 		GUILD_ANNOUNCEMENT: "NEWS_CHANNEL",
-		GUILD_STORE: "STORE_CHANNEL"
+		GUILD_STORE: "STORE_CHANNEL",
+		GUILD_CATEGORY: "CATEGORY"
 	};
 
 	const channelIcons = {
@@ -37,11 +38,11 @@ var ShowHiddenChannels = (_ => {
 		}
 		render() {
 			return BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.ListRow, {
-				prefix: BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.Avatar, {
+				prefix: BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.AvatarComponents.default, {
 					className: BDFDB.disCN.listavatar,
 					src: BDFDB.UserUtils.getAvatar(this.props.user.id),
 					status: BDFDB.UserUtils.getStatus(this.props.user.id),
-					size: BDFDB.LibraryComponents.Avatar.Sizes.SIZE_40
+					size: BDFDB.LibraryComponents.AvatarComponents.Sizes.SIZE_40
 				}),
 				label: [
 					BDFDB.ReactUtils.createElement("span", {
@@ -88,7 +89,7 @@ var ShowHiddenChannels = (_ => {
 	return class ShowHiddenChannels {
 		getName () {return "ShowHiddenChannels";}
 
-		getVersion () {return "2.7.8";}
+		getVersion () {return "2.7.9";}
 
 		getAuthor () {return "DevilBro";}
 
@@ -96,7 +97,8 @@ var ShowHiddenChannels = (_ => {
 
 		constructor () {
 			this.changelog = {
-				"improved":[["UserId: id...","Instead of just showing the user id when a user is not cached, the plugin now tries to fetch the user"]]
+				"fixed":[["Access Modal","Shows roles/users again"]],
+				"improved":[["Hide locked channels toggle","Added toggle option similar to hide muted channels to server contextmenu"]]
 			};
 			
 			this.patchedModules = {
@@ -111,6 +113,8 @@ var ShowHiddenChannels = (_ => {
 		}
 
 		initConstructor () {
+			overrideTypes = Object.keys(BDFDB.DiscordConstants.PermissionOverrideType);
+			
 			this.defaults = {
 				settings: {
 					sortNative:				{value:false, 	description:"Sort hidden Channels in the native Order"},
@@ -147,7 +151,7 @@ var ShowHiddenChannels = (_ => {
 				children: [
 					BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.SettingsGuildList, {
 						className: BDFDB.disCN.marginbottom20,
-						disabled: BDFDB.DataUtils.load(this, "blacklist"),
+						disabled: blacklist,
 						onClick: disabledGuilds => {
 							this.saveBlacklist(disabledGuilds);
 						}
@@ -210,6 +214,9 @@ var ShowHiddenChannels = (_ => {
 				let loadedBlacklist = BDFDB.DataUtils.load(this, "blacklist");
 				this.saveBlacklist(!BDFDB.ArrayUtils.is(loadedBlacklist) ? [] : loadedBlacklist);
 				
+				let loadedCollapselist = BDFDB.DataUtils.load(this, "categorydata");
+				this.saveCollapselist(!BDFDB.ArrayUtils.is(loadedCollapselist) ? [] : loadedCollapselist);
+				
 				BDFDB.ModuleUtils.patch(this, BDFDB.LibraryModules.UnreadChannelUtils, "hasUnread", {after: e => {
 					return e.returnValue && !this.isChannelHidden(e.methodArguments[0]);
 				}});
@@ -219,25 +226,23 @@ var ShowHiddenChannels = (_ => {
 				}});
 				
 				BDFDB.ModuleUtils.patch(this, BDFDB.LibraryModules.CategoryCollapseStore, "isCollapsed", {after: e => {
-					if (e.methodArguments[0] && e.methodArguments[0].endsWith("hidden")) return (BDFDB.DataUtils.load(this, "categorydata", "collapsed") || []).includes(e.methodArguments[0]);
+					if (e.methodArguments[0] && e.methodArguments[0].endsWith("hidden")) return collapselist.includes(e.methodArguments[0]);
 				}});
 				
 				BDFDB.ModuleUtils.patch(this, BDFDB.LibraryModules.CategoryCollapseUtils, "categoryCollapse", {before: e => {
 					if (e.methodArguments[0] && e.methodArguments[0].endsWith("hidden")) {
-						let collapsed = BDFDB.DataUtils.load(this, "categorydata", "collapsed") || [];
-						if (!collapsed.includes(e.methodArguments[0])) {
-							collapsed.push(e.methodArguments[0]);
-							BDFDB.DataUtils.save(collapsed, this, "categorydata", "collapsed");
+						if (!collapselist.includes(e.methodArguments[0])) {
+							collapselist.push(e.methodArguments[0]);
+							this.saveCollapselist(BDFDB.ArrayUtils.removeCopies(collapselist));
 						}
 					}
 				}});
 				
 				BDFDB.ModuleUtils.patch(this, BDFDB.LibraryModules.CategoryCollapseUtils, "categoryExpand", {before: e => {
 					if (e.methodArguments[0] && e.methodArguments[0].endsWith("hidden")) {
-						let collapsed = BDFDB.DataUtils.load(this, "categorydata", "collapsed") || [];
-						if (collapsed.includes(e.methodArguments[0])) {
-							BDFDB.ArrayUtils.remove(collapsed, e.methodArguments[0], true);
-							BDFDB.DataUtils.save(collapsed, this, "categorydata", "collapsed");
+						if (collapselist.includes(e.methodArguments[0])) {
+							BDFDB.ArrayUtils.remove(collapselist, e.methodArguments[0], true);
+							this.saveCollapselist(BDFDB.ArrayUtils.removeCopies(collapselist));
 						}
 					}
 				}});
@@ -276,24 +281,45 @@ var ShowHiddenChannels = (_ => {
 		onChannelContextMenu (e) {
 			if (e.instance.props.channel) {
 				if (e.instance.props.channel.id.endsWith("hidden") && e.instance.props.channel.type == BDFDB.DiscordConstants.ChannelTypes.GUILD_CATEGORY) {
-					let [children, index] = BDFDB.ReactUtils.findChildren(e.returnvalue, {name: "ChannelMuteItem"});
+					let [children, index] = BDFDB.ReactUtils.findParent(e.returnvalue, {name: "ChannelMuteItem"});
 					if (index > -1) children.splice(index, 1);
 				}
 				let isHidden = this.isChannelHidden(e.instance.props.channel.id);
 				if (isHidden || BDFDB.DataUtils.get(this, "settings", "showForNormal")) {
-					let [children, index] = BDFDB.ContextMenuUtils.findItem(e.returnvalue, {id: "devmode-copy-id", group: true});
-					children.splice(index > -1 ? index : children.length, 0, BDFDB.ContextMenuUtils.createItem(BDFDB.LibraryComponents.MenuItems.MenuGroup, {
+					let [children, index] = BDFDB.ContextMenuUtils.findItem(e.returnvalue, {id: "mark-channel-read", group: true});
+					children.splice(index > -1 ? index + 1 : 0, 0, BDFDB.ContextMenuUtils.createItem(BDFDB.LibraryComponents.MenuItems.MenuGroup, {
 						children: BDFDB.ContextMenuUtils.createItem(BDFDB.LibraryComponents.MenuItems.MenuItem, {
 							label: BDFDB.LanguageUtils.LanguageStrings.CHANNEL + " " + BDFDB.LanguageUtils.LanguageStrings.ACCESSIBILITY,
 							id: BDFDB.ContextMenuUtils.createItemId(this.name, "permissions"),
 							action: _ => {
-								BDFDB.ContextMenuUtils.close(e.instance);
 								this.showAccessModal(e.instance.props.channel, !isHidden);
 							}
 						})
 					}));
 				}
 			}
+		}
+		
+		onGuildContextMenu (e) {
+			if (e.instance.props.guild) {
+				let [children, index] = BDFDB.ContextMenuUtils.findItem(e.returnvalue, {id: "hide-muted-channels"});
+				if (index > -1) children.splice(index + 1, 0, BDFDB.ContextMenuUtils.createItem(BDFDB.LibraryComponents.MenuItems.MenuCheckboxItem, {
+					label: this.labels.context_hidehidden_text,
+					id: BDFDB.ContextMenuUtils.createItemId(this.name, "hide-locked-channels"),
+					checked: blacklist.includes(e.instance.props.guild.id),
+					action: value => {
+						if (value) blacklist.push(e.instance.props.guild.id);
+						else BDFDB.ArrayUtils.remove(blacklist, e.instance.props.guild.id, true);
+						this.saveBlacklist(BDFDB.ArrayUtils.removeCopies(blacklist));
+
+						BDFDB.ModuleUtils.forceAllUpdates(this, "Channels");
+					}
+				}));
+			}
+		}
+		
+		onGuildHeaderContextMenu (e) {
+			this.onGuildContextMenu(e);
 		}
 		
 		processChannels (e) {
@@ -372,12 +398,12 @@ var ShowHiddenChannels = (_ => {
 			}
 			if (e.instance.props.channel && this.isChannelHidden(e.instance.props.channel.id)) {
 				if (e.returnvalue) {
-					let [children, index] = BDFDB.ReactUtils.findChildren(e.returnvalue, {name: "Icon"});
+					let [children, index] = BDFDB.ReactUtils.findParent(e.returnvalue, {name: "Icon"});
 					if (index > -1) children[index] = BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.SvgIcon, {
 						nativeClass: true,
 						iconSVG: `<svg class="${BDFDB.disCN.channelicon}" width="24" height="24" viewBox="0 0 24 24"><mask id="${this.name + e.instance.props.channel.id}" fill="black"><path d="M 0 0 H 24 V 24 H 0 Z" fill="white"></path><path d="M24 0 H 13 V 12 H 24 Z" fill="black"></path></mask><path mask="url(#${this.name + e.instance.props.channel.id})" fill="currentColor" fill-rule="evenodd" clip-rule="evenodd" d="${this.channelIcons[BDFDB.DiscordConstants.ChannelTypes[e.instance.props.channel.type]] || this.channelIcons.DEFAULT}"></path><path fill="currentColor" d="M 21.025 5 V 4 C 21.025 2.88 20.05 2 19 2 C 17.95 2 17 2.88 17 4 V 5 C 16.4477 5 16 5.44772 16 6 V 9 C 16 9.55228 16.4477 10 17 10 H 19 H 21 C 21.5523 10 22 9.55228 22 9 V 5.975C22 5.43652 21.5635 5 21.025 5 Z M 20 5 H 18 V 4 C 18 3.42857 18.4667 3 19 3 C 19.5333 3 20 3.42857 20 4 V 5 Z"></path></svg>`
 					});
-					[children, index] = BDFDB.ReactUtils.findChildren(e.returnvalue, {props:[["className", BDFDB.disCN.channelchildren]]});
+					[children, index] = BDFDB.ReactUtils.findParent(e.returnvalue, {props:[["className", BDFDB.disCN.channelchildren]]});
 					if (index > -1 && children[index].props && children[index].props.children) {
 						children[index].props.children = [BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.TooltipContainer, {
 							text: BDFDB.LanguageUtils.LanguageStrings.CHANNEL_LOCKED_SHORT,
@@ -432,6 +458,11 @@ var ShowHiddenChannels = (_ => {
 			BDFDB.DataUtils.save(savedBlacklist, this, "blacklist");
 		}
 		
+		saveCollapselist (savedCollapselist) {
+			collapselist = savedCollapselist;
+			BDFDB.DataUtils.save(savedCollapselist, this, "categorydata");
+		}
+		
 		showAccessModal (channel, allowed) {
 			let guild = BDFDB.LibraryModules.GuildStore.getGuild(channel.guild_id);
 			let myMember = guild && BDFDB.LibraryModules.MemberStore.getMember(guild.id, BDFDB.UserUtils.me.id);
@@ -440,19 +471,19 @@ var ShowHiddenChannels = (_ => {
 				let lightTheme = BDFDB.DiscordUtils.getTheme() == BDFDB.disCN.themelight;
 				let allowedRoles = [], allowedUsers = [], deniedRoles = [], deniedUsers = [], everyoneDenied = false;
 				for (let id in channel.permissionOverwrites) {
-					if (channel.permissionOverwrites[id].type == "role" && (guild.roles[id] && guild.roles[id].name != "@everyone") && ((channel.permissionOverwrites[id].allow | BDFDB.DiscordConstants.Permissions.VIEW_CHANNEL) == channel.permissionOverwrites[id].allow || (channel.permissionOverwrites[id].allow | BDFDB.DiscordConstants.Permissions.CONNECT) == channel.permissionOverwrites[id].allow)) {
+					if ((channel.permissionOverwrites[id].type == BDFDB.DiscordConstants.PermissionOverrideType.ROLE || overrideTypes[channel.permissionOverwrites[id].type] == BDFDB.DiscordConstants.PermissionOverrideType.ROLE) && (guild.roles[id] && guild.roles[id].name != "@everyone") && ((channel.permissionOverwrites[id].allow | BDFDB.DiscordConstants.Permissions.VIEW_CHANNEL) == channel.permissionOverwrites[id].allow || (channel.permissionOverwrites[id].allow | BDFDB.DiscordConstants.Permissions.CONNECT) == channel.permissionOverwrites[id].allow)) {
 						allowedRoles.push(Object.assign({overwritten: myMember.roles.includes(id) && !allowed}, guild.roles[id]));
 					}
-					else if (channel.permissionOverwrites[id].type == "member" && ((channel.permissionOverwrites[id].allow | BDFDB.DiscordConstants.Permissions.VIEW_CHANNEL) == channel.permissionOverwrites[id].allow || (channel.permissionOverwrites[id].allow | BDFDB.DiscordConstants.Permissions.CONNECT) == channel.permissionOverwrites[id].allow)) {
+					else if ((channel.permissionOverwrites[id].type == BDFDB.DiscordConstants.PermissionOverrideType.MEMBER || overrideTypes[channel.permissionOverwrites[id].type] == BDFDB.DiscordConstants.PermissionOverrideType.MEMBER) && ((channel.permissionOverwrites[id].allow | BDFDB.DiscordConstants.Permissions.VIEW_CHANNEL) == channel.permissionOverwrites[id].allow || (channel.permissionOverwrites[id].allow | BDFDB.DiscordConstants.Permissions.CONNECT) == channel.permissionOverwrites[id].allow)) {
 						let user = BDFDB.LibraryModules.UserStore.getUser(id);
 						if (user) allowedUsers.push(Object.assign({}, user, BDFDB.LibraryModules.MemberStore.getMember(guild.id, id) || {}));
 						else allowedUsers.push({id: id, username: `UserId: ${id}`, fetchable: true});
 					}
-					if (channel.permissionOverwrites[id].type == "role" && ((channel.permissionOverwrites[id].deny | BDFDB.DiscordConstants.Permissions.VIEW_CHANNEL) == channel.permissionOverwrites[id].deny || (channel.permissionOverwrites[id].deny | BDFDB.DiscordConstants.Permissions.CONNECT) == channel.permissionOverwrites[id].deny)) {
+					if ((channel.permissionOverwrites[id].type == BDFDB.DiscordConstants.PermissionOverrideType.ROLE || overrideTypes[channel.permissionOverwrites[id].type] == BDFDB.DiscordConstants.PermissionOverrideType.ROLE) && ((channel.permissionOverwrites[id].deny | BDFDB.DiscordConstants.Permissions.VIEW_CHANNEL) == channel.permissionOverwrites[id].deny || (channel.permissionOverwrites[id].deny | BDFDB.DiscordConstants.Permissions.CONNECT) == channel.permissionOverwrites[id].deny)) {
 						deniedRoles.push(guild.roles[id]);
 						if (guild.roles[id] && guild.roles[id].name == "@everyone") everyoneDenied = true;
 					}
-					else if (channel.permissionOverwrites[id].type == "member" && ((channel.permissionOverwrites[id].deny | BDFDB.DiscordConstants.Permissions.VIEW_CHANNEL) == channel.permissionOverwrites[id].deny || (channel.permissionOverwrites[id].deny | BDFDB.DiscordConstants.Permissions.CONNECT) == channel.permissionOverwrites[id].deny)) {
+					else if ((channel.permissionOverwrites[id].type == BDFDB.DiscordConstants.PermissionOverrideType.MEMBER || overrideTypes[channel.permissionOverwrites[id].type] == BDFDB.DiscordConstants.PermissionOverrideType.MEMBER) && ((channel.permissionOverwrites[id].deny | BDFDB.DiscordConstants.Permissions.VIEW_CHANNEL) == channel.permissionOverwrites[id].deny || (channel.permissionOverwrites[id].deny | BDFDB.DiscordConstants.Permissions.CONNECT) == channel.permissionOverwrites[id].deny)) {
 						let user = BDFDB.LibraryModules.UserStore.getUser(id);
 						if (user) deniedUsers.push(Object.assign({}, user, BDFDB.LibraryModules.MemberStore.getMember(guild.id, id) || {}));
 						else deniedUsers.push({id: id, username: `UserId: ${id}`, fetchable: true});
@@ -479,7 +510,7 @@ var ShowHiddenChannels = (_ => {
 									text: channel.name
 								}, {
 									title: BDFDB.LanguageUtils.LanguageStrings.FORM_LABEL_CHANNEL_TOPIC,
-									text: channel.topic || BDFDB.LanguageUtils.LanguageStrings.CHANNEL_TOPIC_EMPTY
+									text: channel.topic || "---"
 								}, {
 									title: BDFDB.LanguageUtils.LanguageStrings.CHANNEL_TYPE,
 									text: BDFDB.LanguageUtils.LanguageStrings[typeNameMap[BDFDB.DiscordConstants.ChannelTypes[channel.type]]]
@@ -525,106 +556,127 @@ var ShowHiddenChannels = (_ => {
 			switch (BDFDB.LanguageUtils.getLanguage().id) {
 				case "hr":		//croatian
 					return {
+						context_hidehidden_text:		"Sakrij skrivene kanale",
 						modal_allowed_text:				"Dopušteno",
 						modal_denied_text:				"Odbijen"
 					};
 				case "da":		//danish
 					return {
+						context_hidehidden_text:		"Skjul låste kanaler",
 						modal_allowed_text:				"Odbijen",
 						modal_denied_text:				"Nægtet"
 					};
 				case "de":		//german
 					return {
+						context_hidehidden_text:		"Versteckte Kanäle ausblenden",
 						modal_allowed_text:				"Erlaubt",
 						modal_denied_text:				"Verweigert"
 					};
 				case "es":		//spanish
 					return {
+						context_hidehidden_text:		"Ocultar canales bloqueados",
 						modal_allowed_text:				"Permitido",
 						modal_denied_text:				"Negado"
 					};
 				case "fr":		//french
 					return {
+						context_hidehidden_text:		"Masquer les salons verrouillées",
 						modal_allowed_text:				"Permis",
 						modal_denied_text:				"Nié"
 					};
 				case "it":		//italian
 					return {
+						context_hidehidden_text:		"Nascondi canali bloccati",
 						modal_allowed_text:				"Permesso",
 						modal_denied_text:				"Negato"
 					};
 				case "nl":		//dutch
 					return {
+						context_hidehidden_text:		"Vergrendelde kanalen verbergen",
 						modal_allowed_text:				"Toegestaan",
 						modal_denied_text:				"Ontkend"
 					};
 				case "no":		//norwegian
 					return {
+						context_hidehidden_text:		"Skjul låste kanaler",
 						modal_allowed_text:				"Tillatt",
 						modal_denied_text:				"Benektet"
 					};
 				case "pl":		//polish
 					return {
+						context_hidehidden_text:		"Ukryj zablokowane kanały",
 						modal_allowed_text:				"Dozwolony",
 						modal_denied_text:				"Odmówiono"
 					};
 				case "pt-BR":	//portuguese (brazil)
 					return {
+						context_hidehidden_text:		"Ocultar canais bloqueados",
 						modal_allowed_text:				"Permitido",
 						modal_denied_text:				"Negado"
 					};
 				case "fi":		//finnish
 					return {
+						context_hidehidden_text:		"Piilota lukitut kanavat",
 						modal_allowed_text:				"Sallittu",
 						modal_denied_text:				"Evätty"
 					};
 				case "sv":		//swedish
 					return {
+						context_hidehidden_text:		"Dölj låsta kanaler",
 						modal_allowed_text:				"Tillåten",
 						modal_denied_text:				"Nekas"
 					};
 				case "tr":		//turkish
 					return {
+						context_hidehidden_text:		"Kilitli Kanalları Gizle",
 						modal_allowed_text:				"Izin",
 						modal_denied_text:				"Inkar"
 					};
 				case "cs":		//czech
 					return {
+						context_hidehidden_text:		"Skrýt uzamčené kanály",
 						modal_allowed_text:				"Povoleno",
 						modal_denied_text:				"Odepřeno"
 					};
 				case "bg":		//bulgarian
 					return {
+						context_hidehidden_text:		"Скриване на заключени канали",
 						modal_allowed_text:				"Позволен",
 						modal_denied_text:				"Отказан"
 					};
 				case "ru":		//russian
 					return {
+						context_hidehidden_text:		"Скрыть заблокированные каналы",
 						modal_allowed_text:				"Разрешается",
 						modal_denied_text:				"Отказано"
 					};
 				case "uk":		//ukrainian
 					return {
+						context_hidehidden_text:		"Сховати заблоковані канали",
 						modal_allowed_text:				"Дозволено",
 						modal_denied_text:				"Заперечували"
 					};
 				case "ja":		//japanese
 					return {
+						context_hidehidden_text:		"ロックされたチャンネルを隠す",
 						modal_allowed_text:				"許可された",
 						modal_denied_text:				"拒否されました"
 					};
 				case "zh-TW":	//chinese (traditional)
 					return {
+						context_hidehidden_text:		"隱藏鎖定的頻道",
 						modal_allowed_text:				"允許的",
 						modal_denied_text:				"被拒絕"
 					};
 				case "ko":		//korean
 					return {
+						context_hidehidden_text:		"잠긴 채널 숨기기",
 						modal_allowed_text:				"허용됨",
 						modal_denied_text:				"거부"
 					};
 				default:		//default: english
 					return {
+						context_hidehidden_text:		"Hide Locked Channels",
 						modal_allowed_text:				"Permitted",
 						modal_denied_text:				"Denied"
 					};
@@ -632,3 +684,5 @@ var ShowHiddenChannels = (_ => {
 		}
 	}
 })();
+
+module.exports = ShowHiddenChannels;

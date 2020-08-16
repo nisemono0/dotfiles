@@ -7,12 +7,12 @@ var OwnerTag = (_ => {
 		OWNER: 2
 	};
 	
-	var settings = {};
+	var settings = {}, inputs = {};
 	
 	return class OwnerTag {
 		getName () {return "OwnerTag";}
 
-		getVersion () {return "1.2.9";}
+		getVersion () {return "1.3.0";}
 
 		getAuthor () {return "DevilBro";}
 
@@ -20,7 +20,7 @@ var OwnerTag = (_ => {
 
 		constructor () {
 			this.changelog = {
-				"added":[["Ignore bots","Added options to not add admin tag for bots with admin rights"]]
+				"fixed":[["BotTag","BotTag style is now properly inverted on the userpopout if the user is playing a game etc."]]
 			};
 
 			this.patchedModules = {
@@ -175,7 +175,7 @@ var OwnerTag = (_ => {
 			if (e.instance.props.message && settings.addInChatWindow) {
 				let userType = this.getUserType(e.instance.props.message.author);
 				if (userType) {
-					let [children, index] = BDFDB.ReactUtils.findChildren(e.returnvalue.props.children.slice(1), {name: "Popout", props: [["className", BDFDB.disCN.messageusername]]});
+					let [children, index] = BDFDB.ReactUtils.findParent(e.returnvalue.props.children.slice(1), {name: "Popout", props: [["className", BDFDB.disCN.messageusername]]});
 					if (index > -1) this.injectOwnerTag(children, e.instance.props.message.author, userType, e.instance.props.compact ? 0 : 2, {
 						tagClass: e.instance.props.compact ? BDFDB.disCN.messagebottagcompact : BDFDB.disCN.messagebottagcozy,
 						useRem: true
@@ -212,9 +212,10 @@ var OwnerTag = (_ => {
 			if (e.instance.props.user && settings.addInUserPopout) {
 				let userType = this.getUserType(e.instance.props.user);
 				if (userType) {
-					let [children, index] = BDFDB.ReactUtils.findChildren(e.returnvalue, {props: [["className", BDFDB.disCN.userpopoutheadertagwithnickname]]});
+					let [children, index] = BDFDB.ReactUtils.findParent(e.returnvalue, {props: [["className", BDFDB.disCN.userpopoutheadertagwithnickname]]});
 					if (index > -1) this.injectOwnerTag(children, e.instance.props.user, userType, 2, {
-						tagClass: BDFDB.disCNS.userpopoutheaderbottagwithnickname + BDFDB.disCN.bottagnametag
+						tagClass: BDFDB.disCNS.userpopoutheaderbottagwithnickname + BDFDB.disCN.bottagnametag,
+						inverted: typeof e.instance.getMode == "function" && e.instance.getMode() !== "Normal"
 					});
 				}
 			}
@@ -223,7 +224,7 @@ var OwnerTag = (_ => {
 		injectOwnerTag (children, user, userType, insertIndex, config = {}) {
 			if (!BDFDB.ArrayUtils.is(children) || !user) return;
 			if (settings.useCrown || settings.hideNativeCrown) {
-				let [_, index] = BDFDB.ReactUtils.findChildren(children, {props: [["text",[BDFDB.LanguageUtils.LanguageStrings.GROUP_OWNER, BDFDB.LanguageUtils.LanguageStrings.GUILD_OWNER]]]});
+				let [_, index] = BDFDB.ReactUtils.findParent(children, {props: [["text",[BDFDB.LanguageUtils.LanguageStrings.GROUP_OWNER, BDFDB.LanguageUtils.LanguageStrings.GUILD_OWNER]]]});
 				if (index > -1) children[index] = null;
 			}
 			let channel = BDFDB.LibraryModules.ChannelStore.getChannel(BDFDB.LibraryModules.LastChannelStore.getChannelId());
@@ -253,7 +254,7 @@ var OwnerTag = (_ => {
 						backgroundColor: config.inverted ? (isBright && settings.useBlackFont ? "black" : null) : tagColor,
 						color: !config.inverted ? (isBright && settings.useBlackFont ? "black" : null) : tagColor
 					},
-					tag: BDFDB.DataUtils.get(this, "inputs", isOwner ? "ownTagName" : "ownAdminTagName")
+					tag: inputs[isOwner ? "ownTagName" : "ownAdminTagName"]
 				});
 			}
 			children.splice(insertIndex, 0, tag);
@@ -271,6 +272,7 @@ var OwnerTag = (_ => {
 	
 		forceUpdateAll () {
 			settings = BDFDB.DataUtils.get(this, "settings");
+			inputs = BDFDB.DataUtils.get(this, "inputs");
 			
 			BDFDB.ModuleUtils.forceAllUpdates(this);
 			BDFDB.MessageUtils.rerenderAll();

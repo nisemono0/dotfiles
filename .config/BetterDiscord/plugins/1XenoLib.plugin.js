@@ -41,7 +41,7 @@ module.exports = (() => {
           twitter_username: ''
         }
       ],
-      version: '1.3.22',
+      version: '1.3.26',
       description: 'Simple library to complement plugins with shared code without lowering performance. Also adds needed buttons to some plugins.',
       github: 'https://github.com/1Lighty',
       github_raw: 'https://raw.githubusercontent.com/1Lighty/BetterDiscordPlugins/master/Plugins/1XenoLib.plugin.js'
@@ -50,7 +50,7 @@ module.exports = (() => {
       {
         title: 'Boring changes',
         type: 'fixed',
-        items: ['Fixed context menu duplication', 'Fixed first notification not working properly if the position was at the bottom']
+        items: ['Fixed what Zere broke']
       }
     ],
     defaultConfig: [
@@ -102,7 +102,7 @@ module.exports = (() => {
             note: 'Disabling this will move the buttons to the bottom of plugin settings (if available)',
             id: 'extra',
             type: 'switch',
-            value: false
+            value: true
           }
         ]
       }
@@ -210,7 +210,7 @@ module.exports = (() => {
           try {
             if (origDef.__isBDFDBpatched && moduleToPatch.BDFDBpatch && typeof moduleToPatch.BDFDBpatch[functionName].originalMethod === 'function') {
               /* do NOT patch a patch by ZLIb, that'd be bad and cause double items in context menus */
-              if ((Utilities.getNestedProp(ZeresPluginLibrary, 'Patcher._patches') || []).findIndex(e => e.module === moduleToPatch) !== -1 && moduleToPatch.BDFDBpatch[functionName].originalMethod.__originalFunction) return;
+              if ((Utilities.getNestedProp(ZeresPluginLibrary, 'Patcher.patches') || []).findIndex(e => e.module === moduleToPatch) !== -1 && moduleToPatch.BDFDBpatch[functionName].originalMethod.__originalFunction) return;
               unpatches.push(patcher(moduleToPatch.BDFDBpatch[functionName], 'originalMethod', callback, options));
             }
           } catch (err) {
@@ -478,6 +478,8 @@ module.exports = (() => {
         const LinkClassname = XenoLib.joinClassNames(XenoLib.getClass('anchorUnderlineOnHover anchor'), XenoLib.getClass('anchor anchorUnderlineOnHover'), 'bda-author');
         const handlePatch = (_this, _, ret) => {
           if (!_this.props.addon || !_this.props.addon.plugin || typeof _this.props.addon.plugin.getAuthor().indexOf('Lighty') === -1) return;
+          const settingsProps = Utilities.findInReactTree(ret, e => e && e.className === 'plugin-settings');
+          if (settingsProps) delete settingsProps.id;
           const author = Utilities.findInReactTree(ret, e => e && e.props && typeof e.props.className === 'string' && e.props.className.indexOf('bda-author') !== -1);
           if (!author || typeof author.props.children !== 'string' || author.props.children.indexOf('Lighty') === -1) return;
           const onClick = () => {
@@ -520,11 +522,23 @@ module.exports = (() => {
           const sourceLink = findLink('Source');
           const supportServerLink = findLink('Support Server');
           footerProps.children = [];
-          if (websiteLink) footerProps.children.push(websiteLink);
-          if (sourceLink) footerProps.children.push(websiteLink ? ' | ' : null, sourceLink);
-          footerProps.children.push(websiteLink || sourceLink ? ' | ' : null, React.createElement('a', { className: 'bda-link', onClick: e => ContextMenuActions.openContextMenu(e, e => React.createElement(XenoLib.ReactComponents.ErrorBoundary, { label: 'Donate button CTX menu' }, React.createElement(ContextMenuWrapper, { menu: XenoLib.createContextMenuGroup([XenoLib.createContextMenuItem('Paypal', () => window.open('https://paypal.me/lighty13'), 'paypal'), XenoLib.createContextMenuItem('Ko-fi', () => window.open('https://ko-fi.com/lighty_'), 'kofi'), XenoLib.createContextMenuItem('Patreon', () => window.open('https://www.patreon.com/lightyp'), 'patreon')]), ...e }))) }, 'Donate'));
-          footerProps.children.push(' | ', supportServerLink || React.createElement('a', { className: 'bda-link', onClick: () => (LayerManager.popLayer(), InviteActions.acceptInviteAndTransitionToInviteChannel('NYvWdN5')) }, 'Support Server'));
-          footerProps.children.push(' | ', React.createElement('a', { className: 'bda-link', onClick: () => (_this.props.addon.plugin.showChangelog ? _this.props.addon.plugin.showChangelog() : Modals.showChangelogModal(_this.props.addon.plugin.getName() + ' Changelog', _this.props.addon.plugin.getVersion(), _this.props.addon.plugin.getChanges())) }, 'Changelog'));
+          if (websiteLink) {
+            const href = websiteLink.props.href;
+            delete websiteLink.props.href;
+            delete websiteLink.props.target;
+            websiteLink.props.onClick = () => window.open(href);
+            footerProps.children.push(websiteLink);
+          }
+          if (sourceLink) {
+            const href = sourceLink.props.href;
+            delete sourceLink.props.href;
+            delete sourceLink.props.target;
+            sourceLink.props.onClick = () => window.open(href);
+            footerProps.children.push(websiteLink ? ' | ' : null, sourceLink);
+          }
+          footerProps.children.push(websiteLink || sourceLink ? ' | ' : null, React.createElement('a', { className: 'bda-link bda-link-website', onClick: e => ContextMenuActions.openContextMenu(e, e => React.createElement(XenoLib.ReactComponents.ErrorBoundary, { label: 'Donate button CTX menu' }, React.createElement(ContextMenuWrapper, { menu: XenoLib.createContextMenuGroup([XenoLib.createContextMenuItem('Paypal', () => window.open('https://paypal.me/lighty13'), 'paypal'), XenoLib.createContextMenuItem('Ko-fi', () => window.open('https://ko-fi.com/lighty_'), 'kofi'), XenoLib.createContextMenuItem('Patreon', () => window.open('https://www.patreon.com/lightyp'), 'patreon')]), ...e }))) }, 'Donate'));
+          footerProps.children.push(' | ', supportServerLink || React.createElement('a', { className: 'bda-link bda-link-website', onClick: () => (LayerManager.popLayer(), InviteActions.acceptInviteAndTransitionToInviteChannel('NYvWdN5')) }, 'Support Server'));
+          footerProps.children.push(' | ', React.createElement('a', { className: 'bda-link bda-link-website', onClick: () => (_this.props.addon.plugin.showChangelog ? _this.props.addon.plugin.showChangelog() : Modals.showChangelogModal(_this.props.addon.plugin.getName() + ' Changelog', _this.props.addon.plugin.getVersion(), _this.props.addon.plugin.getChanges())) }, 'Changelog'));
           footerProps = null;
         };
         async function patchRewriteCard() {
@@ -718,8 +732,8 @@ module.exports = (() => {
      */
     const FormItem = WebpackModules.getByDisplayName('FormItem');
     const DeprecatedModal = WebpackModules.getByDisplayName('DeprecatedModal');
-    const ModalContainerClassname = XenoLib.getClass('mobile container');
-    const ModalContentClassname = XenoLib.getClass('mobile container content');
+    const ModalContainerClassname = /* XenoLib.getClass('mobile container') */'';
+    const ModalContentClassname = /* XenoLib.getClass('mobile container content') */'';
 
     const ColorPickerComponent = WebpackModules.getByDisplayName('ColorPicker');
 
@@ -917,7 +931,7 @@ module.exports = (() => {
     const FancyParser = (() => {
       const ParsersModule = WebpackModules.getByProps('parseAllowLinks', 'parse');
       try {
-        const DeepClone = WebpackModules.getByString('/^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(');
+        const DeepClone = WebpackModules.find(m => m.default && m.default.toString().indexOf('/^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(') !== -1 && !m.useVirtualizedAnchor).default;
         const ReactParserRules = WebpackModules.find(m => m.default && m.default.toString().search(/function\(\){return \w}$/) !== -1).default; /* thanks Zere for not fixing the bug ._. */
         const FANCY_PANTS_PARSER_RULES = DeepClone([WebpackModules.getByProps('RULES', 'ALLOW_LINKS_RULES').ALLOW_LINKS_RULES, ReactParserRules()]);
         FANCY_PANTS_PARSER_RULES.image = WebpackModules.getByProps('defaultParse').defaultRules.image;
@@ -1000,7 +1014,7 @@ module.exports = (() => {
             isFistType = false;
         }
       }
-      const renderFooter = () => ['Need support? ', React.createElement('a', { className: XenoLib.joinClassNames(AnchorClasses.anchor, AnchorClasses.anchorUnderlineOnHover), onClick: () => (LayerManager.popLayer(), ModalStack.pop(), InviteActions.acceptInviteAndTransitionToInviteChannel('NYvWdN5')) }, 'Join my support server'), FancyParser('! Or consider donating via [Paypal](https://paypal.me/lighty13), [Ko-fi](https://ko-fi.com/lighty_) or [Patreon](https://www.patreon.com/lightyp)!')];
+      const renderFooter = () => ['Need support? ', React.createElement('a', { className: XenoLib.joinClassNames(AnchorClasses.anchor, AnchorClasses.anchorUnderlineOnHover), onClick: () => (LayerManager.popLayer(), ModalStack.pop(), InviteActions.acceptInviteAndTransitionToInviteChannel('NYvWdN5')) }, 'Join my support server'), '! Or consider donating via ', React.createElement('a', { className: XenoLib.joinClassNames(AnchorClasses.anchor, AnchorClasses.anchorUnderlineOnHover), onClick: () => window.open('https://paypal.me/lighty13') }, 'Paypal'), ', ', React.createElement('a', { className: XenoLib.joinClassNames(AnchorClasses.anchor, AnchorClasses.anchorUnderlineOnHover), onClick: () => window.open('https://ko-fi.com/lighty_') }, 'Ko-fi'), ', ', React.createElement('a', { className: XenoLib.joinClassNames(AnchorClasses.anchor, AnchorClasses.anchorUnderlineOnHover), onClick: () => window.open('https://www.patreon.com/lightyp') }, 'Patreon'), '!'];
       ModalStack.push(props => React.createElement(XenoLib.ReactComponents.ErrorBoundary, { label: 'Changelog', onError: () => props.onClose() }, React.createElement(ChangelogModal, { className: ChangelogClasses.container, selectable: true, onScroll: _ => _, onClose: _ => _, renderHeader: () => React.createElement(FlexChild.Child, { grow: 1, shrink: 1 }, React.createElement(Titles.default, { tag: Titles.Tags.H4 }, title), React.createElement(TextElement, { size: TextElement.Sizes.SIZE_12, className: ChangelogClasses.date }, `Version ${version}`)), renderFooter: () => React.createElement(FlexChild.Child, { gro: 1, shrink: 1 }, React.createElement(TextElement, { size: TextElement.Sizes.SIZE_12 }, footer ? (typeof footer === 'string' ? FancyParser(footer) : footer) : renderFooter())), children: items, ...props })));
     };
 
@@ -1637,7 +1651,7 @@ module.exports = (() => {
         this.settings = LibrarySettings;
         XenoLib.changeName(__filename, '1XenoLib'); /* prevent user from changing libs filename */
         try {
-          ModalStack.popWithKey(`${this.name}_DEP_MODAL`);
+          WebpackModules.getByProps('openModal', 'hasModalOpen').closeModal(`${this.name}_DEP_MODAL`);
         } catch (e) {}
       }
       load() {
@@ -1733,7 +1747,7 @@ module.exports = (() => {
     if (global.BdApi && 'function' == typeof BdApi.getPlugin) {
       const a = (c, a) => ((c = c.split('.').map(b => parseInt(b))), (a = a.split('.').map(b => parseInt(b))), !!(a[0] > c[0])) || !!(a[0] == c[0] && a[1] > c[1]) || !!(a[0] == c[0] && a[1] == c[1] && a[2] > c[2]),
         b = BdApi.getPlugin('ZeresPluginLibrary');
-      ((b, c) => b && b._config && b._config.info && b._config.info.version && a(b._config.info.version, c))(b, '1.2.16') && (ZeresPluginLibraryOutdated = !0);
+      ((b, c) => b && b._config && b._config.info && b._config.info.version && a(b._config.info.version, c))(b, '1.2.20') && (ZeresPluginLibraryOutdated = !0);
     }
   } catch (e) {
     console.error('Error checking if ZeresPluginLibrary is out of date', e);
@@ -1759,17 +1773,16 @@ module.exports = (() => {
         }
         stop() {}
         handleMissingLib() {
-          const a = BdApi.findModuleByProps('isModalOpenWithKey');
-          if (a && a.isModalOpenWithKey(`${this.name}_DEP_MODAL`)) return;
+          const a = BdApi.findModuleByProps('openModal', 'hasModalOpen');
+          if (a && a.hasModalOpen(`${this.name}_DEP_MODAL`)) return;
           const b = !global.ZeresPluginLibrary,
             c = ZeresPluginLibraryOutdated ? 'Outdated Library' : 'Missing Library',
             d = `The Library ZeresPluginLibrary required for ${this.name} is ${ZeresPluginLibraryOutdated ? 'outdated' : 'missing'}.`,
-            e = BdApi.findModuleByProps('push', 'update', 'pop', 'popWithKey'),
-            f = BdApi.findModuleByDisplayName('Text'),
-            g = BdApi.findModule(a => a.defaultProps && a.key && 'confirm-modal' === a.key()),
-            h = () => BdApi.alert(c, BdApi.React.createElement('span', {}, BdApi.React.createElement('div', {}, d), `Due to a slight mishap however, you'll have to download the libraries yourself. This is not intentional, something went wrong, errors are in console.`, b || ZeresPluginLibraryOutdated ? BdApi.React.createElement('div', {}, BdApi.React.createElement('a', { href: 'https://betterdiscord.net/ghdl?id=2252', target: '_blank' }, 'Click here to download ZeresPluginLibrary')) : null));
-          if (!e || !g || !f) return console.error(`Missing components:${(e ? '' : ' ModalStack') + (g ? '' : ' ConfirmationModalComponent') + (f ? '' : 'TextElement')}`), h();
-          class i extends BdApi.React.PureComponent {
+            e = BdApi.findModuleByDisplayName('Text'),
+            f = BdApi.findModuleByDisplayName('ConfirmModal'),
+            g = () => BdApi.alert(c, BdApi.React.createElement('span', {}, BdApi.React.createElement('div', {}, d), `Due to a slight mishap however, you'll have to download the libraries yourself. This is not intentional, something went wrong, errors are in console.`, b || ZeresPluginLibraryOutdated ? BdApi.React.createElement('div', {}, BdApi.React.createElement('a', { href: 'https://betterdiscord.net/ghdl?id=2252', target: '_blank' }, 'Click here to download ZeresPluginLibrary')) : null));
+          if (!a || !f || !e) return console.error(`Missing components:${(a ? '' : ' ModalStack') + (f ? '' : ' ConfirmationModalComponent') + (e ? '' : 'TextElement')}`), g();
+          class h extends BdApi.React.PureComponent {
             constructor(a) {
               super(a), (this.state = { hasError: !1 });
             }
@@ -1780,60 +1793,56 @@ module.exports = (() => {
               return this.state.hasError ? null : this.props.children;
             }
           }
-          class j extends g {
-            submitModal() {
-              this.props.onConfirm();
-            }
-          }
-          let k = !1,
-            l = !1;
-          const m = e.push(
-            a => {
-              if (l) return null;
+          let i = !1,
+            j = !1;
+          const k = a.openModal(
+            b => {
+              if (j) return null;
               try {
                 return BdApi.React.createElement(
-                  i,
+                  h,
                   {
                     label: 'missing dependency modal',
                     onError: () => {
-                      e.popWithKey(m), h();
+                      a.closeModal(k), g();
                     }
                   },
                   BdApi.React.createElement(
-                    j,
+                    f,
                     Object.assign(
                       {
                         header: c,
-                        children: [BdApi.React.createElement(f, { size: f.Sizes.SIZE_16, children: [`${d} Please click Download Now to download it.`] })],
+                        children: BdApi.React.createElement(e, { size: e.Sizes.SIZE_16, children: [`${d} Please click Download Now to download it.`] }),
                         red: !1,
                         confirmText: 'Download Now',
                         cancelText: 'Cancel',
+                        onCancel: b.onClose,
                         onConfirm: () => {
-                          if (k) return;
-                          k = !0;
-                          const a = require('request'),
-                            b = require('fs'),
-                            c = require('path');
-                          a('https://raw.githubusercontent.com/rauenzi/BDPluginLibrary/master/release/0PluginLibrary.plugin.js', (a, d, f) => {
+                          if (i) return;
+                          i = !0;
+                          const b = require('request'),
+                            c = require('fs'),
+                            d = require('path');
+                          b('https://raw.githubusercontent.com/rauenzi/BDPluginLibrary/master/release/0PluginLibrary.plugin.js', (b, e, f) => {
                             try {
-                              if (a || 200 !== d.statusCode) return e.popWithKey(m), h();
-                              b.writeFile(c.join(BdApi.Plugins && BdApi.Plugins.folder ? BdApi.Plugins.folder : window.ContentManager.pluginsFolder, '0PluginLibrary.plugin.js'), f, () => {});
-                            } catch (a) {
-                              console.error('Fatal error downloading ZeresPluginLibrary', a), e.popWithKey(m), h();
+                              if (b || 200 !== e.statusCode) return a.closeModal(k), g();
+                              c.writeFile(d.join(BdApi.Plugins && BdApi.Plugins.folder ? BdApi.Plugins.folder : window.ContentManager.pluginsFolder, '0PluginLibrary.plugin.js'), f, () => {});
+                            } catch (b) {
+                              console.error('Fatal error downloading ZeresPluginLibrary', b), a.closeModal(k), g();
                             }
                           });
                         }
                       },
-                      a
+                      b,
+                      { onClose: () => {} }
                     )
                   )
                 );
-              } catch (a) {
-                return console.error('There has been an error constructing the modal', a), (l = !0), e.popWithKey(m), h(), null;
+              } catch (b) {
+                return console.error('There has been an error constructing the modal', b), (j = !0), a.closeModal(k), g(), null;
               }
             },
-            void 0,
-            `${this.name}_DEP_MODAL`
+            { modalKey: `${this.name}_DEP_MODAL` }
           );
         }
         get name() {
