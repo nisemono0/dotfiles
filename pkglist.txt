@@ -147,6 +147,7 @@ siji-git
 simple-mtpfs
 sqlitebrowser
 sudo
+syncplay
 sysfsutils
 systemd
 systemd-sysvcompat
