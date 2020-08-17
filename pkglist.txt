@@ -1,5 +1,6 @@
 adobe-source-han-sans-jp-fonts
 adobe-source-han-sans-otc-fonts
+arc-icon-theme
 atool
 autoconf
 automake
@@ -88,6 +89,7 @@ m4
 make
 man-db
 man-pages
+materia-gtk-theme
 mdadm
 mesa-vdpau
 mpc
@@ -95,6 +97,9 @@ mpd
 mpv
 nano
 ncmpcpp
+nemo
+nemo-fileroller
+nemo-preview
 neofetch
 nerd-fonts-inconsolata
 nerd-fonts-inconsolata-go
@@ -140,6 +145,7 @@ sed
 shadow
 siji-git
 simple-mtpfs
+sqlitebrowser
 sudo
 sysfsutils
 systemd
@@ -149,7 +155,6 @@ tar
 terminus-font
 termsyn-font
 texinfo
-thunar
 timidity++
 tk
 tree
@@ -167,7 +172,6 @@ ttf-monapo
 ttf-mononoki
 ttf-ubuntu-font-family
 tumbler
-ungoogled-chromium
 unrar
 unzip
 urxvt-perls
