@@ -78,6 +78,7 @@ lib32-mesa
 lib32-vulkan-radeon
 libreoffice-still
 libtool
+libwnck3
 licenses
 linux
 linux-firmware
@@ -131,6 +132,8 @@ pulseaudio
 pulseaudio-alsa
 pulsemixer
 py3status
+python-atspi
+python-pillow
 python-pip
 python-pywal
 qalculate-gtk
