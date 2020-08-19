@@ -98,13 +98,9 @@ pulse-format-muted-prefix-fg = ${self.foreground-alt}
 pulse-label-muted-bg = ${self.background}
 pulse-label-muted-fg = ${self.foreground-alt}
 
-; ==================== xkeyboard ====================
-xkey-format-prefix-bg = ${self.background}
-xkey-format-prefix-fg = ${self.foreground-alt}
-
-xkey-label-indicator-caps-bg = ${self.background}
-xkey-label-indicator-caps-fg = ${self.foreground-alt}
-xkey-label-indicator-caps-underline = ${self.underline}
+; ==================== fcitx ====================
+fcitx-format-prefix-bg = ${self.background}
+fcitx-format-prefix-fg = ${self.foreground-alt}
 
 ; ==================== memory ====================
 mem-format-prefix-bg = ${self.background}
@@ -182,7 +178,7 @@ font-2 = siji:pixelsize=10;2
 font-3 = "Ricty Nerd Font:style=Regular:size=10:antialas=false;2" 
 modules-left = i3 xwindow
 modules-center = mpd
-modules-right = updates-arch filesystem pulseaudio xkeyboard memory cpu cpu-temp-script eth date
+modules-right = updates-arch filesystem pulseaudio fcitx memory cpu cpu-temp-script eth date
 
 tray-position = right
 tray-padding = 2
@@ -335,22 +331,19 @@ label-muted-background = ${colors.pulse-label-muted-bg}
 label-muted-foreground = ${colors.pulse-label-muted-fg}
 
 
-; =============================================================================
-; ================================= XKEYBOARD =================================
-; =============================================================================
-[module/xkeyboard]
-type = internal/xkeyboard
-blacklist-0 = num lock
+; =========================================================================
+; ================================= FCITX =================================
+; =========================================================================
+[module/fcitx]
+type = custom/script
+exec = ~/.scripts/tools/polybar-scripts/polybar-fcitx-scripts/watch.sh
+
+tail = true
+interval = 0
 
 format-prefix = " "
-format-prefix-background = ${colors.xkey-format-prefix-bg}
-format-prefix-foreground = ${colors.xkey-format-prefix-fg}
-
-label-layout = %layout%
-label-indicator-on-capslock = "CAPS" 
-label-indicator-on-capslock-background = ${colors.xkey-label-indicator-caps-bg}
-label-indicator-on-capslock-foreground = ${colors.xkey-label-indicator-caps-fg}
-label-indicator-on-capslock-underline = ${colors.xkey-label-indicator-caps-underline}
+format-prefix-background = ${colors.fcitx-format-prefix-bg}
+format-prefix-foreground = ${colors.fcitx-format-prefix-fg}
 
 
 ; ==========================================================================
