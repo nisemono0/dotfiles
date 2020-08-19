@@ -22,6 +22,7 @@ code
 coreutils
 cowsay
 cryptsetup
+d-feet
 device-mapper
 dhcpcd
 diffutils
@@ -34,6 +35,9 @@ e2fsprogs
 efibootmgr
 elinks
 fakeroot
+fcitx
+fcitx-configtool
+fcitx-mozc
 feh
 ffmpeg
 ffmpegthumbnailer
