@@ -40,6 +40,7 @@ for_window [title="ncmpcpp"] floating enable sticky enable focus
 exec --no-startup-id ~/.config/mpd/launch.sh
 exec --no-startup-id ~/.scripts/i3cmds/startup/urxvt-load.sh
 exec --no-startup-id ~/.scripts/i3cmds/startup/monitor-setup.sh
+exec --no-startup-id lxpolkit &
 exec --no-startup-id compton -CG -b 
 exec --no-startup-id dunst &
 exec --no-startup-id fcitx -d
