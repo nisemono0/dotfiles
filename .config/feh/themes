@@ -62,4 +62,4 @@ thumb_b_nt --thumbnails --cache-thumbnails --thumb-width 256 --thumb-height 256 
 
 
 # My themes
-feh --scale-down --auto-zoom --info 'printf "File Name: %n [%u/%l] \nImage Size: %S\nDimensions: %wx%h\nZoom: %z"'
+feh --scale-down --auto-zoom --info "~/.scripts/feh/feh-info.sh %N %u %l %S %w %h %z" --action1 ";~/.scripts/feh/feh-filecp.sh %F"

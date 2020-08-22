@@ -9,13 +9,20 @@ smart_borders on
 hide_edge_borders on
 
 set $mod Mod4
+
+set $browser --no-startup-id /usr/bin/firefox
 set $term --no-startup-id /usr/bin/urxvt
 set $ranger --no-startup-id /usr/bin/urxvt -e /usr/bin/ranger
 set $thunar --no-startup-id /usr/bin/nemo &
 set $ncmpcpp --no-startup-id /usr/bin/urxvt -e /usr/bin/ncmpcpp
 set $lockscreen --no-startup-id ~/.scripts/i3cmds/lock-screen.sh
-set $dmenumount --no-startup-id ~/.scripts/i3cmds/dmenumount.sh
-set $dmenuumount --no-startup-id ~/.scripts/i3cmds/dmenuumount.sh
+set $scrot_full --no-startup-id ~/.scripts/i3cmds/scrot/scrot.sh
+set $scrot_full_clip --no-startup-id ~/.scripts/i3cmds/scrot/scrot-clip.sh
+set $scrot_area --no-startup-id ~/.scripts/i3cmds/scrot/scrot-area.sh
+set $scrot_area_clip --no-startup-id ~/.scripts/i3cmds/scrot/scrot-area-clip.sh
+set $dmenubind --no-startup-id ~/.scripts/i3cmds/dmenu/dmenu-bind.sh
+set $dmenumount --no-startup-id ~/.scripts/i3cmds/dmenu/dmenumount.sh
+set $dmenuumount --no-startup-id ~/.scripts/i3cmds/dmenu/dmenuumount.sh
 set $switchaudio --no-startup-id ~/.scripts/i3cmds/switchsinks.sh
 
 set $fg #C5C8C673
@@ -31,8 +38,8 @@ for_window [title="ncmpcpp"] floating enable sticky enable focus
 
 ##---Autostart---##
 exec --no-startup-id ~/.config/mpd/launch.sh
-exec --no-startup-id ~/.scripts/tools/startup/urxvt-load.sh
-exec --no-startup-id ~/.scripts/tools/startup/monitor-setup.sh
+exec --no-startup-id ~/.scripts/i3cmds/startup/urxvt-load.sh
+exec --no-startup-id ~/.scripts/i3cmds/startup/monitor-setup.sh
 exec --no-startup-id compton -CG -b 
 exec --no-startup-id dunst &
 exec --no-startup-id fcitx -d
@@ -48,7 +55,7 @@ bindsym $mod+shift+slash split horizontal ;; exec $term
 bindsym $mod+Shift+Return exec $ranger
 bindsym $mod+Shift+Control+Return exec $thunar
 bindsym $mod+q kill
-bindsym $mod+d exec --no-startup-id ~/.scripts/i3cmds/dmenu-bind.sh
+bindsym $mod+d exec $dmenubind
 bindsym $mod+Shift+c reload
 bindsym $mod+Shift+r restart
 bindsym $mod+Shift+Escape exec --no-startup-id "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'i3-msg exit'"
@@ -115,7 +122,7 @@ bindsym $mod+c move position center
 bindsym $mod+a focus parent
 
 ##---Function Keys---##
-bindsym $mod+F1 exec --no-startup-id /usr/bin/firefox
+bindsym $mod+F1 exec $browser
 bindsym $mod+F2 exec --no-startup-id notify-send F2
 bindsym $mod+F3 exec --no-startup-id notify-send F3
 bindsym $mod+F4 exec --no-startup-id notify-send F4
@@ -138,11 +145,11 @@ bindsym XF86AudioRaiseVolume exec --no-startup-id mpc volume +10 &
 
 ##---Screenshot Keys---##
 # Full screen
-bindsym Print exec --no-startup-id ~/.scripts/tools/scrot/scrot.sh
-bindsym Shift+Print exec --no-startup-id ~/.scripts/tools/scrot/scrot-clip.sh
+bindsym Print exec $scrot_full
+bindsym Shift+Print exec $scrot_full_clip
 # Window
-bindsym Ctrl+Print exec --no-startup-id ~/.scripts/tools/scrot/scrot-area.sh
-bindsym Ctrl+Shift+Print exec --no-startup-id ~/.scripts/tools/scrot/scrot-area-clip.sh
+bindsym Ctrl+Print exec $scrot_area
+bindsym Ctrl+Shift+Print exec $scrot_area_clip
 
 ##---Color: border, background, text, indicater, child_border---##
 client.focused          $fg  $fg  $fg  $fg

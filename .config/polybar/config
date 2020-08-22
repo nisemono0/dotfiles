@@ -282,7 +282,7 @@ label-offline-foreground = ${colors.mpd-labe-offline-fg}
 ; ===============================================================================
 [module/updates-arch]
 type = custom/script
-exec = ~/.scripts/tools/polybar-scripts/update-arch.sh
+exec = ~/.scripts/polybar-scripts/update-arch.sh
 interval = 600
 
 label-background = ${colors.updates-label-bg}
@@ -336,7 +336,7 @@ label-muted-foreground = ${colors.pulse-label-muted-fg}
 ; =========================================================================
 [module/fcitx]
 type = custom/script
-exec = ~/.scripts/tools/polybar-scripts/polybar-fcitx-scripts/watch.sh
+exec = ~/.scripts/polybar-scripts/polybar-fcitx-scripts/watch.sh
 
 tail = true
 interval = 0
@@ -385,7 +385,7 @@ label-foreground = ${colors.cpu-label-fg}
 ; ============================================================================
 [module/cpu-temp-script]
 type = custom/script
-exec = ~/.scripts/tools/polybar-scripts/cpu-temp.sh 
+exec = ~/.scripts/polybar-scripts/cpu-temp.sh 
 interval = 2
 
 format-prefix = " "
