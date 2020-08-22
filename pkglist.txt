@@ -208,6 +208,7 @@ xorg-xev
 xorg-xfd
 xorg-xfontsel
 xorg-xinit
+xorg-xinput
 xorg-xlsfonts
 xorg-xprop
 xorg-xrandr
