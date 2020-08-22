@@ -5,8 +5,8 @@
 # update the text by printing a new line.
 ##
 
-IMLIST_PATH="$HOME/.scripts/tools/polybar-scripts/polybar-fcitx-scripts/imlist.sh"
-CURRENT_PATH="$HOME/.scripts/tools/polybar-scripts/polybar-fcitx-scripts/current.sh"
+IMLIST_PATH="$HOME/.scripts/polybar-scripts/polybar-fcitx-scripts/imlist.sh"
+CURRENT_PATH="$HOME/.scripts/polybar-scripts/polybar-fcitx-scripts/current.sh"
 
 # Strip `Keyboard - ` part from IM name then print
 print_pretty_name() {

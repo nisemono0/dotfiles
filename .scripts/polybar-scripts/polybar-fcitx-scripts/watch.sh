@@ -11,7 +11,7 @@
 # in another file named `react`.
 ##
 
-REACT_PATH="$HOME/.scripts/tools/polybar-scripts/polybar-fcitx-scripts/react.sh"
+REACT_PATH="$HOME/.scripts/polybar-scripts/polybar-fcitx-scripts/react.sh"
 
 # Need --line-buffered to avoid messages being hold in buffer
 gdbus monitor --session --dest org.fcitx.Fcitx --object-path /inputmethod | grep --line-buffered / | "$REACT_PATH"
