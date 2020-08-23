@@ -428,7 +428,7 @@ label-disconnected-underline = ${colors.eth-label-disconnected-underline}
 type = internal/date
 interval = 5
 
-date-alt = " %Y-%m-%d (%a)"
+date-alt = " %d-%m-%Y (%a)"
 
 time = %H:%M
 time-alt = %H:%M:%S
