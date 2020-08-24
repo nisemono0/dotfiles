@@ -180,6 +180,7 @@ ttf-monapo
 ttf-mononoki
 ttf-ubuntu-font-family
 tumbler
+ungoogled-chromium
 unrar
 unzip
 urxvt-perls
