@@ -34,7 +34,7 @@ font pango:InconsolataGo Nerd Font 10
 # Use xprop to find the window class
 for_window [class=".*"] border pixel 7
 for_window [class="floating"] move position center
-for_window [title="ncmpcpp"] floating enable sticky enable focus
+for_window [title="ncmpcpp"] floating enable focus
 
 ##---Autostart---##
 exec --no-startup-id ~/.config/mpd/launch.sh
