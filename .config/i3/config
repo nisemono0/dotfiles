@@ -14,7 +14,7 @@ set $browser --no-startup-id /usr/bin/firefox
 set $term --no-startup-id /usr/bin/urxvt
 set $ranger --no-startup-id /usr/bin/urxvt -e /usr/bin/ranger
 set $thunar --no-startup-id /usr/bin/nemo &
-set $ncmpcpp --no-startup-id /usr/bin/urxvt -e /usr/bin/ncmpcpp
+set $ncmpcpp --no-startup-id /usr/bin/urxvt -name ncmpcpp-instance -e /usr/bin/ncmpcpp
 set $lockscreen --no-startup-id ~/.scripts/i3cmds/lock-screen.sh
 set $scrot_full --no-startup-id ~/.scripts/i3cmds/scrot/scrot.sh
 set $scrot_full_clip --no-startup-id ~/.scripts/i3cmds/scrot/scrot-clip.sh
@@ -34,7 +34,7 @@ font pango:InconsolataGo Nerd Font 10
 # Use xprop to find the window class
 for_window [class=".*"] border pixel 7
 for_window [class="floating"] move position center
-for_window [title="ncmpcpp"] floating enable focus
+for_window [instance="ncmpcpp-instance"] floating enable focus
 
 ##---Autostart---##
 exec --no-startup-id ~/.config/mpd/launch.sh
