@@ -1,66 +1,41 @@
-# ObliivousGmn, May 2015
-# https://github.com/ObliviousGmn
-# Ncmpcpp Config 
+### ncmpcpp configs ###
+ncmpcpp_directory = ~/.config/ncmpcpp
 
-# MPD Settings .. 
-mpd_host = "/.config/mpd/socket"
+
+##### MPD #####
+mpd_host = "~/.config/mpd/socket"
 mpd_crossfade_time = "3"
 
-#mpd_music_dir = "~/Media/Music"
-# execute_on_song_change = "Lemonpop -mus $(mpc current -f %title%)"
 
-# Display ..
-song_list_format = " $0%n $1• $8%t $R$0%A "
-song_columns_list_format = "(3)[]{}(92)[white]{t} (4)[red]{l}"
-song_status_format = " $3%t $0 "
-playlist_display_mode = "classic" (classic/columns)
-
-# Now Playing ..
-now_playing_prefix = "$3>>"
-now_playing_suffix = "$8$/b"
-
-# Playlist ..
-browser_playlist_prefix = "$2 ♥ $0 "
-
-# Delays .. 
-playlist_disable_highlight_delay = "1"
-message_delay_time= "1"
-
-# Progress Bar ..
-progressbar_look = "---"
-progressbar_color = "white"
-progressbar_elapsed_color = "white"
-
-# Colors ..
-colors_enabled = "yes"
-empty_tag_color = "red"
-statusbar_color = "white"
-state_line_color = "white"
-state_flags_color = "green"
-main_window_color = "green" 
-header_window_color = "white"
-current_item_prefix = "$(blue)$r"
-current_item_suffix = "$/r$(end)"
-
-# Misc ..   
-display_bitrate = "yes"
-autocenter_mode = "yes"
-centered_cursor = "yes"
-titles_visibility = "no"
-statusbar_visibility = "yes"
-empty_tag_marker=" -- ‼ -- " 
-mouse_support = "no"
-header_visibility = "no"
-display_remaining_time = "no"
-ask_before_clearing_playlists = "no"
-discard_colors_if_item_is_selected = "yes"
-
-# Visualizer ..
+##### Visualizer #####
 visualizer_in_stereo = "yes"
 visualizer_sync_interval = "30"
 visualizer_output_name = "Pipe"
 visualizer_fifo_path = "/tmp/mpd.fifo"
-visualizer_type = "spectrum" (spectrum/wave)
-visualizer_color = "green"
+visualizer_type = "spectrum"
+visualizer_color = "blue, cyan, green, yellow, magenta, red"
 visualizer_look = "∙▋"
 
+##### Delays #####
+playlist_disable_highlight_delay = "1"
+message_delay_time = "1"
+
+##### Display #####
+song_columns_list_format = "(6f)[white]{NE} (24)[]{a}|{f}(50)[white]{t|f:Title} (20)[cyan]{b} (7f)[magenta]{l}"
+alternative_header_first_line_format = "$b$1$aqqu$/a$9 {%t}|{%f} $1$atqq$/a$9$/b"
+alternative_header_second_line_format = "{$7%b}"
+song_status_format = " {%a - %t}|{%t}|{%f}"
+
+##### Various #####
+playlist_display_mode = "columns"
+playlist_separate_albums = "yes"
+seek_time = "5"
+volume_change_step = "5"
+autocenter_mode = "yes"
+centered_cursor = "yes"
+progressbar_look = "━━"
+user_interface = "classic"
+header_visibility = "no"
+display_bitrate = "yes"
+mouse_support = "no"
+ask_before_clearing_playlists = "yes"
