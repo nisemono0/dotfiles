@@ -53,10 +53,10 @@ URxvt*borderColor:  [99]#241915
 *color66:  #241915
 
 ! Open urls
-URxvt.perl-ext-common: default,matcher
-URxvt.url-launcher: /usr/bin/xdg-open
-URxvt.matcher.button: 1
-URxvt.colorUL: #4682B4
+!URxvt.perl-ext-common: default,matcher
+!URxvt.url-launcher: /usr/bin/xdg-open
+!URxvt.matcher.button: 1
+!URxvt.colorUL: #4682B4
 
 ! alternative font settings with 'terminus':
 URxvt*font:		-xos4-terminus-medium-r-normal--16-160-72-72-c-80-iso10646-1
