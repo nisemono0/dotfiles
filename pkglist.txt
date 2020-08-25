@@ -153,6 +153,8 @@ sed
 shadow
 siji-git
 simple-mtpfs
+soundconverter
+sox
 sqlitebrowser
 sudo
 syncplay
