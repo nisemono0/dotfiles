@@ -14,7 +14,22 @@ visualizer_output_name = "Pipe"
 visualizer_fifo_path = "/tmp/mpd.fifo"
 visualizer_type = "spectrum"
 visualizer_color = "blue, cyan, green, yellow, magenta, red"
-visualizer_look = "∙▋"
+#visualizer_look = "∙▋"
+#visualizer_look = "▒░"
+#visualizer_look = "◈░"
+#visualizer_look = "┃┃"
+#visualizer_look = ●┃
+visualizer_look = "█┇"
+#visualizer_look = "▒░"
+#visualizer_look = "▋▍"
+#visualizer_look = "▋█"
+#visualizer_look = "▋█"
+#visualizer_look = "▋░"
+#visualizer_look = "▋▓"
+#visualizer_look = "▋☰"
+#visualizer_look = "☰⛆"
+#visualizer_look = "☰▓"
+
 
 ##### Delays #####
 playlist_disable_highlight_delay = "1"
@@ -25,6 +40,7 @@ song_columns_list_format = "(6f)[white]{NE} (30)[]{a}|{f}(30)[white]{t|f:Title} 
 alternative_header_first_line_format = "$b$1$aqqu$/a$9 {%t}|{%f} $1$atqq$/a$9$/b"
 alternative_header_second_line_format = "{$7%b}"
 song_status_format = " {%a - %t}|{%t}|{%f}"
+browser_playlist_prefix = "$7 ◆ $0"
 
 ##### Various #####
 playlist_display_mode = "columns"
