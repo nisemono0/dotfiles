@@ -26,11 +26,11 @@ class archive_view(Command):
         tmp_folder = "/tmp/archive_view"
         self._show(tmp_folder)
         self._extract(self.fm.thisfile, tmp_folder)
-    
+        
     def _show(self, folder):
-        descr = "Opening"    
-        feh_flags = ['-r']
-        obj = CommandLoader(args=['feh'] + feh_flags + ["/tmp/archive_view"], descr=descr, read=False)
+        descr = "Opening"
+        cmd = ['feh', '-r', folder]
+        obj = CommandLoader(args=cmd, descr=descr, read=False)
         self.fm.loader.add(obj)
 
     def _extract(self, archive, folder):
@@ -46,10 +46,15 @@ class archive_view(Command):
                         shutil.rmtree(file_path)
                 except Exception as e:
                     self.fm.notify(e)
-        au_flags = ['-X', folder]
-        descr = "Extracting: " + os.path.basename(archive.path)
-        obj = CommandLoader(args=['aunpack'] + au_flags + [archive.path], descr=descr, read=True)
-        self.fm.loader.add(obj)
+                    return
+        try:
+            cmd = ['aunpack', '-X', folder, archive.path]
+            descr = "Extracting: " + os.path.basename(archive.path)
+            obj = CommandLoader(args=cmd, descr=descr, read=True)
+            self.fm.loader.add(obj)
+        except Exception as e:
+            self.fm.notify(e)
+            return
 
 class compress(Command):
     """ Compress marked files (.zip, .tar.gz, .rar, .7z)"""
@@ -113,3 +118,4 @@ class extracthere(Command):
 
         obj.signal_bind('after', refresh)
         self.fm.loader.add(obj)
+        
