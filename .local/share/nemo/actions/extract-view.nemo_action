@@ -18,4 +18,5 @@ Icon-Name=extract-archive
 Selection=s
 Mimetypes=application/x-bzip;application/x-bzip2;application/x-rar-compressed;application/x-tar;application/zip;application/x-7z-compressed;
 Dependencies=python;aunpack;feh;
-EscapeSpaces=true
+EscapeSpaces=false
+Quote=double
