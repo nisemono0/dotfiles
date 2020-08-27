@@ -30,7 +30,7 @@ mountandroid() {
 	chosen="$(echo "$chosen" | cut -d : -f 1)"
 	getmount "$HOME -maxdepth 3 -not -path *.* -type d"
         simple-mtpfs --device "$chosen" "$mp"
-	echo "OK" | dmenu "$OPTIONS" -p "Tap Allow on your phone if it asks for permission and then press enter" || exit 1
+	echo "OK" | dmenu $OPTIONS -p "Tap Allow on your phone if it asks for permission and then press enter" || exit 1
 	simple-mtpfs --device "$chosen" "$mp"
 	notify-send "Android Mounting" "Android device mounted to $mp."
 }
