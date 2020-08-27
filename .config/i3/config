@@ -35,6 +35,7 @@ font pango:InconsolataGo Nerd Font 10
 for_window [class=".*"] border pixel 7
 for_window [class="floating"] move position center
 for_window [instance="ncmpcpp-instance"] floating enable focus
+for_window [class="Lxpolkit"] focus focus_follows_mouse no
 
 ##---Autostart---##
 exec --no-startup-id ~/.config/mpd/launch.sh
