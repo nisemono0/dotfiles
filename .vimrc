@@ -9,7 +9,7 @@ call vundle#begin()
 
 " let Vundle manage Vundle, required
 Plugin 'VundleVim/Vundle.vim'
-Plugin 'dikiaap/minimalist'
+Plugin 'file://~/.vim/bundle/minimalist'
 Plugin 'PotatoesMaster/i3-vim-syntax'
 Plugin 'davidhalter/jedi-vim'
 call vundle#end()            " required
