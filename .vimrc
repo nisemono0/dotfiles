@@ -9,6 +9,8 @@ call vundle#begin()
 
 " let Vundle manage Vundle, required
 Plugin 'VundleVim/Vundle.vim'
+Plugin 'preservim/nerdtree'
+Plugin 'vim-airline/vim-airline'
 Plugin 'file://~/.vim/bundle/minimalist'
 Plugin 'PotatoesMaster/i3-vim-syntax'
 Plugin 'davidhalter/jedi-vim'
@@ -34,3 +36,5 @@ set number
 set t_Co=256
 syntax on
 colorscheme minimalist
+
+map <C-n> :NERDTreeToggle<CR>
