@@ -11,9 +11,10 @@ call vundle#begin()
 Plugin 'VundleVim/Vundle.vim'
 Plugin 'preservim/nerdtree'
 Plugin 'vim-airline/vim-airline'
-Plugin 'file://~/.vim/bundle/minimalist'
+Plugin 'dikiaap/minimalist'
 Plugin 'PotatoesMaster/i3-vim-syntax'
 Plugin 'davidhalter/jedi-vim'
+Plugin 'ryanoasis/vim-devicons'
 call vundle#end()            " required
 filetype plugin indent on    " required
 " To ignore plugin indent changes, instead use:
@@ -36,5 +37,9 @@ set number
 set t_Co=256
 syntax on
 colorscheme minimalist
+
+let g:airline_theme='minimalist'
+let g:airline_powerline_fonts = 1
+let g:airline#extensions#tabline#enabled = 1
 
 map <C-n> :NERDTreeToggle<CR>
