@@ -110,6 +110,7 @@ neofetch
 nerd-fonts-inconsolata
 nerd-fonts-inconsolata-go
 nerd-fonts-ricty
+nerd-fonts-source-code-pro
 netctl
 networkmanager
 noto-fonts
