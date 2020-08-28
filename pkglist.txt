@@ -192,6 +192,7 @@ vi
 vim
 vulkan-radeon
 w3m
+waifu2x-ncnn-vulkan
 wavpack
 weechat
 wget
