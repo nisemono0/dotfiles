@@ -58,8 +58,13 @@ URxvt*borderColor:  [99]#272525
 !URxvt.matcher.button: 1
 !URxvt.colorUL: #4682B4
 
-! alternative font settings with 'terminus':
-URxvt*font:		-xos4-terminus-medium-r-normal--16-160-72-72-c-80-iso10646-1
+! Options
+URxvt*font:		                  xft:SauceCodePro Nerd Font Mono:pixelsize=14:style=Semibold,Regular,\
+								  xft:Noto Sans Mono CJK JP:style=Bold
+URxvt*boldFont:                   xft:SauceCodePro Nerd Font Mono:pixelsize=14:style=Black,Regular
+URxvt*italicFont:				  xft:SauceCodePro Nerd Font Mono:pixelsize=14:style=Semibold Italic,Italic
+URxvt*boldItalicFont:			  xft:SauceCodePro Nerd Font Mono:pixelsize=14:style=Semibold Italic,Italic
+
 URxvt*depth:                      32
 URxvt*scrollBar:                  false
 URxvt*mouseWheelScrollPage:       false
