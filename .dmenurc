@@ -1,9 +1,9 @@
 #!/bin/bash
 
 FN="Noto-9:bold"
-NF="#C7C7C7"
+NF="#8F9DB3"
 NB="#1C1C1C"
-SF="#595859"
-SB="#C7C7C7"
+SF="#C4C5C7"
+SB="#3360A9"
 OPTIONS="-b -i -fn $FN -nf $NF -nb $NB -sf $SF -sb $SB"
 export OPTIONS
