@@ -60,8 +60,9 @@ URxvt*borderColor:  [99]#272525
 
 ! Options
 URxvt*font:		                  xft:SauceCodePro Nerd Font Mono:pixelsize=14:style=Semibold,Regular,\
-								  xft:Noto Sans Mono CJK JP:style=Bold
-URxvt*boldFont:                   xft:SauceCodePro Nerd Font Mono:pixelsize=14:style=Black,Regular
+								  xft:Noto Sans CJK JP Medium:style=Medium,Regular
+URxvt*boldFont:                   xft:SauceCodePro Nerd Font Mono:pixelsize=14:style=Black,Regular,\
+								  xft:Noto Sans CJK JP Black:style=Black,Regular
 URxvt*italicFont:				  xft:SauceCodePro Nerd Font Mono:pixelsize=14:style=Semibold Italic,Italic
 URxvt*boldItalicFont:			  xft:SauceCodePro Nerd Font Mono:pixelsize=14:style=Semibold Italic,Italic
 
