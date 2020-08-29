@@ -66,6 +66,7 @@ URxvt*boldFont:                   xft:SauceCodePro Nerd Font Mono:pixelsize=14:s
 URxvt*italicFont:				  xft:SauceCodePro Nerd Font Mono:pixelsize=14:style=Semibold Italic,Italic
 URxvt*boldItalicFont:			  xft:SauceCodePro Nerd Font Mono:pixelsize=14:style=Semibold Italic,Italic
 
+URxvt.geometry:                   80x20
 URxvt*depth:                      32
 URxvt*scrollBar:                  false
 URxvt*mouseWheelScrollPage:       false
@@ -89,10 +90,10 @@ URxvt.keysym.Shift-Control-Down:  \033[1;6B
 ! Xft Font Configuration
 ! ------------------------------------------------------------------------------
 
-Xft.autohint: 0
-Xft.lcdfilter: lcddefault
-Xft.hintstyle: hintslight
-Xft.hinting: 1
-Xft.antialias: 1
-Xft.rgba: rgb
+Xft.autohint:					  0
+Xft.lcdfilter:                    lcddefault
+Xft.hintstyle:                    hintslight
+Xft.hinting:                      1
+Xft.antialias:                    1
+Xft.rgba:                         rgb
 
