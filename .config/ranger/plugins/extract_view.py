@@ -37,6 +37,7 @@ class extract_view(Command):
             cmd = ['aunpack', '-X', folder, archive.path]
             descr = "Extracting: " + os.path.basename(archive.path)
             obj = CommandLoader(args=cmd, descr=descr, read=True)
+            self.fm.notify("Extracting: {}".format(archive.basename))
             self.fm.loader.add(obj)
         except Exception as e:
             self.fm.notify(e)
