@@ -51,10 +51,9 @@ exec_always --no-startup-id ~/.config/polybar/launch.sh
 ##---Basic Keys---##
 floating_modifier $mod
 bindsym $mod+Return split horizontal ;; exec $term
-bindsym $mod+t split toggle
 bindsym $mod+slash split vertical ;; exec $term
-bindsym $mod+shift+slash split horizontal ;; exec $term
 bindsym $mod+Shift+Return exec $ranger
+bindsym $mod+shift+slash split vertical ;; exec $ranger
 bindsym $mod+Shift+Control+Return exec $thunar
 bindsym $mod+q kill
 bindsym $mod+d exec $dmenubind
