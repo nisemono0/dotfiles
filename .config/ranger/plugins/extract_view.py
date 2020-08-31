@@ -4,21 +4,24 @@ import shutil
 from ranger.api.commands import Command
 from ranger.core.loader import CommandLoader
 
-
 class extract_view(Command):
-    """ Unpacks image archives into /tmp and displays them with feh """
+    """ Unpacks image archives into /tmp/archive_view and displays them with feh """
     
     def execute(self):
         tmp_folder = "/tmp/archive_view"
-        self._show(tmp_folder)
         self._extract(self.fm.thisfile, tmp_folder)
-        
-    def _show(self, folder):
-        descr = "Opening"
-        cmd = ['feh', '-r', folder]
-        obj = CommandLoader(args=cmd, descr=descr, read=False)
-        self.fm.loader.add(obj)
+        self._show(tmp_folder)
 
+    def _show(self, folder):
+        try:
+            descr = "Opening {}".format(folder)
+            cmd = ['feh', '-r', folder]
+            obj = CommandLoader(args=cmd, descr=descr, read=False)
+            self.fm.loader.add(obj, append=True)
+        except Exception as e:
+            self.fm.notify(e)
+            return
+        
     def _extract(self, archive, folder):
         if not os.path.exists(folder): # If folder does not exist, create it
             os.mkdir(folder)
@@ -35,10 +38,10 @@ class extract_view(Command):
                     return
         try:
             cmd = ['aunpack', '-X', folder, archive.path]
-            descr = "Extracting: " + os.path.basename(archive.path)
+            descr = "Extracting: {}".format(archive.basename)
             obj = CommandLoader(args=cmd, descr=descr, read=True)
             self.fm.notify("Extracting: {}".format(archive.basename))
-            self.fm.loader.add(obj)
+            self.fm.loader.add(obj, append=True)
         except Exception as e:
             self.fm.notify(e)
             return

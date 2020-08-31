@@ -184,6 +184,7 @@ ttf-monapo
 ttf-mononoki
 ttf-ubuntu-font-family
 tumbler
+ueberzug
 unrar
 unzip
 urxvt-perls
@@ -207,7 +208,6 @@ xf86-video-amdgpu
 xfsprogs
 xorg-fonts-misc
 xorg-server
-xorg-xclipboard
 xorg-xdpyinfo
 xorg-xev
 xorg-xfd
