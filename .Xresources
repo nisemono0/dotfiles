@@ -52,7 +52,12 @@ URxvt*borderColor:  [99]#16191f
 *.color66: #16191f
 *color66:  #16191f
 
-! Open urls
+! Perl extensions
+
+! Disable perl extensions since it segfaults
+URxvt.perl-ext:
+URxvt.perl-ext-common:
+
 !URxvt.perl-ext-common: default,matcher
 !URxvt.url-launcher: /usr/bin/xdg-open
 !URxvt.matcher.button: 1
