@@ -20,5 +20,4 @@ mkdir -p "${scr_dir}/${date}"
 # Name the screenshot
 scr="${scr_dir}/${date}/${date}-${time}.png"
 
-scrot "$scr"
-notify-send "Saved screenshot as ${scr/*\/}"
+scrot "$scr" && notify-send "Saved screenshot as ${scr/*\/}" || notify-send -u critical "Something went wrong"

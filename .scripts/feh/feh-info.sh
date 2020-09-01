@@ -1,3 +1,5 @@
+#!/bin/sh
+
 filename=$1
 filenr=$2
 totalfiles=$3

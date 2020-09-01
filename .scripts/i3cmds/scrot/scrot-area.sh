@@ -22,5 +22,4 @@ mkdir -p "${scr_dir}/${date}"
 # Name the screenshot
 scr="${scr_dir}/${date}/${date}-${time}.png"
 
-sleep 0.2 ; scrot -s -f "$scr" 
-notify-send "Saved screenshot as ${scr/*\/}"
+sleep 0.2 ; scrot -s -f "$scr" && notify-send "Saved screenshot as ${scr/*\/}" || notify-send -u critical "Something went wrong"

@@ -1,3 +1,3 @@
-cp "$1" ~/Pictures/Feh
+#!/bin/sh
 
-notify-send "Feh image copied"
+cp "$1" ~/Pictures/Feh && notify-send "Feh image copied"
