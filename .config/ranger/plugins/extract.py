@@ -79,3 +79,36 @@ class extract_to_dirs(Command):
             obj = CommandLoader(args=['aunpack'] + make_flags(f.path) + [f.path], descr=descr, read=True)
             obj.signal_bind('after', refresh)
             self.fm.loader.add(obj)
+
+class extract_7z(Command):
+    def execute(self):
+        """ Extract copied files to current directory with 7z """
+
+        cwd = self.fm.thisdir
+        copied_files = cwd.get_selection()
+
+        if not copied_files:
+            return
+
+        def refresh(_):
+            cwd = self.fm.get_directory(original_path)
+            cwd.load_content()
+
+        one_file = copied_files[0]
+        cwd = self.fm.thisdir
+        original_path = cwd.path
+
+        flags = ['x']
+
+        self.fm.copy_buffer.clear()
+        self.fm.cut_buffer = False
+
+        if len(copied_files) == 1:
+            descr = "Extracting: " + os.path.basename(one_file.path)
+        else:
+            descr = "Extracting files from: " + os.path.basename(one_file.dirname)
+        obj = CommandLoader(args=['7z'] + flags \
+            + [f.path for f in copied_files], descr=descr, read=True)
+
+        obj.signal_bind('after', refresh)
+        self.fm.loader.add(obj)
