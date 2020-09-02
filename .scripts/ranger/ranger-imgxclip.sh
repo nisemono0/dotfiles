@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 filepath="$1"
 filetype=$(file --mime-type "$filepath" | cut -d ':' -f 2 | tr -d ' ')
