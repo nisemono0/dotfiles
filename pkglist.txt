@@ -1,4 +1,4 @@
-adobe-source-han-sans-jp-fonts1
+adobe-source-han-sans-jp-fonts
 adobe-source-han-sans-otc-fonts
 arc-icon-theme
 atool
