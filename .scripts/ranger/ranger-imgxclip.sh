@@ -1,7 +1,7 @@
 #!/bin/sh
 
 filepath="$1"
-filetype=$(file --mime-type "$filepath" | rev | cut -d ' ' -f 1 | rev)
+filetype=$(file --mime-type "$filepath" | cut -d ':' -f 2 | tr -d ' ')
 
 if [[ "$filetype" == image/* ]]; then
 	if [[ "$filetype" == image/png ]]; then
