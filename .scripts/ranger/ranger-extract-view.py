@@ -23,7 +23,7 @@ def clear_dir(folder):
             elif os.path.isdir(file_path):
                 rmtree(file_path)
         except:
-            cmd = ["notify-send", "-u", "critical", "Something went wrong when clearing /tmp !"]
+            cmd = ["notify-send", "-u", "critical", "Something went wrong when clearing /tmp/archive_view !"]
             check_call(cmd)
             exit(-1)
 
