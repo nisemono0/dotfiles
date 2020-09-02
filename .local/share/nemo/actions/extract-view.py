@@ -2,14 +2,14 @@
 
 import os
 from shutil import rmtree
-from subprocess import call
+from subprocess import check_call
 from sys import argv
 
 tmp_folder = "/tmp/archive_view"
 
 if len(argv) != 2:
     cmd = ["notify-send", "-u", "critical", "Something went wrong !"]
-    call(cmd)
+    check_call(cmd)
     exit(-1)
 
 file_name = argv[1]
@@ -24,7 +24,7 @@ def clear_tmp(folder):
                 rmtree(file_path)
         except:
             cmd = ["notify-send", "-u", "critical", "Something went wrong when clearing /tmp/archive_view !"]
-            call(cmd)
+            check_call(cmd)
             exit(-1)
 
 def extract(archive, folder):
@@ -40,25 +40,25 @@ def extract(archive, folder):
                     rmtree(file_path)
             except:
                 cmd = ["notify-send", "-u", "critical", "Something went wrong !"]
-                call(cmd)
+                check_call(cmd)
                 exit(-1)
     try:
         cmd = ["notify-send", "Extracting..."]
-        call(cmd)
+        check_call(cmd)
         cmd = ["aunpack", "-X", folder, archive]
-        call(cmd)
+        check_call(cmd)
     except:
         cmd = ["notify-send", "-u", "critical", "Something went wrong while extracting !"]
-        call(cmd)
+        check_call(cmd)
         exit(-1)
 
 def show(folder):
     try:
         cmd = ["feh", "-r", folder]
-        call(cmd)
+        check_call(cmd)
     except:
         cmd = ["notify-send", "-u", "critical", "Something went wrong while opening images !"]
-        call(cmd)
+        check_call(cmd)
         exit(-1)
 
 extract(file_name, tmp_folder)
