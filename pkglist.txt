@@ -121,6 +121,7 @@ ntfs-3g
 openssh
 os-prober
 otf-ipafont
+p7zip
 pacman
 pacman-contrib
 patch
