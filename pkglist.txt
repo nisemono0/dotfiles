@@ -46,6 +46,7 @@ file
 filesystem
 findutils
 firefox
+flacon
 flex
 font-bh-ttf
 font-mathematica
