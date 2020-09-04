@@ -22,6 +22,7 @@ code
 coreutils
 cowsay
 cryptsetup
+cuetools
 d-feet
 device-mapper
 dhcpcd
@@ -96,6 +97,7 @@ man-db
 man-pages
 materia-gtk-theme
 mdadm
+mediainfo
 megasync
 mesa-vdpau
 mpc
@@ -153,6 +155,7 @@ s-nail
 scrot
 sed
 shadow
+shntool
 siji-git
 simple-mtpfs
 soundconverter
