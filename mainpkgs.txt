@@ -17,7 +17,6 @@ cuetools
 d-feet
 dina-font
 discord
-discord-rpc-api-git
 dunst
 fcitx-mozc
 firefox

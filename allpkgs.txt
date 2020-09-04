@@ -29,7 +29,6 @@ dhcpcd
 diffutils
 dina-font
 discord
-discord-rpc-api-git
 dmenu
 dunst
 e2fsprogs

@@ -1,7 +1,6 @@
 bdf-tewi-git
 betterdiscord-rauenzi-git
 betterdiscordctl-git
-discord-rpc-api-git
 flacon
 font-mathematica
 nerd-fonts-inconsolata
