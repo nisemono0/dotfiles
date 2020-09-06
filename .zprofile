@@ -2,8 +2,15 @@
 # ~/.zprofile
 #
 
-# Environment variables
-export MPD_HOST=$HOME/.config/mpd/socket
+##### Environment variables #####
+export XDG_CONFIG_HOME="$HOME/.config"
+
+# MPD
+export MPD_HOST="127.0.0.1"
+export MPD_PORT="6600"
+
+# Weechat
+export WEECHAT_HOME="$HOME/.config/weechat"
 
 # Load .zshrc file
 [[ -f ~/.zshrc ]] && . ~/.zshrc
