@@ -70,7 +70,7 @@ source $ZSH/oh-my-zsh.sh
 # Set zcompdump file location
 # NOTE: ~/.cache/zsh/ folder needs to be created
 
-compinit -d ~/.cache/zsh/zcompdump-$ZSH_VERSION
+# compinit -d ~/.cache/zcompdump-$ZSH_VERSION
 
 # export MANPATH="/usr/local/man:$MANPATH"
 
