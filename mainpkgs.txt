@@ -94,6 +94,7 @@ ttf-monapo
 ttf-mononoki
 ttf-ubuntu-font-family
 tumbler
+unclutter
 urxvt-perls
 usbutils
 vi
