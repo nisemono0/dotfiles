@@ -10,7 +10,7 @@ export MPD_HOST="127.0.0.1"
 export MPD_PORT="6600"
 
 # Weechat
-export WEECHAT_HOME="$HOME/.config/weechat"
+export WEECHAT_HOME="$XDG_CONFIG_HOME/weechat"
 
 # Load .zshrc file
 [[ -f ~/.zshrc ]] && . ~/.zshrc
