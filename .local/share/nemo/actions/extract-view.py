@@ -32,7 +32,7 @@ def extract(archive, folder):
 
 def show(folder):
     try:
-        cmd = ["feh", "-r", folder]
+        cmd = ["feh", "-r", "-S", "filename", "--version-sort", folder]
         call(cmd)
     except OSError:
         cmd = ["notify-send", "-u", "critical", "Feh not found !"]
