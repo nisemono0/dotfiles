@@ -143,7 +143,6 @@ psmisc
 pulseaudio
 pulseaudio-alsa
 pulsemixer
-py3status
 python-atspi
 python-pillow
 python-pip

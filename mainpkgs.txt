@@ -66,7 +66,6 @@ pkgconf
 polybar
 powerline
 pulsemixer
-py3status
 python-atspi
 python-pywal
 qalculate-gtk
