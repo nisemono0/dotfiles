@@ -45,7 +45,6 @@ exec --no-startup-id lxpolkit &
 exec --no-startup-id picom -b
 exec --no-startup-id dunst &
 exec --no-startup-id fcitx -d
-exec --no-startup-id unclutter -b
 exec --no-startup-id xset r rate 300 50 &
 exec --no-startup-id hsetroot -center ~/.config/wallpaper.png
 exec_always --no-startup-id ~/.config/polybar/launch.sh
