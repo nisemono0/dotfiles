@@ -191,7 +191,6 @@ ttf-mononoki
 ttf-ubuntu-font-family
 tumbler
 ueberzug
-unclutter
 unrar
 unzip
 urxvt-perls
