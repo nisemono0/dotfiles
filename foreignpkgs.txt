@@ -15,5 +15,6 @@ termsyn-font
 ttf-migu
 ttf-monapo
 ttf-mononoki
+ttf-twemoji
 waifu2x-ncnn-vulkan
 xcolor
