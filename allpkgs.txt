@@ -186,7 +186,7 @@ ttf-linux-libertine
 ttf-migu
 ttf-monapo
 ttf-mononoki
-ttf-twemoji
+ttf-twemoji-color
 ttf-ubuntu-font-family
 tumbler
 ueberzug
