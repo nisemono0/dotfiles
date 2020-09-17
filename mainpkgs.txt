@@ -90,7 +90,6 @@ ttf-linux-libertine
 ttf-migu
 ttf-monapo
 ttf-mononoki
-ttf-twemoji-color
 ttf-ubuntu-font-family
 tumbler
 urxvt-perls

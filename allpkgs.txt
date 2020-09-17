@@ -119,6 +119,7 @@ netctl
 networkmanager
 noto-fonts
 noto-fonts-cjk
+noto-fonts-emoji
 noto-fonts-extra
 ntfs-3g
 openssh
@@ -175,7 +176,6 @@ timidity++
 tk
 tree
 ttf-arphic-uming
-ttf-bitstream-vera
 ttf-croscore
 ttf-fantasque-sans-mono
 ttf-font-awesome
@@ -186,7 +186,6 @@ ttf-linux-libertine
 ttf-migu
 ttf-monapo
 ttf-mononoki
-ttf-twemoji-color
 ttf-ubuntu-font-family
 tumbler
 ueberzug
