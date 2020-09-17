@@ -4,7 +4,7 @@
 
 ##---Basic---##
 gaps inner 10
-gaps outer 5
+gaps outer 0
 smart_borders on
 hide_edge_borders on
 
@@ -122,6 +122,15 @@ bindsym $mod+f fullscreen toggle
 bindsym $mod+c move position center
 # Focus the parent container
 bindsym $mod+a focus parent
+
+##---Gaps Keys---##
+# Outer gap +/-
+bindsym $mod+Shift+plus gaps outer all plus 5
+bindsym $mod+Shift+minus gaps outer all minus 5
+
+# Inner gap +/-
+bindsym $mod+plus gaps inner all plus 5
+bindsym $mod+minus gaps inner all minus 5
 
 ##---Function Keys---##
 bindsym $mod+F1 exec $browser
