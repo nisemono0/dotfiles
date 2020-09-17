@@ -30,7 +30,6 @@ gimp
 grub
 gwaterfall
 hdf5
-hsetroot
 htop
 iputils
 jfsutils
