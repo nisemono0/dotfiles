@@ -4,7 +4,6 @@ arc-icon-theme
 autoconf
 automake
 bat
-bdf-tewi-git
 bdf-unifont
 betterdiscord-rauenzi-git
 bind
