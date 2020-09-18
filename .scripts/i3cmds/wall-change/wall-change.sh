@@ -27,7 +27,7 @@ set_wall(){
     fi
 }
 
-options_walls=$(find "$WALLPAPER_DIR" -type f -printf "%f\n")
+options_walls=$(find "$WALLPAPER_DIR" -type f -printf "%f\n" | sort -V)
 options_walls="Reset"$'\n'"$options_walls"
 selected_wall=$(printf "%s\n" "${options_walls[@]}" | dmenu $OPTIONS -p "Select wallpaper")
 [ -z "$selected_wall" ] && exit 1
