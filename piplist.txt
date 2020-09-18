@@ -80,7 +80,7 @@ pulsemixer==1.5.1
 py==1.9.0
 pycparser==2.19
 pycrypto==2.6.1
-Pygments==2.7.0
+Pygments==2.7.1
 PyGObject==3.36.1
 PyHamcrest==1.9.0
 pylint==2.4.4
