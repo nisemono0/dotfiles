@@ -24,6 +24,7 @@ set $dmenubind --no-startup-id ~/.scripts/i3cmds/dmenu/dmenu-bind.sh
 set $dmenumount --no-startup-id ~/.scripts/i3cmds/dmenu/dmenumount.sh
 set $dmenuumount --no-startup-id ~/.scripts/i3cmds/dmenu/dmenuumount.sh
 set $switchaudio --no-startup-id ~/.scripts/i3cmds/switchsinks.sh
+set $wall_change --no-startup-id ~/.scripts/i3cmds/wall-change/wall-change.sh
 
 set_from_resource $fg foreground
 set_from_resource $bg background
@@ -46,7 +47,7 @@ exec --no-startup-id picom -b
 exec --no-startup-id dunst &
 exec --no-startup-id fcitx -d
 exec --no-startup-id xset r rate 300 50 &
-exec --no-startup-id feh --no-fehbg --bg-fill ~/.config/wallpaper.png
+exec --no-startup-id feh --no-fehbg --bg-fill ~/.config/wallpapers/default.png
 exec_always --no-startup-id ~/.config/polybar/launch.sh
 
 ##---Basic Keys---##
@@ -161,6 +162,9 @@ bindsym Shift+Print exec $scrot_full_clip
 # Window
 bindsym Ctrl+Print exec $scrot_area
 bindsym Ctrl+Shift+Print exec $scrot_area_clip
+
+##---Wallpaper menu---##
+bindsym $mod+Shift+w exec $wall_change
 
 ##---Color: border, background, text, indicater, child_border---##
 client.focused          $fg  $fg  $fg  $fg
