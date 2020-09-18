@@ -29,18 +29,18 @@ set_wall(){
 
 options_walls=$(find "$WALLPAPER_DIR" -type f -printf "%f\n" | sort -V)
 options_walls="Reset"$'\n'"$options_walls"
-selected_wall=$(printf "%s\n" "${options_walls[@]}" | dmenu $OPTIONS -i -p "Select wallpaper")
+selected_wall=$(printf "%s\n" "${options_walls[@]}" | dmenu $DMENU_OPTIONS -fn "$DMENU_FN" -i -p "Select wallpaper")
 [ -z "$selected_wall" ] && exit 1
 [ "$selected_wall" = "Reset" ] && reset_wall
 wallpaper_path="$WALLPAPER_DIR/$selected_wall"
 
 bkends="haishoku\nwal\ncolorz\ncolorthief"
-selected_bkend=$(echo -e "$bkends" | dmenu $OPTIONS -i -p "Select backend")
+selected_bkend=$(echo -e "$bkends" | dmenu $DMENU_OPTIONS -fn "$DMENU_FN" -i -p "Select backend")
 [ -z "$selected_bkend" ] && exit 1
 
 options_sat=$(seq 0.1 0.1 1.0)
 options_sat="Default"$'\n'"$options_sat"
-selected_sat=$(printf "%s\n" "${options_sat[@]}" | dmenu $OPTIONS -i -p "Select or type in saturation (0.1-1.0)")
+selected_sat=$(printf "%s\n" "${options_sat[@]}" | dmenu $DMENU_OPTIONS -fn "$DMENU_FN" -i -p "Select or type in saturation (0.1-1.0)")
 [ -z "$selected_sat" ] && exit 1
 
 set_wall "$wallpaper_path" "$selected_bkend" "$selected_sat"

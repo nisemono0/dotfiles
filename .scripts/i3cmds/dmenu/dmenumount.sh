@@ -9,16 +9,16 @@
 
 getmount() { 
 	[ -z "$chosen" ] && exit 1
-	mp="$(find $1 2>/dev/null | dmenu $OPTIONS -p "Type in mount point.")" || exit 1
+	mp="$(find $1 2>/dev/null | dmenu $DMENU_OPTIONS -fn "$DMENU_FN" -p "Type in mount point.")" || exit 1
 	[ "$mp" = "" ] && exit 1
 	if [ ! -d "$mp" ]; then
-		mkdiryn=$(printf "No\\nYes" | dmenu $OPTIONS -p "$mp does not exist. Create it?") || exit 1
+		mkdiryn=$(printf "No\\nYes" | dmenu $DMENU_OPTIONS -fn "$DMENU_FN" -p "$mp does not exist. Create it?") || exit 1
 		[ "$mkdiryn" = "Yes" ] && (mkdir -p "$mp" || sudo -A mkdir -p "$mp")
 	fi
 }
 
 mountusb() {
-	chosen="$(echo "$usbdrives" | dmenu $OPTIONS -p "Mount which drive?")" || exit 1
+	chosen="$(echo "$usbdrives" | dmenu $DMENU_OPTIONS -fn "$DMENU_FN" -p "Mount which drive?")" || exit 1
 	chosen="$(echo "$chosen" | awk '{print $1}')"
 	[ -z "$chosen" ] && exit 1
 	notify-send "$(udisksctl mount -b "$chosen")" || notify-send "There was a problem while mounting"
@@ -26,17 +26,17 @@ mountusb() {
 }
 
 mountandroid() {
-	chosen="$(echo "$anddrives" | dmenu $OPTIONS -p "Which Android device?")" || exit 1
+	chosen="$(echo "$anddrives" | dmenu $DMENU_OPTIONS -fn "$DMENU_FN" -p "Which Android device?")" || exit 1
 	chosen="$(echo "$chosen" | cut -d : -f 1)"
 	getmount "$HOME -maxdepth 3 -not -path *.* -type d"
         simple-mtpfs --device "$chosen" "$mp"
-	echo "OK" | dmenu $OPTIONS -p "Tap Allow on your phone if it asks for permission and then press enter" || exit 1
+	echo "OK" | dmenu $DMENU_OPTIONS -fn "$DMENU_FN" -p "Tap Allow on your phone if it asks for permission and then press enter" || exit 1
 	simple-mtpfs --device "$chosen" "$mp"
 	notify-send "Android Mounting" "Android device mounted to $mp."
 }
 
 asktype() {
-	choice="$(printf "USB\\nAndroid" | dmenu $OPTIONS -p "Mount a USB drive or Android device?")" || exit 1
+	choice="$(printf "USB\\nAndroid" | dmenu $DMENU_OPTIONS -fn "$DMENU_FN" -p "Mount a USB drive or Android device?")" || exit 1
 	case $choice in
 		USB) mountusb ;;
 		Android) mountandroid ;;
