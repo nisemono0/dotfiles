@@ -25,7 +25,7 @@ set $dmenumount --no-startup-id ~/.scripts/i3cmds/dmenu/dmenumount.sh
 set $dmenuumount --no-startup-id ~/.scripts/i3cmds/dmenu/dmenuumount.sh
 set $switchaudio --no-startup-id ~/.scripts/i3cmds/switchsinks.sh
 set $wall_change --no-startup-id ~/.scripts/i3cmds/wall-change/wall-change.sh
-
+set $end_session --no-startup-id ~/.scripts/i3cmds/end-session.sh
 set_from_resource $fg foreground
 set_from_resource $bg background
 
@@ -61,7 +61,7 @@ bindsym $mod+q kill
 bindsym $mod+d exec $dmenubind
 bindsym $mod+Shift+c reload
 bindsym $mod+Shift+r restart
-bindsym $mod+Shift+Escape exec --no-startup-id "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'i3-msg exit'"
+bindsym $mod+Shift+Escape exec $end_session
 
 ##---Workspace Keys---##
 # Switch to workspace
