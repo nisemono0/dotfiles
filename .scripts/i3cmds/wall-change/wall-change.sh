@@ -34,8 +34,7 @@ selected_wall=$(printf "%s\n" "${options_walls[@]}" | dmenu $DMENU_OPTIONS -fn "
 [ "$selected_wall" = "Reset" ] && reset_wall
 wallpaper_path="$WALLPAPER_DIR/$selected_wall"
 
-bkends="haishoku\nwal\ncolorz\ncolorthief"
-selected_bkend=$(echo -e "$bkends" | dmenu $DMENU_OPTIONS -fn "$DMENU_FN" -i -p "Select backend")
+selected_bkend=$(printf "haishoku\\nwal\\ncolorz\\ncolorthief" | dmenu $DMENU_OPTIONS -fn "$DMENU_FN" -i -p "Select backend")
 [ -z "$selected_bkend" ] && exit 1
 
 options_sat=$(seq 0.1 0.1 1.0)
