@@ -4,7 +4,7 @@
 shut(){
 	sel=$(printf "Yes\\nNo" | dmenu -fn "$DMENU_FN" $DMENU_OPTIONS -i -p "Are you sure you want to shutdown ?") || exit 1
 	case "$sel" in
-		"Yes") shutdown ;;
+		"Yes") shutdown now ;;
 		*) exit ;;
 	esac
 }
