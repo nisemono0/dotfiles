@@ -23,7 +23,7 @@ set $scrot_area_clip --no-startup-id ~/.scripts/i3cmds/scrot/scrot-area-clip.sh
 set $dmenubind --no-startup-id ~/.scripts/i3cmds/dmenu/dmenu-bind.sh
 set $dmenumount --no-startup-id ~/.scripts/i3cmds/dmenu/dmenumount.sh
 set $dmenuumount --no-startup-id ~/.scripts/i3cmds/dmenu/dmenuumount.sh
-set $switchaudio --no-startup-id ~/.scripts/i3cmds/switchsinks.sh
+set $sinkselect --no-startup-id ~/.scripts/i3cmds/sink-select.sh
 set $wall_change --no-startup-id ~/.scripts/i3cmds/wall-change/wall-change.sh
 set $end_session --no-startup-id ~/.scripts/i3cmds/end-session.sh
 set_from_resource $fg foreground
@@ -141,7 +141,7 @@ bindsym $mod+F4 exec --no-startup-id notify-send F4
 bindsym $mod+F5 exec --no-startup-id notify-send F5
 bindsym $mod+F6 exec --no-startup-id notify-send F6
 bindsym $mod+F7 exec --no-startup-id notify-send F7
-bindsym $mod+F8 exec $switchaudio
+bindsym $mod+F8 exec $sinkselect
 bindsym $mod+F9 exec $ncmpcpp
 bindsym $mod+F10 exec $lockscreen
 bindsym $mod+F11 exec $dmenumount
