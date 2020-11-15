@@ -30,6 +30,7 @@ grub
 gwaterfall
 hdf5
 htop
+inetutils
 iputils
 jfsutils
 lib32-vulkan-radeon
@@ -58,6 +59,7 @@ nerd-fonts-ricty
 nerd-fonts-source-code-pro
 netctl
 otf-ipafont
+pacman-contrib
 patch
 picom
 pkgconf

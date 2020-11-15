@@ -2,6 +2,7 @@ betterdiscord-rauenzi-git
 betterdiscordctl-git
 flacon
 font-mathematica
+i3lock-color
 nerd-fonts-inconsolata
 nerd-fonts-inconsolata-go
 nerd-fonts-ricty
