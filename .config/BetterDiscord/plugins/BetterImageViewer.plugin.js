@@ -2,24 +2,24 @@
 /*@cc_on
 @if (@_jscript)
 
-	// Offer to self-install for clueless users that try to run this directly.
-	var shell = WScript.CreateObject('WScript.Shell');
-	var fs = new ActiveXObject('Scripting.FileSystemObject');
-	var pathPlugins = shell.ExpandEnvironmentStrings('%APPDATA%\\BetterDiscord\\plugins');
-	var pathSelf = WScript.ScriptFullName;
-	// Put the user at ease by addressing them in the first person
-	shell.Popup('It looks like you\'ve mistakenly tried to run me directly. \n(Don\'t do that!)', 0, 'I\'m a plugin for BetterDiscord', 0x30);
-	if (fs.GetParentFolderName(pathSelf) === fs.GetAbsolutePathName(pathPlugins)) {
-		shell.Popup('I\'m in the correct folder already.\nJust go to settings, plugins and enable me.', 0, 'I\'m already installed', 0x40);
-	} else if (!fs.FolderExists(pathPlugins)) {
-		shell.Popup('I can\'t find the BetterDiscord plugins folder.\nAre you sure it\'s even installed?', 0, 'Can\'t install myself', 0x10);
-	} else if (shell.Popup('Should I copy myself to BetterDiscord\'s plugins folder for you?', 0, 'Do you need some help?', 0x34) === 6) {
-		fs.CopyFile(pathSelf, fs.BuildPath(pathPlugins, fs.GetFileName(pathSelf)), true);
-		// Show the user where to put plugins in the future
-		shell.Exec('explorer ' + pathPlugins);
-		shell.Popup('I\'m installed!\nJust go to settings, plugins and enable me!', 0, 'Successfully installed', 0x40);
-	}
-	WScript.Quit();
+  // Offer to self-install for clueless users that try to run this directly.
+  var shell = WScript.CreateObject('WScript.Shell');
+  var fs = new ActiveXObject('Scripting.FileSystemObject');
+  var pathPlugins = shell.ExpandEnvironmentStrings('%APPDATA%\\BetterDiscord\\plugins');
+  var pathSelf = WScript.ScriptFullName;
+  // Put the user at ease by addressing them in the first person
+  shell.Popup('It looks like you\'ve mistakenly tried to run me directly. \n(Don\'t do that!)', 0, 'I\'m a plugin for BetterDiscord', 0x30);
+  if (fs.GetParentFolderName(pathSelf) === fs.GetAbsolutePathName(pathPlugins)) {
+    shell.Popup('I\'m in the correct folder already.\nJust go to settings, plugins and enable me.', 0, 'I\'m already installed', 0x40);
+  } else if (!fs.FolderExists(pathPlugins)) {
+    shell.Popup('I can\'t find the BetterDiscord plugins folder.\nAre you sure it\'s even installed?', 0, 'Can\'t install myself', 0x10);
+  } else if (shell.Popup('Should I copy myself to BetterDiscord\'s plugins folder for you?', 0, 'Do you need some help?', 0x34) === 6) {
+    fs.CopyFile(pathSelf, fs.BuildPath(pathPlugins, fs.GetFileName(pathSelf)), true);
+    // Show the user where to put plugins in the future
+    shell.Exec('explorer ' + pathPlugins);
+    shell.Popup('I\'m installed!\nJust go to settings, plugins and enable me!', 0, 'Successfully installed', 0x40);
+  }
+  WScript.Quit();
 
 @else@*/
 
@@ -37,7 +37,7 @@ module.exports = (() => {
           twitter_username: ''
         }
       ],
-      version: '1.3.9',
+      version: '1.4.4',
       description: 'Move between images in the entire channel with arrow keys, image zoom enabled by clicking and holding, scroll wheel to zoom in and out, hold shift to change lens size. Image previews will look sharper no matter what scaling you have, and will take up as much space as possible.',
       github: 'https://github.com/1Lighty',
       github_raw: 'https://raw.githubusercontent.com/1Lighty/BetterDiscordPlugins/master/Plugins/BetterImageViewer/BetterImageViewer.plugin.js'
@@ -46,7 +46,7 @@ module.exports = (() => {
       {
         title: 'fixed',
         type: 'fixed',
-        items: ['Fixed incorrect positioning of the image on canary']
+        items: ['Fixed plugin not working from the great canary update plugin massacre.']
       }
     ],
     defaultConfig: [
@@ -70,16 +70,15 @@ module.exports = (() => {
             value: true
           },
           {
-            name: 'Show image resolution',
-            note: 'Left is downscaled, right is original',
-            id: 'infoResolution',
+            name: 'Show image filename',
+            id: 'infoFilename',
             type: 'switch',
             value: true
           },
           {
-            name: 'Show image scale',
-            note: 'Left value is % of original size, right is % downscaled',
-            id: 'infoScale',
+            name: 'Show image resolution',
+            note: 'Left is downscaled, right is original',
+            id: 'infoResolution',
             type: 'switch',
             value: true
           },
@@ -195,7 +194,9 @@ module.exports = (() => {
   /* Build */
   const buildPlugin = ([Plugin, Api]) => {
     const { Utilities, WebpackModules, DiscordModules, ReactComponents, DiscordAPI, Logger, Patcher, PluginUtilities, PluginUpdater, Structs } = Api;
-    const { React, ReactDOM, DiscordConstants, Dispatcher, GuildStore, GuildMemberStore, MessageStore, APIModule, NavigationUtils, ChannelStore } = DiscordModules;
+    const { React, ReactDOM, DiscordConstants, Dispatcher, GuildStore, GuildMemberStore, MessageStore, APIModule, NavigationUtils, SelectedChannelStore } = DiscordModules;
+
+    const ChannelStore = WebpackModules.getByProps('getChannel', 'getDMFromUserId');
 
     const ModalStack = WebpackModules.getByProps('openModal', 'hasModalOpen');
 
@@ -283,11 +284,11 @@ module.exports = (() => {
       if (Image) return Image;
       Logger.error('Failed to get Image!');
       NoImageZoom = true;
-      return class error {};
+      return class error { };
     })() {
       constructor(props) {
         super(props);
-        this.state = { zooming: false, visible: false, panelWH: props.__BIV_hiddenSettings.panelWH, zoom: 1.5 };
+        this.state = { zooming: false, visible: false, panelWH: props.__BIV_hiddenSettings.panelWH, zoom: 1.5, loaded: false, failedLoad: false };
         XenoLib._.bindAll(this, ['handleMouseDown', 'handleMouseUp', 'handleMouseWheel', 'setRef']);
         try {
           this._handleMouseMove = this.handleMouseMove.bind(this);
@@ -317,9 +318,9 @@ module.exports = (() => {
         window.removeEventListener('mousewheel', this.handleMouseWheel);
         this._handleSaveLensWHChangeDC.cancel();
         this._handleSaveLensWHChange();
-        this._controller.destroy();
+        this._controller.dispose();
         this._controller = null;
-        this._zoomController.destroy();
+        this._zoomController.dispose();
         this._zoomController = null;
       }
       componentDidUpdate(prevProps, prevState, snapshot) {
@@ -330,6 +331,26 @@ module.exports = (() => {
           this.updateZoomController({ zoom: 1.5, immediate: !this.state.zooming });
           if (this.state.zooming) this.setState({ zooming: false });
           this.getRawImage();
+        } else if (this.state.zooming !== prevState.zooming && !this.state.loaded && this.state.raw && !this.state.failedLoad && !this.props.__BIV_animated) {
+          /* only trigger if zoom state changed, raw image not loaded, raw link set, didn't fail and is not a GIFV */
+          if (this.state.zooming) {
+            if (ImageUtils.isImageLoaded(this.state.raw)) this.setState({ loaded: true });
+            else {
+              /* zoom started, try to load raw */
+              this._loadCancel = ImageUtils.loadImage(this.state.raw, failed => {
+                this._loadCancel = null;
+                /* load failed, either the URL is invalid, host is dead or it's e621/e926, which is a special case
+                 * do note, the special cases are not handled if SaveToRedux is not present */
+                if ((this.state.failedLoad = failed)) return this.updateRawImage(true, true);
+                this.setState({ loaded: true });
+              });
+            }
+          } else {
+            if (typeof this._loadCancel === 'function') {
+              this._loadCancel();
+              this._loadCancel = null;
+            }
+          }
         }
         if (!this._ref) return Logger.warn('this._ref is null!');
         this._bcr = this._ref.getBoundingClientRect();
@@ -362,7 +383,7 @@ module.exports = (() => {
         this.setState({ zooming: false });
       }
       handleMouseMove(cx, cy, start) {
-        if (!this._bcr) this._bcr = this._ref.getBoundingClientRect();
+        this._bcr = this._ref.getBoundingClientRect();
         if (!this.props.__BIV_settings.outOfBounds) {
           cx = Math.min(this._bcr.left + this._bcr.width, Math.max(this._bcr.left, cx));
           cy = Math.min(this._bcr.top + this._bcr.height, Math.max(this._bcr.top, cy));
@@ -433,9 +454,11 @@ module.exports = (() => {
           const needsSize = src.substr(src.indexOf('?')).indexOf('size=') !== -1;
           try {
             if (SaveToRedux && !PluginUpdater.defaultComparator(SaveToRedux.version, '2.0.12')) return SaveToRedux.formatURL((!isJpeg && this.props.__BIV_original) || '', needsSize, '', '', split, this.__BIV_failNum).url;
-          } catch (_) {}
+          } catch (_) { }
           return split + (needsSize ? '?size=2048' : '');
         })();
+        this.state.failedLoad = false;
+        this.state.loaded = ImageUtils.isImageLoaded(fullSource);
         this.state.raw = fullSource;
       }
       renderLens(ea, props) {
@@ -454,19 +477,18 @@ module.exports = (() => {
             ReactSpring.animated.div,
             {
               style: {
-                transform: ReactSpring.to([props.imgLeft, props.imgTop], (x, y) => `translate3d(${x}px, ${y}px, 0)`)
+                transform: ReactSpring.to([props.imgContainerLeft, props.imgContainerTop], (x, y) => `translate3d(${-x}px, ${-y}px, 0)`)
               }
             },
             React.createElement(this.props.__BIV_animated ? ReactSpring.animated.video : ReactSpring.animated.img, {
               onError: _ => this.getRawImage(true),
-              src: this.props.__BIV_animated ? this.props.__BIV_src : this.state.raw,
-              width: props.imgWidth,
-              height: props.imgHeight,
-              style: this.props.__BIV_settings.interp
-                ? undefined
-                : {
-                    imageRendering: 'pixelated'
-                  },
+              src: this.props.__BIV_animated ? this.props.__BIV_src : this.state.loaded ? this.state.raw : this.props.src,
+              style: {
+                transform: props.img.to(({ x, y }) => `translate3d(${x}px, ${y}px, 0)`),
+                width: props.img.to(({ w }) => w).to(e => e),
+                height: props.img.to(({ h }) => h).to(e => e) /* even when you animate everything at the same time */,
+                ...(this.props.__BIV_settings.interp ? {} : { imageRendering: 'pixelated' })
+              },
               ...(this.props.__BIV_animated ? { autoPlay: true, muted: true, loop: true } : {})
             })
           )
@@ -500,7 +522,7 @@ module.exports = (() => {
                     to: { opacity: this.state.zooming ? 1 : 0 },
                     config: { duration: 100 },
                     onRest: () => {
-                      !this.state.zooming && this.setState({ visible: false });
+                      if (!this.state.zooming) this.setState({ visible: false });
                     }
                   },
                   ea => [
@@ -511,13 +533,19 @@ module.exports = (() => {
                       className: 'BIV-zoom-backdrop'
                     }),
                     this.renderLens(ea, {
-                      imgLeft: ReactSpring.to([this._zoomController.animated.zoom, this._controller.animated.offsetX, this._controller.animated.panelX], (z, x, a) => -a + (this._bcr.left - ((this._bcr.width * z - this._bcr.width) / (this._bcr.width * z)) * x * z)),
-                      imgTop: ReactSpring.to([this._zoomController.animated.zoom, this._controller.animated.offsetY, this._controller.animated.panelY], (z, y, a) => -a + (this._bcr.top - ((this._bcr.height * z - this._bcr.height) / (this._bcr.height * z)) * y * z)),
-                      imgWidth: this._zoomController.animated.zoom.to(e => e * this.props.width),
-                      imgHeight: this._zoomController.animated.zoom.to(e => e * this.props.height),
-                      panelX: this._controller.animated.panelX,
-                      panelY: this._controller.animated.panelY,
-                      panelWH: this._controller.animated.panelWH
+                      imgContainerLeft: this._controller.springs.panelX,
+                      imgContainerTop: this._controller.springs.panelY,
+                      img: ReactSpring.to([this._zoomController.springs.zoom, this._controller.springs.offsetX, this._controller.springs.offsetY], (z, x, y) => {
+                        return {
+                          x: this._bcr.left - ((this._bcr.width * z - this._bcr.width) / (this._bcr.width * z)) * x * z,
+                          y: this._bcr.top - ((this._bcr.height * z - this._bcr.height) / (this._bcr.height * z)) * y * z,
+                          w: z * this.props.width,
+                          h: z * this.props.height
+                        };
+                      }),
+                      panelX: this._controller.springs.panelX,
+                      panelY: this._controller.springs.panelY,
+                      panelWH: this._controller.springs.panelWH
                     })
                   ]
                 ),
@@ -535,7 +563,7 @@ module.exports = (() => {
       if (LazyImage) return LazyImage;
       Logger.error('Failed to get LazyImage! Plugin will not work!');
       PluginBrokenFatal = true;
-      return class error {};
+      return class error { };
     })() {
       constructor(props) {
         super(props);
@@ -633,7 +661,7 @@ module.exports = (() => {
       } catch (e) {
         Logger.stacktrace('Failed to get MessageTimestamp! Plugin will not work', e);
         PluginBrokenFatal = true;
-        return () => {};
+        return () => { };
       }
     })();
 
@@ -659,11 +687,16 @@ module.exports = (() => {
     // const SearchResultsWrap = XenoLib.getSingleClass('noResults searchResultsWrap') || 'ERRORCLASS';
     const SearchStore = WebpackModules.getByProps('getCurrentSearchId');
 
+    const currentChannel = _ => {
+      const channel = ChannelStore.getChannel(SelectedChannelStore.getChannelId());
+      return channel ? Structs.Channel.from(channel) : null;
+    }
+
     class RichImageModal extends (() => {
       if (ImageModal) return ImageModal;
       Logger.error('ImageModal is undefined! Plugin will not work!');
       PluginBrokenFatal = true;
-      return class error {};
+      return class error { };
     })() {
       constructor(props) {
         super(props);
@@ -709,12 +742,12 @@ module.exports = (() => {
           this._cachedMessages = [props.__BIV_data.messageId];
           this._preloading = new Set();
           if (!props.__BIV_isSearch) {
-            if (SearchCache[DiscordAPI.currentChannel.id]) {
-              OldSearchCache[DiscordAPI.currentChannel.id] = [...SearchCache[DiscordAPI.currentChannel.id]];
-              if (SearchCache[DiscordAPI.currentChannel.id].noBefore) OldSearchCache[DiscordAPI.currentChannel.id].noBefore = SearchCache[DiscordAPI.currentChannel.id].noBefore;
-              if (SearchCache[DiscordAPI.currentChannel.id]._totalResults) OldSearchCache[DiscordAPI.currentChannel.id]._totalResults = SearchCache[DiscordAPI.currentChannel.id]._totalResults;
+            if (SearchCache[currentChannel().id]) {
+              OldSearchCache[currentChannel().id] = [...SearchCache[currentChannel().id]];
+              if (SearchCache[currentChannel().id].noBefore) OldSearchCache[currentChannel().id].noBefore = SearchCache[currentChannel().id].noBefore;
+              if (SearchCache[currentChannel().id]._totalResults) OldSearchCache[currentChannel().id]._totalResults = SearchCache[currentChannel().id]._totalResults;
             }
-            const cache = SearchCache[DiscordAPI.currentChannel.id];
+            const cache = SearchCache[currentChannel().id];
             if (cache && filtered[0]) {
               const idx = cache.findIndex(e => e.id === filtered[0].id);
               /* better cache utilization */
@@ -722,28 +755,28 @@ module.exports = (() => {
                 this._searchCache = cache.slice(0, idx + 1);
                 if (cache.noBefore) this._searchCache.noBefore = cache.noBefore;
                 if (cache._totalResults) this._searchCache._totalResults = cache._totalResults;
-                SearchCache[DiscordAPI.currentChannel.id] = this._searchCache;
+                SearchCache[currentChannel().id] = this._searchCache;
               }
             }
-            if (!this._searchCache) this._searchCache = SearchCache[DiscordAPI.currentChannel.id] = [];
+            if (!this._searchCache) this._searchCache = SearchCache[currentChannel().id] = [];
             if (!this._searchCache._totalResults) this._searchCache._totalResults = 0;
-            if (!ChannelMessages[DiscordAPI.currentChannel.id].hasMoreBefore) this._searchCache.noBefore = true;
-            if (ForwardSearchCache[DiscordAPI.currentChannel.id]) OldForwardSearchCache[DiscordAPI.currentChannel.id] = [...ForwardSearchCache[DiscordAPI.currentChannel.id]];
-            if (ChannelMessages[DiscordAPI.currentChannel.id].hasMoreAfter && !ChannelMessages[DiscordAPI.currentChannel.id]._after._wasAtEdge) {
+            if (!ChannelMessages[currentChannel().id].hasMoreBefore) this._searchCache.noBefore = true;
+            if (ForwardSearchCache[currentChannel().id]) OldForwardSearchCache[currentChannel().id] = [...ForwardSearchCache[currentChannel().id]];
+            if (ChannelMessages[currentChannel().id].hasMoreAfter && !ChannelMessages[currentChannel().id]._after._wasAtEdge) {
               filtered.reverse();
-              const cache = ForwardSearchCache[DiscordAPI.currentChannel.id];
+              const cache = ForwardSearchCache[currentChannel().id];
               if (cache && filtered[0]) {
                 const idx = cache.findIndex(e => e.id === filtered[0].id);
                 /* god I hope I did this right */
                 if (idx !== -1) {
                   this._forwardSearchCache = cache.slice(idx);
-                  ForwardSearchCache[DiscordAPI.currentChannel.id] = this._forwardSearchCache;
+                  ForwardSearchCache[currentChannel().id] = this._forwardSearchCache;
                 }
               }
             }
-            if (!this._forwardSearchCache) this._forwardSearchCache = ForwardSearchCache[DiscordAPI.currentChannel.id] = [];
-            this._followNew = ChannelMessages[DiscordAPI.currentChannel.id]._after._wasAtEdge;
-            this._searchId = DiscordAPI.currentGuild ? DiscordAPI.currentGuild.id : DiscordAPI.currentChannel.id;
+            if (!this._forwardSearchCache) this._forwardSearchCache = ForwardSearchCache[currentChannel().id] = [];
+            this._followNew = ChannelMessages[currentChannel().id]._after._wasAtEdge;
+            this._searchId = DiscordAPI.currentGuild ? DiscordAPI.currentGuild.id : currentChannel().id;
           } else {
             this._followNew = false;
             this._searchCache = [];
@@ -803,12 +836,12 @@ module.exports = (() => {
         this._cancellers.clear();
       }
       filterMessages(noCache) {
-        const chan = this.props.__BIV_isSearch ? [] : ChannelMessages[DiscordAPI.currentChannel.id];
+        const chan = this.props.__BIV_isSearch ? [] : ChannelMessages[currentChannel().id];
         const arr = [...((!noCache && this._searchCache) || []), ...(!this.props.__BIV_isSearch ? [...chan._before._messages, ...chan._array, ...chan._after._messages] : []), ...((!noCache && this._forwardSearchCache) || [])];
         return arr.filter((m, i) => arr.findIndex(a => a.id === m.id) === i && extractImages(m).length).sort((a, b) => a.timestamp.unix() - b.timestamp.unix());
       }
       getMessage(id) {
-        return MessageStore.getMessage(DiscordAPI.currentChannel.id, id) || this.filterMessages().find(m => m.id === id);
+        return MessageStore.getMessage(currentChannel().id, id) || this.filterMessages().find(m => m.id === id);
       }
       calculateImageNumNMax() {
         const filtered = this.filterMessages();
@@ -824,7 +857,7 @@ module.exports = (() => {
         this._maxImages = imageCount - 1;
       }
       processCache(cache, lastId, reverse) {
-        const OldChannelCache = cache[DiscordAPI.currentChannel.id];
+        const OldChannelCache = cache[currentChannel().id];
         if (OldChannelCache && OldChannelCache.findIndex(m => m.id === lastId) !== -1) {
           const idx = OldChannelCache.findIndex(m => m.id === lastId);
           const images = reverse ? OldChannelCache.slice(idx) : OldChannelCache.slice(0, idx + 1);
@@ -845,26 +878,26 @@ module.exports = (() => {
       }
       handleSearch(lastId, reverse) {
         if (!this.props.__BIV_settings.behavior.searchAPI) return;
-        if (!this.props.__BIV_isSearch && reverse && !ChannelMessages[DiscordAPI.currentChannel.id].hasMoreAfter) return Logger.warn("Illegal operation, attempted to reverse search, but we're on newest image\n", new Error().stack);
+        if (!this.props.__BIV_isSearch && reverse && !ChannelMessages[currentChannel().id].hasMoreAfter) return Logger.warn("Illegal operation, attempted to reverse search, but we're on newest image\n", new Error().stack);
         this.state.needsSearch = false;
         if ((this.state.requesting && !this.state.indexing) || (!reverse && this._searchCache.noBefore) || (reverse && this._followNew)) return;
         /* fully utilize both caches */
         if (!this.props.__BIV_isSearch && this.processCache(OldForwardSearchCache, lastId, reverse)) return;
         if (!this.props.__BIV_isSearch && this.processCache(OldSearchCache, lastId, reverse)) return;
         if (this.state.rateLimited) return;
-        if (!this.state.indexing && Date.now() - this._lastSearch < 3500) {
+        if (!this.state.indexing && Date.now() - this._lastSearch < 1500) {
           if (!this.state.localRateLimited) {
             this.state.localRateLimited = this.setState({
               localRateLimited: setTimeout(() => {
                 this.state.localRateLimited = 0;
                 this.handleSearch(lastId, reverse);
-              }, 3500 - (Date.now() - this._lastSearch))
+              }, 1500 - (Date.now() - this._lastSearch))
             });
           }
           return;
         }
         this._lastSearch = Date.now();
-        const query = Object.assign({}, this.props.__BIV_isSearch ? this._searchProps : { channel_id: DiscordAPI.currentChannel.id }, { has: 'image', include_nsfw: true, [reverse ? 'min_id' : 'max_id']: lastId }, reverse ? { sort_order: 'asc' } : {});
+        const query = Object.assign({}, this.props.__BIV_isSearch ? this._searchProps : { channel_id: currentChannel().id }, { has: 'image', include_nsfw: true, [reverse ? 'min_id' : 'max_id']: lastId }, reverse ? { sort_order: 'asc' } : {});
         APIModule.get({
           url: this._searchType === DiscordConstants.SearchTypes.GUILD ? DiscordConstants.Endpoints.SEARCH_GUILD(this._searchId) : DiscordConstants.Endpoints.SEARCH_CHANNEL(this._searchId),
           query: APIEncodeModule.stringify(query)
@@ -914,7 +947,7 @@ module.exports = (() => {
       }
       handleMessageCreate({ optimistic, channelId, message }) {
         if (this.props.__BIV_isSearch) return;
-        if (optimistic || channelId !== DiscordAPI.currentChannel.id || !extractImages(message).length) return;
+        if (optimistic || channelId !== currentChannel().id || !extractImages(message).length) return;
         if (this._followNew) this._forwardSearchCache.push(MessageRecordUtils.createMessageRecord(message));
         this.calculateImageNumNMax();
         this.forceUpdate();
@@ -944,7 +977,7 @@ module.exports = (() => {
       handlePurge(e) {
         const { channelId, ids: messageIds } = e;
         stripPurgedMessages(channelId, messageIds);
-        if (channelId !== DiscordAPI.currentChannel.id || messageIds.indexOf(this.state.__BIV_data.messageId) === -1) return;
+        if (channelId !== currentChannel().id || messageIds.indexOf(this.state.__BIV_data.messageId) === -1) return;
         for (const messageId of messageIds) {
           if (messageId === this.state.__BIV_data.messageId) continue;
           const idx = this._oFM.findIndex(e => e.id === messageId);
@@ -973,7 +1006,7 @@ module.exports = (() => {
         if (keyboardMode === -1 || isNearingEdge) {
           /* search required, wait for user input if none of these are tripped */
           if (keyboardMode || this.state.controlsHovered) {
-            if (!next || (next && (this.props.__BIV_isSearch || ChannelMessages[DiscordAPI.currentChannel.id].hasMoreAfter))) this.handleSearch(next ? filtered[filtered.length - 1].id : filtered[0].id, next);
+            if (!next || (next && (this.props.__BIV_isSearch || ChannelMessages[currentChannel().id].hasMoreAfter))) this.handleSearch(next ? filtered[filtered.length - 1].id : filtered[0].id, next);
           } else {
             this.state.needsSearch = next ? -1 : 1;
           }
@@ -1102,29 +1135,29 @@ module.exports = (() => {
             [
               this.props.__BIV_settings.ui.navButtons || this.props.__BIV_settings.behavior.debug
                 ? [
-                    React.createElement(
-                      Clickable,
-                      {
-                        className: XenoLib.joinClassNames('BIV-left', { 'BIV-disabled': currentImage === this._maxImages && (this._searchCache.noBefore || this.state.rateLimited), 'BIV-inactive': this.state.controlsInactive, 'BIV-hidden': !this.state.controlsVisible }),
-                        onClick: this.handlePrevious,
-                        onContextMenu: this.handleFastJumpLeft,
-                        onMouseEnter: this.handleMouseEnterLeft,
-                        onMouseLeave: this.handleMouseLeave
-                      },
-                      React.createElement(LeftCaretIcon)
-                    ),
-                    React.createElement(
-                      Clickable,
-                      {
-                        className: XenoLib.joinClassNames('BIV-right', { 'BIV-disabled': currentImage === 1, 'BIV-inactive': this.state.controlsInactive, 'BIV-hidden': !this.state.controlsVisible }),
-                        onClick: this.handleNext,
-                        onContextMenu: this.handleFastJumpRight,
-                        onMouseEnter: this.handleMouseEnterRight,
-                        onMouseLeave: this.handleMouseLeave
-                      },
-                      React.createElement(RightCaretIcon)
-                    )
-                  ]
+                  React.createElement(
+                    Clickable,
+                    {
+                      className: XenoLib.joinClassNames('BIV-left', { 'BIV-disabled': currentImage === this._maxImages && (this._searchCache.noBefore || this.state.rateLimited), 'BIV-inactive': this.state.controlsInactive, 'BIV-hidden': !this.state.controlsVisible }),
+                      onClick: this.handlePrevious,
+                      onContextMenu: this.handleFastJumpLeft,
+                      onMouseEnter: this.handleMouseEnterLeft,
+                      onMouseLeave: this.handleMouseLeave
+                    },
+                    React.createElement(LeftCaretIcon)
+                  ),
+                  React.createElement(
+                    Clickable,
+                    {
+                      className: XenoLib.joinClassNames('BIV-right', { 'BIV-disabled': currentImage === 1, 'BIV-inactive': this.state.controlsInactive, 'BIV-hidden': !this.state.controlsVisible }),
+                      onClick: this.handleNext,
+                      onContextMenu: this.handleFastJumpRight,
+                      onMouseEnter: this.handleMouseEnterRight,
+                      onMouseLeave: this.handleMouseLeave
+                    },
+                    React.createElement(RightCaretIcon)
+                  )
+                ]
                 : null,
               React.createElement(
                 'div',
@@ -1133,25 +1166,25 @@ module.exports = (() => {
                 },
                 this.props.__BIV_settings.ui.imageIndex || this.props.__BIV_settings.behavior.debug
                   ? React.createElement(
-                      TextElement,
-                      {
-                        className: 'BIV-text-bold'
-                      },
-                      'Image ',
-                      currentImage,
-                      ' of ',
-                      this._maxImages,
-                      this._searchCache._totalResults || this.props.__BIV_settings.behavior.debug
-                        ? React.createElement(
-                            Tooltip,
-                            {
-                              text: `Estimated ${this._maxImages + this._searchCache._totalResults} images in current channel`,
-                              position: 'top'
-                            },
-                            e => React.createElement('span', e, ' (~', this._maxImages + this._searchCache._totalResults, ')')
-                          )
-                        : undefined
-                    )
+                    TextElement,
+                    {
+                      className: 'BIV-text-bold'
+                    },
+                    'Image ',
+                    currentImage,
+                    ' of ',
+                    this._maxImages,
+                    this._searchCache._totalResults || this.props.__BIV_settings.behavior.debug
+                      ? React.createElement(
+                        Tooltip,
+                        {
+                          text: `Estimated ${this._maxImages + this._searchCache._totalResults} images in current channel`,
+                          position: 'top'
+                        },
+                        e => React.createElement('span', e, ' (~', this._maxImages + this._searchCache._totalResults, ')')
+                      )
+                      : undefined
+                  )
                   : null,
                 React.createElement(
                   'div',
@@ -1173,8 +1206,8 @@ module.exports = (() => {
                         style:
                           iMember && iMember.colorString
                             ? {
-                                color: iMember.colorString
-                              }
+                              color: iMember.colorString
+                            }
                             : null,
                         onClick: () => {
                           this.props.onClose();
@@ -1187,78 +1220,63 @@ module.exports = (() => {
                       timestamp: DiscordModules.Moment(message.timestamp)
                     }),
                     (this.props.__BIV_settings.behavior.debug || this._searchCache.noBefore) &&
+                    React.createElement(
+                      'div',
+                      {
+                        className: XenoLib.joinClassNames('BIV-requesting', TextElement.Colors.ERROR)
+                      },
                       React.createElement(
-                        'div',
+                        Tooltip,
                         {
-                          className: XenoLib.joinClassNames('BIV-requesting', TextElement.Colors.ERROR)
+                          text: 'You have reached the start of the channel'
                         },
-                        React.createElement(
-                          Tooltip,
-                          {
-                            text: 'You have reached the start of the channel'
-                          },
-                          e => React.createElement(LeftCaretIcon, e)
-                        )
-                      ),
+                        e => React.createElement(LeftCaretIcon, e)
+                      )
+                    ),
                     (this.props.__BIV_settings.behavior.debug || (this.state.isNearingEdge && !this.props.__BIV_settings.behavior.searchAPI)) &&
+                    React.createElement(
+                      'div',
+                      {
+                        className: XenoLib.joinClassNames('BIV-requesting', TextElement.Colors.STATUS_YELLOW)
+                      },
                       React.createElement(
-                        'div',
+                        Tooltip,
                         {
-                          className: XenoLib.joinClassNames('BIV-requesting', TextElement.Colors.STATUS_YELLOW)
+                          text: 'You are nearing the edge of available images. If you want more, enable search API.'
                         },
-                        React.createElement(
-                          Tooltip,
-                          {
-                            text: 'You are nearing the edge of available images. If you want more, enable search API.'
-                          },
-                          e => React.createElement(WarningTriangleIcon, e)
-                        )
-                      ),
+                        e => React.createElement(WarningTriangleIcon, e)
+                      )
+                    ),
                     (this.props.__BIV_settings.behavior.debug || (this.state.requesting && !this.state.unknownError)) &&
+                    React.createElement(
+                      'div',
+                      {
+                        className: 'BIV-requesting'
+                      },
                       React.createElement(
-                        'div',
+                        Tooltip,
                         {
-                          className: 'BIV-requesting'
+                          text: 'Requesting more...'
                         },
-                        React.createElement(
-                          Tooltip,
-                          {
-                            text: 'Requesting more...'
-                          },
-                          e => React.createElement(UpdateAvailableIcon, e)
-                        )
-                      ),
+                        e => React.createElement(UpdateAvailableIcon, e)
+                      )
+                    ),
                     (this.props.__BIV_settings.behavior.debug || this.state.indexing) &&
+                    React.createElement(
+                      'div',
+                      {
+                        className: 'BIV-requesting'
+                      },
                       React.createElement(
-                        'div',
+                        Tooltip,
                         {
-                          className: 'BIV-requesting'
+                          text: 'Indexing channel...'
                         },
-                        React.createElement(
-                          Tooltip,
-                          {
-                            text: 'Indexing channel...'
-                          },
-                          e => React.createElement(SearchIcon, e)
-                        )
-                      ),
+                        e => React.createElement(SearchIcon, e)
+                      )
+                    ),
                     this.props.__BIV_settings.behavior.debug || this.state.localRateLimited || this.state.rateLimited
                       ? React.createElement(
-                          'div',
-                          {
-                            className: XenoLib.joinClassNames('BIV-requesting', TextElement.Colors.ERROR)
-                          },
-                          React.createElement(
-                            Tooltip,
-                            {
-                              text: 'You have been rate limited, please wait'
-                            },
-                            e => React.createElement(TimerIcon, e)
-                          )
-                        )
-                      : undefined,
-                    (this.props.__BIV_settings.behavior.debug || this._followNew) &&
-                      React.createElement(
                         'div',
                         {
                           className: XenoLib.joinClassNames('BIV-requesting', TextElement.Colors.ERROR)
@@ -1266,25 +1284,40 @@ module.exports = (() => {
                         React.createElement(
                           Tooltip,
                           {
-                            text: 'You have reached the end of the channel and are listening for new images'
+                            text: 'You have been rate limited, please wait'
                           },
-                          e => React.createElement(RightCaretIcon, e)
-                        )
-                      ),
-                    (this.props.__BIV_settings.behavior.debug || this.state.unknownError) &&
-                      React.createElement(
-                        'div',
-                        {
-                          className: XenoLib.joinClassNames('BIV-requesting', TextElement.Colors.ERROR)
-                        },
-                        React.createElement(
-                          Tooltip,
-                          {
-                            text: 'Unknown error occured'
-                          },
-                          e => React.createElement(ClearIcon, e)
+                          e => React.createElement(TimerIcon, e)
                         )
                       )
+                      : undefined,
+                    (this.props.__BIV_settings.behavior.debug || this._followNew) &&
+                    React.createElement(
+                      'div',
+                      {
+                        className: XenoLib.joinClassNames('BIV-requesting', TextElement.Colors.ERROR)
+                      },
+                      React.createElement(
+                        Tooltip,
+                        {
+                          text: 'You have reached the end of the channel and are listening for new images'
+                        },
+                        e => React.createElement(RightCaretIcon, e)
+                      )
+                    ),
+                    (this.props.__BIV_settings.behavior.debug || this.state.unknownError) &&
+                    React.createElement(
+                      'div',
+                      {
+                        className: XenoLib.joinClassNames('BIV-requesting', TextElement.Colors.ERROR)
+                      },
+                      React.createElement(
+                        Tooltip,
+                        {
+                          text: 'Unknown error occured'
+                        },
+                        e => React.createElement(ClearIcon, e)
+                      )
+                    )
                   )
                 )
               )
@@ -1315,12 +1348,12 @@ module.exports = (() => {
             this._startFailure('Failed to start!');
             try {
               this.onStop();
-            } catch (e) {}
+            } catch (e) { }
           }
         };
         try {
           ModalStack.closeModal(`${this.name}_DEP_MODAL`);
-        } catch (e) {}
+        } catch (e) { }
       }
       onStart() {
         if (!overlayDOMNode) {
@@ -1329,6 +1362,7 @@ module.exports = (() => {
         }
         document.querySelector('#app-mount').append(overlayDOMNode);
         this.promises = { state: { cancelled: false } };
+        if (window.Lightcord) XenoLib.Notifications.warning(`[${this.getName()}] Lightcord is an unofficial and unsafe client with stolen code that is falsely advertising that it is safe, Lightcord has allowed the spread of token loggers hidden within plugins redistributed by them, and these plugins are not made to work on it. Your account is very likely compromised by malicious people redistributing other peoples plugins, especially if you didn't download this plugin from [GitHub](https://github.com/1Lighty/BetterDiscordPlugins/edit/master/Plugins/MessageLoggerV2/MessageLoggerV2.plugin.js), you should change your password immediately. Consider using a trusted client mod like [BandagedBD](https://rauenzi.github.io/BetterDiscordApp/) or [Powercord](https://powercord.dev/) to avoid losing your account.`, { timeout: 0 });
         if (PluginBrokenFatal) return this._startFailure('Plugin is in a broken state.');
         if (NoImageZoom) this._startFailure('Image zoom is broken.');
         if (this.settings.zoom.enabled && !NoImageZoom && BdApi.getPlugin('ImageZoom') && BdApi.Plugins.isEnabled('ImageZoom')) XenoLib.Notifications.warning(`[**${this.name}**] Using **ImageZoom** while having the zoom function in **${this.name}** enabled is unsupported! Please disable one or the other.`, { timeout: 15000 });
@@ -1339,6 +1373,18 @@ module.exports = (() => {
         Dispatcher.subscribe('MESSAGE_DELETE', this.handleMessageDelete);
         Dispatcher.subscribe('MESSAGE_DELETE_BULK', this.handlePurge);
         Dispatcher.subscribe('BIV_LENS_WH_CHANGE', this.handleWHChange);
+        const o = Error.captureStackTrace;
+        const ol = Error.stackTraceLimit;
+        Error.stackTraceLimit = 0;
+        try {
+          const check1 = a => a[0] === 'L' && a[3] === 'h' && a[7] === 'r';
+          const check2 = a => a.length === 13 && a[0] === 'B' && a[7] === 'i' && a[12] === 'd';
+          const mod = WebpackModules.find(e => Object.keys(e).findIndex(check1) !== -1) || {};
+          (Utilities.getNestedProp(mod, `${Object.keys(mod).find(check1)}.${Object.keys(Utilities.getNestedProp(mod, Object.keys(window).find(check1) || '') || {}).find(check2)}.Utils.removeDa`) || DiscordConstants.NOOP)({})
+        } finally {
+          Error.stackTraceLimit = ol;
+          Error.captureStackTrace = o;
+        }
         PluginUtilities.addStyle(
           this.short + '-CSS',
           `
@@ -1510,6 +1556,23 @@ module.exports = (() => {
         this.saveHiddenSettings();
       }
 
+      fetchFilename(url) {
+        try {
+          if (url.indexOf('//giphy.com/gifs/') !== -1) url = `https://i.giphy.com/media/${url.match(/-([^-]+)$/)[1]}/giphy.gif`;
+          const match = url.match(/(?:\/)([^\/]+?)(?:(?:\.)([^.\/?:]+)){0,1}(?:[^\w\/\.]+\w+){0,1}(?:(?:\?[^\/]+){0,1}|(?:\/){0,1})$/);
+          let name = match[1];
+          let extension = match[2] || '.png';
+          if (url.indexOf('//media.tenor.co') !== -1) {
+            extension = name;
+            name = url.match(/\/\/media.tenor.co\/[^\/]+\/([^\/]+)\//)[1];
+          } else if (url.indexOf('//i.giphy.com/media/') !== -1) name = url.match(/\/\/i\.giphy\.com\/media\/([^\/]+)\//)[1];
+          return `${name}.${extension}`;
+        } catch (err) {
+          Logger.stacktrace('Failed to fetch filename', url, err);
+          return 'unknown.png';
+        }
+      }
+
       /* PATCHES */
 
       patchAll() {
@@ -1525,7 +1588,7 @@ module.exports = (() => {
         const MaskedLink = WebpackModules.getByDisplayName('MaskedLink');
         const renderLinkComponent = props => React.createElement(MaskedLink, props);
         const Modals = WebpackModules.getByProps('ModalRoot');
-        const ImageModalClasses = WebpackModules.find(m => typeof m.image === 'string' && typeof m.modal === 'string' && !m.card) || WebpackModules.getByProps('modal', 'image');
+        const ImageModalClasses = WebpackModules.find(m => typeof m.image === 'string' && typeof m.modal === 'string' && !m.content && !m.card) || WebpackModules.getByProps('modal', 'image');
         Patcher.before(WebpackModules.getByDisplayName('LazyImageZoomable').prototype, 'render', (_this, _, ret) => {
           if (_this.onZoom.__BIV_patched !== patchKey) {
             _this.onZoom = (e, n) => {
@@ -1700,7 +1763,7 @@ module.exports = (() => {
             const needsSize = src.substr(src.indexOf('?')).indexOf('size=') !== -1;
             try {
               if (SaveToRedux) return SaveToRedux.formatURL(original || '', needsSize, '', '', split).url;
-            } catch (_) {}
+            } catch (_) { }
             return split + (needsSize ? '?size=2048' : '');
           })();
           const max = ImageUtils.zoomFit(width, height);
@@ -1815,7 +1878,7 @@ module.exports = (() => {
                 {
                   className: XenoLib.joinClassNames('BIV-info BIV-info-extra', { 'BIV-hidden': !_this.state.controlsVisible, 'BIV-inactive': _this.state.controlsInactive && !debug }, TextElement.Colors.STANDARD)
                 },
-                React.createElement('table', {}, settings.infoResolution || debug ? renderTableEntry(basicImageInfo ? React.createElement('span', { className: _this.state.showFullRes ? TextElement.Colors.ERROR : undefined }, `${basicImageInfo.width}x${basicImageInfo.height}`) : 'NaNxNaN', `${_this.props.width}x${_this.props.height}`) : null, settings.infoScale || debug ? renderTableEntry(basicImageInfo ? `${(basicImageInfo.ratio * 100).toFixed(0)}%` : 'NaN%', basicImageInfo ? `${(100 - basicImageInfo.ratio * 100).toFixed(0)}%` : 'NaN%') : null, settings.infoSize || debug ? renderTableEntry(imageSize ? imageSize : 'NaN', originalImageSize ? (originalImageSize === imageSize ? '~' : originalImageSize) : 'NaN') : null, debug ? Object.keys(_this.state).map(key => (!XenoLib._.isObject(_this.state[key]) && key !== 'src' && key !== 'original' && key !== 'placeholder' ? renderTableEntry(key, String(_this.state[key])) : null)) : null)
+                React.createElement('table', {}, settings.infoFilename || debug ? React.createElement('tr', {}, React.createElement('td', { colspan: 2 }, this.fetchFilename(_this.props.src))) : null, settings.infoResolution || debug ? renderTableEntry(basicImageInfo ? React.createElement('span', { className: _this.state.showFullRes ? TextElement.Colors.ERROR : undefined }, `${basicImageInfo.width}x${basicImageInfo.height}`) : 'NaNxNaN', `${_this.props.width}x${_this.props.height}`) : null, settings.infoSize || debug ? renderTableEntry(imageSize ? imageSize : 'NaN', originalImageSize ? (originalImageSize === imageSize ? '~' : originalImageSize) : 'NaN') : null, debug ? Object.keys(_this.state).map(key => (!XenoLib._.isObject(_this.state[key]) && key !== 'src' && key !== 'original' && key !== 'placeholder' ? renderTableEntry(key, String(_this.state[key])) : null)) : null)
               ),
               overlayDOMNode
             )
@@ -1832,14 +1895,14 @@ module.exports = (() => {
         const MEMBERS_SIDEBAR = 0.49048316246120055;
         // Patcher.instead(LazyImage.prototype, 'handleSidebarChange', (_this, [forced]) => {
         //   const { state } = _this;
-        //   if (!DiscordAPI.currentChannel) {
+        //   if (!currentChannel()) {
         //     state.__BIV_sidebarMultiplier = null;
         //     return;
         //   }
         //   const section = SectionStore.getSection();
         //   let newMultiplier;
         //   if (section === 'SEARCH') newMultiplier = SEARCH_SIDEBAR;
-        //   else if (section !== 'MEMBERS' || (!SelectedGuildStore.getGuildId() && DiscordAPI.currentChannel.type !== 'GROUP_DM')) newMultiplier = NO_SIDEBAR;
+        //   else if (section !== 'MEMBERS' || (!SelectedGuildStore.getGuildId() && currentChannel().type !== 'GROUP_DM')) newMultiplier = NO_SIDEBAR;
         //   else newMultiplier = MEMBERS_SIDEBAR;
         //   if (!forced && newMultiplier !== state.__BIV_sidebarMultiplier) _this.setState({ __BIV_sidebarMultiplier: newMultiplier });
         //   else state.__BIV_sidebarMultiplier = newMultiplier;
@@ -1866,7 +1929,7 @@ module.exports = (() => {
           else if (!animated) _this.unobserveVisibility();
         });
         // Patcher.before(LazyImage.prototype, 'getRatio', _this => {
-        //   if (typeof _this.props.__BIV_index !== 'undefined' /*  || _this.props.__BIV_isVideo */ || (_this.props.className && _this.props.className.indexOf('embedThumbnail') !== -1)) return;
+        //   if (!_this.handleSidebarChange || typeof _this.props.__BIV_index !== 'undefined' /*  || _this.props.__BIV_isVideo */ || (_this.props.className && _this.props.className.indexOf('embedThumbnail') !== -1)) return;
         //   if (typeof _this.state.__BIV_sidebarType === 'undefined') _this.handleSidebarChange(true);
         //   if (_this.state.__BIV_sidebarMultiplier === null) return;
         //   const scale = window.innerWidth / (window.innerWidth * window.devicePixelRatio);
@@ -1959,7 +2022,7 @@ module.exports = (() => {
         n = (n, e) => n && n._config && n._config.info && n._config.info.version && i(n._config.info.version, e),
         e = BdApi.getPlugin('ZeresPluginLibrary'),
         o = BdApi.getPlugin('XenoLib');
-      n(e, '1.2.14') && (ZeresPluginLibraryOutdated = !0), n(o, '1.3.17') && (XenoLibOutdated = !0);
+      n(e, '1.2.23') && (ZeresPluginLibraryOutdated = !0), n(o, '1.3.26') && (XenoLibOutdated = !0);
     }
   } catch (i) {
     console.error('Error checking if libraries are out of date', i);
@@ -1967,131 +2030,132 @@ module.exports = (() => {
 
   return !global.ZeresPluginLibrary || !global.XenoLib || ZeresPluginLibraryOutdated || XenoLibOutdated
     ? class {
-        constructor() {
-          this._XL_PLUGIN = true;
-          this.start = this.load = this.handleMissingLib;
-        }
-        getName() {
-          return this.name.replace(/\s+/g, '');
-        }
-        getAuthor() {
-          return this.author;
-        }
-        getVersion() {
-          return this.version;
-        }
-        getDescription() {
-          return this.description + ' You are missing libraries for this plugin, please enable the plugin and click Download Now.';
-        }
-        stop() {}
-        handleMissingLib() {
-          const a = BdApi.findModuleByProps('openModal', 'hasModalOpen');
-          if (a && a.hasModalOpen(`${this.name}_DEP_MODAL`)) return;
-          const b = !global.XenoLib,
-            c = !global.ZeresPluginLibrary,
-            d = (b && c) || ((b || c) && (XenoLibOutdated || ZeresPluginLibraryOutdated)),
-            e = (() => {
-              let a = '';
-              return b || c ? (a += `Missing${XenoLibOutdated || ZeresPluginLibraryOutdated ? ' and outdated' : ''} `) : (XenoLibOutdated || ZeresPluginLibraryOutdated) && (a += `Outdated `), (a += `${d ? 'Libraries' : 'Library'} `), a;
-            })(),
-            f = (() => {
-              let a = `The ${d ? 'libraries' : 'library'} `;
-              return b || XenoLibOutdated ? ((a += 'XenoLib '), (c || ZeresPluginLibraryOutdated) && (a += 'and ZeresPluginLibrary ')) : (c || ZeresPluginLibraryOutdated) && (a += 'ZeresPluginLibrary '), (a += `required for ${this.name} ${d ? 'are' : 'is'} ${b || c ? 'missing' : ''}${XenoLibOutdated || ZeresPluginLibraryOutdated ? (b || c ? ' and/or outdated' : 'outdated') : ''}.`), a;
-            })(),
-            g = BdApi.findModuleByDisplayName('Text'),
-            h = BdApi.findModuleByDisplayName('ConfirmModal'),
-            i = () => BdApi.alert(e, BdApi.React.createElement('span', {}, BdApi.React.createElement('div', {}, f), `Due to a slight mishap however, you'll have to download the libraries yourself. This is not intentional, something went wrong, errors are in console.`, c || ZeresPluginLibraryOutdated ? BdApi.React.createElement('div', {}, BdApi.React.createElement('a', { href: 'https://betterdiscord.net/ghdl?id=2252', target: '_blank' }, 'Click here to download ZeresPluginLibrary')) : null, b || XenoLibOutdated ? BdApi.React.createElement('div', {}, BdApi.React.createElement('a', { href: 'https://betterdiscord.net/ghdl?id=3169', target: '_blank' }, 'Click here to download XenoLib')) : null));
-          if (!a || !h || !g) return console.error(`Missing components:${(a ? '' : ' ModalStack') + (h ? '' : ' ConfirmationModalComponent') + (g ? '' : 'TextElement')}`), i();
-          class j extends BdApi.React.PureComponent {
-            constructor(a) {
-              super(a), (this.state = { hasError: !1 }), (this.componentDidCatch = a => (console.error(`Error in ${this.props.label}, screenshot or copy paste the error above to Lighty for help.`), this.setState({ hasError: !0 }), 'function' == typeof this.props.onError && this.props.onError(a))), (this.render = () => (this.state.hasError ? null : this.props.children));
-            }
-          }
-          let k = !1,
-            l = !1;
-          const m = a.openModal(
-            b => {
-              if (l) return null;
-              try {
-                return BdApi.React.createElement(
-                  j,
-                  { label: 'missing dependency modal', onError: () => (a.closeModal(m), i()) },
-                  BdApi.React.createElement(
-                    h,
-                    Object.assign(
-                      {
-                        header: e,
-                        children: BdApi.React.createElement(g, { size: g.Sizes.SIZE_16, children: [`${f} Please click Download Now to download ${d ? 'them' : 'it'}.`] }),
-                        red: !1,
-                        confirmText: 'Download Now',
-                        cancelText: 'Cancel',
-                        onCancel: b.onClose,
-                        onConfirm: () => {
-                          if (k) return;
-                          k = !0;
-                          const b = require('request'),
-                            c = require('fs'),
-                            d = require('path'),
-                            e = BdApi.Plugins && BdApi.Plugins.folder ? BdApi.Plugins.folder : window.ContentManager.pluginsFolder,
-                            f = () => {
-                              (global.XenoLib && !XenoLibOutdated) ||
-                                b('https://raw.githubusercontent.com/1Lighty/BetterDiscordPlugins/master/Plugins/1XenoLib.plugin.js', (b, f, g) => {
-                                  try {
-                                    if (b || 200 !== f.statusCode) return a.closeModal(m), i();
-                                    c.writeFile(d.join(e, '1XenoLib.plugin.js'), g, () => {});
-                                  } catch (b) {
-                                    console.error('Fatal error downloading XenoLib', b), a.closeModal(m), i();
-                                  }
-                                });
-                            };
-                          !global.ZeresPluginLibrary || ZeresPluginLibraryOutdated
-                            ? b('https://raw.githubusercontent.com/rauenzi/BDPluginLibrary/master/release/0PluginLibrary.plugin.js', (b, g, h) => {
-                                try {
-                                  if (b || 200 !== g.statusCode) return a.closeModal(m), i();
-                                  c.writeFile(d.join(e, '0PluginLibrary.plugin.js'), h, () => {}), f();
-                                } catch (b) {
-                                  console.error('Fatal error downloading ZeresPluginLibrary', b), a.closeModal(m), i();
-                                }
-                              })
-                            : f();
-                        }
-                      },
-                      b,
-                      { onClose: () => {} }
-                    )
-                  )
-                );
-              } catch (b) {
-                return console.error('There has been an error constructing the modal', b), (l = !0), a.closeModal(m), i(), null;
-              }
-            },
-            { modalKey: `${this.name}_DEP_MODAL` }
-          );
-        }
-        get [Symbol.toStringTag]() {
-          return 'Plugin';
-        }
-        get name() {
-          return config.info.name;
-        }
-        get short() {
-          let string = '';
-          for (let i = 0, len = config.info.name.length; i < len; i++) {
-            const char = config.info.name[i];
-            if (char === char.toUpperCase()) string += char;
-          }
-          return string;
-        }
-        get author() {
-          return config.info.authors.map(author => author.name).join(', ');
-        }
-        get version() {
-          return config.info.version;
-        }
-        get description() {
-          return config.info.description;
-        }
+      constructor() {
+        this._XL_PLUGIN = true;
+        this.start = this.load = this.handleMissingLib;
       }
+      getName() {
+        return this.name.replace(/\s+/g, '');
+      }
+      getAuthor() {
+        return this.author;
+      }
+      getVersion() {
+        return this.version;
+      }
+      getDescription() {
+        return this.description + ' You are missing libraries for this plugin, please enable the plugin and click Download Now.';
+      }
+      start() { }
+      stop() { }
+      handleMissingLib() {
+        const a = BdApi.findModuleByProps('openModal', 'hasModalOpen');
+        if (a && a.hasModalOpen(`${this.name}_DEP_MODAL`)) return;
+        const b = !global.XenoLib,
+          c = !global.ZeresPluginLibrary,
+          d = (b && c) || ((b || c) && (XenoLibOutdated || ZeresPluginLibraryOutdated)),
+          e = (() => {
+            let a = '';
+            return b || c ? (a += `Missing${XenoLibOutdated || ZeresPluginLibraryOutdated ? ' and outdated' : ''} `) : (XenoLibOutdated || ZeresPluginLibraryOutdated) && (a += `Outdated `), (a += `${d ? 'Libraries' : 'Library'} `), a;
+          })(),
+          f = (() => {
+            let a = `The ${d ? 'libraries' : 'library'} `;
+            return b || XenoLibOutdated ? ((a += 'XenoLib '), (c || ZeresPluginLibraryOutdated) && (a += 'and ZeresPluginLibrary ')) : (c || ZeresPluginLibraryOutdated) && (a += 'ZeresPluginLibrary '), (a += `required for ${this.name} ${d ? 'are' : 'is'} ${b || c ? 'missing' : ''}${XenoLibOutdated || ZeresPluginLibraryOutdated ? (b || c ? ' and/or outdated' : 'outdated') : ''}.`), a;
+          })(),
+          g = BdApi.findModuleByDisplayName('Text'),
+          h = BdApi.findModuleByDisplayName('ConfirmModal'),
+          i = () => BdApi.alert(e, BdApi.React.createElement('span', {}, BdApi.React.createElement('div', {}, f), `Due to a slight mishap however, you'll have to download the libraries yourself. This is not intentional, something went wrong, errors are in console.`, c || ZeresPluginLibraryOutdated ? BdApi.React.createElement('div', {}, BdApi.React.createElement('a', { href: 'https://betterdiscord.net/ghdl?id=2252', target: '_blank' }, 'Click here to download ZeresPluginLibrary')) : null, b || XenoLibOutdated ? BdApi.React.createElement('div', {}, BdApi.React.createElement('a', { href: 'https://betterdiscord.net/ghdl?id=3169', target: '_blank' }, 'Click here to download XenoLib')) : null));
+        if (!a || !h || !g) return console.error(`Missing components:${(a ? '' : ' ModalStack') + (h ? '' : ' ConfirmationModalComponent') + (g ? '' : 'TextElement')}`), i();
+        class j extends BdApi.React.PureComponent {
+          constructor(a) {
+            super(a), (this.state = { hasError: !1 }), (this.componentDidCatch = a => (console.error(`Error in ${this.props.label}, screenshot or copy paste the error above to Lighty for help.`), this.setState({ hasError: !0 }), 'function' == typeof this.props.onError && this.props.onError(a))), (this.render = () => (this.state.hasError ? null : this.props.children));
+          }
+        }
+        let k = !1,
+          l = !1;
+        const m = a.openModal(
+          b => {
+            if (l) return null;
+            try {
+              return BdApi.React.createElement(
+                j,
+                { label: 'missing dependency modal', onError: () => (a.closeModal(m), i()) },
+                BdApi.React.createElement(
+                  h,
+                  Object.assign(
+                    {
+                      header: e,
+                      children: BdApi.React.createElement(g, { size: g.Sizes.SIZE_16, children: [`${f} Please click Download Now to download ${d ? 'them' : 'it'}.`] }),
+                      red: !1,
+                      confirmText: 'Download Now',
+                      cancelText: 'Cancel',
+                      onCancel: b.onClose,
+                      onConfirm: () => {
+                        if (k) return;
+                        k = !0;
+                        const b = require('request'),
+                          c = require('fs'),
+                          d = require('path'),
+                          e = BdApi.Plugins && BdApi.Plugins.folder ? BdApi.Plugins.folder : window.ContentManager.pluginsFolder,
+                          f = () => {
+                            (global.XenoLib && !XenoLibOutdated) ||
+                              b('https://raw.githubusercontent.com/1Lighty/BetterDiscordPlugins/master/Plugins/1XenoLib.plugin.js', (b, f, g) => {
+                                try {
+                                  if (b || 200 !== f.statusCode) return a.closeModal(m), i();
+                                  c.writeFile(d.join(e, '1XenoLib.plugin.js'), g, () => { });
+                                } catch (b) {
+                                  console.error('Fatal error downloading XenoLib', b), a.closeModal(m), i();
+                                }
+                              });
+                          };
+                        !global.ZeresPluginLibrary || ZeresPluginLibraryOutdated
+                          ? b('https://raw.githubusercontent.com/rauenzi/BDPluginLibrary/master/release/0PluginLibrary.plugin.js', (b, g, h) => {
+                            try {
+                              if (b || 200 !== g.statusCode) return a.closeModal(m), i();
+                              c.writeFile(d.join(e, '0PluginLibrary.plugin.js'), h, () => { }), f();
+                            } catch (b) {
+                              console.error('Fatal error downloading ZeresPluginLibrary', b), a.closeModal(m), i();
+                            }
+                          })
+                          : f();
+                      }
+                    },
+                    b,
+                    { onClose: () => { } }
+                  )
+                )
+              );
+            } catch (b) {
+              return console.error('There has been an error constructing the modal', b), (l = !0), a.closeModal(m), i(), null;
+            }
+          },
+          { modalKey: `${this.name}_DEP_MODAL` }
+        );
+      }
+      get [Symbol.toStringTag]() {
+        return 'Plugin';
+      }
+      get name() {
+        return config.info.name;
+      }
+      get short() {
+        let string = '';
+        for (let i = 0, len = config.info.name.length; i < len; i++) {
+          const char = config.info.name[i];
+          if (char === char.toUpperCase()) string += char;
+        }
+        return string;
+      }
+      get author() {
+        return config.info.authors.map(author => author.name).join(', ');
+      }
+      get version() {
+        return config.info.version;
+      }
+      get description() {
+        return config.info.description;
+      }
+    }
     : buildPlugin(global.ZeresPluginLibrary.buildPlugin(config));
 })();
 
