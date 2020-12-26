@@ -26,6 +26,9 @@ set $dmenuumount --no-startup-id ~/.scripts/i3cmds/dmenu/dmenuumount.sh
 set $sinkselect --no-startup-id ~/.scripts/i3cmds/sink-select.sh
 set $wall_change --no-startup-id ~/.scripts/i3cmds/wall-change/wall-change.sh
 set $end_session --no-startup-id ~/.scripts/i3cmds/end-session.sh
+set $br_up --no-startup-id ~/.scripts/i3cmds/screen-control/br-up.sh
+set $br_down --no-startup-id ~/.scripts/i3cmds/screen-control/br-down.sh
+set $scr_blk --no-startup-id ~/.scripts/i3cmds/screen-control/screen-black.sh
 set_from_resource $fg foreground
 set_from_resource $bg background
 
@@ -147,13 +150,17 @@ bindsym $mod+F10 exec $lockscreen
 bindsym $mod+F11 exec $dmenumount
 bindsym $mod+F12 exec $dmenuumount
 
-##---Media Keys---##
+##---Function Keys---##
 bindsym XF86AudioPrev exec --no-startup-id mpc prev &
 bindsym XF86AudioPlay exec --no-startup-id mpc toggle &
 bindsym XF86AudioNext exec --no-startup-id mpc next &
 bindsym XF86AudioMute exec --no-startup-id pulsemixer --toggle-mute &
 bindsym XF86AudioLowerVolume exec --no-startup-id pulsemixer --change-volume -5 &
 bindsym XF86AudioRaiseVolume exec --no-startup-id pulsemixer --change-volume +5 --max-volume 100 &
+bindsym XF86MonBrightnessUp exec $br_up
+bindsym XF86MonBrightnessDown exec $br_down
+bindsym XF86ScreenSaver exec $scr_blk
+
 
 ##---Screenshot Keys---##
 # Full screen
