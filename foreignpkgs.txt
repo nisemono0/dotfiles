@@ -1,7 +1,9 @@
 betterdiscord-rauenzi-git
 betterdiscordctl-git
+dragon-drag-and-drop
 flacon
 font-mathematica
+gwaterfall
 i3lock-color
 nerd-fonts-inconsolata
 nerd-fonts-inconsolata-go

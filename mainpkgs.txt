@@ -16,6 +16,7 @@ cuetools
 d-feet
 dina-font
 discord
+dragon-drag-and-drop
 dunst
 fcitx-mozc
 firefox
@@ -103,6 +104,7 @@ xcolor
 xdg-user-dirs
 xf86-video-amdgpu
 xorg-server
+xorg-xbacklight
 xorg-xev
 xorg-xfontsel
 xorg-xinit
