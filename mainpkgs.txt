@@ -26,6 +26,7 @@ font-bh-ttf
 font-mathematica
 freepats-general-midi
 freetype2-demos
+gdb
 gimp
 grub
 gwaterfall

@@ -55,6 +55,7 @@ freetype2-demos
 gawk
 gcc
 gcc-libs
+gdb
 gettext
 gimp
 git
