@@ -5,10 +5,10 @@
 music_library="$HOME/Music"
 fallback_image="$HOME/.config/ncmpcpp/fallback.png"
 padding_top=0
-padding_bottom=1
+padding_bottom=0
 padding_right=1
 max_width=0
-reserved_playlist_cols=67
+reserved_playlist_cols=70
 reserved_cols_in_percent="true"
 force_square="true"
 square_alignment="center"

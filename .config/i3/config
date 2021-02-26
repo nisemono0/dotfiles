@@ -14,7 +14,7 @@ set $browser --no-startup-id /usr/bin/firefox
 set $term --no-startup-id /usr/bin/urxvt
 set $ranger --no-startup-id /usr/bin/urxvt -e /usr/bin/ranger
 set $thunar --no-startup-id /usr/bin/nemo &
-set $ncmpcpp --no-startup-id /usr/bin/urxvt -name ncmpcpp-instance -e ~/.config/ncmpcpp/ncmpcpp-ueberzug-launch
+set $ncmpcpp --no-startup-id /usr/bin/urxvt -geometry 75x15 -name ncmpcpp-instance -e ~/.config/ncmpcpp/ncmpcpp-ueberzug-launch
 set $lockscreen --no-startup-id ~/.scripts/i3cmds/lock-screen.sh
 set $scrot_full --no-startup-id ~/.scripts/i3cmds/scrot/scrot.sh
 set $scrot_full_clip --no-startup-id ~/.scripts/i3cmds/scrot/scrot-clip.sh
