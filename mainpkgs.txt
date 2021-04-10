@@ -77,7 +77,6 @@ scrot
 shntool
 simple-mtpfs
 soundconverter
-sqlitebrowser
 syncplay
 tamsyn-font
 terminus-font
