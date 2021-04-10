@@ -1,33 +1,40 @@
-//META{"name":"XenoLib","source":"https://github.com/1Lighty/BetterDiscordPlugins/blob/master/Plugins/1XenoLib.plugin.js/","authorId":"239513071272329217","invite":"NYvWdN5","donate":"https://paypal.me/lighty13"}*//
+/**
+ * @name XenoLib
+ * @version 1.3.36
+ * @invite NYvWdN5
+ * @donate https://paypal.me/lighty13
+ * @source https://github.com/1Lighty/BetterDiscordPlugins/blob/master/Plugins/1XenoLib.plugin.js
+ */
 /*@cc_on
 @if (@_jscript)
 
-  // Offer to self-install for clueless users that try to run this directly.
-  var shell = WScript.CreateObject('WScript.Shell');
-  var fs = new ActiveXObject('Scripting.FileSystemObject');
-  var pathPlugins = shell.ExpandEnvironmentStrings('%APPDATA%\\BetterDiscord\\plugins');
-  var pathSelf = WScript.ScriptFullName;
-  // Put the user at ease by addressing them in the first person
-  shell.Popup('It looks like you\'ve mistakenly tried to run me directly. \n(Don\'t do that!)', 0, 'I\'m a plugin for BetterDiscord', 0x30);
-  if (fs.GetParentFolderName(pathSelf) === fs.GetAbsolutePathName(pathPlugins)) {
-    shell.Popup('I\'m in the correct folder already.', 0, 'I\'m already installed', 0x40);
-  } else if (!fs.FolderExists(pathPlugins)) {
-    shell.Popup('I can\'t find the BetterDiscord plugins folder.\nAre you sure it\'s even installed?', 0, 'Can\'t install myself', 0x10);
-  } else if (shell.Popup('Should I copy myself to BetterDiscord\'s plugins folder for you?', 0, 'Do you need some help?', 0x34) === 6) {
-    fs.CopyFile(pathSelf, fs.BuildPath(pathPlugins, fs.GetFileName(pathSelf)), true);
-    // Show the user where to put plugins in the future
-    shell.Exec('explorer ' + pathPlugins);
-    shell.Popup('I\'m installed!', 0, 'Successfully installed', 0x40);
-  }
-  WScript.Quit();
+   // Offer to self-install for clueless users that try to run this directly.
+   var shell = WScript.CreateObject('WScript.Shell');
+   var fs = new ActiveXObject('Scripting.FileSystemObject');
+   var pathPlugins = shell.ExpandEnvironmentStrings('%APPDATA%\\BetterDiscord\\plugins');
+   var pathSelf = WScript.ScriptFullName;
+   // Put the user at ease by addressing them in the first person
+   shell.Popup('It looks like you\'ve mistakenly tried to run me directly. \n(Don\'t do that!)', 0, 'I\'m a plugin for BetterDiscord', 0x30);
+   if (fs.GetParentFolderName(pathSelf) === fs.GetAbsolutePathName(pathPlugins)) {
+      shell.Popup('I\'m in the correct folder already.', 0, 'I\'m already installed', 0x40);
+   } else if (!fs.FolderExists(pathPlugins)) {
+      shell.Popup('I can\'t find the BetterDiscord plugins folder.\nAre you sure it\'s even installed?', 0, 'Can\'t install myself', 0x10);
+   } else if (shell.Popup('Should I copy myself to BetterDiscord\'s plugins folder for you?', 0, 'Do you need some help?', 0x34) === 6) {
+      fs.CopyFile(pathSelf, fs.BuildPath(pathPlugins, fs.GetFileName(pathSelf)), true);
+      // Show the user where to put plugins in the future
+      shell.Exec('explorer ' + pathPlugins);
+      shell.Popup('I\'m installed!', 0, 'Successfully installed', 0x40);
+   }
+   WScript.Quit();
 
 @else@*/
 /*
- * Copyright © 2019-2020, _Lighty_
+ * Copyright © 2019-2021, _Lighty_
  * All rights reserved.
  * Code may not be redistributed, modified or otherwise taken without explicit permission.
  */
 module.exports = (() => {
+  const canUseAstraNotifAPI = !!(global.Astra && Astra.n11s && Astra.n11s.n11sApi)
   /* Setup */
   const config = {
     main: 'index.js',
@@ -41,20 +48,20 @@ module.exports = (() => {
           twitter_username: ''
         }
       ],
-      version: '1.3.31',
+      version: '1.3.36',
       description: 'Simple library to complement plugins with shared code without lowering performance. Also adds needed buttons to some plugins.',
       github: 'https://github.com/1Lighty',
       github_raw: 'https://raw.githubusercontent.com/1Lighty/BetterDiscordPlugins/master/Plugins/1XenoLib.plugin.js'
     },
     changelog: [
       {
-        title: 'Boring changes',
+        title: 'RIP BBD on Canary',
         type: 'fixed',
-        items: ['Fixed notifications not working on canary when trying to mention a channel (like from a logger).']
+        items: ['Implemented fixes that allow patches to work properly on canary using Powercord.']
       }
     ],
     defaultConfig: [
-      {
+      canUseAstraNotifAPI ? {} : {
         type: 'category',
         id: 'notifications',
         name: 'Notification settings',
@@ -199,6 +206,16 @@ module.exports = (() => {
     XenoLib.getClass.__warns = {};
     XenoLib.getSingleClass.__warns = {};
 
+    const rendererFunctionClass = (() => {
+      try {
+        const topContext = require('electron').webFrame.top.context;
+        if (topContext === window) return null;
+        return topContext.Function
+      } catch {
+        return null;
+      }
+    })();
+    const originalFunctionClass = Function;
     XenoLib.createSmartPatcher = patcher => {
       const createPatcher = patcher => {
         return (moduleToPatch, functionName, callback, options = {}) => {
@@ -207,10 +224,17 @@ module.exports = (() => {
           } catch (_) {
             return Logger.error(`Failed to patch ${functionName}`);
           }
+          if (rendererFunctionClass && origDef && !(origDef instanceof originalFunctionClass) && origDef instanceof rendererFunctionClass) window.Function = rendererFunctionClass;
           const unpatches = [];
-          unpatches.push(patcher(moduleToPatch, functionName, callback, options));
           try {
-            if (origDef.__isBDFDBpatched && moduleToPatch.BDFDBpatch && typeof moduleToPatch.BDFDBpatch[functionName].originalMethod === 'function') {
+            unpatches.push(patcher(moduleToPatch, functionName, callback, options) || DiscordConstants.NOOP);
+          } catch (err) {
+            throw err;
+          } finally {
+            if (rendererFunctionClass) window.Function = originalFunctionClass;
+          }
+          try {
+            if (origDef && origDef.__isBDFDBpatched && moduleToPatch.BDFDBpatch && typeof moduleToPatch.BDFDBpatch[functionName].originalMethod === 'function') {
               /* do NOT patch a patch by ZLIb, that'd be bad and cause double items in context menus */
               if ((Utilities.getNestedProp(ZeresPluginLibrary, 'Patcher.patches') || []).findIndex(e => e.module === moduleToPatch) !== -1 && moduleToPatch.BDFDBpatch[functionName].originalMethod.__originalFunction) return;
               unpatches.push(patcher(moduleToPatch.BDFDBpatch[functionName], 'originalMethod', callback, options));
@@ -237,164 +261,164 @@ module.exports = (() => {
     PluginUtilities.addStyle(
       'XenoLib-CSS',
       `
-      .xenoLib-color-picker .xenoLib-button {
-        width: 34px;
-        min-height: 38px;
-      }
-      .xenoLib-color-picker .xenoLib-button:hover {
-        width: 128px;
-      }
-      .xenoLib-color-picker .xenoLib-button .${XenoLib.getSingleClass('recording text')} {
-        opacity: 0;
-        transform: translate3d(200%,0,0);
-      }
-      .xenoLib-color-picker .xenoLib-button:hover .${XenoLib.getSingleClass('recording text')} {
-        opacity: 1;
-        transform: translateZ(0);
-      }
-      .xenoLib-button-icon {
-        left: 50%;
-        top: 50%;
-        position: absolute;
-        margin-left: -12px;
-        margin-top: -8px;
-        width: 24px;
-        height: 24px;
-        opacity: 1;
-        transform: translateZ(0);
-        transition: opacity .2s ease-in-out,transform .2s ease-in-out,-webkit-transform .2s ease-in-out;
-      }
-      .xenoLib-button-icon.xenoLib-revert > svg {
-        width: 24px;
-        height: 24px;
-      }
-      .xenoLib-button-icon.xenoLib-revert {
-        margin-top: -12px;
-      }
-      .xenoLib-button:hover .xenoLib-button-icon {
-        opacity: 0;
-        transform: translate3d(-200%,0,0);
-      }
-      .xenoLib-notifications {
-        position: absolute;
-        color: white;
-        width: 100%;
-        min-height: 100%;
-        display: flex;
-        flex-direction: column;
-        z-index: 1000;
-        pointer-events: none;
-        font-size: 14px;
-      }
-      .xenoLib-notification {
-        min-width: 200px;
-        overflow: hidden;
-      }
-      .xenoLib-notification-content-wrapper {
-        padding: 22px 20px 0 20px;
-      }
-      .xenoLib-centering-bottomLeft .xenoLib-notification-content-wrapper:first-of-type, .xenoLib-centering-bottomMiddle .xenoLib-notification-content-wrapper:first-of-type, .xenoLib-centering-bottomRight .xenoLib-notification-content-wrapper:first-of-type {
-        padding: 0 20px 20px 20px;
-      }
-      .xenoLib-notification-content {
-        padding: 12px;
-        overflow: hidden;
-        background: #474747;
-        pointer-events: all;
-        position: relative;
-        width: 20vw;
-        white-space: break-spaces;
-        min-width: 330px;
-      }
-      .xenoLib-notification-loadbar {
-        position: absolute;
-        bottom: 0;
-        left: 0px;
-        width: auto;
-        background-image: linear-gradient(130deg,var(--grad-one),var(--grad-two));
-        height: 5px;
-      }
-      .xenoLib-notification-loadbar-user {
-        animation: fade-loadbar-animation 1.5s ease-in-out infinite;
-      }
-      @keyframes fade-loadbar-animation {
-        0% {
-            filter: brightness(75%)
-        }
-        50% {
-            filter: brightness(100%)
-        }
-        to {
-            filter: brightness(75%)
-        }
-      }
-      .xenoLib-notification-loadbar-striped:before {
-        content: "";
-        position: absolute;
-        width: 100%;
-        height: 100%;
-        border-radius: 5px;
-        background: linear-gradient(
-          -20deg,
-          transparent 35%,
-          var(--bar-color) 35%,
-          var(--bar-color) 70%,
-          transparent 70%
-        );
-        animation: shift 1s linear infinite;
-        background-size: 60px 100%;
-        box-shadow: inset 0 0px 1px rgba(0, 0, 0, 0.2),
-          inset 0 -2px 1px rgba(0, 0, 0, 0.2);
-      }
-      @keyframes shift {
-        to {
-          background-position: 60px 100%;
-        }
-      }
-      .xenoLib-notification-close {
-        float: right;
-        padding: 0;
-        height: unset;
-        opacity: .7;
-      }
-      .xenLib-notification-counter {
-        float: right;
-        margin-top: 2px;
-      }
-      .topMiddle-xenoLib {
-        top: 0;
-        left: 0;
-        right: 0;
-        margin-left: auto;
-        margin-right: auto;
-      }
-      .bottomMiddle-xenoLib {
-        bottom: 0;
-        left: 0;
-        right: 0;
-        margin-left: auto;
-        margin-right: auto;
-      }
-      .xenoLib-centering-topLeft, .xenoLib-centering-bottomLeft {
-        align-items: flex-start;
-      }
-      .xenoLib-centering-topMiddle, .xenoLib-centering-bottomMiddle {
-        align-items: center;
-      }
-      .xenoLib-centering-topRight, .xenoLib-centering-bottomRight {
-        align-items: flex-end;
-      }
-      .xenoLib-centering-bottomLeft, .xenoLib-centering-bottomMiddle, .xenoLib-centering-bottomRight {
-        flex-direction: column-reverse;
-        bottom: 0;
-      }
-      .XL-chl-p img{
-        width: unset !important;
-      }
-      .xenoLib-error-text {
-        padding-top: 5px;
-      }
-      `
+			.xenoLib-color-picker .xenoLib-button {
+				width: 34px;
+				min-height: 38px;
+			}
+			.xenoLib-color-picker .xenoLib-button:hover {
+				width: 128px;
+			}
+			.xenoLib-color-picker .xenoLib-button .${XenoLib.getSingleClass('recording text')} {
+				opacity: 0;
+				transform: translate3d(200%,0,0);
+			}
+			.xenoLib-color-picker .xenoLib-button:hover .${XenoLib.getSingleClass('recording text')} {
+				opacity: 1;
+				transform: translateZ(0);
+			}
+			.xenoLib-button-icon {
+				left: 50%;
+				top: 50%;
+				position: absolute;
+				margin-left: -12px;
+				margin-top: -8px;
+				width: 24px;
+				height: 24px;
+				opacity: 1;
+				transform: translateZ(0);
+				transition: opacity .2s ease-in-out,transform .2s ease-in-out,-webkit-transform .2s ease-in-out;
+			}
+			.xenoLib-button-icon.xenoLib-revert > svg {
+				width: 24px;
+				height: 24px;
+			}
+			.xenoLib-button-icon.xenoLib-revert {
+				margin-top: -12px;
+			}
+			.xenoLib-button:hover .xenoLib-button-icon {
+				opacity: 0;
+				transform: translate3d(-200%,0,0);
+			}
+			.xenoLib-notifications {
+				position: absolute;
+				color: white;
+				width: 100%;
+				min-height: 100%;
+				display: flex;
+				flex-direction: column;
+				z-index: 1000;
+				pointer-events: none;
+				font-size: 14px;
+			}
+			.xenoLib-notification {
+				min-width: 200px;
+				overflow: hidden;
+			}
+			.xenoLib-notification-content-wrapper {
+				padding: 22px 20px 0 20px;
+			}
+			.xenoLib-centering-bottomLeft .xenoLib-notification-content-wrapper:first-of-type, .xenoLib-centering-bottomMiddle .xenoLib-notification-content-wrapper:first-of-type, .xenoLib-centering-bottomRight .xenoLib-notification-content-wrapper:first-of-type {
+				padding: 0 20px 20px 20px;
+			}
+			.xenoLib-notification-content {
+				padding: 12px;
+				overflow: hidden;
+				background: #474747;
+				pointer-events: all;
+				position: relative;
+				width: 20vw;
+				white-space: break-spaces;
+				min-width: 330px;
+			}
+			.xenoLib-notification-loadbar {
+				position: absolute;
+				bottom: 0;
+				left: 0px;
+				width: auto;
+				background-image: linear-gradient(130deg,var(--grad-one),var(--grad-two));
+				height: 5px;
+			}
+			.xenoLib-notification-loadbar-user {
+				animation: fade-loadbar-animation 1.5s ease-in-out infinite;
+			}
+			@keyframes fade-loadbar-animation {
+				0% {
+						filter: brightness(75%)
+				}
+				50% {
+						filter: brightness(100%)
+				}
+				to {
+						filter: brightness(75%)
+				}
+			}
+			.xenoLib-notification-loadbar-striped:before {
+				content: "";
+				position: absolute;
+				width: 100%;
+				height: 100%;
+				border-radius: 5px;
+				background: linear-gradient(
+					-20deg,
+					transparent 35%,
+					var(--bar-color) 35%,
+					var(--bar-color) 70%,
+					transparent 70%
+				);
+				animation: shift 1s linear infinite;
+				background-size: 60px 100%;
+				box-shadow: inset 0 0px 1px rgba(0, 0, 0, 0.2),
+					inset 0 -2px 1px rgba(0, 0, 0, 0.2);
+			}
+			@keyframes shift {
+				to {
+					background-position: 60px 100%;
+				}
+			}
+			.xenoLib-notification-close {
+				float: right;
+				padding: 0;
+				height: unset;
+				opacity: .7;
+			}
+			.xenLib-notification-counter {
+				float: right;
+				margin-top: 2px;
+			}
+			.topMiddle-xenoLib {
+				top: 0;
+				left: 0;
+				right: 0;
+				margin-left: auto;
+				margin-right: auto;
+			}
+			.bottomMiddle-xenoLib {
+				bottom: 0;
+				left: 0;
+				right: 0;
+				margin-left: auto;
+				margin-right: auto;
+			}
+			.xenoLib-centering-topLeft, .xenoLib-centering-bottomLeft {
+				align-items: flex-start;
+			}
+			.xenoLib-centering-topMiddle, .xenoLib-centering-bottomMiddle {
+				align-items: center;
+			}
+			.xenoLib-centering-topRight, .xenoLib-centering-bottomRight {
+				align-items: flex-end;
+			}
+			.xenoLib-centering-bottomLeft, .xenoLib-centering-bottomMiddle, .xenoLib-centering-bottomRight {
+				flex-direction: column-reverse;
+				bottom: 0;
+			}
+			.XL-chl-p img{
+				width: unset !important;
+			}
+			.xenoLib-error-text {
+				padding-top: 5px;
+			}
+			`
     );
 
     XenoLib.joinClassNames = WebpackModules.getModule(e => e.default && e.default.default);
@@ -472,6 +496,11 @@ module.exports = (() => {
     } catch (e) {
       Logger.stacktrace('Error getting Button component', e);
     }
+
+    const path = require('path');
+    const isBBDBeta = typeof window.BDModules !== 'undefined' && !window.require && typeof window.BetterDiscordConfig !== 'undefined' && path.normalize(__dirname).replace(/[\\\/]/g, '/').toLowerCase().indexOf('rd_bd/plugins') !== -1;
+    // why zere?
+    if (isBBDBeta) Object.assign(window, require('timers'));
 
     function patchAddonCardAnyway(manualPatch) {
       try {
@@ -641,7 +670,13 @@ module.exports = (() => {
     const MultiInputFirstClassname = XenoLib.getClass('multiInputFirst');
     const MultiInputFieldClassname = XenoLib.getClass('multiInputField');
     const ErrorMessageClassname = XenoLib.joinClassNames('xenoLib-error-text', XenoLib.getClass('errorMessage'), Utilities.getNestedProp(TextElement, 'Colors.ERROR'));
-    const ErrorClassname = XenoLib.getClass('input error');
+    let ErrorClassname = XenoLib.getClass('input error');
+
+    // sometimes we can't access it for some reason, works thru BBD beta's webpack tho /shrug
+    if (isBBDBeta) setImmediate(() => {
+      const inputClasses = require('webpack').getByProps('multiInputFirst');
+      ErrorClassname = inputClasses.error;
+    });
 
     try {
       const DelayedCall = WebpackModules.getByProps('DelayedCall').DelayedCall;
@@ -736,25 +771,8 @@ module.exports = (() => {
 
     const ColorPickerComponent = (_ => {
       try {
-        const GuildSettingsRoles = WebpackModules.getByDisplayName('FluxContainer(GuildSettingsRoles)');
-        const RoleSettingsContainer = GuildSettingsRoles.prototype.render.call({
-          memoizedGetStateFromStores: _ => { }
-        }).type.prototype.renderRoleSettings.call({
-          props: {
-            guild: {
-              id: '',
-              isOwner: _ => false
-            }
-          },
-          getSelectedRole: _ => ({ id: '' }),
-          renderHeader: _ => null
-        });
-        const RoleSettings = Utilities.findInReactTree(RoleSettingsContainer, e => e && e.type && e.type.displayName === "GuildRoleSettings").type.prototype.renderColorPicker.call({
-          props: {
-            role: {}
-          }
-        });
-        return RoleSettings.props.children.type;
+        const GFSM = WebpackModules.getByDisplayName('GuildFolderSettingsModal');
+        return Utilities.findInReactTree(GFSM.prototype.render.call({ props: {}, state: {} }), e => e && e.props && e.props.colors);
       } catch (err) {
         Logger.stacktrace('Failed to get lazy colorpicker, unsurprisingly', err);
         return _ => null;
@@ -953,26 +971,27 @@ module.exports = (() => {
     };
 
     const FancyParser = (() => {
-      const ParsersModule = WebpackModules.getByProps('astParserFor', 'parse');
+      const Markdown = WebpackModules.getByProps('astParserFor', 'parse');
       try {
-        const DeepClone = WebpackModules.find(m => m.default && m.default.toString().indexOf('/^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(') !== -1 && !m.useVirtualizedAnchor).default;
-        const ReactParserRules = (WebpackModules.find(m => m.default && m.default.toString().search(/function\(\w\){return \w\({},\w,{link:\(0,\w\.default\)\(\w\)}\)}$/) !== -1) || WebpackModules.find(m => m.default && m.default.toString().search(/function\(\){return \w}$/) !== -1)).default; /* thanks Zere for not fixing the bug ._. */
-        const FANCY_PANTS_PARSER_RULES = DeepClone([WebpackModules.getByProps('RULES').RULES, ReactParserRules()]);
+        const { default: DeepClone } = WebpackModules.find(m => m.default && m.default.toString().indexOf('/^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(') !== -1 && !m.useVirtualizedAnchor);
+        // SOOO much more extra code with zeres lib compared to Astra, maybe I just can't figure out how to use it effectively
+        const ReactParserRules = WebpackModules.find(m => typeof m === 'function' && (m = m.toString()) && (m.search(/^function\(\w\){return \w\({},\w,{link:\(0,\w.default\)\(\w\),emoji:\(\w=\w,\w=\w\.emojiTooltipPosition,\w=void 0===\w?\w/) !== -1 || m.search(/function\(\w\){return \w\({},\w,{link:\(0,\w\.default\)\(\w\)}\)}$/) !== -1 || m.search(/function\(\){return \w}$/) !== -1))
+        const FANCY_PANTS_PARSER_RULES = DeepClone([WebpackModules.getByProps('RULES').RULES, ReactParserRules({})]);
         const { defaultRules } = WebpackModules.getByProps('defaultParse');
         FANCY_PANTS_PARSER_RULES.image = defaultRules.image;
         FANCY_PANTS_PARSER_RULES.link = defaultRules.link;
-        return ParsersModule.reactParserFor(FANCY_PANTS_PARSER_RULES);
+        return Markdown.reactParserFor(FANCY_PANTS_PARSER_RULES);
       } catch (e) {
         Logger.stacktrace('Failed to create special parser', e);
         try {
-          return ParsersModule.parse;
+          return Markdown.parse;
         } catch (e) {
           Logger.stacktrace('Failed to get even basic parser', e);
           return e => e;
         }
       }
     })();
-    if (window.Lightcord && Math.random() < 0.5) return;
+    if (window.Lightcord) return;
     const AnchorClasses = WebpackModules.getByProps('anchor', 'anchorUnderlineOnHover') || {};
     const EmbedVideo = (() => {
       try {
@@ -993,6 +1012,7 @@ module.exports = (() => {
       }
     })();
     const ComponentRenderers = WebpackModules.getByProps('renderVideoComponent') || {};
+    const NewModalStack = WebpackModules.getByProps('openModal', 'hasModalOpen');
     /* MY CHANGELOG >:C */
     XenoLib.showChangelog = (title, version, changelog, footer) => {
       const ChangelogClasses = DiscordClasses.Changelog;
@@ -1047,7 +1067,7 @@ module.exports = (() => {
         }
       }
       const renderFooter = () => ['Need support? ', React.createElement('a', { className: XenoLib.joinClassNames(AnchorClasses.anchor, AnchorClasses.anchorUnderlineOnHover), onClick: () => (LayerManager.popLayer(), ModalStack.pop(), InviteActions.acceptInviteAndTransitionToInviteChannel('NYvWdN5')) }, 'Join my support server'), '! Or consider donating via ', React.createElement('a', { className: XenoLib.joinClassNames(AnchorClasses.anchor, AnchorClasses.anchorUnderlineOnHover), onClick: () => window.open('https://paypal.me/lighty13') }, 'Paypal'), ', ', React.createElement('a', { className: XenoLib.joinClassNames(AnchorClasses.anchor, AnchorClasses.anchorUnderlineOnHover), onClick: () => window.open('https://ko-fi.com/lighty_') }, 'Ko-fi'), ', ', React.createElement('a', { className: XenoLib.joinClassNames(AnchorClasses.anchor, AnchorClasses.anchorUnderlineOnHover), onClick: () => window.open('https://www.patreon.com/lightyp') }, 'Patreon'), '!'];
-      ModalStack.push(props => React.createElement(XenoLib.ReactComponents.ErrorBoundary, { label: 'Changelog', onError: () => props.onClose() }, React.createElement(ChangelogModal, { className: ChangelogClasses.container, selectable: true, onScroll: _ => _, onClose: _ => _, renderHeader: () => React.createElement(FlexChild.Child, { grow: 1, shrink: 1 }, React.createElement(Titles.default, { tag: Titles.Tags.H4 }, title), React.createElement(TextElement, { size: TextElement.Sizes.SIZE_12, className: ChangelogClasses.date }, `Version ${version}`)), renderFooter: () => React.createElement(FlexChild.Child, { gro: 1, shrink: 1 }, React.createElement(TextElement, { size: TextElement.Sizes.SIZE_12 }, footer ? (typeof footer === 'string' ? FancyParser(footer) : footer) : renderFooter())), children: items, ...props })));
+      NewModalStack.openModal(props => React.createElement(XenoLib.ReactComponents.ErrorBoundary, { label: 'Changelog', onError: () => props.onClose() }, React.createElement(ChangelogModal, { className: ChangelogClasses.container, selectable: true, onScroll: _ => _, onClose: _ => _, renderHeader: () => React.createElement(FlexChild.Child, { grow: 1, shrink: 1 }, React.createElement(Titles.default, { tag: Titles.Tags.H4 }, title), React.createElement(TextElement, { size: TextElement.Sizes.SIZE_12, className: ChangelogClasses.date }, `Version ${version}`)), renderFooter: () => React.createElement(FlexChild.Child, { gro: 1, shrink: 1 }, React.createElement(TextElement, { size: TextElement.Sizes.SIZE_12 }, footer ? (typeof footer === 'string' ? FancyParser(footer) : footer) : renderFooter())), children: items, ...props })));
     };
 
     /* https://github.com/react-spring/zustand
@@ -1142,438 +1162,514 @@ module.exports = (() => {
       state = createState(setState, getState, api);
       return [useStore, api];
     };
-
     /* NOTIFICATIONS START */
     let UPDATEKEY = {};
     try {
-      const DeepEqualityCheck = (content1, content2) => {
-        if (typeof content1 !== typeof content2) return false;
-        const isCNT1HTML = content1 instanceof HTMLElement;
-        const isCNT2HTML = content2 instanceof HTMLElement;
-        if (isCNT1HTML !== isCNT2HTML) return false;
-        else if (isCNT1HTML) return content1.isEqualNode(content2);
-        if (content1 !== content2) {
-          if (Array.isArray(content1)) {
-            if (content1.length !== content2.length) return false;
-            for (const [index, item] of content1.entries()) {
-              if (!DeepEqualityCheck(item, content2[index])) return false;
-            }
-          } else if (typeof content1 === 'object') {
-            if (content1.type) {
-              if (typeof content1.type !== typeof content2.type) return false;
-              if (content1.type !== content2.type) return false;
-            }
-            if (typeof content1.props !== typeof content2.props) return false;
-            if (content1.props) {
-              if (Object.keys(content1.props).length !== Object.keys(content2.props).length) return false;
-              for (const prop in content1.props) {
-                if (!DeepEqualityCheck(content1.props[prop], content2.props[prop])) return false;
+      if (canUseAstraNotifAPI) {
+        const defaultOptions = {
+          loading: false,
+          progress: -1,
+          channelId: undefined,
+          timeout: 3500,
+          color: '#2196f3',
+          onLeave: DiscordConstants.NOOP
+        };
+        const utils = {
+          success(content, options = {}) {
+            return this.show(content, Object.assign({ color: '#43b581' }, options));
+          },
+          info(content, options = {}) {
+            return this.show(content, Object.assign({ color: '#4a90e2' }, options));
+          },
+          warning(content, options = {}) {
+            return this.show(content, Object.assign({ color: '#ffa600' }, options));
+          },
+          danger(content, options = {}) {
+            return this.show(content, Object.assign({ color: '#f04747' }, options));
+          },
+          error(content, options = {}) {
+            return this.danger(content, options);
+          },
+          /**
+           * @param {string|HTMLElement|React} content - Content to display. If it's a string, it'll be formatted with markdown, including URL support [like this](https://google.com/)
+           * @param {object} options
+           * @param {string} [options.channelId] Channel ID if content is a string which gets formatted, and you want to mention a role for example.
+           * @param {Number} [options.timeout] Set to 0 to keep it permanently until user closes it, or if you want a progress bar
+           * @param {Boolean} [options.loading] Makes the bar animate differently instead of fading in and out slowly
+           * @param {Number} [options.progress] 0-100, -1 sets it to 100%, setting it to 100% closes the notification automatically
+           * @param {string} [options.color] Bar color
+           * @param {string} [options.allowDuplicates] By default, notifications that are similar get grouped together, use true to disable that
+           * @param {function} [options.onLeave] Callback when notification is leaving
+           * @return {Number} - Notification ID. Store this if you plan on force closing it, changing its content or want to set the progress
+           */
+          show(content, options = {}) {
+            const { timeout, loading, progress, color, allowDuplicates, onLeave, channelId, onClick, onContext } = Object.assign(Utilities.deepclone(defaultOptions), options);
+            return Astra.n11s.show(content instanceof HTMLElement ? ReactTools.createWrappedElement(content) : content, {
+              timeout,
+              loading,
+              progress,
+              color,
+              allowDuplicates,
+              onClick,
+              onContext,
+              onClose: onLeave,
+              markdownOptions: { channelId }
+            });
+          },
+          remove(id) {
+            Astra.n11s.remove(id);
+          },
+          /**
+           * @param {Number} id Notification ID
+           * @param {object} options
+           * @param {string} [options.channelId] Channel ID if content is a string which gets formatted, and you want to mention a role for example.
+           * @param {Boolean} [options.loading] Makes the bar animate differently instead of fading in and out slowly
+           * @param {Number} [options.progress] 0-100, -1 sets it to 100%, setting it to 100% closes the notification automatically
+           * @param {string} [options.color] Bar color
+           * @param {function} [options.onLeave] Callback when notification is leaving
+           */
+          update(id, options) {
+            const obj = {};
+            for (const key in ['loading', 'progress', 'color', 'onClick', 'onContext']) if (typeof options[key] !== 'undefined') obj[key] = options[key];
+            if (options.onLeave) obj.onClose = options.onLeave;
+            if (options.channelId) obj.markdownOptions = { channelId: options.channelId };
+            Astra.n11s.update(id, obj);
+          },
+          exists(id) {
+            return Astra.n11s.exists(id);
+          }
+        };
+        XenoLib.Notifications = utils;
+      } else {
+        const DeepEqualityCheck = (content1, content2) => {
+          if (typeof content1 !== typeof content2) return false;
+          const isCNT1HTML = content1 instanceof HTMLElement;
+          const isCNT2HTML = content2 instanceof HTMLElement;
+          if (isCNT1HTML !== isCNT2HTML) return false;
+          else if (isCNT1HTML) return content1.isEqualNode(content2);
+          if (content1 !== content2) {
+            if (Array.isArray(content1)) {
+              if (content1.length !== content2.length) return false;
+              for (const [index, item] of content1.entries()) {
+                if (!DeepEqualityCheck(item, content2[index])) return false;
               }
-            }
-          } else return false;
-        }
-        return true;
-      };
-      const [useStore, api] = global.FCAPI && global.FCAPI.NotificationStore ? global.FCAPI.NotificationStore : XenoLib.zustand(e => ({ data: [] }));
-      const defaultOptions = {
-        loading: false,
-        progress: -1,
-        channelId: undefined,
-        timeout: 3500,
-        color: '#2196f3',
-        onLeave: DiscordConstants.NOOP
-      };
-      const utils = {
-        success(content, options = {}) {
-          return this.show(content, Object.assign({ color: '#43b581' }, options));
-        },
-        info(content, options = {}) {
-          return this.show(content, Object.assign({ color: '#4a90e2' }, options));
-        },
-        warning(content, options = {}) {
-          return this.show(content, Object.assign({ color: '#ffa600' }, options));
-        },
-        danger(content, options = {}) {
-          return this.show(content, Object.assign({ color: '#f04747' }, options));
-        },
-        error(content, options = {}) {
-          return this.danger(content, options);
-        },
-        /**
-         * @param {string|HTMLElement|React} content - Content to display. If it's a string, it'll be formatted with markdown, including URL support [like this](https://google.com/)
-         * @param {object} options
-         * @param {string} [options.channelId] Channel ID if content is a string which gets formatted, and you want to mention a role for example.
-         * @param {Number} [options.timeout] Set to 0 to keep it permanently until user closes it, or if you want a progress bar
-         * @param {Boolean} [options.loading] Makes the bar animate differently instead of fading in and out slowly
-         * @param {Number} [options.progress] 0-100, -1 sets it to 100%, setting it to 100% closes the notification automatically
-         * @param {string} [options.color] Bar color
-         * @param {string} [options.allowDuplicates] By default, notifications that are similar get grouped together, use true to disable that
-         * @param {function} [options.onLeave] Callback when notification is leaving
-         * @return {Number} - Notification ID. Store this if you plan on force closing it, changing its content or want to set the progress
-         */
-        show(content, options = {}) {
-          let id = null;
-          options = Object.assign(Utilities.deepclone(defaultOptions), options);
-          api.setState(state => {
-            if (!options.allowDuplicates) {
-              const notif = state.data.find(n => DeepEqualityCheck(n.content, content) && n.timeout === options.timeout && !n.leaving);
-              if (notif) {
-                id = notif.id;
-                Dispatcher.dirtyDispatch({ type: 'XL_NOTIFS_DUPLICATE', id: notif.id });
-                return state;
+            } else if (typeof content1 === 'object') {
+              if (content1.type) {
+                if (typeof content1.type !== typeof content2.type) return false;
+                if (content1.type !== content2.type) return false;
               }
-            }
-            if (state.data.length >= 100) return state;
-            do {
-              id = Math.floor(4294967296 * Math.random());
-            } while (state.data.findIndex(n => n.id === id) !== -1);
-            return { data: [].concat(state.data, [{ content, ...options, id }]) };
-          });
-          return id;
-        },
-        remove(id) {
-          Dispatcher.dirtyDispatch({ type: 'XL_NOTIFS_REMOVE', id });
-        },
-        /**
-         * @param {Number} id Notification ID
-         * @param {object} options
-         * @param {string} [options.channelId] Channel ID if content is a string which gets formatted, and you want to mention a role for example.
-         * @param {Boolean} [options.loading] Makes the bar animate differently instead of fading in and out slowly
-         * @param {Number} [options.progress] 0-100, -1 sets it to 100%, setting it to 100% closes the notification automatically
-         * @param {string} [options.color] Bar color
-         * @param {function} [options.onLeave] Callback when notification is leaving
-         */
-        update(id, options) {
-          delete options.id;
-          api.setState(state => {
-            const idx = state.data.findIndex(n => n.id === id);
-            if (idx === -1) return state;
-            state.data[idx] = Object.assign(state.data[idx], options);
-            return state;
-          });
-          Dispatcher.dirtyDispatch({ type: 'XL_NOTIFS_UPDATE', id, ...options });
-        },
-        exists(id) {
-          return api.getState().data.findIndex(e => e.id === id && !e.leaving) !== -1;
-        }
-      };
-      XenoLib.Notifications = utils;
-      const ReactSpring = WebpackModules.getByProps('useTransition');
-      const BadgesModule = WebpackModules.getByProps('NumberBadge');
-      const CloseButton = React.createElement('svg', { width: 16, height: 16, viewBox: '0 0 24 24' }, React.createElement('path', { d: 'M18.4 4L12 10.4L5.6 4L4 5.6L10.4 12L4 18.4L5.6 20L12 13.6L18.4 20L20 18.4L13.6 12L20 5.6L18.4 4Z', fill: 'currentColor' }));
-      class Notification extends React.PureComponent {
-        constructor(props) {
-          super(props);
-          this.state = {
-            closeFast: false /* close button pressed, XL_NOTIFS_REMOVE dispatch */,
-            offscreen: false /* don't do anything special if offscreen, not timeout */,
-            counter: 1 /* how many times this notification was shown */,
-            resetBar: false /* reset bar to 0 in the event counter goes up */,
-            hovered: false,
-            leaving: true /* prevent hover events from messing up things */,
-            loading: props.loading /* loading animation, enable progress */,
-            progress: props.progress /* -1 means undetermined */,
-            content: props.content,
-            contentParsed: this.parseContent(props.content, props.channelId),
-            color: props.color
-          };
-          this._contentRef = null;
-          this._ref = null;
-          this._animationCancel = DiscordConstants.NOOP;
-          this._oldOffsetHeight = 0;
-          this._initialProgress = !this.props.timeout ? (this.state.loading && this.state.progress !== -1 ? this.state.progress : 100) : 0;
-          XenoLib._.bindAll(this, ['closeNow', 'handleDispatch', '_setContentRef']);
-          this.handleResizeEvent = XenoLib._.throttle(this.handleResizeEvent.bind(this), 100);
-          this.resizeObserver = new ResizeObserver(this.handleResizeEvent);
-          this._timeout = props.timeout;
-        }
-        componentDidMount() {
-          this._unsubscribe = api.subscribe(_ => this.checkOffScreen());
-          window.addEventListener('resize', this.handleResizeEvent);
-          Dispatcher.subscribe('XL_NOTIFS_DUPLICATE', this.handleDispatch);
-          Dispatcher.subscribe('XL_NOTIFS_REMOVE', this.handleDispatch);
-          Dispatcher.subscribe('XL_NOTIFS_UPDATE', this.handleDispatch);
-          Dispatcher.subscribe('XL_NOTIFS_ANIMATED', this.handleDispatch);
-          Dispatcher.subscribe('XL_NOTIFS_SETTINGS_UPDATE', this.handleDispatch);
-        }
-        componentWillUnmount() {
-          this._unsubscribe();
-          window.window.removeEventListener('resize', this.handleResizeEvent);
-          Dispatcher.unsubscribe('XL_NOTIFS_DUPLICATE', this.handleDispatch);
-          Dispatcher.unsubscribe('XL_NOTIFS_REMOVE', this.handleDispatch);
-          Dispatcher.unsubscribe('XL_NOTIFS_UPDATE', this.handleDispatch);
-          Dispatcher.unsubscribe('XL_NOTIFS_ANIMATED', this.handleDispatch);
-          Dispatcher.unsubscribe('XL_NOTIFS_SETTINGS_UPDATE', this.handleDispatch);
-          this.resizeObserver.disconnect();
-          this.resizeObserver = null; /* no mem leaks plz */
-          this._ref = null;
-          this._contentRef = null;
-        }
-        handleDispatch(e) {
-          if (this.state.leaving || this.state.closeFast) return;
-          if (e.type === 'XL_NOTIFS_SETTINGS_UPDATE') {
-            if (e.key !== UPDATEKEY) return;
-            this._animationCancel();
-            this.forceUpdate();
-            return;
-          }
-          if (e.type === 'XL_NOTIFS_ANIMATED') this.checkOffScreen();
-          if (e.id !== this.props.id) return;
-          const { content, channelId, loading, progress, color } = e;
-          const { content: curContent, channelId: curChannelId, loading: curLoading, progress: curProgress, color: curColor } = this.state;
-          switch (e.type) {
-            case 'XL_NOTIFS_REMOVE':
-              this.closeNow();
-              break;
-            case 'XL_NOTIFS_DUPLICATE':
-              this._animationCancel();
-              this.setState({ counter: this.state.counter + 1, resetBar: !!this.props.timeout, closeFast: false });
-              break;
-            case 'XL_NOTIFS_UPDATE':
-              if (!this.state.initialAnimDone) {
-                this.state.content = content || curContent;
-                this.state.channelId = channelId || curChannelId;
-                this.state.contentParsed = this.parseContent(content || curContent, channelId || curChannelId);
-                if (typeof loading !== 'undefined') this.state.loading = loading;
-                if (typeof progress !== 'undefined') this.state.progress = progress;
-                this.state.color = color || curColor;
-                return;
+              if (typeof content1.props !== typeof content2.props) return false;
+              if (content1.props) {
+                if (Object.keys(content1.props).length !== Object.keys(content2.props).length) return false;
+                for (const prop in content1.props) {
+                  if (!DeepEqualityCheck(content1.props[prop], content2.props[prop])) return false;
+                }
               }
-              this._animationCancel();
-              this.setState({
-                content: content || curContent,
-                channelId: channelId || curChannelId,
-                contentParsed: this.parseContent(content || curContent, channelId || curChannelId),
-                loading: typeof loading !== 'undefined' ? loading : curLoading,
-                progress: typeof progress !== 'undefined' ? progress : curProgress,
-                color: color || curColor
-              });
-              break;
+            } else return false;
           }
-        }
-        parseContent(content, channelId) {
-          if (typeof content === 'string') return FancyParser(content, true, { channelId });
-          else if (content instanceof Element) return ReactTools.createWrappedElement(content);
-          else return content;
-        }
-        checkOffScreen() {
-          if (this.state.leaving || !this._contentRef) return;
-          const bcr = this._contentRef.getBoundingClientRect();
-          if (Math.floor(bcr.bottom) - 1 > Structs.Screen.height || Math.ceil(bcr.top) + 1 < 0) {
-            if (!this.state.offscreen) {
+          return true;
+        };
+        const [useStore, api] = XenoLib.zustand(e => ({ data: [] }));
+        const defaultOptions = {
+          loading: false,
+          progress: -1,
+          channelId: undefined,
+          timeout: 3500,
+          color: '#2196f3',
+          onLeave: DiscordConstants.NOOP
+        };
+        const utils = {
+          success(content, options = {}) {
+            return this.show(content, Object.assign({ color: '#43b581' }, options));
+          },
+          info(content, options = {}) {
+            return this.show(content, Object.assign({ color: '#4a90e2' }, options));
+          },
+          warning(content, options = {}) {
+            return this.show(content, Object.assign({ color: '#ffa600' }, options));
+          },
+          danger(content, options = {}) {
+            return this.show(content, Object.assign({ color: '#f04747' }, options));
+          },
+          error(content, options = {}) {
+            return this.danger(content, options);
+          },
+          /**
+           * @param {string|HTMLElement|React} content - Content to display. If it's a string, it'll be formatted with markdown, including URL support [like this](https://google.com/)
+           * @param {object} options
+           * @param {string} [options.channelId] Channel ID if content is a string which gets formatted, and you want to mention a role for example.
+           * @param {Number} [options.timeout] Set to 0 to keep it permanently until user closes it, or if you want a progress bar
+           * @param {Boolean} [options.loading] Makes the bar animate differently instead of fading in and out slowly
+           * @param {Number} [options.progress] 0-100, -1 sets it to 100%, setting it to 100% closes the notification automatically
+           * @param {string} [options.color] Bar color
+           * @param {string} [options.allowDuplicates] By default, notifications that are similar get grouped together, use true to disable that
+           * @param {function} [options.onLeave] Callback when notification is leaving
+           * @return {Number} - Notification ID. Store this if you plan on force closing it, changing its content or want to set the progress
+           */
+          show(content, options = {}) {
+            let id = null;
+            options = Object.assign(Utilities.deepclone(defaultOptions), options);
+            api.setState(state => {
+              if (!options.allowDuplicates) {
+                const notif = state.data.find(n => DeepEqualityCheck(n.content, content) && n.timeout === options.timeout && !n.leaving);
+                if (notif) {
+                  id = notif.id;
+                  Dispatcher.dirtyDispatch({ type: 'XL_NOTIFS_DUPLICATE', id: notif.id });
+                  return state;
+                }
+              }
+              if (state.data.length >= 100) return state;
+              do {
+                id = Math.floor(4294967296 * Math.random());
+              } while (state.data.findIndex(n => n.id === id) !== -1);
+              return { data: [].concat(state.data, [{ content, ...options, id }]) };
+            });
+            return id;
+          },
+          remove(id) {
+            Dispatcher.dirtyDispatch({ type: 'XL_NOTIFS_REMOVE', id });
+          },
+          /**
+           * @param {Number} id Notification ID
+           * @param {object} options
+           * @param {string} [options.channelId] Channel ID if content is a string which gets formatted, and you want to mention a role for example.
+           * @param {Boolean} [options.loading] Makes the bar animate differently instead of fading in and out slowly
+           * @param {Number} [options.progress] 0-100, -1 sets it to 100%, setting it to 100% closes the notification automatically
+           * @param {string} [options.color] Bar color
+           * @param {function} [options.onLeave] Callback when notification is leaving
+           */
+          update(id, options) {
+            delete options.id;
+            api.setState(state => {
+              const idx = state.data.findIndex(n => n.id === id);
+              if (idx === -1) return state;
+              state.data[idx] = Object.assign(state.data[idx], options);
+              return state;
+            });
+            Dispatcher.dirtyDispatch({ type: 'XL_NOTIFS_UPDATE', id, ...options });
+          },
+          exists(id) {
+            return api.getState().data.findIndex(e => e.id === id && !e.leaving) !== -1;
+          }
+        };
+        XenoLib.Notifications = utils;
+        const ReactSpring = WebpackModules.getByProps('useTransition');
+        const BadgesModule = WebpackModules.getByProps('NumberBadge');
+        const CloseButton = React.createElement('svg', { width: 16, height: 16, viewBox: '0 0 24 24' }, React.createElement('path', { d: 'M18.4 4L12 10.4L5.6 4L4 5.6L10.4 12L4 18.4L5.6 20L12 13.6L18.4 20L20 18.4L13.6 12L20 5.6L18.4 4Z', fill: 'currentColor' }));
+        class Notification extends React.PureComponent {
+          constructor(props) {
+            super(props);
+            this.state = {
+              closeFast: false /* close button pressed, XL_NOTIFS_REMOVE dispatch */,
+              offscreen: false /* don't do anything special if offscreen, not timeout */,
+              counter: 1 /* how many times this notification was shown */,
+              resetBar: false /* reset bar to 0 in the event counter goes up */,
+              hovered: false,
+              leaving: true /* prevent hover events from messing up things */,
+              loading: props.loading /* loading animation, enable progress */,
+              progress: props.progress /* -1 means undetermined */,
+              content: props.content,
+              contentParsed: this.parseContent(props.content, props.channelId),
+              color: props.color
+            };
+            this._contentRef = null;
+            this._ref = null;
+            this._animationCancel = DiscordConstants.NOOP;
+            this._oldOffsetHeight = 0;
+            this._initialProgress = !this.props.timeout ? (this.state.loading && this.state.progress !== -1 ? this.state.progress : 100) : 0;
+            XenoLib._.bindAll(this, ['closeNow', 'handleDispatch', '_setContentRef']);
+            this.handleResizeEvent = XenoLib._.throttle(this.handleResizeEvent.bind(this), 100);
+            this.resizeObserver = new ResizeObserver(this.handleResizeEvent);
+            this._timeout = props.timeout;
+          }
+          componentDidMount() {
+            this._unsubscribe = api.subscribe(_ => this.checkOffScreen());
+            window.addEventListener('resize', this.handleResizeEvent);
+            Dispatcher.subscribe('XL_NOTIFS_DUPLICATE', this.handleDispatch);
+            Dispatcher.subscribe('XL_NOTIFS_REMOVE', this.handleDispatch);
+            Dispatcher.subscribe('XL_NOTIFS_UPDATE', this.handleDispatch);
+            Dispatcher.subscribe('XL_NOTIFS_ANIMATED', this.handleDispatch);
+            Dispatcher.subscribe('XL_NOTIFS_SETTINGS_UPDATE', this.handleDispatch);
+          }
+          componentWillUnmount() {
+            this._unsubscribe();
+            window.window.removeEventListener('resize', this.handleResizeEvent);
+            Dispatcher.unsubscribe('XL_NOTIFS_DUPLICATE', this.handleDispatch);
+            Dispatcher.unsubscribe('XL_NOTIFS_REMOVE', this.handleDispatch);
+            Dispatcher.unsubscribe('XL_NOTIFS_UPDATE', this.handleDispatch);
+            Dispatcher.unsubscribe('XL_NOTIFS_ANIMATED', this.handleDispatch);
+            Dispatcher.unsubscribe('XL_NOTIFS_SETTINGS_UPDATE', this.handleDispatch);
+            this.resizeObserver.disconnect();
+            this.resizeObserver = null; /* no mem leaks plz */
+            this._ref = null;
+            this._contentRef = null;
+          }
+          handleDispatch(e) {
+            if (this.state.leaving || this.state.closeFast) return;
+            if (e.type === 'XL_NOTIFS_SETTINGS_UPDATE') {
+              if (e.key !== UPDATEKEY) return;
               this._animationCancel();
-              this.setState({ offscreen: true });
+              this.forceUpdate();
+              return;
             }
-          } else if (this.state.offscreen) {
-            this._animationCancel();
-            this.setState({ offscreen: false });
-          }
-        }
-        closeNow() {
-          if (this.state.closeFast) return;
-          this.resizeObserver.disconnect();
-          this._animationCancel();
-          api.setState(state => {
-            const dt = state.data.find(m => m.id === this.props.id);
-            if (dt) dt.leaving = true;
-            return { data: state.data };
-          });
-          this.setState({ closeFast: true });
-        }
-        handleResizeEvent() {
-          if (this._oldOffsetHeight !== this._contentRef.offsetHeight) {
-            this._animationCancel();
-            this.forceUpdate();
-          }
-        }
-        _setContentRef(ref) {
-          if (!ref) return;
-          this._contentRef = ref;
-          this.resizeObserver.observe(ref);
-        }
-        render() {
-          const config = { duration: 200 };
-          if (this._contentRef) this._oldOffsetHeight = this._contentRef.offsetHeight;
-          return React.createElement(
-            ReactSpring.Spring,
-            {
-              native: true,
-              from: { opacity: 0, height: 0, progress: this._initialProgress, loadbrightness: 1 },
-              to: async (next, cancel) => {
-                this.state.leaving = false;
-                this._animationCancel = cancel;
-                if (this.state.offscreen) {
-                  if (this.state.closeFast) {
-                    this.state.leaving = true;
-                    await next({ opacity: 0, height: 0 });
-                    api.setState(state => ({ data: state.data.filter(n => n.id !== this.props.id) }));
-                    return;
-                  }
-                  await next({ opacity: 1, height: this._contentRef.offsetHeight, loadbrightness: 1 });
-                  if (this.props.timeout) {
-                    await next({ progress: 0 });
-                  } else {
-                    if (this.state.loading && this.state.progress !== -1) {
-                      await next({ progress: 0 });
-                    } else {
-                      await next({ progress: 100 });
-                    }
-                  }
+            if (e.type === 'XL_NOTIFS_ANIMATED') this.checkOffScreen();
+            if (e.id !== this.props.id) return;
+            const { content, channelId, loading, progress, color } = e;
+            const { content: curContent, channelId: curChannelId, loading: curLoading, progress: curProgress, color: curColor } = this.state;
+            switch (e.type) {
+              case 'XL_NOTIFS_REMOVE':
+                this.closeNow();
+                break;
+              case 'XL_NOTIFS_DUPLICATE':
+                this._animationCancel();
+                this.setState({ counter: this.state.counter + 1, resetBar: !!this.props.timeout, closeFast: false });
+                break;
+              case 'XL_NOTIFS_UPDATE':
+                if (!this.state.initialAnimDone) {
+                  this.state.content = content || curContent;
+                  this.state.channelId = channelId || curChannelId;
+                  this.state.contentParsed = this.parseContent(content || curContent, channelId || curChannelId);
+                  if (typeof loading !== 'undefined') this.state.loading = loading;
+                  if (typeof progress !== 'undefined') this.state.progress = progress;
+                  this.state.color = color || curColor;
                   return;
                 }
-                const isSettingHeight = this._ref.offsetHeight !== this._contentRef.offsetHeight;
-                await next({ opacity: 1, height: this._contentRef.offsetHeight });
-                if (isSettingHeight) Dispatcher.dirtyDispatch({ type: 'XL_NOTIFS_ANIMATED' });
-                this.state.initialAnimDone = true;
-                if (this.state.resetBar || (this.state.hovered && LibrarySettings.notifications.timeoutReset)) {
-                  await next({ progress: 0 }); /* shit gets reset */
-                  this.state.resetBar = false;
-                }
-
-                if (!this.props.timeout && !this.state.closeFast) {
-                  if (!this.state.loading) {
-                    await next({ progress: 100 });
-                  } else {
-                    await next({ loadbrightness: 1 });
-                    if (this.state.progress === -1) await next({ progress: 100 });
-                    else await next({ progress: this.state.progress });
-                  }
-                  if (this.state.progress < 100 || !this.state.loading) return;
-                }
-                if (this.state.hovered && !this.state.closeFast) return;
-                if (!this.state.closeFast && !LibrarySettings.notifications.timeoutReset) this._startProgressing = Date.now();
-                await next({ progress: 100 });
-                if (this.state.hovered && !this.state.closeFast) return; /* race condition: notif is hovered, but it continues and closes! */
-                this.state.leaving = true;
-                if (!this.state.closeFast) {
-                  api.setState(state => {
-                    const dt = state.data.find(m => m.id === this.props.id);
-                    if (dt) dt.leaving = true;
-                    return { data: state.data };
-                  });
-                }
-                this.props.onLeave();
-                await next({ opacity: 0, height: 0 });
-                api.setState(state => ({ data: state.data.filter(n => n.id !== this.props.id) }));
-              },
-              config: key => {
-                if (key === 'progress') {
-                  let duration = this._timeout;
-                  if (this.state.closeFast || !this.props.timeout || this.state.resetBar || this.state.hovered) duration = 150;
-                  if (this.state.offscreen) duration = 0; /* don't animate at all */
-                  return { duration };
-                }
-                if (key === 'loadbrightness') return { duration: 750 };
-                return config;
+                this._animationCancel();
+                this.setState({
+                  content: content || curContent,
+                  channelId: channelId || curChannelId,
+                  contentParsed: this.parseContent(content || curContent, channelId || curChannelId),
+                  loading: typeof loading !== 'undefined' ? loading : curLoading,
+                  progress: typeof progress !== 'undefined' ? progress : curProgress,
+                  color: color || curColor
+                });
+                break;
+            }
+          }
+          parseContent(content, channelId) {
+            if (typeof content === 'string') return FancyParser(content, true, { channelId });
+            else if (content instanceof Element) return ReactTools.createWrappedElement(content);
+            else return content;
+          }
+          checkOffScreen() {
+            if (this.state.leaving || !this._contentRef) return;
+            const bcr = this._contentRef.getBoundingClientRect();
+            if (Math.floor(bcr.bottom) - 1 > Structs.Screen.height || Math.ceil(bcr.top) + 1 < 0) {
+              if (!this.state.offscreen) {
+                this._animationCancel();
+                this.setState({ offscreen: true });
               }
-            },
-            e => {
-              return React.createElement(
-                ReactSpring.animated.div,
-                {
-                  style: {
-                    height: e.height,
-                    opacity: e.opacity
-                  },
-                  className: 'xenoLib-notification',
-                  ref: e => e && (this._ref = e)
-                },
-                React.createElement(
-                  'div',
-                  {
-                    className: 'xenoLib-notification-content-wrapper',
-                    ref: this._setContentRef,
-                    onMouseEnter: e => {
-                      if (this.state.leaving || !this.props.timeout || this.state.closeFast) return;
-                      this._animationCancel();
-                      if (this._startProgressing) {
-                        this._timeout -= Date.now() - this._startProgressing;
-                      }
-                      this.state.hovered = true;
-                      this.forceUpdate();
-                    },
-                    onMouseLeave: e => {
-                      if (this.state.leaving || !this.props.timeout || this.state.closeFast) return;
-                      this._animationCancel();
-                      this.setState({ hovered: false });
-                    },
-                    style: {
-                      '--grad-one': this.state.color,
-                      '--grad-two': ColorConverter.lightenColor(this.state.color, 20),
-                      '--bar-color': ColorConverter.darkenColor(this.state.color, 30)
-                    },
-                    onClick: e => {
-                      if (!this.props.onClick) return;
-                      if (e.target && e.target.getAttribute('role') === 'button') return;
-                      this.props.onClick();
-                      this.closeNow();
-                    },
-                    onContextMenu: e => {
-                      if (!this.props.onContext) return;
-                      this.props.onContext();
-                      this.closeNow();
+            } else if (this.state.offscreen) {
+              this._animationCancel();
+              this.setState({ offscreen: false });
+            }
+          }
+          closeNow() {
+            if (this.state.closeFast) return;
+            this.resizeObserver.disconnect();
+            this._animationCancel();
+            api.setState(state => {
+              const dt = state.data.find(m => m.id === this.props.id);
+              if (dt) dt.leaving = true;
+              return { data: state.data };
+            });
+            this.setState({ closeFast: true });
+          }
+          handleResizeEvent() {
+            if (this._oldOffsetHeight !== this._contentRef.offsetHeight) {
+              this._animationCancel();
+              this.forceUpdate();
+            }
+          }
+          _setContentRef(ref) {
+            if (!ref) return;
+            this._contentRef = ref;
+            this.resizeObserver.observe(ref);
+          }
+          render() {
+            const config = { duration: 200 };
+            if (this._contentRef) this._oldOffsetHeight = this._contentRef.offsetHeight;
+            return React.createElement(
+              ReactSpring.Spring,
+              {
+                native: true,
+                from: { opacity: 0, height: 0, progress: this._initialProgress, loadbrightness: 1 },
+                to: async (next, cancel) => {
+                  this.state.leaving = false;
+                  this._animationCancel = cancel;
+                  if (this.state.offscreen) {
+                    if (this.state.closeFast) {
+                      this.state.leaving = true;
+                      await next({ opacity: 0, height: 0 });
+                      api.setState(state => ({ data: state.data.filter(n => n.id !== this.props.id) }));
+                      return;
                     }
+                    await next({ opacity: 1, height: this._contentRef.offsetHeight, loadbrightness: 1 });
+                    if (this.props.timeout) {
+                      await next({ progress: 0 });
+                    } else {
+                      if (this.state.loading && this.state.progress !== -1) {
+                        await next({ progress: 0 });
+                      } else {
+                        await next({ progress: 100 });
+                      }
+                    }
+                    return;
+                  }
+                  const isSettingHeight = this._ref.offsetHeight !== this._contentRef.offsetHeight;
+                  await next({ opacity: 1, height: this._contentRef.offsetHeight });
+                  if (isSettingHeight) Dispatcher.dirtyDispatch({ type: 'XL_NOTIFS_ANIMATED' });
+                  this.state.initialAnimDone = true;
+                  if (this.state.resetBar || (this.state.hovered && LibrarySettings.notifications.timeoutReset)) {
+                    await next({ progress: 0 }); /* shit gets reset */
+                    this.state.resetBar = false;
+                  }
+
+                  if (!this.props.timeout && !this.state.closeFast) {
+                    if (!this.state.loading) {
+                      await next({ progress: 100 });
+                    } else {
+                      await next({ loadbrightness: 1 });
+                      if (this.state.progress === -1) await next({ progress: 100 });
+                      else await next({ progress: this.state.progress });
+                    }
+                    if (this.state.progress < 100 || !this.state.loading) return;
+                  }
+                  if (this.state.hovered && !this.state.closeFast) return;
+                  if (!this.state.closeFast && !LibrarySettings.notifications.timeoutReset) this._startProgressing = Date.now();
+                  await next({ progress: 100 });
+                  if (this.state.hovered && !this.state.closeFast) return; /* race condition: notif is hovered, but it continues and closes! */
+                  this.state.leaving = true;
+                  if (!this.state.closeFast) {
+                    api.setState(state => {
+                      const dt = state.data.find(m => m.id === this.props.id);
+                      if (dt) dt.leaving = true;
+                      return { data: state.data };
+                    });
+                  }
+                  this.props.onLeave();
+                  await next({ opacity: 0, height: 0 });
+                  api.setState(state => ({ data: state.data.filter(n => n.id !== this.props.id) }));
+                },
+                config: key => {
+                  if (key === 'progress') {
+                    let duration = this._timeout;
+                    if (this.state.closeFast || !this.props.timeout || this.state.resetBar || this.state.hovered) duration = 150;
+                    if (this.state.offscreen) duration = 0; /* don't animate at all */
+                    return { duration };
+                  }
+                  if (key === 'loadbrightness') return { duration: 750 };
+                  return config;
+                }
+              },
+              e => {
+                return React.createElement(
+                  ReactSpring.animated.div,
+                  {
+                    style: {
+                      height: e.height,
+                      opacity: e.opacity
+                    },
+                    className: 'xenoLib-notification',
+                    ref: e => e && (this._ref = e)
                   },
                   React.createElement(
                     'div',
                     {
-                      className: 'xenoLib-notification-content',
-                      style: {
-                        backdropFilter: LibrarySettings.notifications.backdrop ? 'blur(5px)' : undefined,
-                        background: ColorConverter.int2rgba(ColorConverter.hex2int(LibrarySettings.notifications.backdropColor), LibrarySettings.notifications.backdrop ? 0.3 : 1.0),
-                        border: LibrarySettings.notifications.backdrop ? 'none' : undefined
+                      className: 'xenoLib-notification-content-wrapper',
+                      ref: this._setContentRef,
+                      onMouseEnter: e => {
+                        if (this.state.leaving || !this.props.timeout || this.state.closeFast) return;
+                        this._animationCancel();
+                        if (this._startProgressing) {
+                          this._timeout -= Date.now() - this._startProgressing;
+                        }
+                        this.state.hovered = true;
+                        this.forceUpdate();
                       },
-                      ref: e => {
-                        if (!LibrarySettings.notifications.backdrop || !e) return;
-                        e.style.setProperty('backdrop-filter', e.style.backdropFilter, 'important');
-                        e.style.setProperty('background', e.style.background, 'important');
-                        e.style.setProperty('border', e.style.border, 'important');
+                      onMouseLeave: e => {
+                        if (this.state.leaving || !this.props.timeout || this.state.closeFast) return;
+                        this._animationCancel();
+                        this.setState({ hovered: false });
+                      },
+                      style: {
+                        '--grad-one': this.state.color,
+                        '--grad-two': ColorConverter.lightenColor(this.state.color, 20),
+                        '--bar-color': ColorConverter.darkenColor(this.state.color, 30)
+                      },
+                      onClick: e => {
+                        if (!this.props.onClick) return;
+                        if (e.target && e.target.getAttribute('role') === 'button') return;
+                        this.props.onClick();
+                        this.closeNow();
+                      },
+                      onContextMenu: e => {
+                        if (!this.props.onContext) return;
+                        this.props.onContext();
+                        this.closeNow();
                       }
                     },
-                    React.createElement(ReactSpring.animated.div, {
-                      className: XenoLib.joinClassNames('xenoLib-notification-loadbar', { 'xenoLib-notification-loadbar-striped': !this.props.timeout && this.state.loading, 'xenoLib-notification-loadbar-user': !this.props.timeout && !this.state.loading }),
-                      style: { right: e.progress.to(e => 100 - e + '%'), filter: e.loadbrightness.to(e => `brightness(${e * 100}%)`) }
-                    }),
                     React.createElement(
-                      XenoLib.ReactComponents.Button,
+                      'div',
                       {
-                        look: XenoLib.ReactComponents.Button.Looks.BLANK,
-                        size: XenoLib.ReactComponents.Button.Sizes.NONE,
-                        onClick: e => {
-                          e.preventDefault();
-                          e.stopPropagation();
-                          this.closeNow();
+                        className: 'xenoLib-notification-content',
+                        style: {
+                          backdropFilter: LibrarySettings.notifications.backdrop ? 'blur(5px)' : undefined,
+                          background: ColorConverter.int2rgba(ColorConverter.hex2int(LibrarySettings.notifications.backdropColor), LibrarySettings.notifications.backdrop ? 0.3 : 1.0),
+                          border: LibrarySettings.notifications.backdrop ? 'none' : undefined
                         },
-                        onContextMenu: e => {
-                          e.preventDefault();
-                          e.stopPropagation();
-                          const state = api.getState();
-                          state.data.forEach(notif => utils.remove(notif.id));
-                        },
-                        className: 'xenoLib-notification-close'
+                        ref: e => {
+                          if (!LibrarySettings.notifications.backdrop || !e) return;
+                          e.style.setProperty('backdrop-filter', e.style.backdropFilter, 'important');
+                          e.style.setProperty('background', e.style.background, 'important');
+                          e.style.setProperty('border', e.style.border, 'important');
+                        }
                       },
-                      CloseButton
-                    ),
-                    this.state.counter > 1 && BadgesModule.NumberBadge({ count: this.state.counter, className: 'xenLib-notification-counter', color: '#2196f3' }),
-                    this.state.contentParsed
+                      React.createElement(ReactSpring.animated.div, {
+                        className: XenoLib.joinClassNames('xenoLib-notification-loadbar', { 'xenoLib-notification-loadbar-striped': !this.props.timeout && this.state.loading, 'xenoLib-notification-loadbar-user': !this.props.timeout && !this.state.loading }),
+                        style: { right: e.progress.to(e => 100 - e + '%'), filter: e.loadbrightness.to(e => `brightness(${e * 100}%)`) }
+                      }),
+                      React.createElement(
+                        XenoLib.ReactComponents.Button,
+                        {
+                          look: XenoLib.ReactComponents.Button.Looks.BLANK,
+                          size: XenoLib.ReactComponents.Button.Sizes.NONE,
+                          onClick: e => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            this.closeNow();
+                          },
+                          onContextMenu: e => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            const state = api.getState();
+                            state.data.forEach(notif => utils.remove(notif.id));
+                          },
+                          className: 'xenoLib-notification-close'
+                        },
+                        CloseButton
+                      ),
+                      this.state.counter > 1 && BadgesModule.NumberBadge({ count: this.state.counter, className: 'xenLib-notification-counter', color: '#2196f3' }),
+                      this.state.contentParsed
+                    )
                   )
-                )
-              );
-            }
-          );
+                );
+              }
+            );
+          }
         }
+        function NotificationsWrapper(e) {
+          const notifications = useStore(e => {
+            return e.data;
+          });
+          return notifications.map(item => React.createElement(XenoLib.ReactComponents.ErrorBoundary, { label: `Notification ${item.id}`, onError: () => api.setState(state => ({ data: state.data.filter(n => n.id !== item.id) })), key: item.id.toString() }, React.createElement(Notification, { ...item, leaving: false }))).reverse();
+        }
+        NotificationsWrapper.displayName = 'XenoLibNotifications';
+        const DOMElement = document.createElement('div');
+        DOMElement.className = XenoLib.joinClassNames('xenoLib-notifications', `xenoLib-centering-${LibrarySettings.notifications.position}`);
+        ReactDOM.render(React.createElement(NotificationsWrapper, {}), DOMElement);
+        document.querySelector('#app-mount').appendChild(DOMElement);
       }
-      function NotificationsWrapper(e) {
-        const notifications = useStore(e => {
-          return e.data;
-        });
-        return notifications.map(item => React.createElement(XenoLib.ReactComponents.ErrorBoundary, { label: `Notification ${item.id}`, onError: () => api.setState(state => ({ data: state.data.filter(n => n.id !== item.id) })), key: item.id.toString() }, React.createElement(Notification, { ...item, leaving: false }))).reverse();
-      }
-      NotificationsWrapper.displayName = 'XenoLibNotifications';
-      const DOMElement = document.createElement('div');
-      DOMElement.className = XenoLib.joinClassNames('xenoLib-notifications', `xenoLib-centering-${LibrarySettings.notifications.position}`);
-      ReactDOM.render(React.createElement(NotificationsWrapper, {}), DOMElement);
-      document.querySelector('#app-mount').appendChild(DOMElement);
     } catch (e) {
       Logger.stacktrace('There has been an error loading the Notifications system, fallback object has been put in place to prevent errors', e);
       XenoLib.Notifications = {
@@ -1679,18 +1775,94 @@ module.exports = (() => {
       }
     }
 
+    const _radioGroup = WebpackModules.getByDisplayName('RadioGroup');
+    class RadioGroupWrapper extends React.PureComponent {
+      render() {
+        return React.createElement(_radioGroup, this.props);
+      }
+    }
+
+    class RadioGroup extends Settings.SettingField {
+      constructor(name, note, defaultValue, values, onChange, options = {}) {
+        super(name, note, onChange, RadioGroupWrapper, {
+          noteOnTop: true,
+          disabled: !!options.disabled,
+          options: values,
+          onChange: reactElement => option => {
+            reactElement.props.value = option.value;
+            reactElement.forceUpdate();
+            this.onChange(option.value);
+          },
+          value: defaultValue
+        });
+      }
+    }
+
+    const _switchItem = WebpackModules.getByDisplayName('SwitchItem');
+    class SwitchItemWrapper extends React.PureComponent {
+      render() {
+        return React.createElement(_switchItem, this.props);
+      }
+    }
+
+    class Switch extends Settings.SettingField {
+      constructor(name, note, isChecked, onChange, options = {}) {
+        super(name, note, onChange);
+        this.disabled = !!options.disabled;
+        this.value = !!isChecked;
+      }
+
+      onAdded() {
+        const reactElement = ReactDOM.render(React.createElement(SwitchItemWrapper, {
+          children: this.name,
+          note: this.note,
+          disabled: this.disabled,
+          hideBorder: false,
+          value: this.value,
+          onChange: (e) => {
+            reactElement.props.value = e;
+            reactElement.forceUpdate();
+            this.onChange(e);
+          }
+        }), this.getElement());
+      }
+    }
+
+    XenoLib.buildSetting = function buildSetting(data) {
+      const { name, note, type, value, onChange, id } = data;
+      let setting = null;
+      if (type == "color") setting = new XenoLib.Settings.ColorPicker(name, note, value, onChange, { disabled: data.disabled, defaultColor: value });
+      else if (type == "dropdown") setting = new Settings.Dropdown(name, note, value, data.options, onChange);
+      else if (type == "file") setting = new Settings.FilePicker(name, note, onChange);
+      else if (type == "keybind") setting = new Settings.Keybind(name, note, value, onChange);
+      else if (type == "radio") setting = new RadioGroup(name, note, value, data.options, onChange, { disabled: data.disabled });
+      else if (type == "slider") setting = new Settings.Slider(name, note, data.min, data.max, value, onChange, data);
+      else if (type == "switch") setting = new Switch(name, note, value, onChange, { disabled: data.disabled });
+      else if (type == "textbox") setting = new Settings.Textbox(name, note, value, onChange, { placeholder: data.placeholder || "" });
+      if (id) setting.id = id;
+      return setting;
+    }
+
     return class CXenoLib extends Plugin {
       constructor() {
         super();
         this.settings = LibrarySettings;
-        XenoLib.changeName(__filename, '1XenoLib'); /* prevent user from changing libs filename */
+        /*
+         * why are we letting Zere, the braindead American let control BD when he can't even
+         * fucking read clearly documented and well known standards, such as __filename being
+         * the files full fucking path and not just the filename itself, IS IT REALLY SO HARD
+         * TO FUCKING READ?! https://nodejs.org/api/modules.html#modules_filename
+         */
+        const _zerecantcode_path = require('path');
+        const theActualFileNameZere = _zerecantcode_path.join(__dirname, _zerecantcode_path.basename(__filename));
+        XenoLib.changeName(theActualFileNameZere, '1XenoLib'); /* prevent user from changing libs filename */
         try {
           WebpackModules.getByProps('openModal', 'hasModalOpen').closeModal(`${this.name}_DEP_MODAL`);
         } catch (e) { }
       }
       load() {
-        if (window.Lightcord) XenoLib.Notifications.warning(`[${this.getName()}] Lightcord is an unofficial and unsafe client with stolen code that is falsely advertising that it is safe, Lightcord has allowed the spread of token loggers hidden within plugins redistributed by them, and these plugins are not made to work on it. Your account is very likely compromised by malicious people redistributing other peoples plugins, especially if you didn't download this plugin from [GitHub](https://github.com/1Lighty/BetterDiscordPlugins/edit/master/Plugins/MessageLoggerV2/MessageLoggerV2.plugin.js), you should change your password immediately. Consider using a trusted client mod like [BandagedBD](https://rauenzi.github.io/BetterDiscordApp/) or [Powercord](https://powercord.dev/) to avoid losing your account.`, { timeout: 0 });
         super.load();
+        if (window.Lightcord) return XenoLib.Notifications.warning(`[${this.getName()}] Lightcord is an unofficial and unsafe client with stolen code that is falsely advertising that it is safe, Lightcord has allowed the spread of token loggers hidden within plugins redistributed by them, and these plugins are not made to work on it. Your account is very likely compromised by malicious people redistributing other peoples plugins, especially if you didn't download this plugin from [GitHub](https://github.com/1Lighty/BetterDiscordPlugins/), you should change your password immediately. Consider using a trusted client mod like [BandagedBD](https://rauenzi.github.io/BetterDiscordApp/) or [Powercord](https://powercord.dev/) to avoid losing your account.`, { timeout: 0 });
         if (!BdApi.Plugins) return; /* well shit what now */
         if (!BdApi.isSettingEnabled || !BdApi.disableSetting) return;
         const prev = BdApi.isSettingEnabled('fork-ps-2');
@@ -1708,6 +1880,7 @@ module.exports = (() => {
           }
         }
         if (prev) BdApi.enableSetting('fork-ps-2');
+        if (window.Lightcord) location.reload();
       }
       buildSetting(data) {
         if (data.type === 'position') {
@@ -1719,7 +1892,7 @@ module.exports = (() => {
           if (data.id) setting.id = data.id;
           return setting;
         }
-        return super.buildSetting(data);
+        return XenoLib.buildSetting(data);
       }
       getSettingsPanel() {
         return this.buildSettingsPanel()
@@ -1748,6 +1921,7 @@ module.exports = (() => {
         }
       }
       showChangelog(footer) {
+        return;
         XenoLib.showChangelog(`${this.name} has been updated!`, this.version, this._config.changelog);
       }
       get name() {
@@ -1779,11 +1953,9 @@ module.exports = (() => {
 
   let ZeresPluginLibraryOutdated = false;
   try {
-    if (global.BdApi && 'function' == typeof BdApi.getPlugin) {
-      const a = (c, a) => ((c = c.split('.').map(b => parseInt(b))), (a = a.split('.').map(b => parseInt(b))), !!(a[0] > c[0])) || !!(a[0] == c[0] && a[1] > c[1]) || !!(a[0] == c[0] && a[1] == c[1] && a[2] > c[2]),
-        b = BdApi.getPlugin('ZeresPluginLibrary');
-      ((b, c) => b && b._config && b._config.info && b._config.info.version && a(b._config.info.version, c))(b, '1.2.24') && (ZeresPluginLibraryOutdated = !0);
-    }
+    const a = (c, a) => ((c = c.split('.').map(b => parseInt(b))), (a = a.split('.').map(b => parseInt(b))), !!(a[0] > c[0])) || !!(a[0] == c[0] && a[1] > c[1]) || !!(a[0] == c[0] && a[1] == c[1] && a[2] > c[2]),
+      b = BdApi.Plugins.get('ZeresPluginLibrary');
+    ((b, c) => b && b._config && b._config.info && b._config.info.version && a(b._config.info.version, c))(b, '1.2.29') && (ZeresPluginLibraryOutdated = !0);
   } catch (e) {
     console.error('Error checking if ZeresPluginLibrary is out of date', e);
   }

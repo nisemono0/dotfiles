@@ -14,8 +14,13 @@ module.exports = (_ => {
 		"info": {
 			"name": "BetterFriendList",
 			"author": "DevilBro",
-			"version": "1.3.0",
+			"version": "1.3.2",
 			"description": "Add extra controls to the friends page, like sort by name/status, search and all/request/blocked amount"
+		},
+		"changeLog": {
+			"fixed": {
+				"Mutual Guilds": "Visible again"
+			}
 		}
 	};
 
@@ -26,7 +31,7 @@ module.exports = (_ => {
 		getDescription () {return config.info.description;}
 		
 		load() {
-			if (!window.BDFDB_Global || !Array.isArray(window.BDFDB_Global.pluginQueue)) window.BDFDB_Global = Object.assign({}, window.BDFDB_Global, {pluginQueue:[]});
+			if (!window.BDFDB_Global || !Array.isArray(window.BDFDB_Global.pluginQueue)) window.BDFDB_Global = Object.assign({}, window.BDFDB_Global, {pluginQueue: []});
 			if (!window.BDFDB_Global.downloadModal) {
 				window.BDFDB_Global.downloadModal = true;
 				BdApi.showConfirmationModal("Library Missing", `The library plugin needed for ${config.info.name} is missing. Please click "Download Now" to install it.`, {
@@ -66,10 +71,10 @@ module.exports = (_ => {
 			onLoad() {
 				this.defaults = {
 					settings: {
-						addTotalAmount:		{value:true, 	description:"Add total amount for all/requested/blocked"},
-						addSortOptions:		{value:true, 	description:"Add sort options"},
-						addSearchbar:		{value:true, 	description:"Add searchbar"},
-						addMutualGuild:		{value:true, 	description:"Add mutual servers in friend list"}
+						addTotalAmount:		{value: true, 	description: "Add total amount for all/requested/blocked"},
+						addSortOptions:		{value: true, 	description: "Add sort options"},
+						addSearchbar:		{value: true, 	description: "Add searchbar"},
+						addMutualGuild:		{value: true, 	description: "Add mutual servers in friend list"}
 					}
 				};
 
@@ -210,65 +215,66 @@ module.exports = (_ => {
 						return newSection;
 					});
 				}
-				let getSectionTitle = e.instance.props.getSectionTitle;
-				e.instance.props.getSectionTitle = (...args) => {
-					let users = e.instance.props.statusSections.flat(10);
-					return BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.Flex, {
-						align: BDFDB.LibraryComponents.Flex.Align.CENTER,
-						children: [
-							BDFDB.ReactUtils.createElement("div", {
-								className: BDFDB.disCN._betterfriendlisttitle,
-								children: getSectionTitle(...args).replace(users.length, users.filter(u => u && u.key != placeHolderId).length)
-							}),
-							settings.addSortOptions && [
-								{key: "usernameLower", label: BDFDB.LanguageUtils.LanguageStrings.FRIENDS_COLUMN_NAME},
-								{key: "statusIndex", label: BDFDB.LanguageUtils.LanguageStrings.FRIENDS_COLUMN_STATUS}
-							].filter(n => n).map(data => BDFDB.ReactUtils.createElement("div", {
-								className: BDFDB.DOMUtils.formatClassName(BDFDB.disCN.tableheadercellwrapper, BDFDB.disCN.tableheadercell, BDFDB.disCN._betterfriendlistnamecell, sortKey == data.key && BDFDB.disCN.tableheadercellsorted, BDFDB.disCN.tableheadercellclickable),
-								children: BDFDB.ReactUtils.createElement("div", {
-									className: BDFDB.disCN.tableheadercellcontent,
-									children: [
-										data.label,
-										sortKey == data.key && BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.SvgIcon, {
-											className: BDFDB.disCN.tableheadersorticon,
-											name: BDFDB.LibraryComponents.SvgIcon.Names[sortReversed ? "ARROW_UP" : "ARROW_DOWN"]
-										})
-									].filter(n => n)
+				if (!BDFDB.PatchUtils.isPatched(this, e.instance.props, "getSectionTitle")) BDFDB.PatchUtils.patch(this, e.instance.props, "getSectionTitle", {after: e2 => {
+					if (typeof e2.returnValue == "string") {
+						let users = e.instance.props.statusSections.flat(10);
+						return BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.Flex, {
+							align: BDFDB.LibraryComponents.Flex.Align.CENTER,
+							children: [
+								BDFDB.ReactUtils.createElement("div", {
+									className: BDFDB.disCN._betterfriendlisttitle,
+									children: e2.returnValue.replace(users.length, users.filter(u => u && u.key != placeHolderId).length)
 								}),
-								onClick: event => {
-									if (sortKey == data.key) {
-										if (!sortReversed) sortReversed = true;
+								settings.addSortOptions && [
+									{key: "usernameLower", label: BDFDB.LanguageUtils.LanguageStrings.FRIENDS_COLUMN_NAME},
+									{key: "statusIndex", label: BDFDB.LanguageUtils.LanguageStrings.FRIENDS_COLUMN_STATUS}
+								].filter(n => n).map(data => BDFDB.ReactUtils.createElement("div", {
+									className: BDFDB.DOMUtils.formatClassName(BDFDB.disCN.tableheadercellwrapper, BDFDB.disCN.tableheadercell, BDFDB.disCN._betterfriendlistnamecell, sortKey == data.key && BDFDB.disCN.tableheadercellsorted, BDFDB.disCN.tableheadercellclickable),
+									children: BDFDB.ReactUtils.createElement("div", {
+										className: BDFDB.disCN.tableheadercellcontent,
+										children: [
+											data.label,
+											sortKey == data.key && BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.SvgIcon, {
+												className: BDFDB.disCN.tableheadersorticon,
+												name: BDFDB.LibraryComponents.SvgIcon.Names[sortReversed ? "ARROW_UP" : "ARROW_DOWN"]
+											})
+										].filter(n => n)
+									}),
+									onClick: event => {
+										if (sortKey == data.key) {
+											if (!sortReversed) sortReversed = true;
+											else {
+												sortKey = null;
+												sortReversed = false;
+											}
+										}
 										else {
-											sortKey = null;
+											sortKey = data.key;
 											sortReversed = false;
 										}
-									}
-									else {
-										sortKey = data.key;
-										sortReversed = false;
-									}
-									this.rerenderList();
-								}
-							})),
-							settings.addSearchbar && BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.Flex.Child, {
-								children: BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.SearchBar, {
-									query: searchQuery,
-									onChange: value => {
-										BDFDB.TimeUtils.clear(searchTimeout);
-										searchTimeout = BDFDB.TimeUtils.timeout(_ => {
-											searchQuery = value;
-											this.rerenderList();
-										}, 1000);
-									},
-									onClear: _ => {
-										searchQuery = "";
 										this.rerenderList();
 									}
+								})),
+								settings.addSearchbar && BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.Flex.Child, {
+									children: BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.SearchBar, {
+										query: searchQuery,
+										onChange: value => {
+											BDFDB.TimeUtils.clear(searchTimeout);
+											searchTimeout = BDFDB.TimeUtils.timeout(_ => {
+												searchQuery = value;
+												this.rerenderList();
+											}, 1000);
+										},
+										onClear: _ => {
+											searchQuery = "";
+											this.rerenderList();
+										}
+									})
 								})
-							})
-						].flat(10).filter(n => n)
-					});
-				};
+							].flat(10).filter(n => n)
+						});
+					}
+				}}, {force: true, noCache: true});
 			}
 			
 			processPeopleListSectionedNonLazy (e) {
@@ -295,15 +301,27 @@ module.exports = (_ => {
 				else {
 					if (e.instance.props.user.id == placeHolderId) return null;
 					else if (settings.addMutualGuild && e.instance.props.mutualGuilds && e.instance.props.mutualGuilds.length) {
-						let [children, index] = BDFDB.ReactUtils.findParent(e.returnvalue, {name: "UserInfo"});
-						if (index > -1) children.splice(index + 1, 0, BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.GuildSummaryItem, {
-							className: BDFDB.disCN._betterfriendlistmutualguilds,
-							guilds: e.instance.props.mutualGuilds,
-							showTooltip: true,
-							max: 10
-						}, true));
+						if (typeof e.returnvalue.props.children == "function") {
+							let childrenRender = e.returnvalue.props.children;
+							e.returnvalue.props.children = (...args) => {
+								let children = childrenRender(...args);
+								this.injectMutualGuilds(children, e.instance.props.mutualGuilds);
+								return children;
+							};
+						}
+						else this.injectMutualGuilds(e.returnvalue, e.instance.props.mutualGuilds);
 					}
 				}
+			}
+			
+			injectMutualGuilds (returnvalue, mutualGuilds) {
+				let [children, index] = BDFDB.ReactUtils.findParent(returnvalue, {name: "UserInfo"});
+				if (index > -1) children.splice(index + 1, 0, BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.GuildSummaryItem, {
+					className: BDFDB.disCN._betterfriendlistmutualguilds,
+					guilds: mutualGuilds,
+					showTooltip: true,
+					max: 10
+				}, true));
 			}
 			
 			createBadge (amount) {
