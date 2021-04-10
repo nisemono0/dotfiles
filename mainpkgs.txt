@@ -35,7 +35,6 @@ htop
 inetutils
 iputils
 jfsutils
-lib32-vulkan-radeon
 libreoffice-still
 libwnck3
 licenses
