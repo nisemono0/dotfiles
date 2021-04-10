@@ -5,7 +5,7 @@ autoconf
 automake
 bat
 bdf-unifont
-betterdiscord-rauenzi-git
+betterdiscord-installer
 bind
 bison
 bleachbit

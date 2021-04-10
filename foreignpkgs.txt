@@ -1,5 +1,4 @@
-betterdiscord-rauenzi-git
-betterdiscordctl-git
+betterdiscord-installer
 dragon-drag-and-drop
 flacon
 font-mathematica
