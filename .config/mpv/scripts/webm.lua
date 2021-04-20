@@ -13,6 +13,8 @@ local options = {
 	-- backslashes as a path separator. Examples of valid inputs for this field
 	-- would be: [[]] (the default, empty value), [[C:\Users\John]] (on Windows),
 	-- and [[/home/john]] (on Unix-like systems eg. Linux).
+	-- The [[]] delimiter is not needed when using from a configuration file
+	-- in the script-opts folder.
 	output_directory = [[]],
 	run_detached = false,
 	-- Template string for the output file
@@ -28,6 +30,9 @@ local options = {
 	output_template = "%F-[%s-%e]%M",
 	-- Scale video to a certain height, keeping the aspect ratio. -1 disables it.
 	scale_height = -1,
+	-- Change the FPS of the output video, dropping or duplicating frames as needed.
+	-- -1 means the FPS will be unchanged from the source.
+	fps = -1,
 	-- Target filesize, in kB. This will be used to calculate the bitrate
 	-- used on the encode. If this is set to <= 0, the video bitrate will be set
 	-- to 0, which might enable constant quality modes, depending on the
@@ -42,8 +47,14 @@ local options = {
 	-- In kilobits.
 	strict_audio_bitrate = 64,
 	-- Sets the output format, from a few predefined ones.
-	-- Currently we have webm-vp8 (libvpx/libvorbis), webm-vp9 (libvpx-vp9/libvorbis)
-	-- and raw (rawvideo/pcm_s16le).
+	-- Currently we have:
+	-- webm-vp8 (libvpx/libvorbis)
+	-- webm-vp9 (libvpx-vp9/libopus)
+	-- mp4 (h264/AAC)
+	-- mp4-nvenc (h264-NVENC/AAC)
+	-- raw (rawvideo/pcm_s16le).
+	-- mp3 (libmp3lame)
+	-- and gif
 	output_format = "webm-vp8",
 	twopass = false,
 	-- If set, applies the video filters currently used on the playback to the encode.
@@ -201,6 +212,7 @@ expand_properties = function(text, magic)
 end
 local format_filename
 format_filename = function(startTime, endTime, videoFormat)
+  local hasAudioCodec = videoFormat.audioCodec ~= ""
   local replaceFirst = {
     ["%%mp"] = "%%mH.%%mM.%%mS",
     ["%%mP"] = "%%mH.%%mM.%%mS.%%mT",
@@ -231,7 +243,7 @@ format_filename = function(startTime, endTime, videoFormat)
     ["%%e"] = seconds_to_path_element(endTime),
     ["%%E"] = seconds_to_path_element(endTime, true),
     ["%%T"] = mp.get_property("media-title"),
-    ["%%M"] = (mp.get_property_native('aid') and not mp.get_property_native('mute')) and '-audio' or '',
+    ["%%M"] = (mp.get_property_native('aid') and not mp.get_property_native('mute') and hasAudioCodec) and '-audio' or '',
     ["%%R"] = (options.scale_height ~= -1) and "-" .. tostring(options.scale_height) .. "p" or "-" .. tostring(mp.get_property_native('height')) .. "p",
     ["%%t%%"] = "%%"
   }
@@ -968,7 +980,7 @@ do
       self.displayName = "WebM (VP9)"
       self.supportsTwopass = true
       self.videoCodec = "libvpx-vp9"
-      self.audioCodec = "libvorbis"
+      self.audioCodec = "libopus"
       self.outputExtension = "webm"
       self.acceptsBitrate = true
     end,
@@ -1132,6 +1144,50 @@ do
   MP3 = _class_0
 end
 formats["mp3"] = MP3()
+local GIF
+do
+  local _class_0
+  local _parent_0 = Format
+  local _base_0 = { }
+  _base_0.__index = _base_0
+  setmetatable(_base_0, _parent_0.__base)
+  _class_0 = setmetatable({
+    __init = function(self)
+      self.displayName = "GIF"
+      self.supportsTwopass = false
+      self.videoCodec = "gif"
+      self.audioCodec = ""
+      self.outputExtension = "gif"
+      self.acceptsBitrate = false
+    end,
+    __base = _base_0,
+    __name = "GIF",
+    __parent = _parent_0
+  }, {
+    __index = function(cls, name)
+      local val = rawget(_base_0, name)
+      if val == nil then
+        local parent = rawget(cls, "__parent")
+        if parent then
+          return parent[name]
+        end
+      else
+        return val
+      end
+    end,
+    __call = function(cls, ...)
+      local _self_0 = setmetatable({}, _base_0)
+      cls.__init(_self_0, ...)
+      return _self_0
+    end
+  })
+  _base_0.__class = _class_0
+  if _parent_0.__inherited then
+    _parent_0.__inherited(_parent_0, _class_0)
+  end
+  GIF = _class_0
+end
+formats["gif"] = GIF()
 local Page
 do
   local _class_0
@@ -1423,6 +1479,15 @@ get_scale_filters = function()
   end
   return { }
 end
+local get_fps_filters
+get_fps_filters = function()
+  if options.fps > 0 then
+    return {
+      "fps=" .. tostring(options.fps)
+    }
+  end
+  return { }
+end
 local append_property
 append_property = function(out, property_name, option_name)
   option_name = option_name or property_name
@@ -1451,6 +1516,7 @@ get_playback_options = function()
   local ret = { }
   append_property(ret, "sub-ass-override")
   append_property(ret, "sub-ass-force-style")
+  append_property(ret, "sub-ass-vsfilter-aspect-compat")
   append_property(ret, "sub-auto")
   append_property(ret, "sub-delay")
   append_property(ret, "video-rotate")
@@ -1518,6 +1584,7 @@ get_video_filters = function(format, region)
     })
   end
   append(filters, get_scale_filters())
+  append(filters, get_fps_filters())
   append(filters, format:getPostFilters())
   return filters
 end
@@ -1551,21 +1618,48 @@ calculate_bitrate = function(active_tracks, format, length)
   local audio_bitrate = audio_kilobits and math.floor(audio_kilobits / length) or nil
   return video_bitrate, audio_bitrate
 end
+local find_path
+find_path = function(startTime, endTime)
+  local path = mp.get_property('path')
+  if not path then
+    return nil, nil, nil, nil, nil
+  end
+  local is_stream = not file_exists(path)
+  local is_temporary = false
+  if is_stream then
+    if mp.get_property('file-format') == 'hls' then
+      path = utils.join_path(parse_directory('~'), 'cache_dump.ts')
+      mp.command_native({
+        'dump_cache',
+        seconds_to_time_string(startTime, false, true),
+        seconds_to_time_string(endTime + 5, false, true),
+        path
+      })
+      endTime = endTime - startTime
+      startTime = 0
+      is_temporary = true
+    end
+  end
+  return path, is_stream, is_temporary, startTime, endTime
+end
 local encode
 encode = function(region, startTime, endTime)
   local format = formats[options.output_format]
-  local path = mp.get_property("path")
+  local originalStartTime = startTime
+  local originalEndTime = endTime
+  local path, is_stream, is_temporary
+  path, is_stream, is_temporary, startTime, endTime = find_path(startTime, endTime)
   if not path then
     message("No file is being played")
     return 
   end
-  local is_stream = not file_exists(path)
   local command = {
     "mpv",
     path,
     "--start=" .. seconds_to_time_string(startTime, false, true),
     "--end=" .. seconds_to_time_string(endTime, false, true),
-    "--loop-file=no"
+    "--loop-file=no",
+    "--no-pause"
   }
   append(command, format:getCodecFlags())
   local active_tracks = get_active_tracks()
@@ -1665,7 +1759,7 @@ encode = function(region, startTime, endTime)
   if options.output_directory ~= "" then
     dir = parse_directory(options.output_directory)
   end
-  local formatted_filename = format_filename(startTime, endTime, format)
+  local formatted_filename = format_filename(originalStartTime, originalEndTime, format)
   local out_path = utils.join_path(dir, formatted_filename)
   append(command, {
     "--o=" .. tostring(out_path)
@@ -1727,7 +1821,10 @@ encode = function(region, startTime, endTime)
     else
       message("Encode failed! Check the logs for details.")
     end
-    return os.remove(get_pass_logfile_path(out_path))
+    os.remove(get_pass_logfile_path(out_path))
+    if is_temporary then
+      return os.remove(path)
+    end
   end
 end
 local CropPage
@@ -2113,6 +2210,9 @@ do
             "no"
           },
           {
+            144
+          },
+          {
             240
           },
           {
@@ -2120,6 +2220,9 @@ do
           },
           {
             480
+          },
+          {
+            540
           },
           {
             720
@@ -2149,13 +2252,46 @@ do
           [-1] = "disabled"
         }
       }
+      local fpsOpts = {
+        possibleValues = {
+          {
+            -1,
+            "source"
+          },
+          {
+            15
+          },
+          {
+            24
+          },
+          {
+            30
+          },
+          {
+            48
+          },
+          {
+            50
+          },
+          {
+            60
+          },
+          {
+            120
+          },
+          {
+            240
+          }
+        }
+      }
       local formatIds = {
         "webm-vp8",
         "webm-vp9",
         "mp4",
         "mp4-nvenc",
         "raw",
-        "mp3"
+        "mp3",
+        "gif"
       }
       local formatOpts = {
         possibleValues = (function()
@@ -2204,6 +2340,10 @@ do
         {
           "crf",
           Option("int", "CRF", options.crf, crfOpts)
+        },
+        {
+          "fps",
+          Option("list", "FPS", options.fps, fpsOpts)
         }
       }
       self.keybinds = {
