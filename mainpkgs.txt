@@ -59,6 +59,7 @@ nerd-fonts-inconsolata-go
 nerd-fonts-ricty
 nerd-fonts-source-code-pro
 netctl
+nmap
 otf-ipafont
 pacman-contrib
 patch
@@ -98,6 +99,7 @@ usbutils
 vi
 waifu2x-ncnn-vulkan
 weechat
+whois
 xcalib
 xcolor
 xdg-user-dirs

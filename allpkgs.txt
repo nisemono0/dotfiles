@@ -117,6 +117,7 @@ nerd-fonts-ricty
 nerd-fonts-source-code-pro
 netctl
 networkmanager
+nmap
 noto-fonts
 noto-fonts-cjk
 noto-fonts-emoji
@@ -202,6 +203,7 @@ wavpack
 weechat
 wget
 which
+whois
 xcalib
 xclip
 xcolor
