@@ -92,6 +92,6 @@ Twisted==21.2.0
 ueberzug==18.1.9
 urllib3==1.26.4
 webencodings==0.5.1
-youtube-dl==2021.4.17
+youtube-dl==2021.4.26
 zipp==3.4.1
 zope.interface==5.4.0
