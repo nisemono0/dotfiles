@@ -2,7 +2,7 @@
  * @name BDFDB
  * @author DevilBro
  * @authorId 278543574059057154
- * @version 1.5.9
+ * @version 1.6.0
  * @description Required Library for DevilBro's Plugins
  * @invite Jx3TjNS
  * @donate https://www.paypal.me/MircoWittrien
@@ -16,13 +16,11 @@ module.exports = (_ => {
 	const BdApi = window.BdApi;
 	const isBeta = !(BdApi && !Array.isArray(BdApi.settings));
 	
-	const myGithub = ((BdApi && typeof BdApi.findModuleByProps == "function" && BdApi.findModuleByProps("getCurrentUser") || {getCurrentUser: _ => {}}).getCurrentUser() || {}).id == "278543574059057154" ? "https://raw.githubusercontent.com/mwittrien/BetterDiscordAddons/development" : "https://mwittrien.github.io/BetterDiscordAddons";
-	
 	const config = {
 		"info": {
 			"name": "BDFDB",
 			"author": "DevilBro",
-			"version": "1.5.9",
+			"version": "1.6.0",
 			"description": "Required Library for DevilBro's Plugins"
 		},
 		"rawUrl": `https://mwittrien.github.io/BetterDiscordAddons/Library/0BDFDB.plugin.js`
@@ -977,11 +975,11 @@ module.exports = (_ => {
 	
 	const loadLibrary = tryAgain => {
 		const request = require("request"), fs = require("fs"), path = require("path");
-		request.get(`${myGithub}/Library/_res/BDFDB.raw.css`, (e, r, b) => {
+		request.get(`https://mwittrien.github.io/BetterDiscordAddons/Library/_res/BDFDB.raw.css`, (e, r, b) => {
 			if ((e || !b || r.statusCode != 200) && tryAgain) return BDFDB.TimeUtils.timeout(_ => loadLibrary(), 10000);
 			const cssPath = path.join(BDFDB.BDUtils.getPluginsFolder(), "0BDFDB.raw.css");
 			const css = !e && b && r.statusCode == 200 ? b : fs.existsSync(cssPath) && (fs.readFileSync(cssPath) || "").toString();
-			request.get(`${myGithub}/Library/_res/BDFDB.data.json`, BDFDB.TimeUtils.suppress((e2, r2, b2) => {
+			request.get(`https://mwittrien.github.io/BetterDiscordAddons/Library/_res/BDFDB.data.json`, BDFDB.TimeUtils.suppress((e2, r2, b2) => {
 				const dataPath = path.join(BDFDB.BDUtils.getPluginsFolder(), "0BDFDB.data.json");
 				if (e2 || !b2 || r2.statusCode != 200) {
 					if (tryAgain) return BDFDB.TimeUtils.timeout(_ => loadLibrary(), 10000);
@@ -2808,10 +2806,10 @@ module.exports = (_ => {
 				BDFDB.UserUtils.is = function (user) {
 					return user && user instanceof BDFDB.DiscordObjects.User;
 				};
-				var myDataUser = LibraryModules.CurrentUserStore && LibraryModules.CurrentUserStore.getCurrentUser();
+				var myDataUser = LibraryModules.UserStore && LibraryModules.UserStore.getCurrentUser();
 				BDFDB.UserUtils.me = new Proxy(myDataUser || {}, {
 					get: function (list, item) {
-						return (myDataUser = LibraryModules.CurrentUserStore.getCurrentUser()) && myDataUser[item];
+						return (myDataUser = LibraryModules.UserStore.getCurrentUser()) && myDataUser[item];
 					}
 				});
 				BDFDB.UserUtils.getStatus = function (id = BDFDB.UserUtils.me.id) {
@@ -7740,7 +7738,7 @@ module.exports = (_ => {
 						avatar.props[InternalData.userIdAttribute] = user.id;
 						let role = "", className = BDFDB.DOMUtils.formatClassName((avatar.props.className || "").replace(BDFDB.disCN.avatar, "")), addBadge = InternalBDFDB.settings.general.showSupportBadges, customBadge = false;
 						if (BDFDB_Patrons[user.id] && BDFDB_Patrons[user.id].active) {
-							role = BDFDB_Patrons[user.id].t3 ? "BDFDB Patron Level 2" : "BDFDB Patron";
+							role = BDFDB_Patrons[user.id].text || (BDFDB_Patrons[user.id].t3 ? "BDFDB Patron Level 2" : "BDFDB Patron");
 							customBadge = addBadge && BDFDB_Patrons[user.id].t3 && BDFDB_Patrons[user.id].custom;
 							className = BDFDB.DOMUtils.formatClassName(className, addBadge && BDFDB.disCN.bdfdbhasbadge, BDFDB.disCN.bdfdbbadgeavatar, BDFDB.disCN.bdfdbsupporter, customBadge && BDFDB.disCN.bdfdbsupportercustom);
 						}
@@ -7758,7 +7756,6 @@ module.exports = (_ => {
 							let newProps = {
 								className: className,
 								style: {borderRadius: 0, overflow: "visible"},
-								custombadge_id: customBadge ? user.id : null,
 								children: [avatar]
 							};
 							newProps[InternalData.userIdAttribute] = user.id;
@@ -7779,7 +7776,7 @@ module.exports = (_ => {
 						avatar.setAttribute(InternalData.userIdAttribute, user.id);
 						let role = "", addBadge = InternalBDFDB.settings.general.showSupportBadges, customBadge = false;
 						if (BDFDB_Patrons[user.id] && BDFDB_Patrons[user.id].active) {
-							role = BDFDB_Patrons[user.id].t3 ? "BDFDB Patron Level 2" : "BDFDB Patron";
+							role = BDFDB_Patrons[user.id].text || (BDFDB_Patrons[user.id].t3 ? "BDFDB Patron Level 2" : "BDFDB Patron");
 							customBadge = addBadge && BDFDB_Patrons[user.id].t3 && BDFDB_Patrons[user.id].custom;
 							avatar.className = BDFDB.DOMUtils.formatClassName(avatar.className, addBadge && BDFDB.disCN.bdfdbhasbadge, BDFDB.disCN.bdfdbbadgeavatar, BDFDB.disCN.bdfdbsupporter, customBadge && BDFDB.disCN.bdfdbsupportercustom);
 						}
@@ -7790,7 +7787,6 @@ module.exports = (_ => {
 						}
 						if (role && !avatar.querySelector(BDFDB.dotCN.bdfdbbadge)) {
 							if (addBadge) {
-								if (customBadge) avatar.setAttribute("custombadge_id", user.id);
 								let badge = document.createElement("div");
 								badge.className = BDFDB.disCN.bdfdbbadge;
 								badge.addEventListener("mouseenter", _ => BDFDB.TooltipUtils.create(badge, role, {position: "top"}));
