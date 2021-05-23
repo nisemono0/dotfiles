@@ -1,6 +1,7 @@
 betterdiscord-installer
 dragon-drag-and-drop
 flacon
+font-bh-ttf
 font-mathematica
 gwaterfall
 i3lock-color
@@ -18,3 +19,4 @@ ttf-monapo
 ttf-mononoki
 waifu2x-ncnn-vulkan
 xcolor
+youtube-viewer
