@@ -2,8 +2,8 @@
  * @name StaffTag
  * @author DevilBro
  * @authorId 278543574059057154
- * @version 1.4.0
- * @description Adds a Tag/Crown to Server Owners (or Admins/Management)
+ * @version 1.4.3
+ * @description Adds a Crown/Tag to Server Owners (or Admins/Management)
  * @invite Jx3TjNS
  * @donate https://www.paypal.me/MircoWittrien
  * @patreon https://www.patreon.com/MircoWittrien
@@ -17,12 +17,12 @@ module.exports = (_ => {
 		"info": {
 			"name": "StaffTag",
 			"author": "DevilBro",
-			"version": "1.4.0",
-			"description": "Adds a Tag/Crown to Server Owners (or Admins/Management)"
+			"version": "1.4.3",
+			"description": "Adds a Crown/Tag to Server Owners (or Admins/Management)"
 		},
 		"changeLog": {
-			"progress": {
-				"New Plugin Name": "Changed Plugin Name for more clarity"
+			"improved": {
+				"New User Popout": "Fixed for the new User Popout, which will be released soon-ish, again and again and again, stop changing Stuff Discord"
 			}
 		}
 	};
@@ -80,7 +80,7 @@ module.exports = (_ => {
 						MessageUsername: "default",
 						VoiceUser: "render",
 						NameTag: "default",
-						UserPopout: "render"
+						UserPopoutHeader: "default"
 					}
 				};
 				
@@ -130,8 +130,13 @@ module.exports = (_ => {
 					${BDFDB.dotCNS.userprofile + BDFDB.dotCN.memberownericon} {
 						top: 0px;
 					}
-					${BDFDB.dotCNS.messagerepliedmessage + BDFDB.dotCN.memberownericon},
+					${BDFDB.dotCNS.messagerepliedmessage + BDFDB.dotCN.memberownericon} {
+						top: 0px;
+						margin-left: 0;
+						margin-right: 4px;
+					}
 					${BDFDB.dotCNS.messagecompact + BDFDB.dotCN.memberownericon} {
+						top: 1px;
 						margin-left: 0;
 						margin-right: 4px;
 					}
@@ -263,7 +268,7 @@ module.exports = (_ => {
 						switch (e.instance.props.className) {
 							case BDFDB.disCN.userpopoutheadertagnonickname:
 								inject = this.settings.tagPlaces.userPopout;
-								tagClass = BDFDB.disCN.bottagnametag;
+								tagClass = BDFDB.disCNS.userpopoutheaderbottag + BDFDB.disCN.bottagnametag;
 								break;
 							case BDFDB.disCN.userprofilenametag:
 								inject = this.settings.tagPlaces.userProfile;
@@ -278,16 +283,19 @@ module.exports = (_ => {
 					}
 				}
 			}
-
-			processUserPopout (e) {
+			
+			processUserPopoutHeader (e) {
 				if (e.instance.props.user && this.settings.tagPlaces.userPopout) {
 					let userType = this.getUserType(e.instance.props.user, e.instance.props.channel && e.instance.props.channel.id);
 					if (userType) {
-						let [children, index] = BDFDB.ReactUtils.findParent(e.returnvalue, {props: [["className", BDFDB.disCN.userpopoutheadertagwithnickname]]});
-						if (index > -1) this.injectStaffTag(children, e.instance.props.user, userType, 2, {
-							tagClass: BDFDB.disCNS.userpopoutheaderbottagwithnickname + BDFDB.disCN.bottagnametag,
-							inverted: typeof e.instance.getMode == "function" && e.instance.getMode() !== "Normal"
-						});
+						let [children, index] = BDFDB.ReactUtils.findParent(e.returnvalue, {props: [["className", BDFDB.disCN.userpopoutheadernickname]]});
+						if (index > -1) {
+							if (!BDFDB.ArrayUtils.is(children[index].props.children)) children[index].props.children = [children[index].props.children].flat(10);
+							this.injectStaffTag(children[index].props.children, e.instance.props.user, userType, 2, {
+								tagClass: BDFDB.disCNS.userpopoutheaderbottag + BDFDB.disCN.bottagnametag,
+								inverted: typeof e.instance.getMode == "function" && e.instance.getMode() !== "Normal"
+							});
+						}
 					}
 				}
 			}

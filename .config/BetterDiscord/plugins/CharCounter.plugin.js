@@ -1,47 +1,70 @@
-//META{"name":"CharCounter","authorId":"278543574059057154","invite":"Jx3TjNS","donate":"https://www.paypal.me/MircoWittrien","patreon":"https://www.patreon.com/MircoWittrien","website":"https://github.com/mwittrien/BetterDiscordAddons/tree/master/Plugins/CharCounter","source":"https://raw.githubusercontent.com/mwittrien/BetterDiscordAddons/master/Plugins/CharCounter/CharCounter.plugin.js"}*//
+/**
+ * @name CharCounter
+ * @author DevilBro
+ * @authorId 278543574059057154
+ * @version 1.5.1
+ * @description Adds a Character Counter to most Inputs
+ * @invite Jx3TjNS
+ * @donate https://www.paypal.me/MircoWittrien
+ * @patreon https://www.patreon.com/MircoWittrien
+ * @website https://mwittrien.github.io/
+ * @source https://github.com/mwittrien/BetterDiscordAddons/tree/master/Plugins/CharCounter/
+ * @updateUrl https://mwittrien.github.io/BetterDiscordAddons/Plugins/CharCounter/CharCounter.plugin.js
+ */
 
 module.exports = (_ => {
-    const config = {
+	const config = {
 		"info": {
 			"name": "CharCounter",
 			"author": "DevilBro",
-			"version": "1.5.0",
-			"description": "Adds a charcounter in the chat."
+			"version": "1.5.1",
+			"description": "Adds a Character Counter to most Inputs"
 		},
 		"changeLog": {
 			"fixed": {
-				"Message Input": "Works again for the message textarea"
+				"Change Nick": "Counter gets added again"
 			}
 		}
 	};
-    return !window.BDFDB_Global || (!window.BDFDB_Global.loaded && !window.BDFDB_Global.started) ? class {
+
+	return !window.BDFDB_Global || (!window.BDFDB_Global.loaded && !window.BDFDB_Global.started) ? class {
 		getName () {return config.info.name;}
 		getAuthor () {return config.info.author;}
 		getVersion () {return config.info.version;}
-		getDescription () {return config.info.description;}
+		getDescription () {return `The Library Plugin needed for ${config.info.name} is missing. Open the Plugin Settings to download it. \n\n${config.info.description}`;}
 		
-        load() {
-			if (!window.BDFDB_Global || !Array.isArray(window.BDFDB_Global.pluginQueue)) window.BDFDB_Global = Object.assign({}, window.BDFDB_Global, {pluginQueue:[]});
+		downloadLibrary () {
+			require("request").get("https://mwittrien.github.io/BetterDiscordAddons/Library/0BDFDB.plugin.js", (e, r, b) => {
+				if (!e && b && r.statusCode == 200) require("fs").writeFile(require("path").join(BdApi.Plugins.folder, "0BDFDB.plugin.js"), b, _ => BdApi.showToast("Finished downloading BDFDB Library", {type: "success"}));
+				else BdApi.alert("Error", "Could not download BDFDB Library Plugin. Try again later or download it manually from GitHub: https://mwittrien.github.io/downloader/?library");
+			});
+		}
+		
+		load () {
+			if (!window.BDFDB_Global || !Array.isArray(window.BDFDB_Global.pluginQueue)) window.BDFDB_Global = Object.assign({}, window.BDFDB_Global, {pluginQueue: []});
 			if (!window.BDFDB_Global.downloadModal) {
 				window.BDFDB_Global.downloadModal = true;
-				BdApi.showConfirmationModal("Library Missing", `The library plugin needed for ${config.info.name} is missing. Please click "Download Now" to install it.`, {
+				BdApi.showConfirmationModal("Library Missing", `The Library Plugin needed for ${config.info.name} is missing. Please click "Download Now" to install it.`, {
 					confirmText: "Download Now",
 					cancelText: "Cancel",
 					onCancel: _ => {delete window.BDFDB_Global.downloadModal;},
 					onConfirm: _ => {
 						delete window.BDFDB_Global.downloadModal;
-						require("request").get("https://mwittrien.github.io/BetterDiscordAddons/Library/0BDFDB.plugin.js", (e, r, b) => {
-							if (!e && b && b.indexOf(`//META{"name":"`) > -1) require("fs").writeFile(require("path").join(BdApi.Plugins.folder, "0BDFDB.plugin.js"), b, _ => {});
-							else BdApi.alert("Error", "Could not download BDFDB library plugin, try again some time later.");
-						});
+						this.downloadLibrary();
 					}
 				});
 			}
 			if (!window.BDFDB_Global.pluginQueue.includes(config.info.name)) window.BDFDB_Global.pluginQueue.push(config.info.name);
-        }
-        start() {}
-        stop() {}
-    } : (([Plugin, BDFDB]) => {
+		}
+		start () {this.load();}
+		stop () {}
+		getSettingsPanel () {
+			let template = document.createElement("template");
+			template.innerHTML = `<div style="color: var(--header-primary); font-size: 16px; font-weight: 300; white-space: pre; line-height: 22px;">The Library Plugin needed for ${config.info.name} is missing.\nPlease click <a style="font-weight: 500;">Download Now</a> to install it.</div>`;
+			template.content.firstElementChild.querySelector("a").addEventListener("click", this.downloadLibrary);
+			return template.content.firstElementChild;
+		}
+	} : (([Plugin, BDFDB]) => {
 		const maxLenghts = {
 			normal: 2000,
 			edit: 2000,
@@ -56,13 +79,13 @@ module.exports = (_ => {
 			form: "upload"
 		};
 	
-        return class CharCounter extends Plugin {
-			onLoad() {
+		return class CharCounter extends Plugin {
+			onLoad () {
 				this.patchedModules = {
 					after: {
 						ChannelTextAreaContainer: "render",
 						Note: "render",
-						ChangeNickname: "default",
+						ChangeIdentity: "default",
 						CustomStatusModal: "render"
 					}
 				};
@@ -74,9 +97,9 @@ module.exports = (_ => {
 					${BDFDB.dotCN._charcountercounter} {
 						display: block;
 						position: absolute;
-						z-index: 1000;
-						pointer-events: none;
 						font-size: 15px;
+						z-index: 10;
+						pointer-events: none;
 					}
 					${BDFDB.dotCN._charcounterchatcounter} {
 						right: 0;
@@ -91,7 +114,7 @@ module.exports = (_ => {
 						bottom: -1.0em;
 					}
 					${BDFDB.dotCN._charcounternickcounter} {
-						right: 0 !important;
+						right: 8px !important;
 						top: 0 !important;
 					}
 					${BDFDB.dotCN._charcountercustomstatuscounter} {
@@ -114,11 +137,11 @@ module.exports = (_ => {
 				`;
 			}
 			
-			onStart() {
+			onStart () {
 				BDFDB.PatchUtils.forceAllUpdates(this);
 			}
 			
-			onStop() {
+			onStop () {
 				BDFDB.PatchUtils.forceAllUpdates(this);
 			}
 
@@ -135,12 +158,12 @@ module.exports = (_ => {
 				if (index > -1) this.injectCounter(e.returnvalue, children, e.instance.props.className && e.instance.props.className.indexOf(BDFDB.disCN.usernotepopout) > -1 ? "popoutnote" : "profilenote", "textarea");
 			}
 
-			processChangeNickname (e) {
-				let formItem = BDFDB.ReactUtils.findChild(e.returnvalue, {name: "FormItem"});
-				if (formItem) {
-					let [children, index] = BDFDB.ReactUtils.findParent(formItem, {name: "TextInput"});
-					if (index > -1) this.injectCounter(formItem, children, "nick", BDFDB.dotCN.input);
-				}
+			processChangeIdentity (e) {
+				let [children, index] = BDFDB.ReactUtils.findParent(e.returnvalue, {filter: c => c && c.props && c.props.setNickname});
+				if (index > -1) children.unshift(BDFDB.ReactUtils.createElement("div", {
+					className: BDFDB.DOMUtils.formatClassName(BDFDB.disCN.charcounter, BDFDB.disCN._charcountercounter, BDFDB.disCN._charcounternickcounter),
+					children: `${(children[index].props.nickname || "").length}/${maxLenghts.nick}`
+				}));
 			}
 
 			processCustomStatusModal (e) {
@@ -171,5 +194,5 @@ module.exports = (_ => {
 				}));
 			}
 		};
-    })(window.BDFDB_Global.PluginUtils.buildPlugin(config));
+	})(window.BDFDB_Global.PluginUtils.buildPlugin(config));
 })();
