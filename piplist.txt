@@ -32,7 +32,7 @@ gspread==3.7.0
 haishoku==1.1.8
 html5lib==1.1
 hyperlink==21.0.0
-idna==3.1
+idna==3.2
 imagesize==1.2.0
 importlib-metadata==4.0.1
 incremental==21.3.0
@@ -110,6 +110,6 @@ ueberzug==18.1.9
 urllib3==1.26.5
 webencodings==0.5.1
 wrapt==1.12.1
-youtube-dl==2021.5.16
+youtube-dl==2021.6.6
 zipp==3.4.1
 zope.interface==5.4.0
