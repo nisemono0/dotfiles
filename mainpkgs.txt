@@ -35,7 +35,6 @@ htop
 inetutils
 iputils
 jfsutils
-libreoffice-still
 libwnck3
 licenses
 linux
