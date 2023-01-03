@@ -1,0 +1,223 @@
+#!/bin/bash
+
+# Path of this script
+script_path="$(pwd)"
+pkgs_path="$script_path"/pkgs
+sys_configs_path="$script_path"/sys_configs
+
+# Colors
+WH=$(echo -ne '\033[1;37m')
+YE=$(echo -ne '\033[1;33m')
+PU=$(echo -ne '\033[1;35m')
+NC=$(echo -ne '\033[0m')
+
+# Install yay
+function install_aur_helper () {
+    echo -en "${PU}Do you want to install ${YE}yay ${PU}(y/n): ${NC}"
+    read -r yay
+    if [ "${yay}" = "y" ] || [ "${yay}" = "" ]; then
+        cmd="$(whereis yay)"
+        if [[ $cmd != */* ]]; then
+            echo -e "${YE}Installing yay...${NC}"
+            sleep 1
+            git clone https://aur.archlinux.org/yay.git
+            cd yay && makepkg -sic
+            cd "${script_path}" || exit
+            echo -e "${WH}Done installing ${YE}yay!${NC}"
+        else
+            echo -e "${YE}yay ${PU}already installed${NC}"
+        fi
+    else
+        echo -e "${YE}yay ${PU}not installed${NC}"
+    fi
+}
+
+# Install GPU drivers
+function install_gpu_drivers () {
+    echo -e "${YE}[!!!] ${PU}This is kinda whack, better install the drivers and multilib drivers (for 32-bit application support, wine, steam, etc) manually ${YE}[!!!] ${NC}"
+    echo -en "${PU}Do you want to install ${YE}GPU drivers (y/n): ${NC}"
+    read -r gpudrv
+    if [ "${gpudrv}" = "y" ] || [ "${gpudrv}" = "" ]; then
+        sudo -E pacman -S --color=always --needed mesa
+        echo -en "${PU}Do you want to also install ${YE}Multilib GPU drivers ${PU} (for 32-bit appplication support, steam, etc) (y/n): ${NC}"
+        read -r multilibdrv
+        ([ "${multilibdrv}" = "y" ] || [ "${multilibdrv}" = "" ]) && sudo -E pacman -S --color=always --needed lib32-mesa
+        PS3="${PU}Please select your ${YE}GPU:${NC}"
+        options=("AMD" "Nvidia" "Intel GPU")
+        select sel in "${options[@]}"
+        do
+            case $sel in
+                "AMD")
+                    echo -e "${PU}Installing ${YE}AMD drivers...${NC}"
+                    sleep 1
+                    sudo -E pacman -S --color=always --needed xf86-video-amdgpu vulkan-radeon libva-mesa-driver mesa-vdpau
+                    echo -e "${WH}Done !${NC}"
+                    break
+                    ;;
+                "Nvidia")
+                    echo -e "${PU}Installing ${YE}Nvidia drivers...${NC}"
+                    sleep 1
+                    sudo -E pacman -S --color=always --needed xf86-video-nouveau libva-mesa-driver mesa-vdpau
+                    echo -e "${WH}Done !${NC}"
+                    break
+                    ;;
+                "Intel GPU")
+                    echo -e "${PU}Installing ${YE}Intel GPU drivers...${NC}"
+                    sleep 1
+                    sudo -E pacman -S --color=always --needed xf86-video-intel vulkan-intel
+                    echo -e "${WH}Done !${NC}"
+                    break
+                    ;;
+                *)
+                    echo -e "${PU}Invalid option $REPLY ${NC}" ;;
+            esac
+        done
+    else 
+        echo -e "${YE}GPU Drivers ${PU}not installed${NC}"
+    fi
+}
+
+# Install CPU Microcode
+function install_cpu_ucode () {
+    echo -en "${PU}Do you want to install ${YE}CPU Microcode ${PU}(y/n): ${NC}"
+    read -r cpuucode
+    if [ "${cpuucode}" = "y" ] || [ "${cpuucode}" = "" ]; then
+        PS3="${PU}Please select your ${YE}CPU:${NC}"
+        options=("AMD" "Intel")
+        select sel in "${options[@]}"
+        do
+            case $sel in
+                "AMD")
+                    echo -e "${PU}Installing ${YE}AMD microcode...${NC}"
+                    sleep 1
+                    sudo -E pacman -S --color=always --needed amd-ucode
+                    echo -e "${WH}Done !${NC}"
+                    break
+                    ;;
+                "Intel")
+                    echo -e "${PU}Installing ${YE}Intel microcode...${NC}"
+                    sudo -E pacman -S --color=always --needed intel-ucode
+                    echo -e "${WH}Done !${NC}"
+                    break
+                    ;;
+                *)
+                    echo -e "${PU}Invalid option $REPLY ${NC}" ;;
+            esac
+        done
+    else
+        echo -e "${YE}CPU Microcode ${PU}not installed${NC}"
+    fi
+}
+
+# Install main packages
+function install_main_packages () {
+    echo -e "${PU}Installing ${YE}main packages${PU}...${NC}"
+    mainpkgs="$pkgs_path/mainpkgs.txt"
+    sleep 1
+    sudo -E pacman -S --color=always --needed - < "$mainpkgs"
+    echo -e "${WH}Done installing ${YE}main packages!${NC}"
+}
+
+# Install AUR packages
+function install_aur_packages () {
+    echo -e "${PU}Installing ${YE}AUR packages...${NC}"
+    aurpkgs="$pkgs_path/foreignpkgs.txt"
+    sleep 1
+    yay -S --color=always --needed - < "$aurpkgs"
+    echo -e "${WH}Done installing ${YE}AUR packages!${NC}"
+}
+
+# Install optional dependencies
+function install_optdeps () {
+    echo -e "${PU}Installing ${YE}optional dependencies...${NC}"
+    optpkgs="$pkgs_path/optdeplist.txt"
+    sleep 1
+    sudo -E pacman -S --color=always --needed --asdeps - < "$optpkgs"
+    echo -e "${WH}Done installing ${YE}opt deps!${NC}"
+}
+
+# Copy some /etc/ config files and grub theme
+function install_sysconfigs () {
+    echo -e "${PU}Copying ${YE}sys configs...${NC}"
+    sleep 1
+    issue_conf="$sys_configs_path/etc_issue"
+    default_grub="$sys_configs_path/etc_default_grub"
+    pacman_conf="$sys_configs_path/etc_pacman.conf"
+    cat < "$issue_conf" | sudo -E tee /etc/issue 1> /dev/null
+    cat < "$default_grub" | sudo -E tee /etc/default/grub 1> /dev/null
+    cat < "$pacman_conf" | sudo -E tee /etc/pacman.conf 1> /dev/null
+    sudo -E pacman -Syu # Update for pacman.conf
+    echo -e "${WH}Done installing ${YE}sys configs!${NC}"
+}
+
+# Install oh-my-zsh
+function install_ohmyzsh () {
+    echo -e "${PU}Installing ${YE}oh-my-zsh...${NC}"
+    sleep 1
+    # Get the omz install script and change the default location to ~/.config/oh-my-zsh
+    curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh | sed "s/\${ZSH:-\$HOME\/.oh-my-zsh}/\${ZSH:-\$HOME\/.config\/oh-my-zsh}/g" > zsh_install.sh
+    chmod +x zsh_install.sh
+    sh zsh_install.sh
+    echo -e "${WH}Done installing ${YE}oh-my-zsh!${NC}"
+}
+
+# Install vundle for vim
+function install_vundle () {
+    echo -e "${PU}Installing ${YE}vundle...${NC}"
+    sleep 1
+    git clone https://github.com/VundleVim/Vundle.vim.git ~/.config/vim/bundle/Vundle.vim # Install Vundle
+    echo -e "${WH}Done installing ${YE}vundle!${NC}"
+}
+
+# Copy dotfiles
+function install_dotfiles () {
+    echo -e "${PU}Copying ${YE}dotfiles...${NC}"
+    sleep 1
+    cp -rvT "$script_path" "$HOME"/ # Copy all configs
+    sed -i "s/\/home\/nise\//\/home\/$USER\//g" "$HOME/.config/neofetch/config" # Change the username with $USER var
+    echo -e "${WH}Done installing ${YE}dotfiles!${NC}"
+}
+
+# Clean home from unwanted dirs
+function clean_home () {
+    echo -e "${PU}Cleaning home directory...${NC}"
+    sleep 1
+    home_script="$HOME/$(basename "$0")"
+    zsh_install_script="$HOME/zsh_install.sh"
+    readme_md="$HOME/README.md"
+    home_pkgs="$HOME/$(basename "$pkgs_path")"
+    home_sys_config="$HOME/$(basename "$sys_configs_path")"
+    yay_folder="$HOME/yay"
+    git_cp_folder="$HOME/.git"
+    rm -v "$home_script"
+    rm -v "$zsh_install_script"
+    rm -v "$readme_md"
+    rm -rv "$home_pkgs"
+    rm -rv "$home_sys_config"
+    rm -rv "$yay_folder"
+    rm -rv "$git_cp_folder"
+    echo -e "${WH}Done cleaning ${YE}home directory!${NC}"
+}
+
+# Start install
+function start_install () {
+    echo -e "${PU}Staring install... (This will do a system upgrade first)${NC}"
+    sleep 1
+    install_sysconfigs
+    install_aur_helper
+    install_gpu_drivers
+    install_cpu_ucode
+    install_main_packages
+    install_aur_packages
+    install_optdeps
+    install_ohmyzsh
+    install_vundle
+    install_dotfiles
+    clean_home
+    # Hacky way
+    sudo ln -s /usr/bin/nsxiv /usr/bin/sxiv
+    echo -e "${WH}Finished installing!${NC}"
+}
+
+# Start
+start_install

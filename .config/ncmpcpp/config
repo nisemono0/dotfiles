@@ -1,0 +1,60 @@
+### ncmpcpp configs ###
+ncmpcpp_directory = ~/.config/ncmpcpp
+
+##### MPD #####
+mpd_host = "/tmp/mpd.socket"
+mpd_crossfade_time = "3"
+
+##### Visualizer #####
+visualizer_in_stereo = "yes"
+#visualizer_sync_interval = "30"
+visualizer_output_name = "Pipe"
+visualizer_data_source = "/tmp/mpd.fifo"
+visualizer_type = "spectrum"
+visualizer_color = "blue, cyan, green, yellow, magenta, red"
+#visualizer_look = "∙▋"
+#visualizer_look = "▒░"
+#visualizer_look = "◈░"
+#visualizer_look = "┃┃"
+#visualizer_look = ●┃
+visualizer_look = "█┇"
+#visualizer_look = "▒░"
+#visualizer_look = "▋▍"
+#visualizer_look = "▋█"
+#visualizer_look = "▋█"
+#visualizer_look = "▋░"
+#visualizer_look = "▋▓"
+#visualizer_look = "▋☰"
+#visualizer_look = "☰⛆"
+#visualizer_look = "☰▓"
+
+
+##### Delays #####
+playlist_disable_highlight_delay = "1"
+message_delay_time = "1"
+
+##### Display #####
+song_columns_list_format = "(27)[]{a}|{f}(37)[white]{t|f:Title} (5)[magenta]{l}"
+alternative_header_first_line_format = "$b$1$aqqu$/a$9 {%t}|{%f} $1$atqq$/a$9$/b"
+alternative_header_second_line_format = "{$7%b}"
+song_status_format = " {%a - %t}|{%t}|{%f}"
+browser_playlist_prefix = "$7 ◆ $0"
+
+##### Various #####
+playlist_display_mode = "columns"
+playlist_separate_albums = "no"
+seek_time = "5"
+volume_change_step = "5"
+autocenter_mode = "yes"
+centered_cursor = "yes"
+progressbar_look = "━━"
+user_interface = "classic"
+header_visibility = "no"
+display_bitrate = "yes"
+mouse_support = "no"
+ask_before_clearing_playlists = "yes"
+store_lyrics_in_song_dir = "no"
+lyrics_directory = "~/.config/ncmpcpp/lyrics"
+
+##### Album art #####
+execute_on_song_change="~/.scripts/ncmpcpp/ncmpcpp_cover_art.sh"

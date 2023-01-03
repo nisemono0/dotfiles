@@ -1,0 +1,11 @@
+#!/bin/bash
+
+NF="$(xrdb -query | grep -w "*color4" | cut -f 2)"
+NB="$(xrdb -query | grep -w "*color0" | cut -f 2)"
+SF="$(xrdb -query | grep -w "*color7" | cut -f 2)"
+SB="$(xrdb -query | grep -w "*color1" | cut -f 2)"
+
+DMENU_FN="SauceCodePro Nerd Font:style=Bold:size=10"
+DMENU_OPTIONS="-b -i -nf $NF -nb $NB -sf $SF -sb $SB"
+export DMENU_FN
+export DMENU_OPTIONS

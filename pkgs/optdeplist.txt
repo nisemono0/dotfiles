@@ -1,0 +1,5 @@
+python-dnspython
+python-mutagen
+python-pycryptodomex
+python-setuptools
+python-websockets
