@@ -273,7 +273,7 @@ case $(printf "Konachan Random\\nWallhaven Random\\nChange colors\\nCopy wallpap
         copy_wallpaper
         ;;
     "Reset wallpaper") 
-        reset_wall 
+        reset_wallpaper
         ;;
     *) exit ;;
 esac
