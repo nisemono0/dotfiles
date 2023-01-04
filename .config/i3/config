@@ -6,7 +6,7 @@
 gaps inner 10
 gaps outer 0
 smart_borders on
-hide_edge_borders on
+hide_edge_borders none
 
 set $mod Mod4
 
