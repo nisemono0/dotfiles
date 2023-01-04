@@ -1,48 +1,43 @@
-set nocompatible              " be iMproved, required
-filetype off                  " required
-
-" set the runtime path to include Vundle and initialize
-set rtp+=~/.config/vim/bundle/Vundle.vim
-call vundle#begin()
-" alternatively, pass a path where Vundle should install plugins
-call vundle#begin('~/.config/vim/bundle')
-
-" let Vundle manage Vundle, required
-Plugin 'VundleVim/Vundle.vim'
-Plugin 'preservim/nerdtree'
-Plugin 'vim-airline/vim-airline'
-Plugin 'dikiaap/minimalist'
-Plugin 'PotatoesMaster/i3-vim-syntax'
-Plugin 'davidhalter/jedi-vim'
-Plugin 'ryanoasis/vim-devicons'
-call vundle#end()            " required
-filetype plugin indent on    " required
-" To ignore plugin indent changes, instead use:
-"filetype plugin on
-"
-" Brief help
-" :PluginList       - lists configured plugins
-" :PluginInstall    - installs plugins; append `!` to update or just :PluginUpdate
-" :PluginSearch foo - searches for foo; append `!` to refresh local cache
-" :PluginClean      - confirms removal of unused plugins; append `!` to auto-approve removal
-"
-" see :h vundle for more details or wiki for FAQ
-" Put your non-Plugin stuff after this line
+set rtp+=~/.config/vim/
+call plug#begin('~/.config/vim/plugged')
+Plug 'preservim/nerdtree'
+Plug 'vim-airline/vim-airline'
+Plug 'mboughaba/i3config.vim'
+Plug 'davidhalter/jedi-vim'
+Plug 'ryanoasis/vim-devicons'
+Plug 'junegunn/vim-easy-align'
+"Local
+Plug '~/.config/vim/plugged/minimalist'
+call plug#end()
 
 set viminfo+=n~/.config/vim/viminfo
 
+syntax on
+filetype indent on
 set ts=4 sw=4
 set number
 set expandtab
-
+set hlsearch
 set t_Co=256
-syntax on
+
+"Cursor settings:
+"SI = INSERT mode
+"SR = REPLACE mode
+"EI = NORMAL mode (ELSE)
+"   1 -> blinking block
+"   2 -> solid block 
+"   3 -> blinking underscore
+"   4 -> solid underscore
+"   5 -> blinking vertical bar
+"   6 -> solid vertical bar
+let &t_SI = "\<Esc>[6 q"
+let &t_SR = "\<Esc>[4 q"
+let &t_EI = "\<Esc>[2 q"
+
 colorscheme minimalist
-
-autocmd InsertEnter,InsertLeave * set cul!
-
 let g:airline_theme='minimalist'
 let g:airline_powerline_fonts = 1
 let g:airline#extensions#tabline#enabled = 1
 
 map <C-n> :NERDTreeToggle<CR>
+nnoremap <C-m> :exec &mouse!="" ? "set mouse=" : "set mouse=a"<CR>
