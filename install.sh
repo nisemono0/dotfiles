@@ -161,12 +161,12 @@ function install_ohmyzsh () {
     echo -e "${WH}Done installing ${YE}oh-my-zsh!${NC}"
 }
 
-# Install vundle for vim
-function install_vundle () {
-    echo -e "${PU}Installing ${YE}vundle...${NC}"
+# Install vim-plug for vim
+function install_vimplug () {
+    echo -e "${PU}Installing ${YE}vim-plug...${NC}"
     sleep 1
-    git clone https://github.com/VundleVim/Vundle.vim.git ~/.config/vim/bundle/Vundle.vim # Install Vundle
-    echo -e "${WH}Done installing ${YE}vundle!${NC}"
+    curl -fLo ~/.config/vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+    echo -e "${WH}Done installing ${YE}vim-plug!${NC}"
 }
 
 # Copy dotfiles
@@ -211,7 +211,7 @@ function start_install () {
     install_aur_packages
     install_optdeps
     install_ohmyzsh
-    install_vundle
+    install_vimplug
     install_dotfiles
     clean_home
     # Hacky way
