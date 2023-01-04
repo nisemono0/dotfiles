@@ -42,7 +42,7 @@ gzip
 highlight
 hsetroot
 htop
-i3-gaps
+i3-wm
 imagemagick
 inetutils
 jq

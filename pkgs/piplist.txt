@@ -27,7 +27,7 @@ mutagen==1.46.0
 numpy==1.23.5
 ordered-set==4.1.0
 packaging==21.3
-Pillow==9.3.0
+Pillow==9.4.0
 ply==3.11
 psutil==5.9.4
 pulsemixer==1.5.1
@@ -55,4 +55,4 @@ urllib3==1.26.12
 validate-pyproject==0.10.1
 websockets==10.4
 youtube-dl==2021.12.17
-yt-dlp==2022.11.11
+yt-dlp==2023.1.2
