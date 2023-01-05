@@ -5,7 +5,6 @@ colorz
 dragon-drop
 font-bh-ttf
 i3lock-color
-lanraragi
 nerd-fonts-inconsolata
 nerd-fonts-inconsolata-go
 nerd-fonts-ricty
