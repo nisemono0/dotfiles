@@ -18,6 +18,7 @@ set ts=4 sw=4
 set number
 set expandtab
 set hlsearch
+set incsearch
 set ignorecase
 set smartcase
 set t_Co=256
