@@ -28,7 +28,7 @@ set t_Co=256
 "SR = REPLACE mode
 "EI = NORMAL mode (ELSE)
 "   1 -> blinking block
-"   2 -> solid block 
+"   2 -> solid block
 "   3 -> blinking underscore
 "   4 -> solid underscore
 "   5 -> blinking vertical bar
@@ -39,7 +39,7 @@ let &t_EI = "\<Esc>[2 q"
 
 colorscheme minimalist
 let g:airline_theme='minimalist'
-let g:airline_powerline_fonts = 1
+"let g:airline_powerline_fonts = 1
 let g:airline#extensions#tabline#enabled = 1
 
 map <C-n> :NERDTreeToggle<CR>
