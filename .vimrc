@@ -6,6 +6,7 @@ Plug 'mboughaba/i3config.vim'
 Plug 'davidhalter/jedi-vim'
 Plug 'ryanoasis/vim-devicons'
 Plug 'junegunn/vim-easy-align'
+Plug 'jiangmiao/auto-pairs'
 "Local
 Plug '~/.config/vim/plugged/minimalist'
 call plug#end()
