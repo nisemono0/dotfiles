@@ -238,6 +238,7 @@ bindsym $mod+Shift+q exec $kill_proc
 bindsym $mod+Ctrl+plus exec $mousespeed --inc
 bindsym $mod+Ctrl+minus exec $mousespeed --dec
 bindsym $mod+Ctrl+Shift+plus exec $mousespeed --reset
+bindsym $mod+Ctrl+Shift+minus exec $mousespeed --accel
 
 ##---Color: border, background, text, indicater, child_border---##
 client.focused          $fg  $fg  $fg  $fg
