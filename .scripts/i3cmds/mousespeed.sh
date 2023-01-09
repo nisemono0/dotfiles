@@ -9,28 +9,28 @@ STEP=0.1
 
 speed=$(xinput --list-props "$MOUSE_NAME" | awk -F ':' -v PROP_NAME="$PROP_NAME" 'index($0, PROP_NAME) {print $2}' | head -n 1)
 
+set_speed() {
+    if xinput --set-prop "$MOUSE_NAME" "$PROP_NAME" "$1"; then
+        notify-send -h string:x-dunst-stack-tag:mousespeed "Mouse speed changed" "Speed: $1"
+    else
+        notify-send -u critical "Couldn't set mouse speed"
+    fi
+}
+
 case "$1" in
     -i|--inc) # Increase by STEP
         newspeed=$(bc <<< "$speed + $STEP")
-        [ "$(bc <<< "$newspeed > 1")" = 1 ] && notify-send "Mouse speed is already at max" && exit 1
-        if xinput --set-prop "$MOUSE_NAME" "$PROP_NAME" "$newspeed"; then
-            notify-send "Mouse speed increased" "Speed: $newspeed"
-        else
-            notify-send -u critical "Couldn't set mouse speed"
-        fi
+        [ "$(bc <<< "$newspeed > 1")" = 1 ] && notify-send -h string:x-dunst-stack-tag:mousespeed "Mouse speed is at max" && exit 1
+        set_speed "$newspeed"
         ;;
     -d|--dec) # Decrease by STEP
         newspeed=$(bc -l <<< "$speed - $STEP")
-        [ "$(bc <<< "$newspeed < -1")" = 1 ] && notify-send "Mouse speed is already at min" && exit 1
-        if xinput --set-prop "$MOUSE_NAME" "$PROP_NAME" "$newspeed"; then
-            notify-send "Mouse speed decreased" "Speed: $newspeed"
-        else
-            notify-send -u critical "Couldn't set mouse speed"
-        fi
+        [ "$(bc <<< "$newspeed < -1")" = 1 ] && notify-send -h string:x-dunst-stack-tag:mousespeed "Mouse speed is at min" && exit 1
+        set_speed "$newspeed"
         ;;
     -r|--reset) # Reset
         if xinput --set-prop "$MOUSE_NAME" "$PROP_NAME" 0.0; then
-            notify-send "Mouse speed reset" "Speed: 0.0"
+            notify-send -h string:x-dunst-stack-tag:mousespeed "Mouse speed reset" "Speed: 0.0"
         else
             notify-send -u critical "Couldn't set mouse speed"
         fi
