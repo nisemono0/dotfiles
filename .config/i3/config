@@ -33,6 +33,7 @@ set $kill_proc --no-startup-id ~/.scripts/i3cmds/kill-proc.sh
 set $nmtui --no-startup-id /usr/bin/urxvt -geometry 75x20 -name nmtui-instance -e nmtui
 set $pulsemixer --no-startup-id /usr/bin/urxvt -geometry 100x20 -name pulsemixer-instance -e pulsemixer
 set $wsutil --no-startup-id ~/.scripts/i3cmds/i3wsutil.sh
+set $mousespeed --no-startup-id ~/.scripts/i3cmds/mousespeed.sh
 
 set_from_resource $fg foreground
 set_from_resource $bg background
@@ -232,6 +233,11 @@ bindsym $mod+Ctrl+w exec $wall_web_random
 
 ##---Kill processes---##
 bindsym $mod+Shift+q exec $kill_proc
+
+##---Mouse speed---##
+bindsym $mod+Ctrl+plus exec $mousespeed --inc
+bindsym $mod+Ctrl+minus exec $mousespeed --dec
+bindsym $mod+Ctrl+Shift+plus exec $mousespeed --reset
 
 ##---Color: border, background, text, indicater, child_border---##
 client.focused          $fg  $fg  $fg  $fg
