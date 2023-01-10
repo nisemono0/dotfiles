@@ -69,7 +69,7 @@ case "$1" in
         reset_speed
         ;;
     *)
-        echo "$0 <-i,--inc | -d,--dec | -r,--reset>"
+        echo "$0 <--inc | --dec | --reset | --accel>"
         exit 1
         ;;
 esac
