@@ -113,7 +113,6 @@ socat
 sox
 steam
 sudo
-tamsyn-font
 terminus-font
 texinfo
 trash-cli

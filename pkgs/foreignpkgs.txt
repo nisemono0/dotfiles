@@ -3,14 +3,11 @@ code-features
 code-marketplace
 colorz
 dragon-drop
-font-bh-ttf
 i3lock-color
 nsxiv
 python-colorthief
 python-haishoku
 siji-git
 simple-mtpfs
-termsyn-font
 ttf-monapo
-ttf-mononoki
 urxvt-resize-font-git
