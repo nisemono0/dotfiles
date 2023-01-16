@@ -38,8 +38,6 @@ set $mousespeed --no-startup-id ~/.scripts/i3cmds/mousespeed.sh
 set_from_resource $fg foreground
 set_from_resource $bg background
 
-font pango:InconsolataGo Nerd Font 10
-
 ##---Windows Rules---##
 # Use xprop to find the window class
 for_window [class=".*"] border pixel 4
