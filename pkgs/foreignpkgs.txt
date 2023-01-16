@@ -5,16 +5,12 @@ colorz
 dragon-drop
 font-bh-ttf
 i3lock-color
-nerd-fonts-inconsolata
-nerd-fonts-inconsolata-go
-nerd-fonts-ricty
 nsxiv
 python-colorthief
 python-haishoku
 siji-git
 simple-mtpfs
 termsyn-font
-ttf-migu
 ttf-monapo
 ttf-mononoki
 urxvt-resize-font-git
