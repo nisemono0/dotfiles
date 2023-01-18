@@ -10,4 +10,5 @@ python-haishoku
 siji-git
 simple-mtpfs
 ttf-monapo
+ttf-symbola
 urxvt-resize-font-git
