@@ -8,10 +8,18 @@ mogrify -scale 10% -scale 1000% $TMPBG
 
 DATE=$(date +"%A, %B %-d")
 
-color1="$(xrdb -query | grep -w "*color2" | cut -f 2)"  # NF
-color2="$(xrdb -query | grep -w "*color4" | cut -f 2)"  # NB
-color3="$(xrdb -query | grep -w "*color7" | cut -f 2)"  # SF
-color4="$(xrdb -query | grep -w "*color1" | cut -f 2)"  # SB
+color1="$(xrdb -query | grep -w "*color2" | cut -f 2)"
+color2="$(xrdb -query | grep -w "*color4" | cut -f 2)"
+color3="$(xrdb -query | grep -w "*color7" | cut -f 2)"
+color4="$(xrdb -query | grep -w "*color1" | cut -f 2)"
+
+outcolor="$(xrdb -query | grep -w "*background" | cut -f 2)"
+outlayoutw="0.2"
+outtimew="1"
+outdatew="0.4"
+outverifw="0.3"
+outwrongw="0.2"
+outgreeterw="0.3"
 
 ringcolor=$color3
 insidecolor=00000000
@@ -37,14 +45,14 @@ datecolor=$color1
 layoutcolor=$color4
 
 i3lock --image=$TMPBG  \
-    --pass-media-keys --keylayout 0 --layout-color=$layoutcolor \
-    --clock --force-clock --time-pos="w/2:h/2" --time-size=96 --time-color=$timecolor \
-    --date-str="$DATE" --date-pos="tx:ty+80" --date-size=32 --date-color=$datecolor \
-    --ind-pos="w/2-r/2:h-r*2" --radius 20 \
+    --pass-media-keys --keylayout 0 --layout-color=$layoutcolor --layoutoutline-color=$outcolor --layoutoutline-width=$outlayoutw \
+    --clock --force-clock --time-pos="w/2:h/2" --time-size=96 --time-color=$timecolor --timeoutline-color=$outcolor --timeoutline-width=$outtimew \
+    --date-str="$DATE" --date-pos="tx:ty+80" --date-size=32 --date-color=$datecolor --dateoutline-color=$outcolor --dateoutline-width=$outdatew \
+    --ind-pos="w/2-r/2:h-r*2" --radius 25 \
     --ring-color=$ringcolor --inside-color=$insidecolor --line-color=$linecolor \
     --separator-color=$separatorcolor --ringver-color=$ringvercolor \
-    --insidever-color=$insidevercolor --verif-text='Verifying password' --verif-color=$verifcolor --ringwrong-color=$ringwrongcolor \
-    --insidewrong-color=$insidewrongcolor --wrong-text='Wrong password' --wrong-color=$wrongcolor --keyhl-color=$keyhlcolor \
-    --bshl-color=$bshlcolor --noinput-text='' --greeter-text="Screen locked" --greeter-color=$greetercolor
+    --insidever-color=$insidevercolor --verif-text='Verifying password' --verif-color=$verifcolor --verifoutline-color=$outcolor --verifoutline-width=$outverifw --ringwrong-color=$ringwrongcolor \
+    --insidewrong-color=$insidewrongcolor --wrong-text='Wrong password' --wrong-color=$wrongcolor --wrongoutline-color=$outcolor --wrongoutline-width=$outwrongw --keyhl-color=$keyhlcolor \
+    --bshl-color=$bshlcolor --noinput-text='' --greeter-text="Screen locked" --greeter-color=$greetercolor --greeteroutline-color=$outcolor --greeteroutline-width=$outgreeterw
 
 rm $TMPBG
