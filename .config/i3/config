@@ -48,8 +48,8 @@ for_window [instance="pulsemixer-instance"] floating enable focus
 for_window [class="Lxpolkit"] focus focus_follows_mouse no
 for_window [class="mpv"] floating enable focus
 for_window [instance="wallpapers-thumbnail"] floating enable focus
-for_window [class="Steam" title="Friends List"] floating enable focus
-for_window [class="Steam" title="Steam - News"] floating enable focus
+for_window [class="Steam"] floating enable
+for_window [class="Steam" title="^Steam$"] floating disable
 
 ##---Autostart---##
 exec --no-startup-id ~/.config/mpd/launch.sh
