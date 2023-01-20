@@ -3,6 +3,8 @@
 
 IMAGE="/tmp/random-wallpaper"
 
+DEFAULT_WALLPAPER="${XDG_CONFIG_HOME:-$HOME/.config}/wallpapers/default"
+
 default_resolution=""
 resolution_type=""
 width=""
@@ -125,8 +127,7 @@ change_colors() {
 }
 
 reset_wallpaper() {
-    default_wall="${XDG_CONFIG_HOME:-$HOME/.config}/wallpapers/default"
-	hsetroot -cover "$default_wall"
+	hsetroot -cover "$DEFAULT_WALLPAPER"
     xrdb -load "$HOME/.Xresources"
 	python "$HOME/.scripts/i3cmds/wall-change/reset-colors.py"
 	i3-msg reload &>/dev/null
