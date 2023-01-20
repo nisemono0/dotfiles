@@ -1,7 +1,7 @@
 #!/bin/bash
 . $HOME/.dmenurc
 
-IMAGE="/tmp/random-wallpaper"
+IMAGE="/tmp/wallpaper-random"
 
 DEFAULT_WALLPAPER="${XDG_CONFIG_HOME:-$HOME/.config}/wallpapers/default"
 
