@@ -6,14 +6,15 @@ S_WALLPAPERS_DIR="${XDG_CONFIG_HOME:-$HOME/.config}/wallpapers/s"
 Q_WALLPAPERS_DIR="${XDG_CONFIG_HOME:-$HOME/.config}/wallpapers/q"
 E_WALLPAPERS_DIR="${XDG_CONFIG_HOME:-$HOME/.config}/wallpapers/e"
 
+DEFAULT_WALLPAPER="${XDG_CONFIG_HOME:-$HOME/.config}/wallpapers/default"
+
 TMP_WALLPAPER="/tmp/wallpaper-tmp"
 
 backend=""
 saturation=""
 
 reset_wallpaper(){
-    default_wall="${XDG_CONFIG_HOME:-$HOME/.config}/wallpapers/default"
-	hsetroot -cover "$default_wall"
+	hsetroot -cover "$DEFAULT_WALLPAPER"
     xrdb -load "$HOME/.Xresources"
 	python "$HOME/.scripts/i3cmds/wall-change/reset-colors.py"
 	i3-msg reload &>/dev/null
@@ -85,14 +86,14 @@ set_wallpaper(){
 
     hsetroot -cover "$wallpaper" || exit 1
 
+    ln -sf "$wallpaper" "$TMP_WALLPAPER"
+
     if [[ "$saturation" = "Default" ]]; then
         wal -ntq --backend "$backend" -i "$wallpaper" || exit 1 
     else
         wal -ntq --saturate "$saturation" --backend "$backend" -i "$wallpaper" || exit 1
     fi
     
-    ln -sf "$wallpaper" "$TMP_WALLPAPER"
-
     notify-send "Wallpaper and colors updated" -i video-display
 
     exit 0
