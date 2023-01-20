@@ -1,10 +1,9 @@
 #!/usr/bin/bash -e
 
 TMPBG=/tmp/screen_locked.jpg
-maim --hidecursor --capturebackground $TMPBG
+maim -m 8 --hidecursor --capturebackground $TMPBG
 
-# Pixellate 10x
-mogrify -scale 10% -scale 1000% $TMPBG
+mogrify -scale 20% -blur 0x1.5 -resize 500% $TMPBG
 
 DATE=$(date +"%A, %B %-d")
 
