@@ -132,6 +132,7 @@ unrar
 urxvt-perls
 vim
 w3m
+waifu2x-ncnn-vulkan
 weechat
 wget
 which
