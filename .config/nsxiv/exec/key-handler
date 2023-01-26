@@ -28,11 +28,11 @@ copy_img_to_dir(){
 copy_img_to_clipboard(){
     abspath="$(realpath "$1")"
     if [[ "$1" == *.png ]]; then
-        xclip -selection clipboard -target image/png -i "$1" \
+        xclip -selection clipboard -target image/png -i "$1" &> /dev/null \
             && notify-send "Image copied to clipboard" -i "$abspath" \
             || notify-send -u critical "Couldn't copy $1"
     else
-        convert "$1" png:- | xclip -selection clipboard -target image/png -i \
+        convert "$1" png:- | xclip -selection clipboard -target image/png -i &> /dev/null \
             && notify-send "Image copied to clipboard" -i "$abspath" \
             || notify-send -u critical "Couldn't copy $1"
     fi
