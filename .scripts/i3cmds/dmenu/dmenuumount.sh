@@ -11,7 +11,7 @@ drives="$(lsblk -rnpo "NAME,TYPE,SIZE,MOUNTPOINT" | awk '$4!~/\/boot|\/home$|SWA
 unmountusb() {
 	chosen="$(echo "$drives" | dmenu $DMENU_OPTIONS -fn "$DMENU_FN" -p "Unmount which drive" | awk '{print $1}')"
 	[ -z "$chosen" ] && exit
-	sudo -A umount "$chosen" && notify-send "USB unmounting" "$chosen unmounted." -i drive-harddisk
+	sudo -A umount "$chosen" && notify-send "Unmounted $chosen" -i drive-harddisk
 }
 
 unmountandroid() {
