@@ -6,6 +6,7 @@ atool
 autoconf
 automake
 autopep8
+bc
 bind
 binutils
 bison
