@@ -13,7 +13,7 @@
 Active=true
 Name=Extract & view
 Comment=Extract an archive and call nsxiv on the extracted content
-Exec=<extract-view.py %F>
+Exec=<extract-view.sh %F>
 Icon-Name=extract-archive
 Selection=s
 Mimetypes=application/x-bzip;application/x-bzip2;application/x-rar-compressed;application/x-tar;application/zip;application/x-7z-compressed;
