@@ -1,5 +1,6 @@
 #!/bin/bash
 
+all_added=true
 for file in "$@"; do
     searchlist="$(mpc search filename "$file")"
     if [ -n "$searchlist" ]; then
@@ -11,7 +12,12 @@ for file in "$@"; do
         done <<< "$searchlist"
     else
         notify-send "Couldn't find" "$file"
+        all_added=false
     fi
 done
 
-notify-send "Added files to playlist"
+if [ "$all_added" = true ]; then
+    notify-send "All files added"
+else
+    notify-send "Some files couldn't be added"
+fi
