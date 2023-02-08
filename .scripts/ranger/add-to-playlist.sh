@@ -14,3 +14,4 @@ for file in "$@"; do
     fi
 done
 
+notify-send "Added files to playlist"
