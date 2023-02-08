@@ -30,21 +30,21 @@ save_screenshot() {
 }
 
 save_clipboard() {
-    scr="/tmp/screenshot-clipboard.png"
+    scr="$(mktemp)"
 
     case "$1" in
         full)
-            if maim --hidecursor --capturebackground "$scr" 2>/dev/null; then
+            if maim --hidecursor --capturebackground --format png "$scr" 2>/dev/null; then
                 xclip -selection clipboard -target image/png -i "$scr" &> /dev/null && \
                 notify-send "Screenshot saved in clipboard" -i "$scr" && \
-                rm "$scr"
+                rm -- "$scr"
             fi
             ;;
         area)
-            if maim --hidecursor --capturebackground --select --bordersize 2 "$scr" 2>/dev/null; then
+            if maim --hidecursor --capturebackground --select --bordersize 2 --format png "$scr" 2>/dev/null; then
 	            xclip -selection clipboard -target image/png -i "$scr" &> /dev/null && \
 	            notify-send "Screenshot saved in clipboard" -i "$scr" && \
-	            rm "$scr"
+	            rm -- "$scr"
             fi
             ;;
         *)
