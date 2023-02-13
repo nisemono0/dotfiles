@@ -57,8 +57,8 @@ exec --no-startup-id lxpolkit &
 exec --no-startup-id picom -b
 exec --no-startup-id dunst &
 exec --no-startup-id fcitx -r -d
-exec --no-startup-id xset r rate 300 50 &
 exec --no-startup-id hsetroot -cover ~/.config/wallpapers/default
+exec_always --no-startup-id xset r rate 300 50 &
 exec_always --no-startup-id ~/.config/polybar/launch.sh
 
 ##---Basic Keys---##
