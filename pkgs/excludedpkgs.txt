@@ -6,6 +6,7 @@ amf-amdgpu-pro
 base
 beignet
 cuda
+hlib-git
 intel-compute-runtime
 intel-opencl
 intel-opencl-runtime
