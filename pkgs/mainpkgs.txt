@@ -32,6 +32,7 @@ findutils
 firefox
 flex
 fzf
+gamemode
 gawk
 gcc
 gdb
@@ -49,6 +50,7 @@ imagemagick
 inetutils
 jq
 keepassxc
+lib32-gamemode
 lib32-giflib
 lib32-gnutls
 lib32-gst-plugins-base-libs
