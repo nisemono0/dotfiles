@@ -32,6 +32,7 @@ set $pulsemixer --no-startup-id /usr/bin/urxvt -geometry 100x20 -name pulsemixer
 set $wsutil --no-startup-id ~/.scripts/i3cmds/i3wsutil.sh
 set $mousespeed --no-startup-id ~/.scripts/i3cmds/mousespeed.sh
 set $htop --no-startup-id /usr/bin/urxvt -e htop && i3-msg workspace back_and_forth
+set $togglecomp --no-startup-id ~/.scripts/i3cmds/toggle-comp.sh
 
 set_from_resource $fg foreground
 set_from_resource $bg background
@@ -185,7 +186,7 @@ bindsym $mod+Shift+F1 exec $browser_private
 bindsym $mod+F2 exec --no-startup-id notify-send F2
 bindsym $mod+F3 exec --no-startup-id notify-send F3
 bindsym $mod+F4 workspace 0; exec $htop
-bindsym $mod+F5 exec --no-startup-id notify-send F5
+bindsym $mod+F5 exec $togglecomp
 bindsym $mod+F6 exec --no-startup-id notify-send F6
 bindsym $mod+F7 exec --no-startup-id notify-send F7
 bindsym $mod+F8 exec $screencast
