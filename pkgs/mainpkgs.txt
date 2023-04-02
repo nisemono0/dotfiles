@@ -15,7 +15,6 @@ bleachbit
 code
 cups
 debugedit
-dina-font
 discord
 dmenu
 dosbox
