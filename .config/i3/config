@@ -49,6 +49,7 @@ for_window [class="mpv"] floating enable focus
 for_window [instance="wallpapers-thumbnail"] floating enable focus
 for_window [class="Steam"] floating enable
 for_window [class="Steam" title="^Steam$"] floating disable
+for_window [instance="polybar-weather-forecast"] floating enable focus
 
 ##---Autostart---##
 exec --no-startup-id ~/.config/mpd/launch.sh
