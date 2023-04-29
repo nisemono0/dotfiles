@@ -7,7 +7,7 @@ filename="$(basename "$archive")"
 notify-send "Extracting..." "$filename" -i "package-x-generic"
 
 if aunpack -X "$tmpdir" "$archive"; then
-    find "$tmpdir" -type f | sort -V | nsxiv -i
+    find "$tmpdir" -type f | sort -V | nsxiv -i -p
 else
     notify-send -u critical "Error at extracting" "$archive"
 fi
