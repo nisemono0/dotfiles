@@ -4,7 +4,7 @@ ncmpcpp_directory = ~/.config/ncmpcpp
 ##### MPD #####
 mpd_host = "/tmp/mpd.socket"
 mpd_crossfade_time = "3"
-
+mpd_music_dir = "~/Music"
 ##### Visualizer #####
 visualizer_in_stereo = "yes"
 #visualizer_sync_interval = "30"
