@@ -20,7 +20,7 @@ reb(){
 sleep_toram(){
 	sel=$(printf "Yes\\nNo" | dmenu -fn "$DMENU_FN" $DMENU_OPTIONS -p "Are you sure you want to sleep") || exit 1
 	case "$sel" in
-		"Yes") reboot ;;
+		"Yes") systemctl suspend ;;
 		*) exit ;;
 	esac
 }
