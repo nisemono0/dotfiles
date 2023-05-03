@@ -2,6 +2,7 @@
 # Cover art script for ncmpcpp-ueberzug
 
 # SETTINGS
+unset WINDOWID
 music_library="$HOME/Music"
 fallback_image="$HOME/.config/ncmpcpp/fallback.png"
 padding_top=0

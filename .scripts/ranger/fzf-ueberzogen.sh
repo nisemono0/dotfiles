@@ -14,6 +14,7 @@
 
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
+unset WINDOWID
 readonly BASH_BINARY="$(which bash)"
 readonly REDRAW_COMMAND="toggle-preview+toggle-preview"
 readonly REDRAW_KEY="µ"

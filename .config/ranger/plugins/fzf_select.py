@@ -44,6 +44,7 @@ class fzf_select(Command):
         # more preview options are handled with fzf-ueberzogen.sh script
         env['FZF_DEFAULT_COMMAND'] = fzf_default_command
         env['FZF_DEFAULT_OPTS'] = '--layout=reverse --ansi --no-sort'
+        env.pop("WINDOWID")
 
         fzf_ueberzogen=os.path.expanduser("~/.scripts/ranger/fzf-ueberzogen.sh")
         fzf = self.fm.execute_command(fzf_ueberzogen, env=env,

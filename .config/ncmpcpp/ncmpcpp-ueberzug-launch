@@ -1,5 +1,6 @@
 #!/bin/sh
 export FIFO_UEBERZUG="/tmp/mpd-ueberzug-${PPID}"
+unset WINDOWID
 
 cleanup() {
     rm "$FIFO_UEBERZUG" 2>/dev/null
