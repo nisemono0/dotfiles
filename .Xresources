@@ -25,14 +25,14 @@ URxvt*borderColor:  [100]#151822
 *color3:  #6273A7
 *.color4: #827B8D
 *color4:  #827B8D
-*.color5: #7487B6
-*color5:  #7487B6
+*.color5: #97A7CD
+*color5:  #97A7CD
 *.color6: #7A8FC4
 *color6:  #7A8FC4
-*.color7: #c3cbe1
-*color7:  #c3cbe1
-*.color8: #888e9d
-*color8:  #888e9d
+*.color7: #C3CBE1
+*color7:  #C3CBE1
+*.color8: #A6A9B0
+*color8:  #A6A9B0
 *.color9: #4B5987
 *color9:  #4B5987
 *.color10: #566595
@@ -41,12 +41,12 @@ URxvt*borderColor:  [100]#151822
 *color11:  #6273A7
 *.color12: #827B8D
 *color12:  #827B8D
-*.color13: #7487B6
-*color13:  #7487B6
+*.color13: #97A7CD
+*color13:  #97A7CD
 *.color14: #7A8FC4
 *color14:  #7A8FC4
-*.color15: #c3cbe1
-*color15:  #c3cbe1
+*.color15: #C3CBE1
+*color15:  #C3CBE1
 
 ! Black color that will not be affected by bold highlighting.
 *.color66: #151822
