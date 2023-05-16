@@ -90,6 +90,7 @@ noto-fonts
 noto-fonts-cjk
 noto-fonts-emoji
 noto-fonts-extra
+nsxiv
 ntfs-3g
 os-prober
 otf-ipafont

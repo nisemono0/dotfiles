@@ -4,7 +4,6 @@ code-marketplace
 colorz
 dragon-drop
 i3lock-color
-nsxiv
 python-colorthief
 python-haishoku
 siji-git
