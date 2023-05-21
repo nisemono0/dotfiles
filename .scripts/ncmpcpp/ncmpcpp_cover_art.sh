@@ -4,7 +4,7 @@
 # SETTINGS
 unset WINDOWID
 music_library="$HOME/Music"
-fallback_image="$HOME/.config/ncmpcpp/fallback.png"
+fallback_image="$HOME/.config/ncmpcpp/noart.png"
 padding_top=0
 padding_bottom=0
 padding_right=1
