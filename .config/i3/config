@@ -226,7 +226,8 @@ bindsym Ctrl+Print exec $screenshot --save-area
 bindsym Ctrl+Shift+Print exec $screenshot --clip-area
 
 ##---Wallpaper menu---##
-bindsym $mod+Shift+w exec $wall_change
+bindsym $mod+Shift+w exec $wall_change --menu
+bindsym $mod+Ctrl+Shift+w exec $wall_change --random
 bindsym $mod+Ctrl+w exec $wall_web_random
 
 ##---Kill processes---##
