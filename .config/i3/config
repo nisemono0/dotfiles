@@ -50,6 +50,7 @@ for_window [instance="wallpapers-thumbnail"] floating enable focus
 for_window [class="Steam"] floating enable
 for_window [class="Steam" title="^Steam$"] floating disable
 for_window [instance="polybar-weather-forecast"] floating enable focus
+for_window [instance="polybar-updates-arch"] floating enable focus
 
 ##---Autostart---##
 exec_always --no-startup-id ~/.scripts/i3cmds/startup/launch-mpd.sh
