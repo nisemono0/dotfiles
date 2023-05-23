@@ -85,10 +85,10 @@ def_key "space"
 def_key "a"
     add_selected_items
 
-def_key "ctrl-c"
+def_key "ctrl-d"
     delete_playlist_items
 
-def_key "ctrl-c"
+def_key "ctrl-d"
     delete_stored_playlist
 
 def_key "="
