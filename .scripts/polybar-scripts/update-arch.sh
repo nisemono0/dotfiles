@@ -27,8 +27,27 @@ detail_updates(){
     if ! yay -Qum 2> /dev/null; then
         echo "No AUR updates"
     fi
-
-    read -rsn 1
+    
+    printf "\n"
+    echo "=========="
+    echo "Update now ? (y/n/q)"
+    read -rsn 1 ans
+    ans=$(echo "$ans" | tr '[:upper:]' '[:lower:]')
+    case "$ans" in
+        "q")
+            exit
+            ;;
+        "n")
+            exit
+            ;;
+        "y")
+            sudo pacman -Syu
+            read -rsn 1
+            ;;
+        *)
+            exit
+            ;;
+    esac
 }
 
 case "$1" in
