@@ -2,7 +2,7 @@ from ranger.api.commands import Command
 
 class mkdircd(Command):
     """
-    :mkcd <dirname>
+    :mkdircd <dirname>
 
     Creates a directory with the name <dirname> and enters it.
     """
@@ -31,3 +31,4 @@ class mkdircd(Command):
                     self.fm.execute_console('scout -ae ^{}$'.format(s))
         else:
             self.fm.notify("file/directory exists!", bad=True)
+
