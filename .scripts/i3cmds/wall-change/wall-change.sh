@@ -19,8 +19,10 @@ reset_wallpaper(){
 	python "$HOME/.scripts/i3cmds/wall-change/reset-colors.py"
 	i3-msg reload &>/dev/null
 	pkill -USR1 polybar
-    rm -f -- "$TMP_WALLPAPER"
-    notify-send -h string:x-dunst-stack-tag:wallchange "Wallpaper and colors reset" -i video-display
+    if [ -f "$TMP_WALLPAPER" ]; then
+        rm -f -- "$TMP_WALLPAPER"
+    fi
+    notify-send -h string:x-dunst-stack-tag:wallpaperchange "Wallpaper and colors reset" -i video-display
     exit 0
 }
 
@@ -49,11 +51,11 @@ change_colors(){
             wal -ntq --saturate "$saturation" --backend "$backend" -i "$TMP_WALLPAPER" || exit 1
         fi
     else
-        notify-send -h string:x-dunst-stack-tag:wallchange "You must first set a wallpaper with this script"
+        notify-send -h string:x-dunst-stack-tag:wallpaperchange "You must first set a wallpaper with this script"
     fi
 }
 
-copy_wallpaper() {
+copy_to() {
     if [ -f "$TMP_WALLPAPER" ]; then
         copy_path="$(find "$HOME" -maxdepth 3 -not -path "*.*" -type d 2>/dev/null | 
 		    dmenu $DMENU_OPTIONS -fn "$DMENU_FN" -p "Copy where")"
@@ -64,14 +66,41 @@ copy_wallpaper() {
 	    	askmkdir="$(printf "No\\nYes" | dmenu $DMENU_OPTIONS -fn "$DMENU_FN" -p "Create: $copy_path")"
 		    [ "$askmkdir" = "Yes" ] && (mkdir -p "$copy_path") || exit 1
 	    fi
+        
+        filename=$(basename "$TMP_WALLPAPER")
+        extension=$(file -b --extension "$TMP_WALLPAPER" | cut -d '/' -f 1)
+        
+        if [[ "$extension" == "???" ]]; then
+            cpfile="${filename}"
+        else
+            cpfile="${filename}.${extension}"
+        fi
 
-        if cp "$TMP_WALLPAPER" "$copy_path"; then
-            notify-send -h string:x-dunst-stack-tag:wallchange "Wallpaper copied succesfully"
+        if cp --backup=numbered "$TMP_WALLPAPER" "${copy_path}/${cpfile}"; then
+            notify-send -h string:x-dunst-stack-tag:wallpaperchange "Wallpaper copied succesfully"
         else
             notify-send -u critical "Couldn't copy wallpaper"
         fi
     else
-        notify-send -h string:x-dunst-stack-tag:wallchange "You must first set a wallpaper with this script"
+        notify-send -h string:x-dunst-stack-tag:wallpaperchange "You must first set a wallpaper with this script"
+        exit 0
+    fi
+}
+
+copy_clipboard() {
+    if [ -f "$TMP_WALLPAPER" ]; then
+        filetype=$(file -b --dereference --mime-type "$TMP_WALLPAPER" | tr -d ' ')
+        if [[ "$filetype" == image/* ]]; then
+            if [[ "$filetype" == image/png ]]; then
+                xclip -selection clipboard -target image/png -i "$TMP_WALLPAPER" &> /dev/null && notify-send "Image copied to clipbooard" -i "$TMP_WALLPAPER" || notify-send -u critical "Something went wrong"
+            else
+                convert "$TMP_WALLPAPER" png:- | xclip -selection clipboard -target image/png -i &> /dev/null && notify-send "Image copied to clipbooard" -i "$TMP_WALLPAPER" || notify-send -u critical "Something went wrong"
+            fi
+        else
+            notify-send "Can only copy images to clipboard"
+        fi
+    else
+        notify-send -h string:x-dunst-stack-tag:wallpaperchange "You must first set a wallpaper with this script"
         exit 0
     fi
 }
@@ -86,6 +115,10 @@ set_wallpaper(){
 
     hsetroot -cover "$wallpaper" || exit 1
 
+    if [ -f "$TMP_WALLPAPER" ]; then
+        rm -f -- "$TMP_WALLPAPER"
+    fi
+
     ln -sf "$wallpaper" "$TMP_WALLPAPER"
 
     if [[ "$saturation" = "Default" ]]; then
@@ -94,19 +127,20 @@ set_wallpaper(){
         wal -ntq --saturate "$saturation" --backend "$backend" -i "$wallpaper" || exit 1
     fi
     
-    notify-send -h string:x-dunst-stack-tag:wallchange "Wallpaper and colors updated" -i video-display
+    notify-send -h string:x-dunst-stack-tag:wallpaperchange "Wallpaper and colors updated" -i video-display
 
     exit 0
 }
 
 dmenu_menu(){
-    case $(printf "All\\nSafe\\nQuestionable\\nExplicit\\nChange colors\\nCopy wallpaper\\nReset" | dmenu $DMENU_OPTIONS -fn "$DMENU_FN" -p "Select option") in
+    case $(printf "All\\nSafe\\nQuestionable\\nExplicit\\nChange colors\\nCopy to\\nCopy clipboard\\nReset" | dmenu $DMENU_OPTIONS -fn "$DMENU_FN" -p "Select option") in
         "All") set_wallpaper "$ALL_WALLPAPERS_DIR" ;;
         "Safe") set_wallpaper "$S_WALLPAPERS_DIR" ;;
         "Questionable") set_wallpaper "$Q_WALLPAPERS_DIR" ;;
         "Explicit") set_wallpaper "$E_WALLPAPERS_DIR" ;;
         "Change colors") change_colors ;;
-        "Copy wallpaper") copy_wallpaper ;;
+        "Copy to") copy_to ;;
+        "Copy clipboard") copy_clipboard ;;
         "Reset") reset_wallpaper ;;
         *) exit ;;
     esac
@@ -123,10 +157,14 @@ random_wallpaper(){
         
     hsetroot -cover "$wallpaper" || exit 1
 
+    if [ -f "$TMP_WALLPAPER" ]; then
+        rm -f -- "$TMP_WALLPAPER"
+    fi
+
     ln -sf "$wallpaper" "$TMP_WALLPAPER"
 
     wal -ntq --backend "$backend" -i "$wallpaper" || exit 1
-    notify-send -h string:x-dunst-stack-tag:wallchange "Wallpaper and colors updated" -i video-display
+    notify-send -h string:x-dunst-stack-tag:wallpaperchange "Wallpaper and colors updated" -i video-display
 }
 
 case "$1" in
