@@ -1,5 +1,10 @@
+btrfs-progs
+dosfstools
+lvm2
+ndctl
 python-dnspython
 python-mutagen
 python-pycryptodomex
 python-setuptools
 python-websockets
+xfsprogs
