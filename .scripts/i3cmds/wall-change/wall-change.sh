@@ -165,7 +165,6 @@ random_wallpaper(){
     ln -sf "$wallpaper" "$TMP_WALLPAPER"
 
     wal -ntq --backend "$backend" -i "$wallpaper" || exit 1
-    notify-send -h string:x-dunst-stack-tag:wallpapernotifs "Wallpaper and colors updated" -i video-display
 }
 
 case "$1" in
