@@ -24,7 +24,8 @@ set $dmenumount --no-startup-id ~/.scripts/i3cmds/dmenu/dmenumount.sh
 set $dmenuumount --no-startup-id ~/.scripts/i3cmds/dmenu/dmenuumount.sh
 set $sinkselect --no-startup-id ~/.scripts/i3cmds/sink-select.sh
 set $wall_change --no-startup-id ~/.scripts/i3cmds/wall-change/wall-change.sh
-set $wall_web_random --no-startup-id ~/.scripts/i3cmds/wall-change/wall-web-random.sh
+set $wall_slideshow --no-startup-id ~/.scripts/i3cmds/wall-change/wall-slideshow.sh
+set $wall_web --no-startup-id ~/.scripts/i3cmds/wall-change/wall-web.sh
 set $end_session --no-startup-id ~/.scripts/i3cmds/end-session.sh
 set $kill_proc --no-startup-id ~/.scripts/i3cmds/kill-proc.sh
 set $nmtui --no-startup-id /usr/bin/urxvt -geometry 75x20 -name nmtui-instance -e nmtui
@@ -228,8 +229,8 @@ bindsym Ctrl+Shift+Print exec $screenshot --clip-area
 
 ##---Wallpaper menu---##
 bindsym $mod+Shift+w exec $wall_change --menu
-bindsym $mod+Ctrl+Shift+w exec $wall_change --random
-bindsym $mod+Ctrl+w exec $wall_web_random
+bindsym $mod+Ctrl+Shift+w exec $wall_slideshow
+bindsym $mod+Ctrl+w exec $wall_web
 
 ##---Kill processes---##
 bindsym $mod+Shift+q exec $kill_proc

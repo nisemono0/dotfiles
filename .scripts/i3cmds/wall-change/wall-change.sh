@@ -16,13 +16,13 @@ saturation=""
 reset_wallpaper(){
 	hsetroot -cover "$DEFAULT_WALLPAPER"
     xrdb -load "$HOME/.Xresources"
-	python "$HOME/.scripts/i3cmds/wall-change/reset-colors.py"
+    python "$(dirname "$0")/reset-colors.py"
 	i3-msg reload &>/dev/null
 	pkill -USR1 polybar
     if [ -f "$TMP_WALLPAPER" ]; then
         rm -f -- "$TMP_WALLPAPER"
     fi
-    notify-send -h string:x-dunst-stack-tag:wallpaperchange "Wallpaper and colors reset" -i video-display
+    notify-send -h string:x-dunst-stack-tag:wallpapernotifs "Wallpaper and colors reset" -i video-display
     exit 0
 }
 
@@ -51,7 +51,7 @@ change_colors(){
             wal -ntq --saturate "$saturation" --backend "$backend" -i "$TMP_WALLPAPER" || exit 1
         fi
     else
-        notify-send -h string:x-dunst-stack-tag:wallpaperchange "You must first set a wallpaper with this script"
+        notify-send -h string:x-dunst-stack-tag:wallpapernotifs "You must first set a wallpaper with this script"
     fi
 }
 
@@ -77,12 +77,12 @@ copy_to() {
         fi
 
         if cp --backup=numbered "$TMP_WALLPAPER" "${copy_path}/${cpfile}"; then
-            notify-send -h string:x-dunst-stack-tag:wallpaperchange "Wallpaper copied succesfully"
+            notify-send -h string:x-dunst-stack-tag:wallpapernotifs "Wallpaper copied succesfully"
         else
             notify-send -u critical "Couldn't copy wallpaper"
         fi
     else
-        notify-send -h string:x-dunst-stack-tag:wallpaperchange "You must first set a wallpaper with this script"
+        notify-send -h string:x-dunst-stack-tag:wallpapernotifs "You must first set a wallpaper with this script"
         exit 0
     fi
 }
@@ -100,7 +100,7 @@ copy_clipboard() {
             notify-send "Can only copy images to clipboard"
         fi
     else
-        notify-send -h string:x-dunst-stack-tag:wallpaperchange "You must first set a wallpaper with this script"
+        notify-send -h string:x-dunst-stack-tag:wallpapernotifs "You must first set a wallpaper with this script"
         exit 0
     fi
 }
@@ -127,13 +127,13 @@ set_wallpaper(){
         wal -ntq --saturate "$saturation" --backend "$backend" -i "$wallpaper" || exit 1
     fi
     
-    notify-send -h string:x-dunst-stack-tag:wallpaperchange "Wallpaper and colors updated" -i video-display
+    notify-send -h string:x-dunst-stack-tag:wallpapernotifs "Wallpaper and colors updated" -i video-display
 
     exit 0
 }
 
 dmenu_menu(){
-    case $(printf "All\\nSafe\\nQuestionable\\nExplicit\\nChange colors\\nCopy to\\nCopy clipboard\\nReset" | dmenu $DMENU_OPTIONS -fn "$DMENU_FN" -p "Select option") in
+    case $(printf "All\\nSafe\\nQuestionable\\nExplicit\\nChange colors\\nCopy to\\nCopy clipboard\\nRandom\\nReset" | dmenu $DMENU_OPTIONS -fn "$DMENU_FN" -p "Select option") in
         "All") set_wallpaper "$ALL_WALLPAPERS_DIR" ;;
         "Safe") set_wallpaper "$S_WALLPAPERS_DIR" ;;
         "Questionable") set_wallpaper "$Q_WALLPAPERS_DIR" ;;
@@ -141,6 +141,7 @@ dmenu_menu(){
         "Change colors") change_colors ;;
         "Copy to") copy_to ;;
         "Copy clipboard") copy_clipboard ;;
+        "Random") random_wallpaper "$ALL_WALLPAPERS_DIR" ;;
         "Reset") reset_wallpaper ;;
         *) exit ;;
     esac
@@ -164,7 +165,7 @@ random_wallpaper(){
     ln -sf "$wallpaper" "$TMP_WALLPAPER"
 
     wal -ntq --backend "$backend" -i "$wallpaper" || exit 1
-    notify-send -h string:x-dunst-stack-tag:wallpaperchange "Wallpaper and colors updated" -i video-display
+    notify-send -h string:x-dunst-stack-tag:wallpapernotifs "Wallpaper and colors updated" -i video-display
 }
 
 case "$1" in
@@ -173,6 +174,18 @@ case "$1" in
         ;;
     --random)
         random_wallpaper "$ALL_WALLPAPERS_DIR"
+        ;;
+    --reset)
+        reset_wallpaper
+        ;;
+    --change-colors)
+        change_colors
+        ;;
+    --copy-to)
+        copy_to
+        ;;
+    --copy-clipboard)
+        copy_clipboard
         ;;
     *)
         exit 1

@@ -3,7 +3,7 @@
 
 TMP_WALLPAPER="/tmp/wallpaper-tmp"
 
-DEFAULT_WALLPAPER="${XDG_CONFIG_HOME:-$HOME/.config}/wallpapers/default"
+WALLCHANGE="$(dirname "$0")/wall-change.sh"
 
 default_resolution=""
 resolution_type=""
@@ -86,14 +86,14 @@ set_search() {
 
 download_image() {
     if [[ "$1" = "null" ]] || [[ "$1" = "" ]]; then
-        notify-send -h string:x-dunst-stack-tag:wallpaperchange "Couldn't get any image url"
+        notify-send -h string:x-dunst-stack-tag:wallpapernotifs "Couldn't get any image url"
         exit
     else
         if [ -f "$TMP_WALLPAPER" ]; then
             rm -- -f "$TMP_WALLPAPER"
         fi
         if ! curl -f -sS "$1" -o "$TMP_WALLPAPER"; then
-            notify-send -h string:x-dunst-stack-tag:wallpaperchange "Couldn't retrieve the image"
+            notify-send -h string:x-dunst-stack-tag:wallpapernotifs "Couldn't retrieve the image"
             exit
         fi
     fi
@@ -115,31 +115,11 @@ set_wal_options() {
 }
 
 change_colors() {
-    if [[ -f "$TMP_WALLPAPER" ]]; then
-        set_wal_options
-        wal -c
-        if [[ "$saturation" = "Default" ]]; then
-            wal -ntq --backend "$backend" -i "$TMP_WALLPAPER" || exit 1
-        else
-            wal -ntq --saturate "$saturation" --backend "$backend" -i "$TMP_WALLPAPER" || exit 1
-        fi
-        notify-send -h string:x-dunst-stack-tag:wallpaperchange "Colors updated" -i video-display
-    else
-        notify-send -h string:x-dunst-stack-tag:wallpaperchange "You must first set a wallpaper with this script"
-    fi
+    . "$WALLCHANGE" --change-colors
 }
 
 reset_wallpaper() {
-	hsetroot -cover "$DEFAULT_WALLPAPER"
-    xrdb -load "$HOME/.Xresources"
-	python "$HOME/.scripts/i3cmds/wall-change/reset-colors.py"
-	i3-msg reload &>/dev/null
-	pkill -USR1 polybar
-    if [ -f "$TMP_WALLPAPER" ]; then
-        rm -f -- "$TMP_WALLPAPER"
-    fi
-    notify-send -h string:x-dunst-stack-tag:wallpaperchange "Wallpaper and colors reset" -i video-display
-    exit 0
+    . "$WALLCHANGE" --reset
 }
 
 set_wallpaper() {
@@ -152,60 +132,18 @@ set_wallpaper() {
         wal -ntq --saturate "$saturation" --backend "$backend" -i "$TMP_WALLPAPER" || exit 1
     fi
 
-    notify-send -h string:x-dunst-stack-tag:wallpaperchange "Wallpaper and colors updated" -i video-display
+    notify-send -h string:x-dunst-stack-tag:wallpapernotifs "Wallpaper and colors updated" -i video-display
 }
 
 copy_to() {
-    if [ -f "$TMP_WALLPAPER" ]; then
-        copy_path="$(find "$HOME" -maxdepth 3 -not -path "*.*" -type d 2>/dev/null | 
-		    dmenu $DMENU_OPTIONS -fn "$DMENU_FN" -p "Copy where")"
-    	copy_path="${copy_path/#\~/$HOME}"
-    	[ -z "$copy_path" ] && exit 1
-
-        if [ ! -d "$copy_path" ]; then
-	    	askmkdir="$(printf "No\\nYes" | dmenu $DMENU_OPTIONS -fn "$DMENU_FN" -p "Create: $copy_path")"
-		    [ "$askmkdir" = "Yes" ] && (mkdir -p "$copy_path") || exit 1
-	    fi
-
-        filename=$(basename "$TMP_WALLPAPER")
-        extension=$(file -b --extension "$TMP_WALLPAPER" | cut -d '/' -f 1)
-
-        if [[ "$extension" == "???" ]]; then
-            cpfile="${filename}"
-        else
-            cpfile="${filename}.${extension}"
-        fi
-
-        if cp --backup=numbered "$TMP_WALLPAPER" "${copy_path}/${cpfile}"; then
-            notify-send -h string:x-dunst-stack-tag:wallpaperchange "Wallpaper copied succesfully"
-        else
-            notify-send -u critical "Couldn't copy wallpaper"
-        fi
-    else
-        notify-send -h string:x-dunst-stack-tag:wallpaperchange "You must first set a wallpaper with this script"
-        exit 0
-    fi
+    . "$WALLCHANGE" --copy-to
 }
 
 copy_clipboard() {
-    if [ -f "$TMP_WALLPAPER" ]; then
-        filetype=$(file -b --dereference --mime-type "$TMP_WALLPAPER" | tr -d ' ')
-        if [[ "$filetype" == image/* ]]; then
-            if [[ "$filetype" == image/png ]]; then
-                xclip -selection clipboard -target image/png -i "$TMP_WALLPAPER" &> /dev/null && notify-send "Image copied to clipbooard" -i "$TMP_WALLPAPER" || notify-send -u critical "Something went wrong"
-            else
-                convert "$TMP_WALLPAPER" png:- | xclip -selection clipboard -target image/png -i &> /dev/null && notify-send "Image copied to clipbooard" -i "$TMP_WALLPAPER" || notify-send -u critical "Something went wrong"
-            fi
-        else
-            notify-send "Can only copy images to clipboard"
-        fi
-    else
-        notify-send -h string:x-dunst-stack-tag:wallpaperchange "You must first set a wallpaper with this script"
-        exit 0
-    fi
+    . "$WALLCHANGE" --copy-clipboard
 }
 
-random_konachan() {
+konachan() {
     url="https://konachan.com/post.json"
 
     set_resolution
@@ -243,7 +181,7 @@ random_konachan() {
     set_wallpaper
 }
 
-random_wallhaven() {
+wallhaven() {
     KEY=""
     url="https://wallhaven.cc/api/v1/search"
 
@@ -291,14 +229,20 @@ random_wallhaven() {
     set_wallpaper
 }
 
+random_local() {
+    . "$WALLCHANGE" --random
+}
 
-case $(printf "Konachan Random\\nWallhaven Random\\nChange colors\\nCopy to\\nCopy clipboard\\nReset wallpaper" | dmenu $DMENU_OPTIONS -fn "$DMENU_FN" -p "Select option") in
-    "Konachan Random")
-        random_konachan
+case $(printf "Konachan\\nWallhaven\\nRandom local\\nChange colors\\nCopy to\\nCopy clipboard\\nReset" | dmenu $DMENU_OPTIONS -fn "$DMENU_FN" -p "Select option") in
+    "Konachan")
+        konachan
         ;;
-    "Wallhaven Random")
-        random_wallhaven
-        ;;    
+    "Wallhaven")
+        wallhaven
+        ;;
+    "Random local")
+        random_local
+        ;;
     "Change colors")
         change_colors
         ;;
@@ -308,7 +252,7 @@ case $(printf "Konachan Random\\nWallhaven Random\\nChange colors\\nCopy to\\nCo
     "Copy clipboard")
         copy_clipboard
         ;;
-    "Reset wallpaper") 
+    "Reset") 
         reset_wallpaper
         ;;
     *) exit ;;
