@@ -56,11 +56,15 @@ copy_clipboard() {
     . "$WALLCHANGE" --copy-clipboard
 }
 
-case $(printf "Start\\nStop\\nEnable\\nDisable\\nChange colors\\nCopy to\\nCopy clipboard\\nRandom\\nReset" | dmenu $DMENU_OPTIONS -fn "$DMENU_FN" -p "Wallpaper slideshow") in
+case $(printf "Start\\nStop\\nEnable\\nDisable\\nStop & Disable\\nChange colors\\nCopy to\\nCopy clipboard\\nRandom\\nReset" | dmenu $DMENU_OPTIONS -fn "$DMENU_FN" -p "Wallpaper slideshow") in
     "Start") start_slideshow ;;
     "Stop") stop_slideshow ;;
     "Enable") enable_slideshow ;;
     "Disable") disable_slideshow ;;
+    "Stop & Disable")
+        stop_slideshow
+        disable_slideshow
+        ;;
     "Change colors") change_colors ;;
     "Copy to") copy_to ;;
     "Copy clipboard") copy_clipboard ;;
