@@ -42,7 +42,6 @@ colorscheme minimalist
 let g:airline_theme='minimalist'
 let g:airline_powerline_fonts = 1
 let g:airline#extensions#tabline#enabled = 1
-
 if !exists('g:airline_symbols')
     let g:airline_symbols = {}
 endif
@@ -56,6 +55,17 @@ let g:airline_symbols.linenr = '㏑'
 let g:airline_symbols.maxlinenr = ''
 let g:airline_symbols.colnr= '㏇'
 let g:airline_symbols.whitespace = ''
+
+let g:lexima_no_default_rules = 1
+call lexima#set_default_rules()
+call lexima#insmode#map_hook('before', '<CR>', '')
+
+inoremap <expr> <C-j> pumvisible() ? "\<C-n>" : "\<Down>"
+inoremap <expr> <C-k> pumvisible() ? "\<C-p>" : "\<Up>"
+inoremap <expr> <TAB> pumvisible() ? "\<C-y>" : "\<CR>"
+
+inoremap <C-@> <C-n>
+inoremap <C-Space> <C-n>
 
 map <C-n> :NERDTreeToggle<CR>
 nnoremap <C-m> :exec &mouse!="" ? "set mouse=" : "set mouse=a"<CR>
