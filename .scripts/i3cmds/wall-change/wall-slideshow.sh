@@ -35,8 +35,12 @@ disable_slideshow() {
     fi
 }
 
-random_wallpaper() {
-    . "$WALLCHANGE" --random
+next_wallpaper() {
+    if systemctl --user is-active wallpaper-slideshow.timer; then
+        systemctl --user restart wallpaper-slideshow.timer
+    else
+        . "$WALLCHANGE" --random
+    fi
 }
 
 reset_wallpaper() {
@@ -56,7 +60,7 @@ copy_clipboard() {
     . "$WALLCHANGE" --copy-clipboard
 }
 
-case $(printf "Start\\nStop\\nEnable\\nDisable\\nStop & Disable\\nChange colors\\nCopy to\\nCopy clipboard\\nRandom\\nReset" | dmenu $DMENU_OPTIONS -fn "$DMENU_FN" -p "Wallpaper slideshow") in
+case $(printf "Start\\nStop\\nEnable\\nDisable\\nStop & Disable\\nChange colors\\nCopy to\\nCopy clipboard\\nNext image\\nReset" | dmenu $DMENU_OPTIONS -fn "$DMENU_FN" -p "Wallpaper slideshow") in
     "Start") start_slideshow ;;
     "Stop") stop_slideshow ;;
     "Enable") enable_slideshow ;;
@@ -68,7 +72,7 @@ case $(printf "Start\\nStop\\nEnable\\nDisable\\nStop & Disable\\nChange colors\
     "Change colors") change_colors ;;
     "Copy to") copy_to ;;
     "Copy clipboard") copy_clipboard ;;
-    "Random") random_wallpaper ;;
+    "Next image") next_wallpaper ;;
     "Reset") reset_wallpaper ;;
     *) exit ;;
 esac
