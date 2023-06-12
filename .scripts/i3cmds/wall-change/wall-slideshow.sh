@@ -4,42 +4,44 @@
 WALLCHANGE="$(dirname "$0")/wall-change.sh"
 
 start_slideshow() {
-    if systemctl --user start wallpaper-slideshow.timer; then
-        notify-send -h string:x-dunst-stack-tag:wallpaperslideshow "Wallpaper slideshow started"
+    stop_slideshow
+
+    if systemctl --user start "wallpaper-slideshow@$1.timer"; then
+        notify-send -h string:x-dunst-stack-tag:wallpaperslideshow "Wallpaper slideshow $1 started"
     else
-        notify-send -u critical "Error starting wallpaper-slideshow.timer"
+        notify-send -u critical "Error starting wallpaper-slideshow@$1.timer"
     fi
+}
+
+start_menu() {
+    case $(printf "All\\nSafe\\nQuestionable\\nExplicit" | dmenu $DMENU_OPTIONS -fn "$DMENU_FN" -p "Slideshow type") in
+        "All") start_slideshow "all" ;;
+        "Safe") start_slideshow "s" ;;
+        "Questionable") start_slideshow "q" ;;
+        "Explicit") start_slideshow "e" ;;
+        *) exit ;;
+    esac
 }
 
 stop_slideshow() {
-    if systemctl --user stop wallpaper-slideshow.timer; then
+    if systemctl --user stop "wallpaper-slideshow@*.timer"; then
         notify-send -h string:x-dunst-stack-tag:wallpaperslideshow "Wallpaper slideshow stopped"
     else
-        notify-send -u critical "Error stopping wallpaper-slideshow.timer"
-    fi
-}
-
-enable_slideshow() {
-    if systemctl --user enable wallpaper-slideshow.timer; then
-        notify-send -h string:x-dunst-stack-tag:wallpaperslideshow "Wallpaper slideshow enabled"
-    else
-        notify-send -u critical "Error enabling wallpaper-slideshow.timer"
-    fi
-}
-
-disable_slideshow() {
-    if systemctl --user disable wallpaper-slideshow.timer; then
-        notify-send -h string:x-dunst-stack-tag:wallpaperslideshow "Wallpaper slideshow disabled"
-    else
-        notify-send -u critical "Error disabling wallpaper-slideshow.timer"
+        notify-send -u critical "Error stopping wallpaper-slideshow@*.timer"
     fi
 }
 
 next_wallpaper() {
-    if systemctl --user is-active wallpaper-slideshow.timer; then
-        systemctl --user restart wallpaper-slideshow.timer
+    if systemctl --user is-active wallpaper-slideshow@all.timer; then
+        systemctl --user restart wallpaper-slideshow@all.timer
+    elif systemctl --user is-active wallpaper-slideshow@s.timer; then
+        systemctl --user restart wallpaper-slideshow@s.timer
+    elif systemctl --user is-active wallpaper-slideshow@q.timer; then
+        systemctl --user restart wallpaper-slideshow@q.timer
+    elif systemctl --user is-active wallpaper-slideshow@e.timer; then
+        systemctl --user restart wallpaper-slideshow@e.timer
     else
-        . "$WALLCHANGE" --random
+        notify-send -h string:x-dunst-stack-tag:wallpaperslideshow "Slideshow must be running"
     fi
 }
 
@@ -60,15 +62,9 @@ copy_clipboard() {
     . "$WALLCHANGE" --copy-clipboard
 }
 
-case $(printf "Start\\nStop\\nEnable\\nDisable\\nStop & Disable\\nChange colors\\nCopy to\\nCopy clipboard\\nNext image\\nReset" | dmenu $DMENU_OPTIONS -fn "$DMENU_FN" -p "Wallpaper slideshow") in
-    "Start") start_slideshow ;;
+case $(printf "Start\\nStop\\nChange colors\\nCopy to\\nCopy clipboard\\nNext image\\nReset" | dmenu $DMENU_OPTIONS -fn "$DMENU_FN" -p "Wallpaper slideshow") in
+    "Start") start_menu ;;
     "Stop") stop_slideshow ;;
-    "Enable") enable_slideshow ;;
-    "Disable") disable_slideshow ;;
-    "Stop & Disable")
-        stop_slideshow
-        disable_slideshow
-        ;;
     "Change colors") change_colors ;;
     "Copy to") copy_to ;;
     "Copy clipboard") copy_clipboard ;;

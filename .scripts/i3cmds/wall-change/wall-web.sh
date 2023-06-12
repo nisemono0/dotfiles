@@ -230,30 +230,16 @@ wallhaven() {
 }
 
 random_local() {
-    . "$WALLCHANGE" --random
+    . "$WALLCHANGE" --random-menu
 }
 
 case $(printf "Konachan\\nWallhaven\\nRandom local\\nChange colors\\nCopy to\\nCopy clipboard\\nReset" | dmenu $DMENU_OPTIONS -fn "$DMENU_FN" -p "Select option") in
-    "Konachan")
-        konachan
-        ;;
-    "Wallhaven")
-        wallhaven
-        ;;
-    "Random local")
-        random_local
-        ;;
-    "Change colors")
-        change_colors
-        ;;
-    "Copy to")
-        copy_to
-        ;;
-    "Copy clipboard")
-        copy_clipboard
-        ;;
-    "Reset") 
-        reset_wallpaper
-        ;;
+    "Konachan") konachan ;;
+    "Wallhaven") wallhaven ;;
+    "Random local") random_local ;;
+    "Change colors") change_colors ;;
+    "Copy to") copy_to ;;
+    "Copy clipboard") copy_clipboard ;;
+    "Reset") reset_wallpaper ;;
     *) exit ;;
 esac

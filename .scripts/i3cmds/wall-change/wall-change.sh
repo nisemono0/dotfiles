@@ -132,21 +132,6 @@ set_wallpaper(){
     exit 0
 }
 
-dmenu_menu(){
-    case $(printf "All\\nSafe\\nQuestionable\\nExplicit\\nChange colors\\nCopy to\\nCopy clipboard\\nRandom\\nReset" | dmenu $DMENU_OPTIONS -fn "$DMENU_FN" -p "Select option") in
-        "All") set_wallpaper "$ALL_WALLPAPERS_DIR" ;;
-        "Safe") set_wallpaper "$S_WALLPAPERS_DIR" ;;
-        "Questionable") set_wallpaper "$Q_WALLPAPERS_DIR" ;;
-        "Explicit") set_wallpaper "$E_WALLPAPERS_DIR" ;;
-        "Change colors") change_colors ;;
-        "Copy to") copy_to ;;
-        "Copy clipboard") copy_clipboard ;;
-        "Random") random_wallpaper "$ALL_WALLPAPERS_DIR" ;;
-        "Reset") reset_wallpaper ;;
-        *) exit ;;
-    esac
-}
-
 random_wallpaper(){
     backend="haishoku"
     saturation="Default"
@@ -167,26 +152,42 @@ random_wallpaper(){
     wal -ntq --backend "$backend" -i "$wallpaper" || exit 1
 }
 
+random_menu(){
+    case $(printf "All\\nSafe\\nQuestionable\\nExplicit" | dmenu $DMENU_OPTIONS -fn "$DMENU_FN" -p "Select random") in
+        "All") random_wallpaper "$ALL_WALLPAPERS_DIR" ;;
+        "Safe") random_wallpaper "$S_WALLPAPERS_DIR" ;;
+        "Questionable") random_wallpaper "$Q_WALLPAPERS_DIR" ;;
+        "Explicit") random_wallpaper "$E_WALLPAPERS_DIR" ;;
+        *) exit ;;
+    esac
+}
+
+dmenu_menu(){
+    case $(printf "All\\nSafe\\nQuestionable\\nExplicit\\nChange colors\\nCopy to\\nCopy clipboard\\nRandom\\nReset" | dmenu $DMENU_OPTIONS -fn "$DMENU_FN" -p "Select option") in
+        "All") set_wallpaper "$ALL_WALLPAPERS_DIR" ;;
+        "Safe") set_wallpaper "$S_WALLPAPERS_DIR" ;;
+        "Questionable") set_wallpaper "$Q_WALLPAPERS_DIR" ;;
+        "Explicit") set_wallpaper "$E_WALLPAPERS_DIR" ;;
+        "Change colors") change_colors ;;
+        "Copy to") copy_to ;;
+        "Copy clipboard") copy_clipboard ;;
+        "Random") random_menu ;;
+        "Reset") reset_wallpaper ;;
+        *) exit ;;
+    esac
+}
+
+
 case "$1" in
-    --menu)
-        dmenu_menu
-        ;;
-    --random)
-        random_wallpaper "$ALL_WALLPAPERS_DIR"
-        ;;
-    --reset)
-        reset_wallpaper
-        ;;
-    --change-colors)
-        change_colors
-        ;;
-    --copy-to)
-        copy_to
-        ;;
-    --copy-clipboard)
-        copy_clipboard
-        ;;
-    *)
-        exit 1
-        ;;
+    --menu) dmenu_menu ;;
+    --random-menu) random_menu ;;
+    --random-all) random_wallpaper "$ALL_WALLPAPERS_DIR" ;;
+    --random-s) random_wallpaper "$S_WALLPAPERS_DIR" ;;
+    --random-q) random_wallpaper "$Q_WALLPAPERS_DIR" ;;
+    --random-e) random_wallpaper "$E_WALLPAPERS_DIR" ;;
+    --reset) reset_wallpaper ;;
+    --change-colors) change_colors ;;
+    --copy-to) copy_to ;;
+    --copy-clipboard) copy_clipboard ;;
+    *) exit ;;
 esac

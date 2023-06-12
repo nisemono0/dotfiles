@@ -4,7 +4,7 @@ Description=Wallpaper slideshow timer
 [Timer]
 OnActiveSec=0s
 OnUnitActiveSec=3m
-Unit=wallpaper-slideshow.service
+Unit=wallpaper-set-%i.service
 
 [Install]
 WantedBy=timers.target
