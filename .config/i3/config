@@ -29,7 +29,7 @@ set $wall_web --no-startup-id ~/.scripts/i3cmds/wall-change/wall-web.sh
 set $end_session --no-startup-id ~/.scripts/i3cmds/end-session.sh
 set $kill_proc --no-startup-id ~/.scripts/i3cmds/kill-proc.sh
 set $nmtui --no-startup-id /usr/bin/urxvt -geometry 75x20 -name nmtui-instance -e nmtui
-set $pulsemixer --no-startup-id /usr/bin/urxvt -geometry 100x20 -name pulsemixer-instance -e pulsemixer
+set $pulsemixer --no-startup-id /usr/bin/urxvt -geometry 100x20 -name pulsemixer-instance -e pulsemixer --color 1
 set $wsutil --no-startup-id ~/.scripts/i3cmds/i3wsutil.sh
 set $mousespeed --no-startup-id ~/.scripts/i3cmds/mousespeed.sh
 set $htop --no-startup-id /usr/bin/urxvt -e htop && i3-msg workspace back_and_forth
