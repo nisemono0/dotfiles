@@ -62,7 +62,7 @@ call lexima#insmode#map_hook('before', '<CR>', '')
 
 inoremap <expr> <C-j> pumvisible() ? "\<C-n>" : "\<Down>"
 inoremap <expr> <C-k> pumvisible() ? "\<C-p>" : "\<Up>"
-inoremap <expr> <TAB> pumvisible() ? "\<C-y>" : "\<CR>"
+inoremap <expr> <TAB> pumvisible() ? "\<C-y>" : "\<TAB>"
 
 inoremap <C-@> <C-n>
 inoremap <C-Space> <C-n>
