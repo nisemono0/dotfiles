@@ -209,6 +209,7 @@ bindsym XF86AudioRaiseVolume exec --no-startup-id pulsemixer --change-volume +5 
 ##---Dunst Keys---##
 bindsym $mod+grave exec --no-startup-id dunstctl close &
 bindsym $mod+Shift+grave exec --no-startup-id dunstctl history-pop &
+bindsym $mod+Ctrl+grave exec --no-startup-id dunstctl history-clear && notify-send "History cleared"
 
 ##---ncmpcpp---##
 bindsym $mod+n exec $ncmpcpp
