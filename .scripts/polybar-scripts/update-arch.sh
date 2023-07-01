@@ -34,19 +34,12 @@ detail_updates(){
     read -rsn 1 ans
     ans=$(echo "$ans" | tr '[:upper:]' '[:lower:]')
     case "$ans" in
-        "q")
-            exit
-            ;;
-        "n")
-            exit
-            ;;
-        "y")
+        q|n|Q|N) exit ;;
+        y|Y|"")
             sudo pacman -Syu
             read -rsn 1
             ;;
-        *)
-            exit
-            ;;
+        *) exit ;;
     esac
 }
 
