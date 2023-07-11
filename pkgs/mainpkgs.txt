@@ -70,7 +70,6 @@ libtool
 lutris
 lxsession
 m4
-maim
 make
 man-db
 man-pages
@@ -113,7 +112,9 @@ qbittorrent
 ranger
 rxvt-unicode
 samba
+scrot
 sed
+slop
 socat
 sox
 steam
