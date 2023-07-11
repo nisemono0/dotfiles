@@ -14,12 +14,12 @@ save_screenshot() {
 
     case "$1" in
         full)
-            if maim --hidecursor --capturebackground "$scr"; then
+            if scrot --format png "$scr"; then
                 notify-send "Saved screenshot as ${scr/*\/}" -i "${scr}"
             fi
             ;;
         area)
-            if maim --hidecursor --capturebackground --select --bordersize 2 "$scr" 2>/dev/null; then
+            if scrot -s -f -l mode=classic,width=2,color=white "$scr"; then
                 notify-send "Saved screenshot as ${scr/*\/}" -i "${scr}"
             fi
             ;;
@@ -34,14 +34,14 @@ save_clipboard() {
 
     case "$1" in
         full)
-            if maim --hidecursor --capturebackground --format png "$scr" 2>/dev/null; then
+            if scrot --overwrite --format png "$scr"; then
                 xclip -selection clipboard -target image/png -i "$scr" &> /dev/null && \
                 notify-send "Screenshot saved in clipboard" -i "$scr" && \
                 rm -- "$scr"
             fi
             ;;
         area)
-            if maim --hidecursor --capturebackground --select --bordersize 2 --format png "$scr" 2>/dev/null; then
+            if scrot -s -f -l mode=classic,width=2,color=white --overwrite --format png "$scr"; then
 	            xclip -selection clipboard -target image/png -i "$scr" &> /dev/null && \
 	            notify-send "Screenshot saved in clipboard" -i "$scr" && \
 	            rm -- "$scr"

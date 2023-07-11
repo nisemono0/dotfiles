@@ -225,8 +225,8 @@ bindsym $mod+m exec $pulsemixer
 bindsym Print exec $screenshot --save-full
 bindsym Shift+Print exec $screenshot --clip-full
 # Window
-bindsym Ctrl+Print exec $screenshot --save-area
-bindsym Ctrl+Shift+Print exec $screenshot --clip-area
+bindsym --release Ctrl+Print exec $screenshot --save-area
+bindsym --release Ctrl+Shift+Print exec $screenshot --clip-area
 
 ##---Wallpaper menu---##
 bindsym $mod+Shift+w exec $wall_change --menu
