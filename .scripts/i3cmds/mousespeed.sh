@@ -36,13 +36,13 @@ reset_speed() {
 }
 
 toggle_accel() {
-    if [ "$accel" = "1,0" ]; then
+    if [ "$accel" = "1,0" ] || [ "$accel" = "1,0,0" ]; then
         if xinput --set-prop "$MOUSE_NAME" "$PROP_NAME_ACCEL" 0, 1; then
             notify-send -h string:x-dunst-stack-tag:mouseopt "Mouse accel changed" "Accel: Flat (0, 1)"
         else
             notify-send -u critical "Couldn't change mouse accel"
         fi
-    elif [ "$accel" = "0,1" ]; then
+    elif [ "$accel" = "0,1" ] || [ "$accel" = "0,1,0" ]; then
         if xinput --set-prop "$MOUSE_NAME" "$PROP_NAME_ACCEL" 1, 0; then
             notify-send -h string:x-dunst-stack-tag:mouseopt "Mouse accel changed" "Accel: Adaptive (1, 0)"
         else
