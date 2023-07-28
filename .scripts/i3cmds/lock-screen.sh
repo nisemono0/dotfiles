@@ -1,7 +1,7 @@
 #!/usr/bin/bash -e
 
 TMPBG=/tmp/screen_locked.jpg
-maim -m 8 --hidecursor --capturebackground $TMPBG
+scrot -q 80 $TMPBG
 
 mogrify -scale 20% -blur 0x1.5 -resize 500% $TMPBG
 
