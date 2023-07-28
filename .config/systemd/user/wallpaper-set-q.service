@@ -2,7 +2,7 @@
 Description=Set random from q wallpapers
 
 [Service]
-Type=oneshot
+Type=forking
 StandardOutput=null
 StandardError=null
 ExecStart=/bin/bash "%h"/.scripts/i3cmds/wall-change/wall-change.sh --random-q
