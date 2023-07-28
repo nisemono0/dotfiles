@@ -52,6 +52,6 @@ i3lock --image=$TMPBG  \
     --separator-color=$separatorcolor --ringver-color=$ringvercolor \
     --insidever-color=$insidevercolor --verif-text='Verifying password' --verif-color=$verifcolor --verifoutline-color=$outcolor --verifoutline-width=$outverifw --ringwrong-color=$ringwrongcolor \
     --insidewrong-color=$insidewrongcolor --wrong-text='Wrong password' --wrong-color=$wrongcolor --wrongoutline-color=$outcolor --wrongoutline-width=$outwrongw --keyhl-color=$keyhlcolor \
-    --bshl-color=$bshlcolor --noinput-text='' --greeter-text="Screen locked" --greeter-color=$greetercolor --greeteroutline-color=$outcolor --greeteroutline-width=$outgreeterw
+    --bshl-color=$bshlcolor --noinput-text="" --greeter-text="" --greeter-color=$greetercolor --greeteroutline-color=$outcolor --greeteroutline-width=$outgreeterw
 
 rm $TMPBG
