@@ -34,6 +34,7 @@ set $wsutil --no-startup-id ~/.scripts/i3cmds/i3wsutil.sh
 set $mousespeed --no-startup-id ~/.scripts/i3cmds/mousespeed.sh
 set $htop --no-startup-id /usr/bin/urxvt -e htop && i3-msg workspace back_and_forth
 set $togglecomp --no-startup-id ~/.scripts/i3cmds/toggle-comp.sh
+set $transformers_ocr --no-startup-id transformers_ocr recognize
 
 set_from_resource $fg foreground
 set_from_resource $bg background
@@ -241,6 +242,9 @@ bindsym $mod+Ctrl+plus exec $mousespeed --inc
 bindsym $mod+Ctrl+minus exec $mousespeed --dec
 bindsym $mod+Ctrl+Shift+plus exec $mousespeed --reset
 bindsym $mod+Ctrl+Shift+minus exec $mousespeed --accel
+
+##---JP OCR---$$
+bindsym $mod+o exec $transformers_ocr
 
 ##---Color: border, background, text, indicater, child_border---##
 client.focused          $fg  $fg  $fg  $fg
