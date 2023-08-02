@@ -41,6 +41,7 @@ opencl-nvidia
 overmix-git
 pocl
 rocm-opencl-runtime
+transformers_ocr-scrot
 vulkan-amdgpu-pro
 vulkan-intel
 vulkan-radeon
