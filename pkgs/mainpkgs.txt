@@ -73,6 +73,7 @@ m4
 make
 man-db
 man-pages
+mangohud
 materia-gtk-theme
 mediainfo
 mpc
