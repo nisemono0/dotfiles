@@ -79,8 +79,8 @@
     per_monitor_dpi = true
 
 [urgency_low]
-    background = "#222222"
-    foreground = "#888888"
+    background = "#5A524F"
+    foreground = "#FFFFFF"
     timeout = 5
 
 [urgency_normal]
