@@ -6,6 +6,6 @@ SF="$(xrdb -query | grep -w "*color7" | cut -f 2)"
 SB="$(xrdb -query | grep -w "*color1" | cut -f 2)"
 
 DMENU_FN="SauceCodePro Nerd Font:style=Bold:size=10"
-DMENU_OPTIONS="-b -i -nf $NF -nb $NB -sf $SF -sb $SB"
-export DMENU_FN
-export DMENU_OPTIONS
+DMENU_ARGS=(-b -i -nf "$NF" -nb "$NB" -sf "$SF" -sb "$SB" -fn "$DMENU_FN")
+
+export DMENU_ARGS

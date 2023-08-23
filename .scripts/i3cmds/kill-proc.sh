@@ -2,7 +2,7 @@
 . $HOME/.dmenurc
 
 kill_proc(){
-    confirm=$(printf "Yes\\nNo" | dmenu $DMENU_OPTIONS -fn "$DMENU_FN" -p "Are you sure") || exit 1
+    confirm=$(printf "Yes\\nNo" | dmenu "${DMENU_ARGS[@]}" -p "Are you sure") || exit 1
     case "$confirm" in
         "Yes")
             if kill -9 "${1%% *}" 2>/dev/null; then
@@ -17,7 +17,7 @@ kill_proc(){
 }
 
 selected_process="$(ps --user "$USER" --format pid,%mem,%cpu,stime,cmd --sort=-%mem,-%cpu --no-header | \
-                    dmenu $DMENU_OPTIONS -fn "$DMENU_FN" -l 15 -p "Search for process to kill" | \
+                    dmenu "${DMENU_ARGS[@]}" -l 15 -p "Search for process to kill" | \
                     awk '{print $1}')"
 
 

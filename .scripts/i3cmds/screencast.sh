@@ -11,7 +11,7 @@ check_screencast() {
     if [ -f "${PIDFILE}" ]; then
         PID=$(cat "${PIDFILE}")
         if [ -n "$(ps -p "${PID}" -o pid=)" ]; then
-            selection=$(printf "Stop\\nContinue" | dmenu -fn "$DMENU_FN" $DMENU_OPTIONS -p "Screencast in progress")
+            selection=$(printf "Stop\\nContinue" | dmenu "${DMENU_ARGS[@]}" -p "Screencast in progress")
             case "${selection}" in
                 "Stop")
                     kill "${PID}"
@@ -30,17 +30,17 @@ check_screencast() {
 }
 
 set_format() {
-    format=$(printf "webm\\nmp4\\nmkv" | dmenu -fn "$DMENU_FN" $DMENU_OPTIONS -p "Output format")
+    format=$(printf "webm\\nmp4\\nmkv" | dmenu "${DMENU_ARGS[@]}" -p "Output format")
     [ -z "${format}" ] && exit 1
 }
 
 set_framerate() {
-    framerate=$(printf "15\\n30\\n60" | dmenu -fn "$DMENU_FN" $DMENU_OPTIONS -p "Framerate")
+    framerate=$(printf "15\\n30\\n60" | dmenu "${DMENU_ARGS[@]}" -p "Framerate")
     [ -z "${framerate}" ] && exit 1
 }
 
 set_scale() {
-    case $(printf "No scale\\n900p\\n720p\\n540p\\n480p" | dmenu -fn "$DMENU_FN" $DMENU_OPTIONS -p "Video scale") in
+    case $(printf "No scale\\n900p\\n720p\\n540p\\n480p" | dmenu "${DMENU_ARGS[@]}" -p "Video scale") in
         "No scale") scale="-1:-1" ;;
         "900p") scale="-1:900" ;;
         "720p") scale="-1:720" ;;
@@ -51,7 +51,7 @@ set_scale() {
 }
 
 set_crf() {
-    crf=$(printf "Default" | dmenu -fn "$DMENU_FN" $DMENU_OPTIONS -p "Input CRF or use default (23)")
+    crf=$(printf "Default" | dmenu "${DMENU_ARGS[@]}" -p "Input CRF or use default (23)")
     [ -z "${crf}" ] && exit 1
     if [ "${crf}" = "Default" ]; then
         crf="23"
@@ -59,7 +59,7 @@ set_crf() {
 }
 
 set_audio() {
-    case $(printf "Yes\\nNo" | dmenu -fn "$DMENU_FN" $DMENU_OPTIONS -p "Record audio") in
+    case $(printf "Yes\\nNo" | dmenu "${DMENU_ARGS[@]}" -p "Record audio") in
         "Yes") audio="Yes" ;;
         "No") audio="No" ;;
         *) exit ;;
@@ -67,7 +67,7 @@ set_audio() {
 }
 
 set_preset() {
-    case $(printf "medium\\nfast\\nfaster\\nveryfast\\nsuperfast\\nultrafast\\nslow\\nslower\\nveryslow" | dmenu -fn "$DMENU_FN" $DMENU_OPTIONS -p "Preset") in
+    case $(printf "medium\\nfast\\nfaster\\nveryfast\\nsuperfast\\nultrafast\\nslow\\nslower\\nveryslow" | dmenu "${DMENU_ARGS[@]}" -p "Preset") in
         "medium") preset="medium" ;;
         "fast") preset="fast" ;;
         "faster") preset="faster" ;;
@@ -119,7 +119,7 @@ start_screencast() {
 
 check_screencast
 
-dimensions=$(printf "Fullscreen\\nRegion" | dmenu -fn "$DMENU_FN" $DMENU_OPTIONS -p "Dimensions")
+dimensions=$(printf "Fullscreen\\nRegion" | dmenu "${DMENU_ARGS[@]}" -p "Dimensions")
 case "${dimensions}" in
     "Fullscreen")
         read -r width height <<< "$(xdpyinfo | awk -F'[ x]+' '/dimensions:/{print $3, $4}')"

@@ -16,7 +16,7 @@ change_sink(){
     exit 0
 }
 
-selection="$(pacmd list-sinks | awk '$1 == "name:" {print $2}' | tr -d '<>' | dmenu -fn "$DMENU_FN" $DMENU_OPTIONS -p "Select output sink")"
+selection="$(pacmd list-sinks | awk '$1 == "name:" {print $2}' | tr -d '<>' | dmenu "${DMENU_ARGS[@]}" -p "Select output sink")"
 
 [ -z "$selection" ] && exit 0
 change_sink "$selection"

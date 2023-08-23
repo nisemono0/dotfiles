@@ -2,7 +2,7 @@
 . $HOME/.dmenurc
 
 shut(){
-    sel=$(printf "Yes\\nNo" | dmenu -fn "$DMENU_FN" $DMENU_OPTIONS -p "Are you sure you want to shutdown") || exit 1
+    sel=$(printf "Yes\\nNo" | dmenu "${DMENU_ARGS[@]}" -p "Are you sure you want to shutdown") || exit 1
     case "$sel" in
         "Yes") shutdown now ;;
         *) exit ;;
@@ -10,7 +10,7 @@ shut(){
 }
 
 reb(){
-    sel=$(printf "Yes\\nNo" | dmenu -fn "$DMENU_FN" $DMENU_OPTIONS -p "Are you sure you want to reboot") || exit 1
+    sel=$(printf "Yes\\nNo" | dmenu "${DMENU_ARGS[@]}" -p "Are you sure you want to reboot") || exit 1
     case "$sel" in
         "Yes") reboot ;;
         *) exit ;;
@@ -18,7 +18,7 @@ reb(){
 }
 
 sleep_toram(){
-    sel=$(printf "Yes\\nNo" | dmenu -fn "$DMENU_FN" $DMENU_OPTIONS -p "Are you sure you want to sleep") || exit 1
+    sel=$(printf "Yes\\nNo" | dmenu "${DMENU_ARGS[@]}" -p "Are you sure you want to sleep") || exit 1
     case "$sel" in
         "Yes") systemctl suspend ;;
         *) exit ;;
@@ -26,14 +26,14 @@ sleep_toram(){
 }
 
 exit_i3(){
-    sel=$(printf "Yes\\nNo" | dmenu -fn "$DMENU_FN" $DMENU_OPTIONS -p "Are you sure you want to logout") || exit 1
+    sel=$(printf "Yes\\nNo" | dmenu "${DMENU_ARGS[@]}" -p "Are you sure you want to logout") || exit 1
     case "$sel" in
         "Yes") i3-msg exit ;;
         *) exit ;;
     esac
 }
 
-selected=$(printf "Shutdown\\nReboot\\nSleep (RAM)\\nLogout" | dmenu -fn "$DMENU_FN" $DMENU_OPTIONS -p "End session") || exit 1
+selected=$(printf "Shutdown\\nReboot\\nSleep (RAM)\\nLogout" | dmenu "${DMENU_ARGS[@]}" -p "End session") || exit 1
 case "$selected" in
     "Shutdown") shut ;;
     "Reboot") reb ;;

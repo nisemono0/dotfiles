@@ -14,7 +14,7 @@ start_slideshow() {
 }
 
 start_menu() {
-    case $(printf "All\\nSafe\\nQuestionable\\nExplicit" | dmenu $DMENU_OPTIONS -fn "$DMENU_FN" -p "Slideshow type") in
+    case $(printf "All\\nSafe\\nQuestionable\\nExplicit" | dmenu "${DMENU_ARGS[@]}" -p "Slideshow type") in
         "All") start_slideshow "all" ;;
         "Safe") start_slideshow "s" ;;
         "Questionable") start_slideshow "q" ;;
@@ -62,7 +62,7 @@ copy_clipboard() {
     . "$WALLCHANGE" --copy-clipboard
 }
 
-case $(printf "Start\\nStop\\nChange colors\\nCopy to\\nCopy clipboard\\nNext image\\nReset" | dmenu $DMENU_OPTIONS -fn "$DMENU_FN" -p "Wallpaper slideshow") in
+case $(printf "Start\\nStop\\nChange colors\\nCopy to\\nCopy clipboard\\nNext image\\nReset" | dmenu "${DMENU_ARGS[@]}" -p "Wallpaper slideshow") in
     "Start") start_menu ;;
     "Stop") stop_slideshow ;;
     "Change colors") change_colors ;;

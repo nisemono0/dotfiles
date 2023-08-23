@@ -60,7 +60,7 @@ case "$1" in
     "d") # Delete the selected files (dmenu confirmation)
         . $HOME/.dmenurc
         while read -r file; do
-            [ "$(printf "No\\nYes" | dmenu $DMENU_OPTIONS -fn "$DMENU_FN" -p "Really delete $file?")" = "Yes" ] && delete_file "$file"
+            [ "$(printf "No\\nYes" | dmenu "${DMENU_ARGS[@]}" -p "Really delete $file?")" = "Yes" ] && delete_file "$file"
         done
         ;;
     "greater") # (>) Rotate clockwise 90 degress and save images

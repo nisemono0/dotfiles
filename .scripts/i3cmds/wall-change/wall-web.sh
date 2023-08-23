@@ -18,7 +18,7 @@ saturation=""
 
 set_resolution() {
     select_resolution () {
-        case $(printf "Exact\\nGreater" | dmenu $DMENU_OPTIONS -fn "$DMENU_FN" -p "Select resolution type") in
+        case $(printf "Exact\\nGreater" | dmenu "${DMENU_ARGS[@]}" -p "Select resolution type") in
             "Exact")
                 resolution_type="exact"
             ;;
@@ -28,7 +28,7 @@ set_resolution() {
             *) exit ;;
         esac
 
-        case $(printf "1080p\\n1440p\\n1800p\\n2160p\\n2880p\\n4320p" | dmenu $DMENU_OPTIONS -fn "$DMENU_FN" -p "Resolution") in
+        case $(printf "1080p\\n1440p\\n1800p\\n2160p\\n2880p\\n4320p" | dmenu "${DMENU_ARGS[@]}" -p "Resolution") in
             "1080p")
                 width="1920"
                 height="1080"
@@ -56,7 +56,7 @@ set_resolution() {
             *) exit ;;
         esac
     }
-    case $(printf "Yes\\nNo" | dmenu $DMENU_OPTIONS -fn "$DMENU_FN" -p "Use default resolution?") in
+    case $(printf "Yes\\nNo" | dmenu "${DMENU_ARGS[@]}" -p "Use default resolution?") in
         "Yes")
             default_resolution="true"
             ;;
@@ -69,7 +69,7 @@ set_resolution() {
 }
 
 set_rating () {
-    case $(printf "Safe\\nEcchi\\nHentai\\nSafe+Ecchi\\nEcchi+Hentai\\nAll" | dmenu $DMENU_OPTIONS -fn "$DMENU_FN" -p "Select rating") in
+    case $(printf "Safe\\nEcchi\\nHentai\\nSafe+Ecchi\\nEcchi+Hentai\\nAll" | dmenu "${DMENU_ARGS[@]}" -p "Select rating") in
         "Safe") rating="safe" ;;
         "Ecchi") rating="ecchi" ;;
         "Hentai") rating="hentai" ;;
@@ -81,7 +81,7 @@ set_rating () {
 }
 
 set_search() {
-    search=$(printf "" | dmenu $DMENU_OPTIONS -fn "$DMENU_FN" -p "Search tags")
+    search=$(printf "" | dmenu "${DMENU_ARGS[@]}" -p "Search tags")
 }
 
 download_image() {
@@ -100,7 +100,7 @@ download_image() {
 }
 
 set_wal_options() {
-    case $(printf "haishoku\\nwal\\ncolorz\\ncolorthief" | dmenu $DMENU_OPTIONS -fn "$DMENU_FN" -p "Select backend") in
+    case $(printf "haishoku\\nwal\\ncolorz\\ncolorthief" | dmenu "${DMENU_ARGS[@]}" -p "Select backend") in
         "haishoku") backend="haishoku" ;;
         "wal") backend="wal" ;;
         "colorz") backend="colorz" ;;
@@ -110,7 +110,7 @@ set_wal_options() {
 
     options_sat=$(seq 0.1 0.1 1.0)
     options_sat="Default"$'\n'"$options_sat"
-    saturation=$(printf "%s\n" "${options_sat[@]}" | dmenu $DMENU_OPTIONS -fn "$DMENU_FN" -p "Select or type in saturation (0.1-1.0)")
+    saturation=$(printf "%s\n" "${options_sat[@]}" | dmenu "${DMENU_ARGS[@]}" -p "Select or type in saturation (0.1-1.0)")
     [[ -z "$saturation" ]] && exit 1
 }
 
@@ -233,7 +233,7 @@ random_local() {
     . "$WALLCHANGE" --random-menu
 }
 
-case $(printf "Konachan\\nWallhaven\\nRandom local\\nChange colors\\nCopy to\\nCopy clipboard\\nReset" | dmenu $DMENU_OPTIONS -fn "$DMENU_FN" -p "Select option") in
+case $(printf "Konachan\\nWallhaven\\nRandom local\\nChange colors\\nCopy to\\nCopy clipboard\\nReset" | dmenu "${DMENU_ARGS[@]}" -p "Select option") in
     "Konachan") konachan ;;
     "Wallhaven") wallhaven ;;
     "Random local") random_local ;;

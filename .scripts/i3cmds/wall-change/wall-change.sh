@@ -27,7 +27,7 @@ reset_wallpaper(){
 }
 
 set_wal_options(){
-    case $(printf "haishoku\\nwal\\ncolorz\\ncolorthief" | dmenu $DMENU_OPTIONS -fn "$DMENU_FN" -p "Select backend") in
+    case $(printf "haishoku\\nwal\\ncolorz\\ncolorthief" | dmenu "${DMENU_ARGS[@]}" -p "Select backend") in
         "haishoku") backend="haishoku" ;;
         "wal") backend="wal" ;;
         "colorz") backend="colorz" ;;
@@ -37,7 +37,7 @@ set_wal_options(){
 
     options_sat=$(seq 0.1 0.1 1.0)
     options_sat="Default"$'\n'"$options_sat"
-    saturation=$(printf "%s\n" "${options_sat[@]}" | dmenu $DMENU_OPTIONS -fn "$DMENU_FN" -p "Select or type in saturation (0.1-1.0)")
+    saturation=$(printf "%s\n" "${options_sat[@]}" | dmenu "${DMENU_ARGS[@]}" -p "Select or type in saturation (0.1-1.0)")
     [[ -z "$saturation" ]] && exit 1
 }
 
@@ -58,12 +58,12 @@ change_colors(){
 copy_to() {
     if [ -f "$TMP_WALLPAPER" ]; then
         copy_path="$(find "$HOME" -maxdepth 3 -not -path "*.*" -type d 2>/dev/null | 
-            dmenu $DMENU_OPTIONS -fn "$DMENU_FN" -p "Copy where")"
+            dmenu "${DMENU_ARGS[@]}" -p "Copy where")"
         copy_path="${copy_path/#\~/$HOME}"
         [ -z "$copy_path" ] && exit 1
 
         if [ ! -d "$copy_path" ]; then
-            askmkdir="$(printf "No\\nYes" | dmenu $DMENU_OPTIONS -fn "$DMENU_FN" -p "Create: $copy_path")"
+            askmkdir="$(printf "No\\nYes" | dmenu "${DMENU_ARGS[@]}" -p "Create: $copy_path")"
             [ "$askmkdir" = "Yes" ] && (mkdir -p "$copy_path") || exit 1
         fi
         
@@ -153,7 +153,7 @@ random_wallpaper(){
 }
 
 random_menu(){
-    case $(printf "All\\nSafe\\nQuestionable\\nExplicit" | dmenu $DMENU_OPTIONS -fn "$DMENU_FN" -p "Select random") in
+    case $(printf "All\\nSafe\\nQuestionable\\nExplicit" | dmenu "${DMENU_ARGS[@]}" -p "Select random") in
         "All") random_wallpaper "$ALL_WALLPAPERS_DIR" ;;
         "Safe") random_wallpaper "$S_WALLPAPERS_DIR" ;;
         "Questionable") random_wallpaper "$Q_WALLPAPERS_DIR" ;;
@@ -163,7 +163,7 @@ random_menu(){
 }
 
 dmenu_menu(){
-    case $(printf "All\\nSafe\\nQuestionable\\nExplicit\\nChange colors\\nCopy to\\nCopy clipboard\\nRandom\\nReset" | dmenu $DMENU_OPTIONS -fn "$DMENU_FN" -p "Select option") in
+    case $(printf "All\\nSafe\\nQuestionable\\nExplicit\\nChange colors\\nCopy to\\nCopy clipboard\\nRandom\\nReset" | dmenu "${DMENU_ARGS[@]}" -p "Select option") in
         "All") set_wallpaper "$ALL_WALLPAPERS_DIR" ;;
         "Safe") set_wallpaper "$S_WALLPAPERS_DIR" ;;
         "Questionable") set_wallpaper "$Q_WALLPAPERS_DIR" ;;

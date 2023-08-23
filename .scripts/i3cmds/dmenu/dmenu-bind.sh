@@ -1,3 +1,3 @@
 #!/bin/sh
 . $HOME/.dmenurc
-dmenu_run $DMENU_OPTIONS -fn "$DMENU_FN" -p "Run"
+dmenu_run "${DMENU_ARGS[@]}" -p "Run"
