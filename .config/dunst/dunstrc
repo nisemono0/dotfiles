@@ -29,7 +29,7 @@
     horizontal_padding = 8
     text_icon_padding = 0
     frame_width = 3
-	frame_color = "#A6A294"
+    frame_color = "#6273A7"
     separator_color = frame
     sort = yes
     idle_threshold = 120
@@ -79,13 +79,13 @@
     per_monitor_dpi = true
 
 [urgency_low]
-    background = "#5A524F"
-    foreground = "#FFFFFF"
+    background = "#4B5987"
+    foreground = "#C3CBE1"
     timeout = 5
 
 [urgency_normal]
-    background = "#5A524F"
-    foreground = "#FFFFFF"
+    background = "#4B5987"
+    foreground = "#C3CBE1"
     timeout = 5
 
 [urgency_critical]
@@ -93,4 +93,3 @@
     foreground = "#FFFFFF"
     frame_color = "#FF0000"
     timeout = 0
-
