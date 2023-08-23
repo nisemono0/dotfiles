@@ -60,7 +60,7 @@
     history_length = 20
 
     ### Misc/Advanced ###
-	dmenu =	/usr/bin/dmenu -b -i -p Dunst:
+	dmenu =	~/.scripts/dunst/dmenu-dunst.sh
     browser = /usr/bin/xdg-open
     always_run_script = true
     title = Dunst
@@ -70,7 +70,7 @@
 
     ### Mouse ###
     mouse_left_click = close_current
-    mouse_middle_click = open_url
+    mouse_middle_click = context
     mouse_right_click = close_all
 
 # Experimental features that may or may not work correctly. Do not expect them
