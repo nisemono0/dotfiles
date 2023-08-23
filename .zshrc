@@ -26,8 +26,6 @@ alias ls="ls --color=tty -v"
 
 alias _="sudo -E"
 alias sudo="sudo -E"
-alias shutdown="sudo shutdown now"
-alias reboot="sudo reboot"
 
 source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
