@@ -1,9 +1,9 @@
 #!/bin/bash
 
-NF="$(xrdb -query | grep -w "*color4" | cut -f 2)"
-NB="$(xrdb -query | grep -w "*color0" | cut -f 2)"
-SF="$(xrdb -query | grep -w "*color7" | cut -f 2)"
-SB="$(xrdb -query | grep -w "*color1" | cut -f 2)"
+NF="$(xrdb -query | grep -w "color4" | head -n1 | cut -f 2)"
+NB="$(xrdb -query | grep -w "color0" | head -n1 | cut -f 2)"
+SF="$(xrdb -query | grep -w "color7" | head -n1 | cut -f 2)"
+SB="$(xrdb -query | grep -w "color1" | head -n1 | cut -f 2)"
 
 DMENU_FN="SauceCodePro Nerd Font:style=Bold:size=10"
 DMENU_ARGS=(-b -i -nf "$NF" -nb "$NB" -sf "$SF" -sb "$SB" -fn "$DMENU_FN")
