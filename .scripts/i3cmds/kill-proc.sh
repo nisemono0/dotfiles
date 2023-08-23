@@ -3,8 +3,8 @@
 
 kill_proc(){
     confirm=$(printf "Yes\\nNo" | dmenu $DMENU_OPTIONS -fn "$DMENU_FN" -p "Are you sure") || exit 1
-	case "$confirm" in
-		"Yes")
+    case "$confirm" in
+        "Yes")
             if kill -9 "${1%% *}" 2>/dev/null; then
                 notify-send "Process killed successfully" -i dialog-information
             else
@@ -12,8 +12,8 @@ kill_proc(){
                 exit 1;
             fi
         ;;
-		*) exit ;;
-	esac
+        *) exit ;;
+    esac
 }
 
 selected_process="$(ps --user "$USER" --format pid,%mem,%cpu,stime,cmd --sort=-%mem,-%cpu --no-header | \

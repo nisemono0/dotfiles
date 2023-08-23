@@ -14,11 +14,11 @@ backend=""
 saturation=""
 
 reset_wallpaper(){
-	hsetroot -cover "$DEFAULT_WALLPAPER"
+    hsetroot -cover "$DEFAULT_WALLPAPER"
     xrdb -load "$HOME/.Xresources"
     python "$(dirname "$0")/reset-colors.py"
-	i3-msg reload &>/dev/null
-	pkill -USR1 polybar
+    i3-msg reload &>/dev/null
+    pkill -USR1 polybar
     if [ -f "$TMP_WALLPAPER" ]; then
         rm -f -- "$TMP_WALLPAPER"
     fi
@@ -58,14 +58,14 @@ change_colors(){
 copy_to() {
     if [ -f "$TMP_WALLPAPER" ]; then
         copy_path="$(find "$HOME" -maxdepth 3 -not -path "*.*" -type d 2>/dev/null | 
-		    dmenu $DMENU_OPTIONS -fn "$DMENU_FN" -p "Copy where")"
-    	copy_path="${copy_path/#\~/$HOME}"
-    	[ -z "$copy_path" ] && exit 1
+            dmenu $DMENU_OPTIONS -fn "$DMENU_FN" -p "Copy where")"
+        copy_path="${copy_path/#\~/$HOME}"
+        [ -z "$copy_path" ] && exit 1
 
         if [ ! -d "$copy_path" ]; then
-	    	askmkdir="$(printf "No\\nYes" | dmenu $DMENU_OPTIONS -fn "$DMENU_FN" -p "Create: $copy_path")"
-		    [ "$askmkdir" = "Yes" ] && (mkdir -p "$copy_path") || exit 1
-	    fi
+            askmkdir="$(printf "No\\nYes" | dmenu $DMENU_OPTIONS -fn "$DMENU_FN" -p "Create: $copy_path")"
+            [ "$askmkdir" = "Yes" ] && (mkdir -p "$copy_path") || exit 1
+        fi
         
         filename=$(basename "$TMP_WALLPAPER")
         extension=$(file -b --extension "$TMP_WALLPAPER" | cut -d '/' -f 1)

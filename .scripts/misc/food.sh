@@ -318,12 +318,12 @@ case "$1" in
   *--pizza2|pizza2)
     pizza2
   ;;
-	*--pizza|pizza)
+    *--pizza|pizza)
     pizza
   ;;
-	*--taco|taco)
-		taco
-	;;
+    *--taco|taco)
+        taco
+    ;;
   *--coffee|coffee)
     coffee
   ;;

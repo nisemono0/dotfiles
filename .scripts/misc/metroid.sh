@@ -13,7 +13,7 @@ printf "usage: `basename $0` \n\
 }
 
 text() {
-	printf "\n  .___.\n /  @  \ \n \ @ @ /\n  {'^'}\n\n"
+    printf "\n  .___.\n /  @  \ \n \ @ @ /\n  {'^'}\n\n"
 }
 
 mini() {
@@ -104,9 +104,9 @@ case "$1" in
   *-n|--normal|normal)
     normal
   ;;
-	*-t|--text|text)
-		text
-	;;
+    *-t|--text|text)
+        text
+    ;;
   *)
     text
     usage

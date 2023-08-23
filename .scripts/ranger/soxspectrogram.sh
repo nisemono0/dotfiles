@@ -9,5 +9,5 @@ if [[ "$filetype" == audio/* ]]; then
     nsxiv "$spectrogram"
     rm -- "$spectrogram"
 else
-	notify-send "Can only view spectrals of audio files"
+    notify-send "Can only view spectrals of audio files"
 fi

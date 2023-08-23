@@ -42,9 +42,9 @@ save_clipboard() {
             ;;
         area)
             if scrot -s -f -l mode=classic,width=2,color=white --overwrite --format png "$scr"; then
-	            xclip -selection clipboard -target image/png -i "$scr" &> /dev/null && \
-	            notify-send "Screenshot saved in clipboard" -i "$scr" && \
-	            rm -- "$scr"
+                xclip -selection clipboard -target image/png -i "$scr" &> /dev/null && \
+                notify-send "Screenshot saved in clipboard" -i "$scr" && \
+                rm -- "$scr"
             fi
             ;;
         *)
