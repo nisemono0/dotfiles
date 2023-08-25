@@ -2,6 +2,7 @@ arc-icon-theme
 archlinux-keyring
 atool
 autoconf
+autocutsel
 automake
 autopep8
 base-devel
