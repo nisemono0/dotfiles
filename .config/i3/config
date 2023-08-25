@@ -65,6 +65,7 @@ exec --no-startup-id fcitx -r -d
 exec --no-startup-id hsetroot -cover ~/.config/wallpapers/default
 exec_always --no-startup-id xset r rate 300 50 &
 exec_always --no-startup-id ~/.scripts/i3cmds/startup/launch-polybar.sh
+exec_always --no-startup-id ~/.scripts/i3cmds/startup/launch-autocutsel.sh
 
 ##---Basic Keys---##
 floating_modifier $mod
