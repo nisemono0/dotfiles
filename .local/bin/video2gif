@@ -1,0 +1,100 @@
+#!/bin/bash
+
+# http://blog.pkh.me/p/21-high-quality-gif-with-ffmpeg.html
+
+print_help_and_exit() {
+    case "$1" in
+        "scale")
+            echo "-s, --scale n         Set the scale, n is an int number"
+            ;;
+        "stats-mode")
+            echo "-m, --stats-mode m    Set the mode for palettegen (full, diff)"
+            ;;
+        "dither")
+            echo "-d, --dither f [n]    Set the dither for the gif (none, bayer, floyd_steinberg, sierra2, sierra2_4a)"
+            echo "                      n is only needed if bayer dither is used, controls bayer_scale, int number"
+            ;;
+        *)
+            echo "Convert video to gif"
+            echo "Usage: $(basename $0) <input_file>"
+            echo
+            echo "$(basename $0) <input_file> [output_file] [-h] [-s n] [-m m] [-d f [n]]"
+            echo "  -h, --help          Print this help"
+            echo "  -s, --scale         Set the scale of the resulted gif (default: -1)"
+            echo "  -m, --stats-mode    Set the stats mode for palettegen (default: full)"
+            echo "                      Options: full, diff"
+            echo "  -d, --dither        Set the dithering for the resulted gif (default: bayer:bayer_scale=2)"
+            echo "                      Options: none, bayer, floyd_steinberg, sierra2, sierra2_4a"
+            echo "                      If bayer is used another int is needed (-d bayer 2)"
+            ;;
+    esac
+    exit -1
+}
+
+has_arg_val() {
+    if [ "$1" -le 1 ];then
+        return 1
+    fi
+    return 0
+}
+
+[ "$#" -eq 0 ] && print_help_and_exit
+
+TMP_PALLETTE=$(mktemp --suffix=.png)
+INPUT=""
+OUTPUT=""
+SCALE="-1"
+STATS_MODE="full"
+DITHER="bayer:bayer_scale=2"
+
+POSITIONAL_ARGS=()
+
+while [ "$#" -gt 0 ]; do
+    case "$1" in
+        "-h" | "--help") print_help_and_exit ;;
+        "-s" | "--scale")
+            has_arg_val "$#" || print_help_and_exit "scale"
+            SCALE="$2"
+            shift 2
+            ;;
+        "-m" | "--stats-mode")
+            has_arg_val "$#" || print_help_and_exit "stats-mode"
+            STATS_MODE="$2"
+            shift 2
+            ;;
+        "-d" | "--dither")
+            has_arg_val "$#" || print_help_and_exit "dither"
+            if [ "$2" == "bayer" ];then
+                [ "$3" == "" ] && print_help_and_exit "dither"
+                DITHER="bayer:bayer_scale=$3"
+                shift 3
+            else
+                DITHER="$2"
+                shift 2
+            fi
+            ;;
+        -*|--*) print_help_and_exit ;;
+        *) POSITIONAL_ARGS+=("$1"); shift ;;
+    esac
+done
+
+if [ "${#POSITIONAL_ARGS[@]}" -eq 1 ];then
+    INPUT="${POSITIONAL_ARGS[0]}"
+    OUTPUT="${INPUT%.*}.gif"
+elif [ "${#POSITIONAL_ARGS[@]}" -eq 2 ];then
+    INPUT="${POSITIONAL_ARGS[0]}"
+    OUTPUT="${POSITIONAL_ARGS[1]}"
+    if [ "${OUTPUT##*.}" != "gif" ];then
+        OUTPUT="${OUTPUT}.gif"
+    fi
+else
+    print_help_and_exit "inout"
+fi
+
+FILTERS_PAL="scale=-1:$SCALE:flags=lanczos,palettegen=stats_mode=$STATS_MODE"
+FILTERS_ENC="scale=-1:$SCALE:flags=lanczos [x]; [x][1:v] paletteuse=dither=$DITHER"
+
+ffmpeg -i "${INPUT}" -vf "$FILTERS_PAL" -y "$TMP_PALLETTE"
+ffmpeg -i "${INPUT}" -i "$TMP_PALLETTE" -lavfi "$FILTERS_ENC [x]; [x][1:v] paletteuse" -y "${OUTPUT}"
+
+rm -- "$TMP_PALLETTE"
