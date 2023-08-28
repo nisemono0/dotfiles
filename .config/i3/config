@@ -36,6 +36,7 @@ set $mousespeed --no-startup-id ~/.scripts/i3cmds/mousespeed.sh
 set $htop --no-startup-id /usr/bin/urxvt -e htop && i3-msg workspace back_and_forth
 set $togglecomp --no-startup-id ~/.scripts/i3cmds/toggle-comp.sh
 set $transformers_ocr --no-startup-id transformers_ocr recognize
+set $wmfocus --no-startup-id wmfocus
 
 set_from_resource $fg foreground
 set_from_resource $bg background
@@ -130,6 +131,8 @@ bindsym $mod+Shift+a exec $wsutil --move -1
 bindsym $mod+Shift+s exec $wsutil --move +1
 bindsym $mod+Ctrl+a exec $wsutil --follow -1
 bindsym $mod+Ctrl+s exec $wsutil --follow +1
+# Focus window
+bindsym $mod+g exec $wmfocus
 
 ##---Container Keys---##
 # Change focused container
