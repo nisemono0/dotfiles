@@ -7,6 +7,7 @@ gaps inner 10
 gaps outer 0
 smart_borders on
 hide_edge_borders none
+focus_on_window_activation smart
 
 set $mod Mod4
 
@@ -188,7 +189,7 @@ bindsym $mod+minus gaps inner all minus 5
 ##---Function Keys---##
 bindsym $mod+F1 exec $browser
 bindsym $mod+Shift+F1 exec $browser_private
-bindsym $mod+F2 exec --no-startup-id notify-send F2
+bindsym $mod+F2 [urgent=latest] focus
 bindsym $mod+F3 exec --no-startup-id notify-send F3
 bindsym $mod+F4 workspace 0; exec $htop
 bindsym $mod+F5 exec $togglecomp
