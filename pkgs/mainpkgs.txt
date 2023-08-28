@@ -145,6 +145,7 @@ wget
 which
 wine-staging
 winetricks
+wmfocus
 wqy-zenhei
 xcalib
 xclip
