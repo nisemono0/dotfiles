@@ -20,9 +20,9 @@
     progress_bar_min_width = 150
     progress_bar_max_width = 300
 
-	### Notifications ###
+    ### Notifications ###
     indicate_hidden = yes
-	shrink = no
+    shrink = no
     transparency = 20
     separator_height = 5
     padding = 1
@@ -42,7 +42,7 @@
     alignment = left
     vertical_alignment = center
     show_age_threshold = 60
-	word_wrap = yes
+    word_wrap = yes
     ellipsize = middle
     ignore_newline = no
     stack_duplicates = false
@@ -60,7 +60,7 @@
     history_length = 20
 
     ### Misc/Advanced ###
-	dmenu =	~/.scripts/dunst/dmenu-dunst.sh
+    dmenu = ~/.scripts/dunst/dmenu-dunst.sh
     browser = /usr/bin/xdg-open
     always_run_script = true
     title = Dunst

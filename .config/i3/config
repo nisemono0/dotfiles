@@ -256,4 +256,4 @@ client.focused          $fg  $fg  $fg  $fg
 client.focused_inactive $bg  $bg  $bg  $bg
 client.unfocused        $bg  $bg  $bg  $bg
 client.urgent           $bg  $bg  $bg  $bg
-client.placeholder		$bg  $bg  $bg  $bg
+client.placeholder      $bg  $bg  $bg  $bg

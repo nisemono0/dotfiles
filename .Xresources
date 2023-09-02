@@ -63,21 +63,21 @@ URxvt.matcher.button: 1
 URxvt.colorUL: #4682B4
 
 ! Options
-URxvt*font:		                  xft:SauceCodePro Nerd Font Mono:size=10:style=Semibold,Regular,\
-								  xft:Noto Sans CJK JP Medium:size=10:style=Medium,Regular,\
+URxvt*font:                       xft:SauceCodePro Nerd Font Mono:size=10:style=Semibold,Regular,\
+                                  xft:Noto Sans CJK JP Medium:size=10:style=Medium,Regular,\
                                   xft:Noto Color Emoji:size=10:style=Regular,\
                                   xft:Symbola:size=10:style=Regular
 
 URxvt*boldFont:                   xft:SauceCodePro Nerd Font Mono:size=10:style=Black,Regular,\
-								  xft:Noto Sans CJK JP Black:size=10:style=Black,Regular,\
+                                  xft:Noto Sans CJK JP Black:size=10:style=Black,Regular,\
                                   xft:Noto Color Emoji:size=10:style=Regular,\
                                   xft:Symbola:size=10:style=Regular
 
-URxvt*italicFont:				  xft:SauceCodePro Nerd Font Mono:size=10:style=Semibold Italic,Italic,\
+URxvt*italicFont:                 xft:SauceCodePro Nerd Font Mono:size=10:style=Semibold Italic,Italic,\
                                   xft:Noto Color Emoji:size=10:style=Regular,\
                                   xft:Symbola:size=10:style=Regular
 
-URxvt*boldItalicFont:			  xft:SauceCodePro Nerd Font Mono:size=10:style=Semibold Italic,Italic,\
+URxvt*boldItalicFont:             xft:SauceCodePro Nerd Font Mono:size=10:style=Semibold Italic,Italic,\
                                   xft:Noto Color Emoji:size=10:style=Regular,\
                                   xft:Symbola:size=10:style=Regular
 
@@ -102,21 +102,21 @@ URxvt.keysym.Control-Left:        \033[1;5D
 
 ! Key scroll
 URxvt.keysym.Shift-Up:            command:\033]720;1\007
-URxvt.keysym.Shift-Down:		  command:\033]721;1\007
+URxvt.keysym.Shift-Down:          command:\033]721;1\007
 URxvt.keysym.Shift-Control-Up:    command:\033]720;10\007
 URxvt.keysym.Shift-Control-Down:  command:\033]721;10\007
 
 ! Font resize
-URxvt.keysym.C-minus:     		  resize-font:smaller
+URxvt.keysym.C-minus:             resize-font:smaller
 URxvt.keysym.C-equal:             resize-font:bigger
-URxvt.keysym.C-plus:      		  resize-font:reset
+URxvt.keysym.C-plus:              resize-font:reset
 URxvt.keysym.C-question:          resize-font:show
 
 ! ------------------------------------------------------------------------------
 ! Xft Font Configuration
 ! ------------------------------------------------------------------------------
 
-Xft.autohint:					  0
+Xft.autohint:                     0
 Xft.lcdfilter:                    lcddefault
 Xft.hintstyle:                    hintslight
 Xft.hinting:                      1
