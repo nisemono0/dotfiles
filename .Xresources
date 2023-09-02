@@ -63,21 +63,26 @@ URxvt.matcher.button: 1
 URxvt.colorUL: #4682B4
 
 ! Options
-URxvt*font:		                  xft:SauceCodePro Nerd Font Mono:pixelsize=14:style=Semibold,Regular,\
-								  xft:Noto Sans CJK JP Medium:style=Medium,Regular,\
-                                  xft:Symbola:style=Regular
+URxvt*font:		                  xft:SauceCodePro Nerd Font Mono:size=10:style=Semibold,Regular,\
+								  xft:Noto Sans CJK JP Medium:size=10:style=Medium,Regular,\
+                                  xft:Noto Color Emoji:size=10:style=Regular,\
+                                  xft:Symbola:size=10:style=Regular
 
-URxvt*boldFont:                   xft:SauceCodePro Nerd Font Mono:pixelsize=14:style=Black,Regular,\
-								  xft:Noto Sans CJK JP Black:style=Black,Regular,\
-                                  xft:Symbola:style=Regular
+URxvt*boldFont:                   xft:SauceCodePro Nerd Font Mono:size=10:style=Black,Regular,\
+								  xft:Noto Sans CJK JP Black:size=10:style=Black,Regular,\
+                                  xft:Noto Color Emoji:size=10:style=Regular,\
+                                  xft:Symbola:size=10:style=Regular
 
-URxvt*italicFont:				  xft:SauceCodePro Nerd Font Mono:pixelsize=14:style=Semibold Italic,Italic,\
-                                  xft:Symbola:style=Regular
+URxvt*italicFont:				  xft:SauceCodePro Nerd Font Mono:size=10:style=Semibold Italic,Italic,\
+                                  xft:Noto Color Emoji:size=10:style=Regular,\
+                                  xft:Symbola:size=10:style=Regular
 
-URxvt*boldItalicFont:			  xft:SauceCodePro Nerd Font Mono:pixelsize=14:style=Semibold Italic,Italic,\
-                                  xft:Symbola:style=Regular
+URxvt*boldItalicFont:			  xft:SauceCodePro Nerd Font Mono:size=10:style=Semibold Italic,Italic,\
+                                  xft:Noto Color Emoji:size=10:style=Regular,\
+                                  xft:Symbola:size=10:style=Regular
 
-URxvt.geometry:                   80x20
+URxvt*letterSpace:                1
+URxvt*geometry:                   80x20
 URxvt*depth:                      32
 URxvt*scrollBar:                  false
 URxvt*mouseWheelScrollPage:       false
