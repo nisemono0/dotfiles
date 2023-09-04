@@ -129,7 +129,7 @@ local settings = {
   loop_cursor = true,
 
   --youtube-dl executable for title resolving if enabled, probably "youtube-dl" or "yt-dlp", can be absolute path
-  youtube_dl_executable = "youtube-dl",
+  youtube_dl_executable = "yt-dlp",
 
   -- allow playlistmanager to write watch later config when navigating between files
   allow_write_watch_later_config = true,
