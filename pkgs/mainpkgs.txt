@@ -160,7 +160,6 @@ xorg-xinit
 xorg-xinput
 xorg-xlsfonts
 xorg-xrandr
-youtube-dl
 yt-dlp
 zsh
 zsh-autosuggestions
