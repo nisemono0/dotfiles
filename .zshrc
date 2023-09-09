@@ -19,10 +19,16 @@ if [ -n "$RANGER_LEVEL" ]; then export PS1="(ranger) $PS1"; fi
 
 calc() { awk "BEGIN{ print $* }" ;}
 
-alias l="ls -lahv"
-alias la="ls -lAhv"
-alias ll="ls -lhv"
-alias ls="ls --color=tty -v"
+alias l="ls -lahv --group-directories-first"
+alias la="ls -lAhv --group-directories-first"
+alias ll="ls -lhv --group-directories-first"
+alias ls="ls --color=tty  --group-directories-first -v"
+
+alias ip="ip -color=auto"
+
+alias cp="cp -iv"
+alias mv="mv -iv"
+alias rm="rm -vI"
 
 alias _="sudo -E"
 alias sudo="sudo -E"
