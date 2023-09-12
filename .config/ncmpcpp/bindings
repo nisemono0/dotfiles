@@ -157,7 +157,13 @@ def_key "p"
 def_key ">"
     next
 
+def_key "'"
+    next
+
 def_key "<"
+    previous
+
+def_key ";"
     previous
 
 def_key "backspace"
