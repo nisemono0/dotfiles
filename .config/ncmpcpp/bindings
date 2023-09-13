@@ -31,13 +31,13 @@ def_key "page_down"
 def_key "home"
     move_home
 
-def_key "K"
+def_key "ctrl-k"
     move_home
 
 def_key "end"
     move_end
 
-def_key "J"
+def_key "ctrl-j"
     move_end
 
 def_key "right"
@@ -199,6 +199,15 @@ def_key "u"
 def_key "ctrl-s"
     sort_playlist
 
+def_key "ctrl-f"
+    require_runnable "apply_filter"
+    push_character "ctrl-u"
+    apply_filter
+
+def_key "F"
+    require_runnable "apply_filter"
+    apply_filter
+
 def_key "/"
     find
 
@@ -240,6 +249,26 @@ def_key "I"
 
 def_key "g"
     jump_to_position_in_song
+
+def_key "ctrl-v"
+    select_range
+
+def_key "v"
+    reverse_selection
+
+def_key "V"
+    remove_selection
+
+def_key "B"
+    select_album
+
+def_key "J"
+  select_item
+  scroll_down
+
+def_key "K"
+    select_item
+    scroll_up
 
 def_key "c"
     clear_playlist
