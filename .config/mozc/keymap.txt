@@ -48,6 +48,9 @@ Conversion	Ctrl l	ConvertToHiragana
 Conversion	Ctrl ;	ConvertToFullKatakana
 Conversion	Ctrl '	ConvertToFullAlphanumeric
 Prediction	Ctrl Delete	DeleteSelectedCandidate
+Precomposition	Ctrl F10	LaunchConfigDialog
+Precomposition	Ctrl F11	LaunchDictionaryTool
+Precomposition	Ctrl F12	LaunchWordRegisterDialog
 Composition	ASCII	InsertCharacter
 Composition	Kanji	IMEOff
 Composition	OFF	IMEOff
