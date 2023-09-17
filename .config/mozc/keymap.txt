@@ -1,0 +1,63 @@
+status	key	command
+Precomposition	Ctrl ,	InputModeHiragana
+Precomposition	Ctrl .	InputModeFullKatakana
+Precomposition	Ctrl /	InputModeFullAlphanumeric
+Composition	Ctrl ,	InputModeHiragana
+Composition	Ctrl .	InputModeFullKatakana
+Composition	Ctrl /	InputModeFullAlphanumeric
+Composition	Left	MoveCursorLeft
+Composition	Ctrl Left	MoveCursorToBeginning
+Composition	Ctrl s	MoveCursorLeft
+Composition	Ctrl a	MoveCursorToBeginning
+Composition	Right	MoveCursorRight
+Composition	Ctrl Right	MoveCursorToEnd
+Composition	Ctrl d	MoveCursorRight
+Composition	Ctrl f	MoveCursorToEnd
+Composition	Tab	PredictAndConvert
+Composition	Shift Tab	Convert
+Composition	Down	Convert
+Composition	Up	Convert
+Composition	Ctrl l	ConvertToHiragana
+Composition	Ctrl ;	ConvertToFullKatakana
+Composition	Ctrl '	ConvertToFullAlphanumeric
+Composition	Enter	Commit
+Composition	Shift Enter	ConvertWithoutHistory
+Composition	Backspace	Backspace
+Composition	Ctrl Backspace	Delete
+Composition	Delete	Delete
+Composition	Escape	Cancel
+Composition	Ctrl q	Cancel
+Conversion	Ctrl ,	InputModeHiragana
+Conversion	Ctrl .	InputModeFullKatakana
+Conversion	Ctrl /	InputModeFullAlphanumeric
+Conversion	Backspace	Cancel
+Conversion	Ctrl Backspace	Cancel
+Conversion	Tab	ConvertNext
+Conversion	Shift Tab	ConvertPrev
+Conversion	Down	ConvertNext
+Conversion	Up	ConvertPrev
+Conversion	Left	ConvertPrevPage
+Conversion	Right	ConvertNextPage
+Conversion	Ctrl s	ConvertNext
+Conversion	Ctrl d	ConvertPrev
+Conversion	Ctrl a	ConvertPrevPage
+Conversion	Ctrl f	ConvertNextPage
+Conversion	Enter	Commit
+Conversion	Escape	Cancel
+Conversion	Ctrl l	ConvertToHiragana
+Conversion	Ctrl ;	ConvertToFullKatakana
+Conversion	Ctrl '	ConvertToFullAlphanumeric
+Prediction	Ctrl Delete	DeleteSelectedCandidate
+Composition	ASCII	InsertCharacter
+Composition	Kanji	IMEOff
+Composition	OFF	IMEOff
+Composition	ON	IMEOn
+Conversion	Kanji	IMEOff
+Conversion	OFF	IMEOff
+Conversion	ON	IMEOn
+DirectInput	Kanji	IMEOn
+DirectInput	ON	IMEOn
+Precomposition	ASCII	InsertCharacter
+Precomposition	Kanji	IMEOff
+Precomposition	OFF	IMEOff
+Precomposition	ON	IMEOn
