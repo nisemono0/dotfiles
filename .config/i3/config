@@ -37,6 +37,7 @@ set $htop --no-startup-id /usr/bin/urxvt -e htop && i3-msg workspace back_and_fo
 set $togglecomp --no-startup-id ~/.scripts/i3cmds/toggle-comp.sh
 set $transformers_ocr --no-startup-id transformers_ocr recognize
 set $wmfocus --no-startup-id wmfocus
+set $mpdvolume --no-startup-id ~/.scripts/mpd/mpdvolume.sh
 
 set_from_resource $fg foreground
 set_from_resource $bg background
@@ -224,9 +225,9 @@ bindsym XF86AudioPlay exec --no-startup-id mpc toggle &
 bindsym XF86AudioNext exec --no-startup-id mpc next &
 bindsym XF86AudioMute exec --no-startup-id pulsemixer --toggle-mute &
 bindsym XF86AudioLowerVolume exec --no-startup-id pulsemixer --change-volume -5 &
-bindsym Shift+XF86AudioLowerVolume exec --no-startup-id mpc volume -5 &
+bindsym Shift+XF86AudioLowerVolume exec $mpdvolume --dec
 bindsym XF86AudioRaiseVolume exec --no-startup-id pulsemixer --change-volume +5 --max-volume 100 &
-bindsym Shift+XF86AudioRaiseVolume exec --no-startup-id mpc volume +5 &
+bindsym Shift+XF86AudioRaiseVolume exec $mpdvolume --inc
 
 ##---Dunst Keys---##
 bindsym $mod+grave exec --no-startup-id dunstctl close &
