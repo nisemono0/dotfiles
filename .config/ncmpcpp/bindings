@@ -22,8 +22,14 @@ def_key "{"
 def_key "}"
     scroll_down_artist
 
+def_key "alt-k"
+    page_up
+
 def_key "page_up"
     page_up
+
+def_key "alt-j"
+    page_down
 
 def_key "page_down"
     page_down
