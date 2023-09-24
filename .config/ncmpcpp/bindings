@@ -288,6 +288,9 @@ def_key "m"
 def_key "m"
     move_selected_items_up
 
+def_key "M"
+    move_selected_items_to
+
 def_key "n"
     move_sort_order_down
 
