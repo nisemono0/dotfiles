@@ -1,6 +1,4 @@
-btrfs-progs
 dosfstools
-lvm2
 ndctl
 python-dnspython
 python-mutagen
