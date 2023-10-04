@@ -63,6 +63,10 @@ case "$1" in
             [ "$(printf "No\\nYes" | dmenu "${DMENU_ARGS[@]}" -p "Really delete $file?")" = "Yes" ] && delete_file "$file"
         done
         ;;
+    "C-d") # Drag and drop selected image
+        read -r file
+        dragon-drop -x "$file"
+        ;;
     "greater") # (>) Rotate clockwise 90 degress and save images
         while read -r file; do convert -rotate 90 "$file" "$file"; done
         ;;
