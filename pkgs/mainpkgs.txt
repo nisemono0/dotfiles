@@ -98,6 +98,7 @@ oxipng
 p7zip
 pacman
 pacman-contrib
+parallel
 patch
 picom
 pkgconf
