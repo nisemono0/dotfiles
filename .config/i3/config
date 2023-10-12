@@ -38,6 +38,7 @@ set $togglecomp --no-startup-id ~/.scripts/i3cmds/toggle-comp.sh
 set $transformers_ocr --no-startup-id transformers_ocr recognize
 set $wmfocus --no-startup-id wmfocus
 set $mpdvolume --no-startup-id ~/.scripts/mpd/mpdvolume.sh
+set $mpdsong --no-startup-id ~/.scripts/mpd/mpdsong.sh
 
 set_from_resource $fg foreground
 set_from_resource $bg background
@@ -220,9 +221,9 @@ bindsym $mod+F11 exec $dmenumount
 bindsym $mod+F12 exec $dmenuumount
 
 ##---Function Keys---##
-bindsym XF86AudioPrev exec --no-startup-id mpc prev &
+bindsym XF86AudioPrev exec $mpdsong --prev
 bindsym XF86AudioPlay exec --no-startup-id mpc toggle &
-bindsym XF86AudioNext exec --no-startup-id mpc next &
+bindsym XF86AudioNext exec $mpdsong --next
 bindsym XF86AudioMute exec --no-startup-id pulsemixer --toggle-mute &
 bindsym XF86AudioLowerVolume exec --no-startup-id pulsemixer --change-volume -5 &
 bindsym Shift+XF86AudioLowerVolume exec $mpdvolume --dec
