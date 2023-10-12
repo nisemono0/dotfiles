@@ -2,23 +2,15 @@
 ---@field name string
 ---@field type string
 local o = {
-    name = 'mpv-screenshot.png',
-    type = 'image/png' -- defaults to jpeg
+    name = 'mpv-screenshot.jpeg',
+    type = '' -- defaults to jpeg
 }
 require('mp.options').read_options(o, 'clipshot')
 
 local file, cmd
 
-local lib = package.cpath:match('%p[\\|/]?%p(%a+)')
-if lib == 'so' then -- Linux/BSD
-    file = '/tmp/'..o.name
-    if os.getenv('XDG_SESSION_TYPE') == 'wayland' then -- Wayland
-        cmd = {'sh', '-c', ('wl-copy < %q'):format(file)}
-    else -- Xorg
-        local type = o.type ~= '' and o.type or 'image/jpeg'
-        cmd = {'xclip', '-sel', 'c', '-t', type, '-i', file}
-    end
-elseif lib == 'dll' then -- Windows
+local platform = mp.get_property_native('platform')
+if platform == 'windows' then
     file = os.getenv('TEMP')..'\\'..o.name
     cmd = {
         'powershell', '-NoProfile', '-Command', ([[& {
@@ -28,17 +20,24 @@ elseif lib == 'dll' then -- Windows
             [Windows.Forms.Clipboard]::SetImage($shot);
         }]]):format(file)
     }
-else -- MacOS
+elseif platform == 'darwin' then
     file = os.getenv('TMPDIR')..'/'..o.name
     -- png: «class PNGf»
     local type = o.type ~= '' and o.type or 'JPEG picture'
     cmd = {
-        'osascript', '-e', ([[¬
+        'osascript', '-e', ([[
             set the clipboard to ( ¬
-                read (POSIX file %q) as %s ¬
-            ) ¬
+                read (POSIX file %q) as %s)
         ]]):format(file, type)
     }
+else
+    file = '/tmp/'..o.name
+    if os.getenv('XDG_SESSION_TYPE') == 'wayland' then
+        cmd = {'sh', '-c', ('wl-copy < %q'):format(file)}
+    else
+        local type = o.type ~= '' and o.type or 'image/jpeg'
+        cmd = {'xclip', '-sel', 'c', '-t', type, '-i', file}
+    end
 end
 
 ---@param arg string
@@ -47,7 +46,7 @@ local function clipshot(arg)
     return function()
         mp.commandv('screenshot-to-file', file, arg)
         mp.command_native_async({'run', unpack(cmd)}, function(suc, _, err)
-            mp.osd_message(suc and 'Copied screenshot ('..arg..') to clipboard' or err, 1)
+            mp.osd_message(suc and 'Copied screenshot to clipboard' or err, 1)
         end)
     end
 end
