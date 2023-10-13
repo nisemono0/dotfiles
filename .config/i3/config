@@ -232,6 +232,8 @@ bindsym XF86AudioRaiseVolume exec --no-startup-id pulsemixer --change-volume +5 
 bindsym Shift+XF86AudioPrev exec $mpdsong --seek-backward
 bindsym Shift+XF86AudioPlay exec $mpdsong --play-song
 bindsym Shift+XF86AudioNext exec $mpdsong --seek-forward
+bindsym Shift+XF86AudioLowerVolume exec $mpdvolume --dec
+bindsym Shift+XF86AudioRaiseVolume exec $mpdvolume --inc
 
 bindsym Ctrl+XF86AudioPlay exec $mpdsong --add-song-play
 
