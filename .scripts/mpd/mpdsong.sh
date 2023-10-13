@@ -1,4 +1,5 @@
 #!/bin/bash
+SEEK_STEP=5
 
 case "$1" in
     --next) 
@@ -14,6 +15,12 @@ case "$1" in
         else
             notif-send -u critical "Couldn't change mpd song"
         fi
+        ;;
+    --forward)
+        mpc seek "+$SEEK_STEP"
+        ;;
+    --backward)
+        mpc seek "-$SEEK_STEP"
         ;;
     *) exit ;;
 esac
