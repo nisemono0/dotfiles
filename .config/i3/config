@@ -112,6 +112,7 @@ bindsym $mod+8 workspace 8
 bindsym $mod+9 workspace 9
 bindsym $mod+0 workspace 10
 bindsym $mod+Tab workspace back_and_forth
+bindsym $mod+Shift+Tab [urgent=latest] focus
 # Move focused window to workspace
 bindsym $mod+Shift+1 move container to workspace 1
 bindsym $mod+Shift+2 move container to workspace 2
@@ -208,7 +209,7 @@ bindsym $mod+minus gaps inner all minus 5
 ##---Function Keys---##
 bindsym $mod+F1 exec $browser
 bindsym $mod+Shift+F1 exec $browser_private
-bindsym $mod+F2 [urgent=latest] focus
+bindsym $mod+F2 notify-send F2
 bindsym $mod+F3 exec --no-startup-id notify-send F3
 bindsym $mod+F4 workspace 0; exec $htop
 bindsym $mod+F5 exec $togglecomp
