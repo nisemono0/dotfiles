@@ -9,8 +9,10 @@ smart_borders on
 hide_edge_borders none
 focus_on_window_activation smart
 
+##---Mod key---##
 set $mod Mod4
 
+##---Vars---##
 set $browser --no-startup-id /usr/bin/firefox
 set $browser_private --no-startup-id /usr/bin/firefox --private-window
 set $term --no-startup-id /usr/bin/urxvt
@@ -39,6 +41,7 @@ set $transformers_ocr --no-startup-id transformers_ocr recognize
 set $wmfocus --no-startup-id wmfocus
 set $mpdvolume --no-startup-id ~/.scripts/mpd/mpdvolume.sh
 set $mpdsong --no-startup-id ~/.scripts/mpd/mpdsong.sh
+set $dunstdnd --no-startup-id ~/.scripts/dunst/dunst-dnd.sh
 
 set_from_resource $fg foreground
 set_from_resource $bg background
@@ -213,7 +216,7 @@ bindsym $mod+F2 exec --no-startup-id notify-send F2
 bindsym $mod+F3 exec --no-startup-id notify-send F3
 bindsym $mod+F4 workspace 0; exec $htop
 bindsym $mod+F5 exec $togglecomp
-bindsym $mod+F6 exec --no-startup-id notify-send F6
+bindsym $mod+F6 exec $dunstdnd
 bindsym $mod+F7 exec --no-startup-id notify-send F7
 bindsym $mod+F8 exec $screencast
 bindsym $mod+F9 exec $sinkselect
