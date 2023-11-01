@@ -1,4 +1,5 @@
 #!/bin/bash
+. $HOME/.dmenurc
 
 [ $# -ne 1 ] && echo "Too few/many arguments, expecting 1" && exit 1
 
@@ -53,6 +54,25 @@ save_clipboard() {
     esac
 }
 
+screenshot_menu() {
+    #sleep here is a hacky way to wait until dmenu disappears before scrot freezes the screen
+    case $(printf "Save full\\nSave area\\nClipboard full\\nClipboard area" | dmenu "${DMENU_ARGS_CENTER[@]}" -p "Screenshot" && sleep 0.25) in
+        "Save full")
+            save_screenshot full
+            ;;
+        "Save area")
+            save_screenshot area
+            ;;
+        "Clipboard full")
+            save_clipboard full
+            ;;
+        "Clipboard area")
+            save_clipboard area
+            ;;
+        *) exit ;;
+    esac
+}
+
 case "$1" in
     --save-full)
         save_screenshot full
@@ -65,6 +85,9 @@ case "$1" in
         ;;
     --clip-area)
         save_clipboard area
+        ;;
+    --menu)
+        screenshot_menu
         ;;
     *)
         echo "$0 <--save-full | --save-area | --clip-full | --clip-area>"

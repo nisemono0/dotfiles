@@ -257,6 +257,8 @@ bindsym $mod+w exec $nmtui
 bindsym $mod+m exec $pulsemixer
 
 ##---Screenshot Keys---##
+# Screenshot menu
+bindsym $mod+Print exec $screenshot --menu
 # Full screen
 bindsym Print exec $screenshot --save-full
 bindsym Shift+Print exec $screenshot --clip-full
