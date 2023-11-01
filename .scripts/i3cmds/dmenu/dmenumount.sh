@@ -12,13 +12,13 @@ usb_drives="$(lsblk -rnpo "NAME,LABEL,SIZE,TYPE,MOUNTPOINT" |
     sort -t ' ' -k 2n)"
 
 mountusb() {
-    chosen="$(echo "$usb_drives" | dmenu "${DMENU_ARGS_CENTER[@]}" -p "Mount which drive" | awk '{print $1}')"
+    chosen="$(echo "$usb_drives" | dmenu "${DMENU_ARGS_CENTER[@]}" -p "Mount" | awk '{print $1}')"
     [ -z "$chosen" ] && exit 1
     notify-send "$(udisksctl mount -b "$chosen")" -i drive-harddisk || notify-send -u critical "There was a problem while mounting"
 }
 
 mountandroid() {
-    chosen="$(echo "$android_drives" | dmenu "${DMENU_ARGS_CENTER[@]}" -p "Which Android device" | cut -d ':' -f 1)"
+    chosen="$(echo "$android_drives" | dmenu "${DMENU_ARGS_CENTER[@]}" -p "Android device" | cut -d ':' -f 1)"
     [ -z "$chosen" ] && exit 1
 
     mount_point="$(find "$HOME" -maxdepth 3 -not -path "*.*" -type d 2>/dev/null | 

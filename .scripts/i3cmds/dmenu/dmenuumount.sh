@@ -9,7 +9,7 @@
 drives="$(lsblk -rnpo "NAME,TYPE,SIZE,MOUNTPOINT" | awk '$4!~/\/boot|\/home$|SWAP/&&length($4)>1{printf "%s (%s)\n",$4,$3}')"
 
 unmountusb() {
-    chosen="$(echo "$drives" | dmenu "${DMENU_ARGS_CENTER[@]}" -p "Unmount which drive" | awk '{print $1}')"
+    chosen="$(echo "$drives" | dmenu "${DMENU_ARGS_CENTER[@]}" -p "Unmount" | awk '{print $1}')"
     [ -z "$chosen" ] && exit
     sudo -A umount "$chosen" && notify-send "Unmounted $chosen" -i drive-harddisk
 }
