@@ -12,33 +12,33 @@ usb_drives="$(lsblk -rnpo "NAME,LABEL,SIZE,TYPE,MOUNTPOINT" |
     sort -t ' ' -k 2n)"
 
 mountusb() {
-    chosen="$(echo "$usb_drives" | dmenu "${DMENU_ARGS[@]}" -p "Mount which drive" | awk '{print $1}')"
+    chosen="$(echo "$usb_drives" | dmenu "${DMENU_ARGS_CENTER[@]}" -p "Mount which drive" | awk '{print $1}')"
     [ -z "$chosen" ] && exit 1
     notify-send "$(udisksctl mount -b "$chosen")" -i drive-harddisk || notify-send -u critical "There was a problem while mounting"
 }
 
 mountandroid() {
-    chosen="$(echo "$android_drives" | dmenu "${DMENU_ARGS[@]}" -p "Which Android device" | cut -d ':' -f 1)"
+    chosen="$(echo "$android_drives" | dmenu "${DMENU_ARGS_CENTER[@]}" -p "Which Android device" | cut -d ':' -f 1)"
     [ -z "$chosen" ] && exit 1
 
     mount_point="$(find "$HOME" -maxdepth 3 -not -path "*.*" -type d 2>/dev/null | 
-        dmenu "${DMENU_ARGS[@]}" -p "Type in mount point")"
+        dmenu "${DMENU_ARGS_CENTER[@]}" -p "Type in mount point")"
     mount_point="${mount_point/#\~/$HOME}"
     [ -z "$mount_point" ] && exit 1
 
     if [ ! -d "$mount_point" ]; then
-        askmkdir="$(printf "No\\nYes" | dmenu "${DMENU_ARGS[@]}" -p "Create: $mount_point")"
+        askmkdir="$(printf "No\\nYes" | dmenu "${DMENU_ARGS_CENTER[@]}" -p "Create: $mount_point")"
         [ "$askmkdir" = "Yes" ] && (mkdir -p "$mount_point" || sudo -A mkdir -p "$mount_point") || exit 1
     fi
 
     simple-mtpfs --device "$chosen" "$mount_point"
-    echo "Ok" | dmenu "${DMENU_ARGS[@]}" -p "Tap Allow on your phone if it asks for permission and then press enter" || exit 1
+    echo "Ok" | dmenu "${DMENU_ARGS_CENTER[@]}" -p "Tap Allow on your phone if it asks for permission and then press enter" || exit 1
     simple-mtpfs --device "$chosen" "$mount_point"
     notify-send "Android Mounting" "Android device mounted to $mount_point." -i media-flash
 }
 
 askmount() {
-    case "$(printf "USB\\nAndroid" | dmenu "${DMENU_ARGS[@]}" -p "Mount a USB drive or Android device")" in
+    case "$(printf "USB\\nAndroid" | dmenu "${DMENU_ARGS_CENTER[@]}" -p "Mount a USB drive or Android device")" in
         "USB")
             mountusb
             ;;
