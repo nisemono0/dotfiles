@@ -13,7 +13,7 @@ play() {
 
 playsong() {
     songpos=$(mpc playlist -f "%position%.[%artist%|%albumartist%|%file%] - %title%" | \
-        dmenu "${DMENU_ARGS_CENTER[@]}" -fn "Noto Sans CJK JP:style=Bold:size=9" -l 15 -p "Play" | \
+        dmenu "${DMENU_ARGS_CENTER[@]}" -fn "Noto Sans CJK JP:style=Bold:size=9" -lm -p "Play" | \
         cut -f 1 -d '.')
     [ -z "$songpos" ] && exit
     if mpc play "$songpos"; then
@@ -24,7 +24,7 @@ playsong() {
 }
 
 addsongplay() {
-    songfile=$(mpc listall | dmenu "${DMENU_ARGS_CENTER[@]}" -fn "Noto Sans CJK JP:style=Bold:size=9" -l 15 -p "Add & Play")
+    songfile=$(mpc listall | dmenu "${DMENU_ARGS_CENTER[@]}" -fn "Noto Sans CJK JP:style=Bold:size=9" -lm -p "Add & Play")
     [ -z "$songfile" ] && exit
     if mpc findadd filename "$songfile"; then
         if mpc searchplay filename "$songfile"; then
