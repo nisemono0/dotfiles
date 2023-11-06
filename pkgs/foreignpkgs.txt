@@ -1,4 +1,4 @@
-anki-official-binary-bundle
+anki-bin
 bdf-unifont
 code-features
 code-marketplace
