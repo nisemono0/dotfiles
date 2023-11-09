@@ -8,7 +8,7 @@ i3lock-color
 openasar-git
 python-colorthief
 python-haishoku
-siji-git
+siji-ng
 simple-mtpfs
 ttf-monapo
 ttf-ms-win11-auto
