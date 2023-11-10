@@ -29,6 +29,7 @@ alias ip="ip -color=auto"
 alias cp="cp -iv"
 alias mv="mv -iv"
 alias rm="rm -vI"
+alias mkdir="mkdir -pv"
 
 # Install packages
 alias pacin="sudo pacman -S"
