@@ -30,8 +30,30 @@ alias cp="cp -iv"
 alias mv="mv -iv"
 alias rm="rm -vI"
 
-alias _="sudo -E"
-alias sudo="sudo -E"
+# Install packages
+alias pacin="sudo pacman -S"
+alias pacind="sudo pacman -S --asdeps"
+alias pacins="sudo pacman -Syu"
+# Install local packages
+alias pacinloc="sudo pacman -U"
+alias pacinlocd="sudo pacman -U --asdeps"
+# Remove package and deps, settings
+alias pacrm="sudo pacman -Rsn"
+# Search/display info of local package
+alias pacloc="pacman -Qi"
+alias paclocs="pacman -Qs"
+# List orphan packages
+alias paclsorphans="sudo pacman -Qtdq"
+# Update/Upgrade
+alias pacupd="sudo pacman -Sy"
+alias pacupg="sudo pacman -Syu"
+# Search/display info of repo package
+alias pacrep="pacman -Si"
+alias pacreps="pacman -Ss"
+# List files in a package
+alias pacls="pacman -Ql"
+# Show package owner of file
+alias pacown="pacman -Qo"
 
 source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh

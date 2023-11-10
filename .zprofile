@@ -23,6 +23,9 @@ export WGETRC="${XDG_CONFIG_HOME:-$HOME/.config}/wget/wgetrc"
 export ZSH_COMPDUMP="${XDG_CACHE_HOME:-$HOME/.cache}/zcompdump-${HOST}-${ZSH_VERSION}"
 export PATH="$PATH:${$(find ~/.local/bin -type d -printf %p:)%%:}"
 
+export BROWSER="firefox"
+export EDITOR="vim"
+
 # Load .zshrc file
 [[ -f ~/.zshrc ]] && . ~/.zshrc
 
