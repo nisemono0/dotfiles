@@ -101,6 +101,8 @@ bindsym $mod+d exec $dmenubind
 bindsym $mod+Shift+c reload
 bindsym $mod+Shift+r restart
 bindsym $mod+Shift+Escape exec $end_session
+bindsym $mod+Shift+u move scratchpad
+bindsym $mod+u scratchpad show
 
 ##---Workspace Keys---##
 # Switch to workspace
