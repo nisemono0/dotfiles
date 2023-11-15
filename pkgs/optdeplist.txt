@@ -1,5 +1,4 @@
 dosfstools
-ndctl
 python-chardet
 python-dnspython
 python-mutagen
