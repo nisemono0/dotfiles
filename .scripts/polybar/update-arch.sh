@@ -30,13 +30,17 @@ detail_updates(){
     
     printf "\n"
     echo "=========="
-    echo "Update now ? (y/n/q)"
+    echo "Update now ? (y/n/a/q)"
     read -rsn 1 ans
     ans=$(echo "$ans" | tr '[:upper:]' '[:lower:]')
     case "$ans" in
         q|n|Q|N) exit ;;
         y|Y|"")
             sudo pacman -Syu
+            read -rsn 1
+            ;;
+        a|A)
+            yay -Syu
             read -rsn 1
             ;;
         *) exit ;;
