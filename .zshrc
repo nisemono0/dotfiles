@@ -48,6 +48,7 @@ alias paclsorphans="sudo pacman -Qtdq"
 # Update/Upgrade
 alias pacupd="sudo pacman -Sy"
 alias pacupg="sudo pacman -Syu"
+alias pacupgall="yay -Syu"
 # Search/display info of repo package
 alias pacrep="pacman -Si"
 alias pacreps="pacman -Ss"
@@ -55,6 +56,8 @@ alias pacreps="pacman -Ss"
 alias pacls="pacman -Ql"
 # Show package owner of file
 alias pacown="pacman -Qo"
+# Check aur updates
+alias aurcheckupdates="yay -Qum"
 
 source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
