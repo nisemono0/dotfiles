@@ -11,11 +11,26 @@ play() {
     fi
 }
 
+replay_song() {
+    if mpc stop && mpc play; then
+        notify-send -h string:x-dunst-stack-tag:mpdsong "Replaying song" "$(mpc current)"
+    else
+        notify-send -u critical "Couldn't play song"
+    fi
+}
+
 playsong() {
+    currentsongpos=$(mpc current -f "%position%")
+    if [ -z "$currentsongpos" ]; then
+        currentsongpos=0
+    else
+        currentsongpos=$((currentsongpos - 1))
+    fi
     songpos=$(mpc playlist -f "%position%.[%artist%|%albumartist%|%file%] - %title%" | \
-        dmenu "${DMENU_ARGS_CENTER[@]}" -fn "Noto Sans CJK JP:style=Bold:size=9" -lm -p "Play" | \
+        dmenu "${DMENU_ARGS_CENTER[@]}" -fn "Noto Sans CJK JP:style=Bold:size=9" -n "$currentsongpos" -lm -p "Play" | \
         cut -f 1 -d '.')
     [ -z "$songpos" ] && exit
+
     if mpc play "$songpos"; then
         notify-send -h string:x-dunst-stack-tag:mpdsong "Now playing" "$(mpc current)"
     else
@@ -46,5 +61,6 @@ case "$1" in
     --add-song-play) addsongplay ;; # Select song to add to the playlist and play it
     --toggle-pause) mpc toggle ;; # Pause/Play toggle
     --stop) mpc stop ;; # Stop playback
+    --replay-song) replay_song ;;
     *) exit ;;
 esac

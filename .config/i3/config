@@ -242,7 +242,7 @@ bindsym Shift+XF86AudioRaiseVolume exec $mpdvolume --inc
 
 bindsym Ctrl+XF86AudioPlay exec $mpdsong --add-song-play
 
-bindsym Ctrl+Shift+XF86AudioPlay exec $mpdsong --stop
+bindsym Ctrl+Shift+XF86AudioPlay exec $mpdsong --replay-song
 
 ##---Dunst Keys---##
 bindsym $mod+grave exec --no-startup-id dunstctl close &
