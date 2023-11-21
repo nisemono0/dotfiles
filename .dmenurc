@@ -5,7 +5,7 @@ NB="$(xrdb -query | grep -w "color0" | head -n1 | cut -f 2)"
 SF="$(xrdb -query | grep -w "color7" | head -n1 | cut -f 2)"
 SB="$(xrdb -query | grep -w "color1" | head -n1 | cut -f 2)"
 
-DMENU_FN="SauceCodePro Nerd Font:style=Bold:size=10"
+DMENU_FN="SauceCodePro NF:style=Bold:size=10"
 DMENU_ARGS=(-b -i -nf "$NF" -nb "$NB" -sf "$SF" -sb "$SB" -fn "$DMENU_FN")
 DMENU_ARGS_CENTER=("${DMENU_ARGS[@]}" -l 15 -bw 3 -c)
 
