@@ -162,7 +162,6 @@ xorg-xinit
 xorg-xinput
 xorg-xlsfonts
 xorg-xrandr
-xterm
 yt-dlp
 zsh
 zsh-autosuggestions
