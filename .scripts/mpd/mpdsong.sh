@@ -20,6 +20,8 @@ replay_song() {
 }
 
 playsong() {
+    [ "$1" = "mp" ] && DMENU_ARGS_CENTER+=("-mp")
+
     currentsongpos=$(mpc current -f "%position%")
     if [ -z "$currentsongpos" ]; then
         currentsongpos=0
@@ -39,8 +41,11 @@ playsong() {
 }
 
 addsongplay() {
+    [ "$1" = "mp" ] && DMENU_ARGS_CENTER+=("-mp")
+
     songfile=$(mpc listall | dmenu "${DMENU_ARGS_CENTER[@]}" -fn "Noto Sans CJK JP:style=Bold:size=9" -lm -p "Add & Play")
     [ -z "$songfile" ] && exit
+
     if mpc findadd filename "$songfile"; then
         if mpc searchplay filename "$songfile"; then
             notify-send -h string:x-dunst-stack-tag:mpdsong "Now playing" "$(mpc current)"
@@ -58,7 +63,9 @@ case "$1" in
     --seek-forward) mpc seek "+$SEEK_STEP" ;; # Seeks forwards SEEK_STEP seconds
     --seek-backward) mpc seek "-$SEEK_STEP" ;; # Seek backwards SEEK_STEP seconds
     --play-song) playsong ;; # Select song to play from the playlist
+    --play-song-mp) playsong "mp" ;; # Same as above but moves the pointer to dmenu window
     --add-song-play) addsongplay ;; # Select song to add to the playlist and play it
+    --add-song-play-mp) addsongplay "mp" ;; # Same as above but moves the pointer to dmenu window
     --toggle-pause) mpc toggle ;; # Pause/Play toggle
     --stop) mpc stop ;; # Stop playback
     --replay-song) replay_song ;;

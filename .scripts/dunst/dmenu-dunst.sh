@@ -1,4 +1,4 @@
 #!/bin/bash
 . "$HOME"/.dmenurc
 
-dmenu "${DMENU_ARGS_CENTER[@]}" -p "Dunst"
+dmenu "${DMENU_ARGS_CENTER[@]}" -mp -p "Dunst"

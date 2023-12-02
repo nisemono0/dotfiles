@@ -49,6 +49,8 @@ askmount() {
     esac
 }
 
+[ "$1" = "--move-pointer" ] && DMENU_ARGS_CENTER+=("-mp")
+
 if [ -z "$usb_drives" ]; then
     [ -z "$android_drives" ] && notify-send "No USB drive or Android device detected" && exit
     echo "Android device(s) detected"

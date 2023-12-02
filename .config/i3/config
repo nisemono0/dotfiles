@@ -23,8 +23,8 @@ set $lockscreen --no-startup-id ~/.scripts/i3cmds/lock-screen.sh
 set $screenshot --no-startup-id ~/.scripts/i3cmds/screenshot.sh
 set $screencast --no-startup-id ~/.scripts/i3cmds/screencast.sh
 set $dmenubind --no-startup-id ~/.scripts/i3cmds/dmenu/dmenu-bind.sh
-set $dmenumount --no-startup-id ~/.scripts/i3cmds/dmenu/dmenumount.sh
-set $dmenuumount --no-startup-id ~/.scripts/i3cmds/dmenu/dmenuumount.sh
+set $mountmenu --no-startup-id ~/.scripts/i3cmds/dmenu/mountmenu.sh
+set $umountmenu --no-startup-id ~/.scripts/i3cmds/dmenu/umountmenu.sh
 set $sinkselect --no-startup-id ~/.scripts/i3cmds/sink-select.sh
 set $wall_change --no-startup-id ~/.scripts/i3cmds/wall-change/wall-change.sh
 set $wall_slideshow --no-startup-id ~/.scripts/i3cmds/wall-change/wall-slideshow.sh
@@ -223,8 +223,8 @@ bindsym $mod+F7 exec --no-startup-id notify-send F7
 bindsym $mod+F8 exec $screencast
 bindsym $mod+F9 exec $sinkselect
 bindsym $mod+F10 exec $lockscreen
-bindsym $mod+F11 exec $dmenumount
-bindsym $mod+F12 exec $dmenuumount
+bindsym $mod+F11 exec $mountmenu
+bindsym $mod+F12 exec $umountmenu
 
 ##---Function Keys---##
 bindsym XF86AudioPrev exec $mpdsong --play-prev

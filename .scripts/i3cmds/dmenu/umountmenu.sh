@@ -32,6 +32,8 @@ askunmount() {
     esac
 }
 
+[ "$1" = "--move-pointer" ] && DMENU_ARGS_CENTER+=("-mp")
+
 if ! grep simple-mtpfs /etc/mtab; then
     [ -z "$drives" ] && echo "No drives to unmount" &&  exit
     echo "Unmountable USB drive detected"
