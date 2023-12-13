@@ -57,6 +57,17 @@ addsongplay() {
     fi
 }
 
+copy_playing() {
+    song="$(mpc current)"
+    if [ -n "$song" ]; then
+        if xclip -selection clipboard <<< "$song"; then
+            notify-send -h string:x-dunst-stack-tag:mpdsong "Copied to clipboard" "$song"
+        else
+            notify-send -u critical "Couldn't copy to clipboard"
+        fi
+    fi
+}
+
 case "$1" in
     --play-next) play "next" ;; # Plays the next song in the playlist
     --play-prev) play "prev" ;; # Plays the previous song in the playlist
@@ -69,5 +80,6 @@ case "$1" in
     --toggle-pause) mpc toggle ;; # Pause/Play toggle
     --stop) mpc stop ;; # Stop playback
     --replay-song) replay_song ;;
+    --copy-playing) copy_playing ;;
     *) exit ;;
 esac

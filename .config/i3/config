@@ -9,8 +9,9 @@ smart_borders on
 hide_edge_borders none
 focus_on_window_activation smart
 
-##---Mod key---##
+##---Mod/Alt key---##
 set $mod Mod4
+set $Alt Mod1
 
 ##---Vars---##
 set $browser --no-startup-id /usr/bin/firefox
@@ -241,6 +242,10 @@ bindsym Shift+XF86AudioLowerVolume exec $mpdvolume --dec
 bindsym Shift+XF86AudioRaiseVolume exec $mpdvolume --inc
 
 bindsym Ctrl+XF86AudioPlay exec $mpdsong --add-song-play
+
+bindsym $Alt+XF86AudioPlay exec $mpdsong --copy-playing
+
+bindsym $Alt+Shift+XF86AudioPlay exec $mpdsong --stop
 
 bindsym Ctrl+Shift+XF86AudioPlay exec $mpdsong --replay-song
 
