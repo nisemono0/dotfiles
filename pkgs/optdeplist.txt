@@ -1,4 +1,5 @@
 dosfstools
+libwpg
 python-chardet
 python-dnspython
 python-mutagen
