@@ -34,7 +34,7 @@ set_savepath() {
     [ -z "$default_path" ] && exit 1
 
     if [ "$default_path" = "No" ]; then
-        save_path="$(find "$HOME" -maxdepth 3 -not -path "*.*" -type d 2>/dev/null |
+        save_path="$(find "$HOME" -maxdepth 3 -not -path "*.*" -type d,l 2>/dev/null |
             dmenu "${DMENU_ARGS[@]}" -p "Type in save directory")"
         save_path="${save_path/#\~/$HOME}"
         [ -z "$save_path" ] && exit 1
@@ -45,6 +45,8 @@ set_savepath() {
             else
                 exit 1
             fi
+        else
+            CAST_DIR="$save_path"
         fi
     fi
 
