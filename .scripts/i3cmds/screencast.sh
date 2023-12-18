@@ -29,6 +29,27 @@ check_screencast() {
     fi
 }
 
+set_savepath() {
+    default_path=$(printf "Yes\\nNo" | dmenu "${DMENU_ARGS[@]}" -p "Use default save path")
+    [ -z "$default_path" ] && exit 1
+
+    if [ "$default_path" = "No" ]; then
+        save_path="$(find "$HOME" -maxdepth 3 -not -path "*.*" -type d 2>/dev/null |
+            dmenu "${DMENU_ARGS[@]}" -p "Type in save directory")"
+        save_path="${save_path/#\~/$HOME}"
+        [ -z "$save_path" ] && exit 1
+        if [ ! -d "$save_path" ]; then
+            askmkdir=$(printf "Yes\\nNo" | dmenu "${DMENU_ARGS[@]}" -p "Create: $save_path")
+            if [ "$askmkdir" = "Yes" ]; then
+                mkdir -p "$save_path" && CAST_DIR="$save_path"
+            else
+                exit 1
+            fi
+        fi
+    fi
+
+}
+
 set_format() {
     format=$(printf "webm\\nmp4\\nmkv" | dmenu "${DMENU_ARGS[@]}" -p "Output format")
     [ -z "${format}" ] && exit 1
@@ -87,6 +108,7 @@ start_screencast() {
     x="$3"
     y="$4"
 
+    set_savepath
     set_format
     set_framerate
     set_scale
