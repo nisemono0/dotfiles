@@ -87,6 +87,7 @@ nemo-fileroller
 nemo-preview
 neofetch
 networkmanager
+nicotine+
 nmap
 noto-fonts
 noto-fonts-cjk
