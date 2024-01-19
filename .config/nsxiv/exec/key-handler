@@ -60,7 +60,7 @@ case "$1" in
     "d") # Delete the selected files (dmenu confirmation)
         . $HOME/.dmenurc
         while read -r file; do
-            [ "$(printf "No\\nYes" | dmenu "${DMENU_ARGS[@]}" -p "Really delete $file?")" = "Yes" ] && delete_file "$file"
+            [ "$(printf "Yes\\nNo" | dmenu "${DMENU_ARGS[@]}" -p "Really delete $file?")" = "Yes" ] && delete_file "$file"
         done
         ;;
     "C-d") # Drag and drop selected image
