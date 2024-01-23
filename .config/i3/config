@@ -57,7 +57,7 @@ for_window [class="floating"] move position center
 for_window [instance="ncmpcpp-instance"] floating enable focus
 # nmtui
 for_window [instance="nmtui-instance"] floating enable focus
-# pulsemixed
+# pulsemixer
 for_window [instance="pulsemixer-instance"] floating enable focus
 # polkit
 for_window [class="Lxpolkit"] focus focus_follows_mouse no
