@@ -69,3 +69,5 @@ inoremap <C-Space> <C-n>
 
 map <C-n> :NERDTreeToggle<CR>
 nnoremap <C-m> :exec &mouse!="" ? "set mouse=" : "set mouse=a"<CR>
+
+set t_RV=
