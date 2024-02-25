@@ -1,5 +1,7 @@
+btrfs-progs
 dosfstools
 libwpg
+lvm2
 python-chardet
 python-dnspython
 python-mutagen
