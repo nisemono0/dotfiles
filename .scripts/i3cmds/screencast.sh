@@ -53,7 +53,7 @@ set_savepath() {
 }
 
 set_format() {
-    format=$(printf "webm\\nmp4\\nmkv" | dmenu "${DMENU_ARGS[@]}" -p "Output format")
+    format=$(printf "mp4\\nmkv\\nwebm" | dmenu "${DMENU_ARGS[@]}" -p "Output format")
     [ -z "${format}" ] && exit 1
 }
 
