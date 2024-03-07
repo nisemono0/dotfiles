@@ -50,6 +50,7 @@ imagemagick
 inetutils
 jq
 keepassxc
+kvantum-qt5
 kvantum-theme-materia
 lib32-gamemode
 lib32-giflib
