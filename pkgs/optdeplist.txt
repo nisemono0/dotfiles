@@ -1,5 +1,6 @@
 btrfs-progs
 dosfstools
+gcr
 libwpg
 lvm2
 python-chardet

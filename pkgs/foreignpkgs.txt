@@ -1,4 +1,5 @@
 anki-bin
+autocutsel
 bdf-unifont
 code-features
 code-marketplace
