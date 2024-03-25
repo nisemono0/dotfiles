@@ -39,7 +39,7 @@
     Use 0 to disable this behavior completely
 ]]
 
-local max_search_depth = 3
+local max_search_depth = 1
 local discovery_threshold = 10
 
 ----------
