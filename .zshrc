@@ -49,6 +49,7 @@ alias paclsorphans="sudo pacman -Qtdq"
 alias pacupd="sudo pacman -Sy"
 alias pacupg="sudo pacman -Syu"
 alias pacupgall="yay -Syu"
+alias pacupgaur="yay -Sua"
 # Search/display info of repo package
 alias pacrep="pacman -Si"
 alias pacreps="pacman -Ss"
