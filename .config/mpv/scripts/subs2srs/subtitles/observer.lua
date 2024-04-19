@@ -147,7 +147,6 @@ self.copy_to_clipboard = function(_, text)
     end
     if not h.is_empty(text) then
         platform.copy_to_clipboard(self.clipboard_prepare(text))
-        h.notify("Copied subtitle to clipboard")
     end
 end
 
