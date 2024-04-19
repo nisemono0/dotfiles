@@ -364,7 +364,7 @@ end
 local toggle_animation = function()
     -- Toggles on and off animated snapshot generation at runtime. It is called whenever ctrl+g is pressed
     self.config.animated_snapshot_enabled = not self.config.animated_snapshot_enabled
-    --h.notify("Animation " .. (self.config.animated_snapshot_enabled and "enabled" or "disabled"), "info", 2)
+    h.notify("Animation " .. (self.config.animated_snapshot_enabled and "enabled" or "disabled"), "info", 2)
 end
 
 local init = function(config)
