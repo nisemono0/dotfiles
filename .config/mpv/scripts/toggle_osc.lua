@@ -10,4 +10,4 @@ local function toggle_osc_auto_always()
     )
 end
 
-mp.add_key_binding('a', 'toggle-osc-auto-always', toggle_osc_auto_always)
+mp.add_key_binding('o', 'toggle-osc-auto-always', toggle_osc_auto_always)

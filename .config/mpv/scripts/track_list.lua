@@ -686,7 +686,7 @@ local function openSecondarySubTrackList()
     toggleListDelayed("sub2")
 end
 
-mp.add_key_binding(nil,"toggle-vidtrack-browser", openVideoTrackList)
+mp.add_key_binding(nil, "toggle-vidtrack-browser", openVideoTrackList)
 mp.add_key_binding("ALT+SHARP", "toggle-audtrack-browser", openAudioTrackList)
 mp.add_key_binding("ALT+j", "toggle-subtrack-browser", openSubTrackList)
 mp.add_key_binding("ALT+J", "toggle-secondary-subtrack-browser", openSecondarySubTrackList)
