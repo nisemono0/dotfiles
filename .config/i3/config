@@ -75,6 +75,8 @@ for_window [instance="polybar-updates-arch"] floating enable focus
 # Anki
 for_window [class="Anki"] floating enable
 for_window [class="Anki" title=".* - Anki"] floating disable
+# file-roller
+for_window [class="file-roller"] floating enable
 
 ##---Autostart---##
 exec_always --no-startup-id ~/.scripts/i3cmds/startup/launch-mpd.sh
