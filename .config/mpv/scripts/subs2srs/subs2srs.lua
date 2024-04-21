@@ -439,7 +439,8 @@ end
 
 menu = Menu:new {
     -- hints_state = switch.new { 'basic', 'menu', 'global', 'hidden', },
-    hints_state = switch.new { 'basic', 'menu', 'global', },
+    --hints_state = switch.new { 'basic', 'menu', 'global', },
+    hints_state = switch.new { 'menu', 'global', },
 }
 
 menu.keybindings = {
