@@ -53,8 +53,9 @@ alias pacupgaur="yay -Sua"
 # Search/display info of repo package
 alias pacrep="pacman -Si"
 alias pacreps="pacman -Ss"
-# List files in a package
-alias pacls="pacman -Ql"
+# List installed packages
+alias pacls="pacman -Qn"
+alias paclsaur="pacman -Qm"
 # Show package owner of file
 alias pacown="pacman -Qo"
 # Check aur updates
