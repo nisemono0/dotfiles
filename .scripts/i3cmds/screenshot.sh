@@ -1,7 +1,9 @@
 #!/bin/bash
 . $HOME/.dmenurc
 
-[ $# -ne 1 ] && echo "Too few/many arguments, expecting 1" && exit 1
+FREEZE_SCR=""
+
+[ $# -gt 2 ] && echo "Too few/many arguments, expecting at least 1" && exit 1
 
 save_screenshot() {
     scr_dir="${HOME}/Pictures/Screenshot"
@@ -20,8 +22,14 @@ save_screenshot() {
             fi
             ;;
         area)
-            if scrot -s -f -l mode=classic,width=2,color=white "$scr"; then
-                notify-send "Saved screenshot as ${scr/*\/}" -i "${scr}"
+            if [ "$FREEZE_SCR" = "true" ]; then
+                if scrot -s -f -l mode=classic,width=2,color=white "$scr"; then
+                    notify-send "Saved screenshot as ${scr/*\/}" -i "${scr}"
+                fi
+            else
+                if scrot -s -l mode=edge,width=2,color=white "$scr"; then
+                    notify-send "Saved screenshot as ${scr/*\/}" -i "${scr}"
+                fi
             fi
             ;;
         *)
@@ -42,10 +50,18 @@ save_clipboard() {
             fi
             ;;
         area)
-            if scrot -s -f -l mode=classic,width=2,color=white --overwrite --format png "$scr"; then
-                xclip -selection clipboard -target image/png -i "$scr" &> /dev/null && \
-                notify-send "Screenshot saved in clipboard" -i "$scr" && \
-                rm -- "$scr"
+            if [ "$FREEZE_SCR" = "true" ]; then
+                if scrot -s -f -l mode=classic,width=2,color=white --overwrite --format png "$scr"; then
+                    xclip -selection clipboard -target image/png -i "$scr" &> /dev/null && \
+                    notify-send "Screenshot saved in clipboard" -i "$scr" && \
+                    rm -- "$scr"
+                fi
+            else
+                if scrot -s -l mode=edge,width=2,color=white --overwrite --format png "$scr"; then
+                    xclip -selection clipboard -target image/png -i "$scr" &> /dev/null && \
+                    notify-send "Screenshot saved in clipboard" -i "$scr" && \
+                    rm -- "$scr"
+                fi
             fi
             ;;
         *)
@@ -56,11 +72,15 @@ save_clipboard() {
 
 screenshot_menu() {
     #sleep here is a hacky way to wait until dmenu disappears before scrot freezes the screen
-    case $(printf "Save full\\nSave area\\nClipboard full\\nClipboard area" | dmenu "${DMENU_ARGS_CENTER[@]}" -p "Screenshot" && sleep 0.25) in
+    case $(printf "Save full\\nSave area\\nSave area freeze\\nClipboard full\\nClipboard area\\nClipboard area freeze" | dmenu "${DMENU_ARGS_CENTER[@]}" -p "Screenshot" && sleep 0.25) in
         "Save full")
             save_screenshot full
             ;;
         "Save area")
+            save_screenshot area
+            ;;
+        "Save area freeze")
+            FREEZE_SCR="true"
             save_screenshot area
             ;;
         "Clipboard full")
@@ -69,9 +89,22 @@ screenshot_menu() {
         "Clipboard area")
             save_clipboard area
             ;;
+        "Clipboard area freeze")
+            FREEZE_SCR="true"
+            save_clipboard area
+            ;;
         *) exit ;;
     esac
 }
+
+case "$2" in
+    --freeze)
+        FREEZE_SCR="true"
+        ;;
+    *)
+        FREEZE_SCR="false"
+        ;;
+esac
 
 case "$1" in
     --save-full)
@@ -90,7 +123,7 @@ case "$1" in
         screenshot_menu
         ;;
     *)
-        echo "$0 <--save-full | --save-area | --clip-full | --clip-area>"
+        echo "$0 <--save-full | --save-area | --clip-full | --clip-area> [--freeze]"
         exit 1
         ;;
 esac
