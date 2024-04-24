@@ -272,8 +272,10 @@ bindsym $mod+Print exec $screenshot --menu
 bindsym Print exec $screenshot --save-full
 bindsym Shift+Print exec $screenshot --clip-full
 # Window
-bindsym --release Ctrl+Print exec $screenshot --save-area
-bindsym --release Ctrl+Shift+Print exec $screenshot --clip-area
+bindsym --release Ctrl+Print exec $screenshot --save-area --freeze
+bindsym --release $mod+Ctrl+Print exec $screenshot --save-area
+bindsym --release $mod+Ctrl+Shift+Print exec $screenshot --clip-area
+bindsym --release Ctrl+Shift+Print exec $screenshot --clip-area --freeze
 
 ##---Wallpaper menu---##
 bindsym $mod+Shift+w exec $wall_change --menu
