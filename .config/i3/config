@@ -43,6 +43,7 @@ set $wmfocus --no-startup-id wmfocus
 set $mpdvolume --no-startup-id ~/.scripts/mpd/mpdvolume.sh
 set $mpdsong --no-startup-id ~/.scripts/mpd/mpdsong.sh
 set $dunstdnd --no-startup-id ~/.scripts/dunst/dunst-dnd.sh
+set $backlight --no-startup-id ~/.scripts/i3cmds/backlight.sh
 
 set_from_resource $fg foreground
 set_from_resource $bg background
@@ -250,6 +251,9 @@ bindsym $Alt+XF86AudioPlay exec $mpdsong --copy-playing
 bindsym $Alt+Shift+XF86AudioPlay exec $mpdsong --stop
 
 bindsym Ctrl+Shift+XF86AudioPlay exec $mpdsong --replay-song
+
+bindsym XF86MonBrightnessUp exec $backlight --inc
+bindsym XF86MonBrightnessDown exec $backlight --dec
 
 ##---Dunst Keys---##
 bindsym $mod+grave exec --no-startup-id dunstctl close &
