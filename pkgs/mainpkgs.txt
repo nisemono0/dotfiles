@@ -1,3 +1,4 @@
+android-file-transfer
 arc-icon-theme
 archlinux-keyring
 atool
@@ -40,6 +41,7 @@ git
 grep
 groff
 grub
+gsimplecal
 gzip
 highlight
 hsetroot
@@ -78,6 +80,7 @@ man-pages
 mangohud
 materia-gtk-theme
 mediainfo
+mkvtoolnix-cli
 mpc
 mpd
 mpv
@@ -126,6 +129,7 @@ steam
 sudo
 terminus-font
 texinfo
+traceroute
 trash-cli
 tree
 ttf-arphic-uming
