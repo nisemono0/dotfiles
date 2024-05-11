@@ -2,11 +2,11 @@
 
 filepath="$1"
 filetype=$(file --dereference --mime-type "$filepath" | cut -d ':' -f 2 | tr -d ' ')
-spectrogram="$(mktemp)"
 
 if [[ "$filetype" == audio/* ]]; then
-    sox "$filepath" -n spectrogram -o "$spectrogram"
-    nsxiv "$spectrogram"
+    spectrogram="$(mktemp)"
+    sox "$filepath" -n spectrogram -t "$filepath" -o "$spectrogram"
+    nsxiv -p "$spectrogram"
     rm -- "$spectrogram"
 else
     notify-send "Can only view spectrals of audio files"
