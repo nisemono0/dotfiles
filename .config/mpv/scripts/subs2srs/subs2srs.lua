@@ -53,7 +53,7 @@ local config = {
     secondary_sub_auto_load = false, -- Automatically load secondary subtitle track when a video file is opened.
     secondary_sub_lang = 'eng,en,rus,ru,jp,jpn,ja', -- Language of secondary subs that should be automatically loaded.
     secondary_sub_area = 0.15, -- Hover area. Fraction of the window from the top.
-    secondary_sub_visibility = 'always', -- One of: 'auto', 'never', 'always'. Controls secondary_sid visibility. Ctrl+V to cycle.
+    secondary_sub_visibility = 'auto', -- One of: 'auto', 'never', 'always'. Controls secondary_sid visibility. Ctrl+V to cycle.
 
     -- Snapshots
     snapshot_format = "webp", -- webp or jpg
