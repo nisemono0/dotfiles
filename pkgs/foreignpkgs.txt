@@ -8,6 +8,7 @@ dragon-drop
 i3lock-color
 openasar-git
 python-colorthief
+python-ffsubsync-venv
 python-haishoku
 siji-ng
 simple-mtpfs

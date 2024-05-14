@@ -1,12 +1,8 @@
 btrfs-progs
 dosfstools
 gcr
-libwpg
 lvm2
-python-chardet
 python-dnspython
 python-mutagen
 python-pycryptodomex
-python-setuptools
 python-websockets
-xfsprogs
