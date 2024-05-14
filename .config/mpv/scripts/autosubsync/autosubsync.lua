@@ -304,6 +304,8 @@ ref_selector = menu:new {
 
 function ref_selector:get_keybindings()
     return {
+        { key = 'j', fn = function() self:down() end },
+        { key = 'k', fn = function() self:up() end },
         { key = 'down', fn = function() self:down() end },
         { key = 'up', fn = function() self:up() end },
         { key = 'Enter', fn = function() self:act() end },
