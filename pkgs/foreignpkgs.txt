@@ -1,3 +1,4 @@
+alass
 anki-bin
 autocutsel
 bdf-unifont
