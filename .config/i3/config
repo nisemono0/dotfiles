@@ -103,7 +103,6 @@ bindsym $mod+Shift+Control+Return split horizontal, exec $thunar
 bindsym $mod+Shift+Control+question split vertical, exec $thunar
 bindsym $mod+q kill
 bindsym $mod+d exec $dmenubind
-bindsym $mod+Shift+c reload
 bindsym $mod+Shift+r restart
 bindsym $mod+Shift+Escape exec $end_session
 bindsym $mod+Shift+u move scratchpad
@@ -206,6 +205,7 @@ bindsym $mod+space focus mode_toggle
 bindsym $mod+f fullscreen toggle
 # Move focused container to center
 bindsym $mod+c move absolute position center
+bindsym $mod+Shift+c move position center
 
 ##---Gaps Keys---##
 # Outer gap +/-
