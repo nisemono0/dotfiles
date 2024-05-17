@@ -1,6 +1,7 @@
 btrfs-progs
 dosfstools
 gcr
+gnome-themes-extra
 lvm2
 python-dnspython
 python-mutagen

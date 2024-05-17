@@ -6,7 +6,6 @@ amf-amdgpu-pro
 base
 beignet
 cuda
-hlib-git
 intel-compute-runtime
 intel-opencl
 intel-opencl-runtime
@@ -22,7 +21,6 @@ lib32-nvidia-utils
 lib32-vulkan-amdgpu-pro
 lib32-vulkan-radeon
 libva-mesa-driver
-libwgpu-native
 linux
 linux-firmware
 linux-hardened
@@ -42,7 +40,6 @@ opencl-nvidia
 overmix-git
 pocl
 rocm-opencl-runtime
-transformers_ocr-git
 vulkan-amdgpu-pro
 vulkan-intel
 vulkan-radeon

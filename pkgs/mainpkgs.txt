@@ -16,7 +16,7 @@ code
 cups
 debugedit
 discord
-dmenu
+dmenu-nise
 dosbox
 dunst
 efibootmgr
@@ -45,6 +45,7 @@ grub
 gsimplecal
 gzip
 highlight
+hlib-git
 hsetroot
 htop
 i3-wm
@@ -72,6 +73,7 @@ lib32-v4l-utils
 libertinus-font
 libreoffice-still
 libtool
+libwgpu-native
 lutris
 lxsession
 m4
@@ -132,6 +134,7 @@ sudo
 terminus-font
 texinfo
 traceroute
+transformers_ocr-nise-git
 trash-cli
 tree
 ttf-arphic-uming
@@ -157,7 +160,7 @@ winetricks
 wmfocus
 wqy-zenhei
 xcalib
-xclip
+xclip-git
 xcolor
 xdg-user-dirs
 xorg-fonts-misc
