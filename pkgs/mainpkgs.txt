@@ -83,7 +83,6 @@ lib32-v4l-utils
 libertinus-font
 libreoffice-still
 libtool
-libwgpu-native
 lutris
 lxsession
 m4
