@@ -25,6 +25,7 @@ debugedit
 discord
 dmenu-nise
 dosbox
+dosfstools
 dragon-drop
 dunst
 efibootmgr

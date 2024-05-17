@@ -1,5 +1,3 @@
-btrfs-progs
-dosfstools
 gcr
 gnome-themes-extra
 lvm2
