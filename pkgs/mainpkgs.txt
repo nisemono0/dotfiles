@@ -134,6 +134,7 @@ python-pillow
 python-pip
 python-pywal
 qbittorrent
+qemu-desktop
 ranger
 rxvt-unicode
 samba
@@ -192,7 +193,6 @@ xorg-xinit
 xorg-xinput
 xorg-xlsfonts
 xorg-xrandr
-yay
 yt-dlp
 zsh
 zsh-autosuggestions
