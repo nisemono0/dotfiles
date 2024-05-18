@@ -206,12 +206,12 @@ function clean_home () {
     home_sys_config="$HOME/$(basename "$sys_configs_path")"
     yay_folder="$HOME/yay"
     git_cp_folder="$HOME/.git"
-    rm -v "$home_script"
-    rm -v "$zsh_install_script"
-    rm -rv "$home_pkgs"
-    rm -rv "$home_sys_config"
-    rm -rv "$yay_folder"
-    rm -rv "$git_cp_folder"
+    rm -fv "$home_script"
+    rm -fv "$zsh_install_script"
+    rm -frv "$home_pkgs"
+    rm -frv "$home_sys_config"
+    rm -frv "$yay_folder"
+    rm -frv "$git_cp_folder"
     echo -e "${WH}Done cleaning ${YE}home directory!${NC}"
 }
 
