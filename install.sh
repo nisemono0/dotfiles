@@ -34,14 +34,12 @@ function install_aur_helper () {
 
 # Install GPU drivers
 function install_gpu_drivers () {
-    echo -e "${YE}[!!!] ${PU}This is kinda whack, better install the drivers and multilib drivers (for 32-bit application support, wine, steam, etc) manually ${YE}[!!!] ${NC}"
-    echo -en "${PU}Do you want to install ${YE}GPU drivers (y/n): ${NC}"
+    echo -e "${YE}[!!!] ${PU}This will install open source drivers ${YE}[!!!] ${NC}"
+    echo -e "${YE}[!!!] ${PU}You should check the wiki/manually install them ${YE}[!!!] ${NC}"
+    echo -en "${PU}Do you want to install ${YE}GPU drivers (will install multilib packages as well) (y/n): ${NC}"
     read -r gpudrv
     if [ "${gpudrv}" = "y" ] || [ "${gpudrv}" = "" ]; then
-        sudo -E pacman -S --color=always --needed mesa
-        echo -en "${PU}Do you want to also install ${YE}Multilib GPU drivers ${PU} (for 32-bit appplication support, steam, etc) (y/n): ${NC}"
-        read -r multilibdrv
-        ([ "${multilibdrv}" = "y" ] || [ "${multilibdrv}" = "" ]) && sudo -E pacman -S --color=always --needed lib32-mesa
+        sudo -E pacman -S --color=always --needed mesa lib32-mesa
         PS3="${PU}Please select your ${YE}GPU:${NC}"
         options=("AMD" "Nvidia" "Intel GPU")
         select sel in "${options[@]}"
@@ -50,21 +48,39 @@ function install_gpu_drivers () {
                 "AMD")
                     echo -e "${PU}Installing ${YE}AMD drivers...${NC}"
                     sleep 1
-                    sudo -E pacman -S --color=always --needed xf86-video-amdgpu vulkan-radeon libva-mesa-driver mesa-vdpau
+                    sudo -E pacman -S --color=always --needed xf86-video-amdgpu vulkan-radeon lib32-vulkan-radeon libva-mesa-driver lib32-libva-mesa-driver mesa-vdpau lib32-mesa-vdpau
                     echo -e "${WH}Done !${NC}"
                     break
                     ;;
                 "Nvidia")
                     echo -e "${PU}Installing ${YE}Nvidia drivers...${NC}"
                     sleep 1
-                    sudo -E pacman -S --color=always --needed xf86-video-nouveau libva-mesa-driver mesa-vdpau
+                    yay -S --color=always --needed nouveau-fw
+                    sudo -E pacman -S --color=always --needed xf86-video-nouveau vulkan-nouveau lib32-vulkan-nouveau libva-mesa-driver lib32-libva-mesa-driver mesa-vdpau lib32-mesa-vdpau
                     echo -e "${WH}Done !${NC}"
                     break
                     ;;
                 "Intel GPU")
                     echo -e "${PU}Installing ${YE}Intel GPU drivers...${NC}"
                     sleep 1
-                    sudo -E pacman -S --color=always --needed xf86-video-intel vulkan-intel
+                    sudo -E pacman -S --color=always --needed xf86-video-intel vulkan-intel lib32-vulkan-intel
+                    PS3="${PU}Please select your ${YE}Intel chip:${NC}"
+                    chip_opts=("Broadwell (2014) and newer" "GMA 4500 (2008) up to Coffee Lake (2017)")
+                    select chip_sel in "${chip_opts[@]}"
+                    do
+                        case $chip_sel in
+                            "Broadwell (2014) and newer")
+                                sudo -E pacman --color=always --needed intel-media-driver
+                                break
+                                ;;
+                            "GMA 4500 (2008) up to Coffee Lake (2017)")
+                                sudo -E pacman --color=always --needed libva-intel-driver lib32-libva-intel-driver
+                                break
+                                ;;
+                            *)
+                                echo -e "${PU}Invalid option $REPLY ${NC}" ;;
+                        esac
+                    done
                     echo -e "${WH}Done !${NC}"
                     break
                     ;;
