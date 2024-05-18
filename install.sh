@@ -159,7 +159,7 @@ function install_sysconfigs () {
     issue_conf="$sys_configs_path/etc_issue"
     default_grub="$sys_configs_path/etc_default_grub"
     pacman_conf="$sys_configs_path/etc_pacman.conf"
-    makepkg_conf="$sys_configs/etc_makepkg.conf"
+    makepkg_conf="$sys_configs_path/etc_makepkg.conf"
     cat < "$issue_conf" | sudo -E tee /etc/issue 1> /dev/null
     cat < "$default_grub" | sudo -E tee /etc/default/grub 1> /dev/null
     cat < "$pacman_conf" | sudo -E tee /etc/pacman.conf 1> /dev/null
