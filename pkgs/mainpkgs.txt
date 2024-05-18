@@ -134,7 +134,6 @@ python-pillow
 python-pip
 python-pywal
 qbittorrent
-qemu-desktop
 ranger
 rxvt-unicode
 samba
