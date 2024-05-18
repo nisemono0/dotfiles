@@ -166,7 +166,7 @@ function install_sysconfigs () {
     cat < "$pacman_conf" | sudo -E tee /etc/pacman.conf 1> /dev/null
     cat < "$makepkg_conf" | sudo -E tee /etc/makepkg.conf 1> /dev/null
     sudo -E mkdir -p /usr/share/polkit-1/rules.d/
-    cat < "$polkit_rules" | sudo -E tee /usr/share/polkit-1/rules.d/10-udisks.rules
+    cat < "$polkit_rules" | sudo -E tee /usr/share/polkit-1/rules.d/10-udisks.rules 1> /dev/null
     sudo -E pacman -Syu # Update for pacman.conf
     echo -e "${WH}Done installing ${YE}sys configs!${NC}"
 }
