@@ -21,7 +21,7 @@ function install_aur_helper () {
             echo -e "${YE}Installing yay...${NC}"
             sleep 1
             git clone https://aur.archlinux.org/yay.git
-            cd yay && makepkg -sic
+            cd yay && makepkg --noconfirm -sic
             cd "${script_path}" || exit
             echo -e "${WH}Done installing ${YE}yay!${NC}"
         else
