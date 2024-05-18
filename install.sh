@@ -39,7 +39,7 @@ function install_gpu_drivers () {
     echo -en "${PU}Do you want to install ${YE}GPU drivers (will install multilib packages as well) (y/n): ${NC}"
     read -r gpudrv
     if [ "${gpudrv}" = "y" ] || [ "${gpudrv}" = "" ]; then
-        sudo -E pacman -S --color=always --needed mesa lib32-mesa
+        sudo -E pacman -S --noconfirm --color=always --needed mesa lib32-mesa
         PS3="${PU}Please select your ${YE}GPU:${NC}"
         options=("AMD" "Nvidia" "Intel GPU")
         select sel in "${options[@]}"
@@ -48,7 +48,7 @@ function install_gpu_drivers () {
                 "AMD")
                     echo -e "${PU}Installing ${YE}AMD drivers...${NC}"
                     sleep 1
-                    sudo -E pacman -S --color=always --needed xf86-video-amdgpu vulkan-radeon lib32-vulkan-radeon libva-mesa-driver lib32-libva-mesa-driver mesa-vdpau lib32-mesa-vdpau
+                    sudo -E pacman -S --noconfirm --color=always --needed xf86-video-amdgpu vulkan-radeon lib32-vulkan-radeon libva-mesa-driver lib32-libva-mesa-driver mesa-vdpau lib32-mesa-vdpau
                     echo -e "${WH}Done !${NC}"
                     break
                     ;;
@@ -56,14 +56,14 @@ function install_gpu_drivers () {
                     echo -e "${PU}Installing ${YE}Nvidia drivers...${NC}"
                     sleep 1
                     yay -S --color=always --needed nouveau-fw
-                    sudo -E pacman -S --color=always --needed xf86-video-nouveau vulkan-nouveau lib32-vulkan-nouveau libva-mesa-driver lib32-libva-mesa-driver mesa-vdpau lib32-mesa-vdpau
+                    sudo -E pacman -S --noconfirm --color=always --needed xf86-video-nouveau vulkan-nouveau lib32-vulkan-nouveau libva-mesa-driver lib32-libva-mesa-driver mesa-vdpau lib32-mesa-vdpau
                     echo -e "${WH}Done !${NC}"
                     break
                     ;;
                 "Intel GPU")
                     echo -e "${PU}Installing ${YE}Intel GPU drivers...${NC}"
                     sleep 1
-                    sudo -E pacman -S --color=always --needed xf86-video-intel vulkan-intel lib32-vulkan-intel
+                    sudo -E pacman -S --noconfirm --color=always --needed xf86-video-intel vulkan-intel lib32-vulkan-intel
                     PS3="${PU}Please select your ${YE}Intel chip:${NC}"
                     chip_opts=("Broadwell (2014) and newer" "GMA 4500 (2008) up to Coffee Lake (2017)")
                     select chip_sel in "${chip_opts[@]}"
@@ -106,13 +106,13 @@ function install_cpu_ucode () {
                 "AMD")
                     echo -e "${PU}Installing ${YE}AMD microcode...${NC}"
                     sleep 1
-                    sudo -E pacman -S --color=always --needed amd-ucode
+                    sudo -E pacman -S --noconfirm --color=always --needed amd-ucode
                     echo -e "${WH}Done !${NC}"
                     break
                     ;;
                 "Intel")
                     echo -e "${PU}Installing ${YE}Intel microcode...${NC}"
-                    sudo -E pacman -S --color=always --needed intel-ucode
+                    sudo -E pacman -S --noconfirm --color=always --needed intel-ucode
                     echo -e "${WH}Done !${NC}"
                     break
                     ;;
@@ -130,7 +130,7 @@ function install_main_packages () {
     echo -e "${PU}Installing ${YE}main packages${PU}...${NC}"
     mainpkgs="$pkgs_path/mainpkgs.txt"
     sleep 1
-    sudo -E pacman -S --color=always --needed - < "$mainpkgs"
+    sudo -E pacman -S --noconfirm --color=always --needed - < "$mainpkgs"
     echo -e "${WH}Done installing ${YE}main packages!${NC}"
 }
 
@@ -148,7 +148,7 @@ function install_optdeps () {
     echo -e "${PU}Installing ${YE}optional dependencies...${NC}"
     optpkgs="$pkgs_path/optdeplist.txt"
     sleep 1
-    sudo -E pacman -S --color=always --needed --asdeps - < "$optpkgs"
+    sudo -E pacman -S --noconfirm --color=always --needed --asdeps - < "$optpkgs"
     echo -e "${WH}Done installing ${YE}opt deps!${NC}"
 }
 
