@@ -192,7 +192,6 @@ function install_dotfiles () {
     echo -e "${PU}Copying ${YE}dotfiles...${NC}"
     sleep 1
     cp -rvT "$script_path" "$HOME"/ # Copy all configs
-    sed -i "s/\/home\/nise\//\/home\/$USER\//g" "$HOME/.config/neofetch/config" # Change the username with $USER var
     echo -e "${WH}Done installing ${YE}dotfiles!${NC}"
 }
 
