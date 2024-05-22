@@ -7,7 +7,7 @@
 ---@field type string
 local o = {
     name = 'mpv-screenshot.png',
-    type = 'img/png' -- defaults to jpeg
+    type = 'image/png' -- defaults to jpeg
 }
 require('mp.options').read_options(o, 'clipshot')
 
