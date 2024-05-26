@@ -25,9 +25,9 @@
     shrink = no
     transparency = 20
     separator_height = 1
-    padding = 1
-    horizontal_padding = 8
-    text_icon_padding = 0
+    padding = 3
+    horizontal_padding = 3
+    text_icon_padding = 3
     frame_width = 3
     frame_color = "#34434e"
     separator_color = auto
