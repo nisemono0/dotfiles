@@ -16,7 +16,7 @@
     ### Progress bar ###
     progress_bar = true
     progress_bar_height = 10
-    progress_bar_frame_width = 1
+    progress_bar_frame_width = 2
     progress_bar_min_width = 150
     progress_bar_max_width = 300
 
@@ -24,13 +24,13 @@
     indicate_hidden = yes
     shrink = no
     transparency = 20
-    separator_height = 5
+    separator_height = 1
     padding = 1
     horizontal_padding = 8
     text_icon_padding = 0
     frame_width = 3
-    frame_color = "#6273A7"
-    separator_color = frame
+    frame_color = "#34434e"
+    separator_color = auto
     sort = yes
     idle_threshold = 120
 
@@ -79,13 +79,13 @@
     per_monitor_dpi = true
 
 [urgency_low]
-    background = "#4B5987"
-    foreground = "#C3CBE1"
+    background = "#34434e"
+    foreground = "#c5c5c5"
     timeout = 5
 
 [urgency_normal]
-    background = "#4B5987"
-    foreground = "#C3CBE1"
+    background = "#34434e"
+    foreground = "#c5c5c5"
     timeout = 5
 
 [urgency_critical]

@@ -28,7 +28,8 @@ xrdb_get () {
 # * dev_val - default value to set if X_res is not found e.g.: #65737e.
 # Attributes dictionary. Add or remove attributes
 declare -A theme_attr_dict=(
-    ["global-frame_color"]="\"$(xrdb_get 'color3' '#A6A294')\""
+    ["global-frame_color"]="\"$(xrdb_get 'color1' '#A6A294')\""
+    #["global-separator_color"]="\"$(xrdb_get 'color6' 'auto')\""
 
     ["urgency_low-background"]="\"$(xrdb_get 'color1' '#5A524F')\""
     ["urgency_low-foreground"]="\"$(xrdb_get 'color7' '#FFFFFF')\""
