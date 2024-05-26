@@ -32,7 +32,7 @@ copy_img_to_clipboard(){
             && notify-send "Image copied to clipboard" -i "$abspath" \
             || notify-send -u critical "Couldn't copy $1"
     else
-        convert "$1" png:- | xclip -selection clipboard -target image/png -i &> /dev/null \
+        magick "$1" png:- | xclip -selection clipboard -target image/png -i &> /dev/null \
             && notify-send "Image copied to clipboard" -i "$abspath" \
             || notify-send -u critical "Couldn't copy $1"
     fi
@@ -68,16 +68,16 @@ case "$1" in
         dragon-drop -x "$file"
         ;;
     "greater") # (>) Rotate clockwise 90 degress and save images
-        while read -r file; do convert -rotate 90 "$file" "$file"; done
+        while read -r file; do magick "$file" -rotate 90 "$file"; done
         ;;
     "less") # (<) Rotate counter-clockwise 90 degrees and save images
-        while read -r file; do convert -rotate -90 "$file" "$file"; done
+        while read -r file; do magick "$file" -rotate -90 "$file"; done
         ;;
     "bar") # (|) Flip horizontally and save images
-        while read -r file; do convert -flop "$file" "$file"; done
+        while read -r file; do magick "$file" -flop "$file"; done
         ;;
     "underscore") # (_) Flip vertically and save images
-        while read -r file; do convert -flip "$file" "$file"; done
+        while read -r file; do magick "$file" -flip "$file"; done
         ;;
 esac
 
