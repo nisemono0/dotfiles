@@ -20,6 +20,7 @@ local self = {
     platform = nil,
     encoder = nil,
     output_dir_path = nil,
+    max_avif_crf = 63,
 }
 
 ------------------------------------------------------------
@@ -66,6 +67,11 @@ local function toms(timestamp)
     return string.format("%.3f", timestamp)
 end
 
+local function quality_to_crf(quality, max_crf)
+    -- Quality is from 0 to 100. (for avif images) CRF is from 0 to 63 and reversed.
+    return math.floor((100 - quality) / 100 * max_crf)
+end
+
 ------------------------------------------------------------
 -- ffmpeg encoder
 
@@ -83,7 +89,7 @@ ffmpeg.prepend = function(args)
 end
 
 ffmpeg.make_static_snapshot_args = function(source_path, output_path, timestamp)
-    return ffmpeg.prepend {
+    local args = ffmpeg.prepend {
         '-an',
         '-ss', toms(timestamp),
         '-i', source_path,
@@ -96,6 +102,12 @@ ffmpeg.make_static_snapshot_args = function(source_path, output_path, timestamp)
         '-vframes', '1',
         output_path
     }
+    if self.config.snapshot_format == 'avif' then
+        -- Avif quality can be controlled with crf.
+        table.insert(args, #args, '-crf')
+        table.insert(args, #args, tostring(quality_to_crf(self.config.snapshot_quality, self.max_avif_crf)))
+    end
+    return args
 end
 
 ffmpeg.animated_snapshot_filters = function()
@@ -182,7 +194,7 @@ local mpv = { }
 mpv.exec = find_exec("mpv")
 
 mpv.make_static_snapshot_args = function(source_path, output_path, timestamp)
-    return {
+    local args = {
         mpv.exec,
         source_path,
         '--loop-file=no',
@@ -199,6 +211,11 @@ mpv.make_static_snapshot_args = function(source_path, output_path, timestamp)
         table.concat { '--vf-add=scale=', self.config.snapshot_width, ':', self.config.snapshot_height },
         table.concat { '-o=', output_path }
     }
+    if self.config.snapshot_format == 'avif' then
+        -- Avif quality can be controlled with crf.
+        table.insert(args, #args, string.format('--ovcopts-add=crf=%d', quality_to_crf(self.config.snapshot_quality, self.max_avif_crf)))
+    end
+    return args
 end
 
 mpv.make_animated_snapshot_args = function(source_path, output_path, start_timestamp, end_timestamp)
@@ -338,7 +355,9 @@ local create_audio = function(start_timestamp, end_timestamp, filename, padding)
         local args = self.encoder.make_audio_args(source_path, output_path, start_timestamp, end_timestamp)
         local on_finish = function()
             if report_creation_result(output_path) and self.config.preview_audio then
-                background_play(output_path, function() print("Played file: " .. output_path) end)
+                background_play(output_path, function()
+                    print("Played file: " .. output_path)
+                end)
             end
         end
         h.subprocess(args, on_finish)
@@ -384,12 +403,18 @@ local create_job = function(type, sub, audio_padding)
     if type == 'snapshot' and h.has_video_track() then
         current_timestamp = mp.get_property_number("time-pos", 0)
         filename = make_snapshot_filename(sub['start'], sub['end'], current_timestamp)
-        run_async = function() create_snapshot(sub['start'], sub['end'], current_timestamp, filename) end
+        run_async = function()
+            create_snapshot(sub['start'], sub['end'], current_timestamp, filename)
+        end
     elseif type == 'audioclip' and h.has_audio_track() then
         filename = make_audio_filename(sub['start'], sub['end'])
-        run_async = function() create_audio(sub['start'], sub['end'], filename, audio_padding) end
+        run_async = function()
+            create_audio(sub['start'], sub['end'], filename, audio_padding)
+        end
     else
-        run_async = function() print(type .. " will not be created.") end
+        run_async = function()
+            print(type .. " will not be created.")
+        end
     end
     return {
         filename = filename,
@@ -401,10 +426,14 @@ return {
     init = init,
     set_output_dir = set_output_dir,
     snapshot = {
-        create_job = function(sub) return create_job('snapshot', sub) end,
+        create_job = function(sub)
+            return create_job('snapshot', sub)
+        end,
         toggle_animation = toggle_animation,
     },
     audio = {
-        create_job = function(sub, padding) return create_job('audioclip', sub, padding) end,
+        create_job = function(sub, padding)
+            return create_job('audioclip', sub, padding)
+        end,
     },
 }
