@@ -124,7 +124,7 @@ python-pip
 python-pywal
 qbittorrent
 ranger
-rxvt-unicode
+rxvt-unicode-nise
 samba
 scrot
 sed
