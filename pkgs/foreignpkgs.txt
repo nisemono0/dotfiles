@@ -13,4 +13,3 @@ simple-mtpfs
 ttf-ms-win11-auto
 urxvt-resize-font-git
 vencord-installer-cli-bin
-yay
