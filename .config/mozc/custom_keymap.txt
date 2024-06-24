@@ -13,6 +13,10 @@ Composition	Right	MoveCursorRight
 Composition	Ctrl Right	MoveCursorToEnd
 Composition	Ctrl d	MoveCursorRight
 Composition	Ctrl f	MoveCursorToEnd
+Composition	Ctrl Shift Space	InsertFullSpace
+Composition	Ctrl Space	InsertHalfSpace
+Composition	Space	Convert
+Composition	Shift Space	Convert
 Composition	Tab	PredictAndConvert
 Composition	Shift Tab	Convert
 Composition	Down	Convert
@@ -33,7 +37,9 @@ Conversion	Ctrl /	InputModeFullAlphanumeric
 Conversion	Backspace	Cancel
 Conversion	Ctrl Backspace	Cancel
 Conversion	Tab	ConvertNext
+Conversion	Space	ConvertNext
 Conversion	Shift Tab	ConvertPrev
+Conversion	Shift Space	ConvertPrev
 Conversion	Down	ConvertNext
 Conversion	Up	ConvertPrev
 Conversion	Left	ConvertPrevPage
@@ -42,12 +48,16 @@ Conversion	Ctrl s	ConvertNext
 Conversion	Ctrl d	ConvertPrev
 Conversion	Ctrl a	ConvertPrevPage
 Conversion	Ctrl f	ConvertNextPage
+Conversion	Ctrl Shift Space	InsertFullSpace
+Conversion	Ctrl Space	InsertHalfSpace
 Conversion	Enter	Commit
 Conversion	Escape	Cancel
 Conversion	Ctrl l	ConvertToHiragana
 Conversion	Ctrl ;	ConvertToFullKatakana
 Conversion	Ctrl '	ConvertToFullAlphanumeric
 Prediction	Ctrl Delete	DeleteSelectedCandidate
+Precomposition	Space	InsertHalfSpace
+Precomposition	Shift Space	InsertFullSpace
 Precomposition	Ctrl F10	LaunchConfigDialog
 Precomposition	Ctrl F11	LaunchDictionaryTool
 Precomposition	Ctrl F12	LaunchWordRegisterDialog
