@@ -1,19 +1,14 @@
 #!/bin/bash
 
 get_input_name() {
-    #current_input="$(dbus-send --session --print-reply --dest=org.fcitx.Fcitx /inputmethod \
-    #org.freedesktop.DBus.Properties.Get \
-    #    string:org.fcitx.Fcitx.InputMethod \
-    #    string:CurrentIM \
-    #| grep string | cut -d'"' -f2)"
-
+    #current_input="$(gdbus call --session --dest org.fcitx.Fcitx --object-path /inputmethod --method org.fcitx.Fcitx.InputMethod.GetCurrentIM | grep -oP "(?<=').*(?=')")"
     current_input="$(fcitx-remote)"
 
-    if [[ "$current_input" = "2" ]]; then
-        echo "jp"
-    else
-        echo "en"
-    fi
+    case "$current_input" in
+        "1") echo "en" ;;
+        "2") echo "jp" ;;
+        *) echo "??" ;;
+    esac
 }
 
 react() {
