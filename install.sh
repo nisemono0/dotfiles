@@ -161,12 +161,14 @@ function install_sysconfigs () {
     pacman_conf="$sys_configs_path/etc_pacman.conf"
     makepkg_conf="$sys_configs_path/etc_makepkg.conf"
     polkit_rules="$sys_configs_path/usr_share_polkit-1_rules.d_10-udisks.rules"
+    modprobe_rule="$sys_configs_path/etc_modprobe.d_nontfs3.conf"
     cat < "$issue_conf" | sudo -E tee /etc/issue 1> /dev/null
     cat < "$default_grub" | sudo -E tee /etc/default/grub 1> /dev/null
     cat < "$pacman_conf" | sudo -E tee /etc/pacman.conf 1> /dev/null
     cat < "$makepkg_conf" | sudo -E tee /etc/makepkg.conf 1> /dev/null
     sudo -E mkdir -p /usr/share/polkit-1/rules.d/
     cat < "$polkit_rules" | sudo -E tee /usr/share/polkit-1/rules.d/10-udisks.rules 1> /dev/null
+    cat < "$modprobe_rule" | sudo -E tee /etc/modprobe.d/nontfs3.conf 1> /dev/null
     sudo -E pacman -Syu # Update for pacman.conf
     echo -e "${WH}Done installing ${YE}sys configs!${NC}"
 }
