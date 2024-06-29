@@ -2,9 +2,13 @@ status	key	command
 Precomposition	Ctrl ,	InputModeHiragana
 Precomposition	Ctrl .	InputModeFullKatakana
 Precomposition	Ctrl /	InputModeFullAlphanumeric
+Precomposition	Ctrl [	InputModeHalfKatakana
+Precomposition	Ctrl ]	InputModeHalfAlphanumeric
 Composition	Ctrl ,	InputModeHiragana
 Composition	Ctrl .	InputModeFullKatakana
 Composition	Ctrl /	InputModeFullAlphanumeric
+Composition	Ctrl [	InputModeHalfKatakana
+Composition	Ctrl ]	InputModeHalfAlphanumeric
 Composition	Left	MoveCursorLeft
 Composition	Ctrl Left	MoveCursorToBeginning
 Composition	Ctrl s	MoveCursorLeft
@@ -24,6 +28,8 @@ Composition	Up	Convert
 Composition	Ctrl l	ConvertToHiragana
 Composition	Ctrl ;	ConvertToFullKatakana
 Composition	Ctrl '	ConvertToFullAlphanumeric
+Composition	Ctrl -	ConvertToHalfKatakana
+Composition	Ctrl =	ConvertToHalfAlphanumeric
 Composition	Enter	Commit
 Composition	Shift Enter	ConvertWithoutHistory
 Composition	Backspace	Backspace
@@ -34,6 +40,8 @@ Composition	Ctrl q	Cancel
 Conversion	Ctrl ,	InputModeHiragana
 Conversion	Ctrl .	InputModeFullKatakana
 Conversion	Ctrl /	InputModeFullAlphanumeric
+Conversion	Ctrl [	InputModeHalfKatakana
+Conversion	Ctrl ]	InputModeHalfAlphanumeric
 Conversion	Backspace	Cancel
 Conversion	Ctrl Backspace	Cancel
 Conversion	Tab	ConvertNext
@@ -55,6 +63,8 @@ Conversion	Escape	Cancel
 Conversion	Ctrl l	ConvertToHiragana
 Conversion	Ctrl ;	ConvertToFullKatakana
 Conversion	Ctrl '	ConvertToFullAlphanumeric
+Conversion	Ctrl -	ConvertToHalfKatakana
+Conversion	Ctrl =	ConvertToHalfAlphanumeric
 Prediction	Ctrl Delete	DeleteSelectedCandidate
 Precomposition	Space	InsertHalfSpace
 Precomposition	Shift Space	InsertFullSpace
