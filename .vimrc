@@ -7,6 +7,7 @@ Plug 'davidhalter/jedi-vim'
 Plug 'ryanoasis/vim-devicons'
 Plug 'junegunn/vim-easy-align'
 Plug 'cohama/lexima.vim'
+Plug 'dhruvasagar/vim-table-mode'
 "Local
 Plug '~/.config/vim/plugged/minimalist'
 call plug#end()
