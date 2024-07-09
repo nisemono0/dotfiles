@@ -1,4 +1,3 @@
-gcr
 gnome-themes-extra
 lvm2
 python-dnspython
