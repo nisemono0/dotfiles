@@ -85,6 +85,7 @@ mangohud
 materia-gtk-theme
 mediainfo
 mkvtoolnix-cli
+mkvtoolnix-gui
 mpc
 mpd
 mpv
