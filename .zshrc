@@ -60,8 +60,10 @@ alias paclsaur="pacman -Qm"
 alias pacown="pacman -Qo"
 # Check aur updates
 alias aurcheckupdates="yay -Qum"
-
+# grep -i alias
 alias grepi="grep --color=auto -i"
+# cd into dir on ranger exit
+alias ranger_cd=". ranger"
 
 source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
