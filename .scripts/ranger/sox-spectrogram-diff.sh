@@ -12,7 +12,7 @@ second_filetype=$(file --dereference --mime-type "$second_file" | cut -d ':' -f 
 
 if [[ "$first_filetype" == audio/* ]] && [[ "$second_filetype" == audio/* ]]; then
     spectrogram_diff="$(mktemp)"
-    sox -m -v 1 "$first_file" -v -1 "$second_file" -n spectrogram -o "$spectrogram_diff"
+    sox -m -v 1 "$first_file" -v -1 "$second_file" -n spectrogram -c "Difference" -o "$spectrogram_diff"
     nsxiv -p "$spectrogram_diff"
     rm -- "$spectrogram_diff"
 fi
