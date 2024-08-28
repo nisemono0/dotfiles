@@ -1,0 +1,10 @@
+#!/bin/sh
+
+echo "=====[Official]====="
+if ! checkupdates; then
+    echo "No official updates"
+fi
+echo "=====[AUR]====="
+if ! yay -Qum 2> /dev/null; then
+    echo "No AUR updates"
+fi
