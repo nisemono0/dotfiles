@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#xinput --list
+# xinput --list
 MOUSE_NAME=""
 PROP_NAME_SPEED="libinput Accel Speed"
 PROP_NAME_ACCEL="libinput Accel Profile Enabled"

@@ -1,4 +1,6 @@
 #!/bin/bash
+
+# Optional
 CITY=""
 
 curl "wttr.in/$CITY"

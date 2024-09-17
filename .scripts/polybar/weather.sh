@@ -19,7 +19,9 @@ get_icon() {
     echo $icon
 }
 
+# https://home.openweathermap.org/api_keys
 KEY=""
+# Optional
 CITY=""
 UNITS="metric"
 SYMBOL="°C"

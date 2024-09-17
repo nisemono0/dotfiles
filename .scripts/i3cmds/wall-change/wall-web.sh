@@ -5,6 +5,9 @@ TMP_WALLPAPER="/tmp/wallpaper-tmp"
 
 WALLCHANGE="$(dirname "$0")/wall-change.sh"
 
+# https://wallhaven.cc/settings/account
+WALLHAVEN_KEY="apikey="
+
 default_resolution=""
 resolution_type=""
 width=""
@@ -182,7 +185,7 @@ konachan() {
 }
 
 wallhaven() {
-    KEY=""
+    KEY="${WALLHAVEN_KEY}"
     url="https://wallhaven.cc/api/v1/search"
 
     set_resolution

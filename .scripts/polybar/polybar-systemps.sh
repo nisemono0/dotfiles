@@ -1,6 +1,7 @@
 #!/bin/bash
 
 SENSORS="$(sensors -j)"
+# sensors -j
 CPU_JQ=""
 GPU_JQ=""
 
