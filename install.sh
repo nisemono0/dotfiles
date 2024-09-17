@@ -88,7 +88,7 @@ function install_gpu_drivers () {
                     echo -e "${PU}Invalid option $REPLY ${NC}" ;;
             esac
         done
-    else 
+    else
         echo -e "${YE}GPU Drivers ${PU}not installed${NC}"
     fi
 }
