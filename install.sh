@@ -219,6 +219,15 @@ function clean_home () {
     echo -e "${WH}Done cleaning ${YE}home directory!${NC}"
 }
 
+# Reminder to modify some scripts
+function post_install_modify () {
+    to_modify_arr=("i3cmds/mousespeed.sh" "i3cmds/wall-change/wall-web.sh" "polybar/polybar-systemps.sh" "polybar/weather-forecast.sh" "polybar/weather.sh")
+    echo -e "${WH}Please modify the following scripts, adding api keys, gpu/cpu names, etc:${NC}"
+    for scr in "${to_modify_arr[@]}"; do
+        echo -e "${PU}\t==>$HOME/.scripts/${scr}${NC}"
+    done
+}
+
 # Start install
 function start_install () {
     echo -e "${PU}Staring install... (This will do a system upgrade first)${NC}"
@@ -237,6 +246,7 @@ function start_install () {
     # Hacky way
     sudo ln -s /usr/bin/nsxiv /usr/bin/sxiv
     echo -e "${WH}Finished installing!${NC}"
+    post_install_modify
 }
 
 # Start
