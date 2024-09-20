@@ -72,6 +72,7 @@ lib32-mpg123
 lib32-ocl-icd
 lib32-openal
 lib32-v4l-utils
+libertinus-font
 libreoffice-still
 libtool
 lutris
@@ -105,7 +106,6 @@ ntfs-3g
 nvtop
 os-prober
 otf-ipafont
-otf-libertinus
 overmix-git
 oxipng
 p7zip
