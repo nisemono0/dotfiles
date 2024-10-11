@@ -10,8 +10,6 @@ python-colorthief
 python-ffsubsync-venv
 python-haishoku
 simple-mtpfs
-ttf-ms-win11-auto
-ttf-ms-win11-auto-japanese
 urxvt-resize-font-git
 urxvt-vtwheel
 vencord-installer-cli-bin

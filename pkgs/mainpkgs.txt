@@ -149,6 +149,8 @@ ttf-inconsolata
 ttf-indic-otf
 ttf-liberation
 ttf-monapo
+ttf-ms-win11-auto
+ttf-ms-win11-auto-japanese
 ttf-sourcecodepro-nerd
 ttf-symbola
 ttf-ubuntu-font-family
