@@ -2,7 +2,6 @@ set rtp+=~/.config/vim/
 call plug#begin('~/.config/vim/plugged')
 Plug 'preservim/nerdtree'
 Plug 'vim-airline/vim-airline'
-Plug 'mboughaba/i3config.vim'
 Plug 'davidhalter/jedi-vim'
 Plug 'ryanoasis/vim-devicons'
 Plug 'junegunn/vim-easy-align'
