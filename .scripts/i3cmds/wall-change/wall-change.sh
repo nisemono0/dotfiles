@@ -46,7 +46,7 @@ change_colors(){
         set_wal_options
         wal -c
         if [[ "$saturation" = "Default" ]]; then
-            wal -ntq --backend "$backend" -i "$TMP_WALLPAPER" || exit 1 
+            wal -ntq --backend "$backend" -i "$TMP_WALLPAPER" || exit 1
         else
             wal -ntq --saturate "$saturation" --backend "$backend" -i "$TMP_WALLPAPER" || exit 1
         fi
@@ -57,7 +57,7 @@ change_colors(){
 
 copy_to() {
     if [ -f "$TMP_WALLPAPER" ]; then
-        copy_path="$(find "$HOME" -maxdepth 3 -not -path "*.*" -type d 2>/dev/null | 
+        copy_path="$(find "$HOME" -maxdepth 3 -not -path "*.*" -type d 2>/dev/null |
             dmenu "${DMENU_ARGS[@]}" -p "Copy where")"
         copy_path="${copy_path/#\~/$HOME}"
         [ -z "$copy_path" ] && exit 1
@@ -66,10 +66,10 @@ copy_to() {
             askmkdir="$(printf "No\\nYes" | dmenu "${DMENU_ARGS[@]}" -p "Create: $copy_path")"
             [ "$askmkdir" = "Yes" ] && (mkdir -p "$copy_path") || exit 1
         fi
-        
+
         filename=$(basename "$TMP_WALLPAPER")
         extension=$(file -b --extension "$TMP_WALLPAPER" | cut -d '/' -f 1)
-        
+
         if [[ "$extension" == "???" ]]; then
             cpfile="${filename}"
         else
@@ -122,11 +122,11 @@ set_wallpaper(){
     ln -sf "$wallpaper" "$TMP_WALLPAPER"
 
     if [[ "$saturation" = "Default" ]]; then
-        wal -ntq --backend "$backend" -i "$wallpaper" || exit 1 
+        wal -ntq --backend "$backend" -i "$wallpaper" || exit 1
     else
         wal -ntq --saturate "$saturation" --backend "$backend" -i "$wallpaper" || exit 1
     fi
-    
+
     notify-send -h string:x-dunst-stack-tag:wallpapernotifs "Wallpaper and colors updated" -i video-display
 
     exit 0
@@ -140,7 +140,7 @@ random_wallpaper(){
     wallpaper="$(find "$wallpapers_dir" -type f | shuf -n 1)"
 
     [[ -z "$wallpaper" ]] && exit 1
-        
+
     hsetroot -cover "$wallpaper" || exit 1
 
     if [ -f "$TMP_WALLPAPER" ]; then

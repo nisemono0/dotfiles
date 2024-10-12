@@ -18,7 +18,7 @@ left_aligned="false"
 padding_left=
 
 # Only set this if the geometries are wrong or ncmpcpp shouts at you to do it.
-# Visually select/highlight a character on your terminal, zoom in an image 
+# Visually select/highlight a character on your terminal, zoom in an image
 # editor and count how many pixels a character's width and height are.
 font_height=
 font_width=
@@ -37,7 +37,7 @@ kill_previous_instances() {
     for pid in $(pidof -x "$script_name"); do
         if [ "$pid" != $$ ]; then
             kill -15 "$pid"
-        fi 
+        fi
     done
 }
 

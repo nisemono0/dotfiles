@@ -227,7 +227,7 @@ wallhaven() {
             --data-urlencode "$resolution" \
             --data-urlencode "$query" \
             "$url" | jq -r '.data[0].path')
-    
+
     download_image "$img_url"
     set_wallpaper
 }

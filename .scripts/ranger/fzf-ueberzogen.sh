@@ -24,7 +24,7 @@ declare -r -x PREVIEW_ID="fzf-preview"
 
 
 function STORE_TERMINAL_SIZE_IN {
-    # Usage: STORE_TERMINAL_SIZE_IN 
+    # Usage: STORE_TERMINAL_SIZE_IN
     #           lines_variable columns_variable
     [[ ! -v "$1" || ! -v "$2" ]] && return 1
     < <(</dev/tty stty size) \
@@ -306,7 +306,7 @@ function CREATE_PREVIEW {
     local cache_directory="${XDG_CACHE_HOME:-$HOME/.cache}"
     local cache_image_path="${cache_directory}/ranger/${path_sha1%% *-}.jpg"
     local text_preview=
-    
+
     # Wrong exit code if declared (local) & assigned at once..
     # https://github.com/ranger/ranger/blob/3f8e7c14103a6570b0e55fbcf84242c86f42a7cb/ranger/core/actions.py#L1187
     text_preview="$("${config_directory}/ranger/scope.sh" \

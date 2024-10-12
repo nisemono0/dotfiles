@@ -21,7 +21,7 @@ mountandroid() {
     chosen="$(echo "$android_drives" | dmenu "${DMENU_ARGS_CENTER[@]}" -p "Android device" | cut -d ':' -f 1)"
     [ -z "$chosen" ] && exit 1
 
-    mount_point="$(find "$HOME" -maxdepth 3 -not -path "*.*" -type d 2>/dev/null | 
+    mount_point="$(find "$HOME" -maxdepth 3 -not -path "*.*" -type d 2>/dev/null |
         dmenu "${DMENU_ARGS_CENTER[@]}" -p "Type in mount point")"
     mount_point="${mount_point/#\~/$HOME}"
     [ -z "$mount_point" ] && exit 1
