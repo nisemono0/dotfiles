@@ -76,6 +76,9 @@ def_key "h"
 def_key "enter"
     play_item
 
+def_key "p"
+    play_item
+
 def_key "l"
     play_item
 
@@ -226,10 +229,10 @@ def_key "?"
 def_key "?"
     find_item_backward
 
-def_key "."
+def_key "n"
     next_found_item
 
-def_key ","
+def_key "N"
     previous_found_item
 
 def_key "e"
@@ -276,25 +279,31 @@ def_key "K"
     select_item
     scroll_up
 
+def_key "L"
+    select_item
+
+def_key "H"
+    select_item
+
 def_key "c"
     clear_playlist
 
 def_key "c"
     clear_main_playlist
 
-def_key "m"
+def_key ","
     move_sort_order_up
 
-def_key "m"
+def_key ","
     move_selected_items_up
 
 def_key "M"
     move_selected_items_to
 
-def_key "n"
+def_key "."
     move_sort_order_down
 
-def_key "n"
+def_key "."
     move_selected_items_down
 
 def_key "S"
