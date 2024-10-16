@@ -49,7 +49,7 @@ case "$1" in
         mkdir -p "$pic_dir" || { notify-send -u critical "Couldn't create $pic_dir"; exit; }
         while read -r file; do copy_img_to_dir "$file" "$pic_dir"; done
         ;;
-    "c") # Copy image to clipboard (converting it to png before if it isn't already png)
+    "i") # Copy image to clipboard (converting it to png before if it isn't already png)
         read -r file
         copy_img_to_clipboard "$file"
         ;;
