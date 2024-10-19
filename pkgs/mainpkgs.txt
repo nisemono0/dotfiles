@@ -16,7 +16,6 @@ brightnessctl
 code
 cups
 debugedit
-discord
 dmenu-nise
 dosbox
 dosfstools

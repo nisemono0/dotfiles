@@ -13,3 +13,4 @@ simple-mtpfs
 urxvt-resize-font-git
 urxvt-vtwheel
 vencord-installer-cli-bin
+vesktop-bin
