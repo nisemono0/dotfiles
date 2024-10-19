@@ -3170,5 +3170,5 @@ local used_keybind = SCRIPT_KEYBIND
 if option_values.disable_keybind then
   used_keybind = nil
 end
-mp.add_key_binding(used_keybind, SCRIPT_HANDLER, script_crop_toggle)
 mp.enable_key_bindings(SCRIPT_HANDLER, "allow-hide-cursor")
+mp.add_key_binding(used_keybind, SCRIPT_HANDLER, script_crop_toggle)
