@@ -118,6 +118,7 @@ polybar
 pulseaudio
 pulseaudio-alsa
 pulsemixer
+python-colorthief
 python-mpd2
 python-pillow
 python-pip

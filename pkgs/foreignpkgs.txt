@@ -6,11 +6,9 @@ code-marketplace
 colorz
 dragon-drop
 i3lock-color
-python-colorthief
 python-ffsubsync-venv
 python-haishoku
 simple-mtpfs
 urxvt-resize-font-git
 urxvt-vtwheel
-vencord-installer-cli-bin
 vesktop-bin
