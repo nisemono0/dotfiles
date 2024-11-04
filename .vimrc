@@ -70,4 +70,8 @@ inoremap <C-Space> <C-n>
 map <C-n> :NERDTreeToggle<CR>
 nnoremap <C-m> :exec &mouse!="" ? "set mouse=" : "set mouse=a"<CR>
 
+map gb :bnext<CR>
+map gB :bprevious<CR>
+map gbd :bdelete<CR>
+
 set t_RV=
