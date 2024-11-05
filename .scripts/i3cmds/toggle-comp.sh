@@ -11,7 +11,7 @@ if [ -z "$proc_pid" ]; then
     fi
 else
     if kill -9 "$proc_pid" 2>/dev/null; then
-        while pgrep -u "$UID" -x "$COMP_NAME" >/dev/null; do sleep 1; done
+        while pgrep -u "$UID" -x "$COMP_NAME" >/dev/null; do sleep 0.5; done
         notify-send -h string:x-dunst-stack-tag:comptoggle "$COMP_NAME killed"
     else
         notify-send -u critical "Couldn't kill $COMP_NAME"
