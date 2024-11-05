@@ -8,8 +8,8 @@ STEP=0.1
 
 [ $# -ne 1 ] && echo "Too few/many arguments, expecting 1" && exit 1
 
-speed=$(xinput --list-props "$MOUSE_NAME" | awk -F ':' -v PROP_NAME_SPEED="$PROP_NAME_SPEED" 'index($0, PROP_NAME_SPEED) {print $2}' | head -n 1 | tr -d "[:blank:]")
-accel=$(xinput --list-props "$MOUSE_NAME" | awk -F ':' -v PROP_NAME_ACCEL="$PROP_NAME_ACCEL" 'index($0, PROP_NAME_ACCEL) {print $2}' | head -n 1 | tr -d "[:blank:]")
+speed=$(xinput --list-props "$MOUSE_NAME" | awk -F ':' -v PROP_NAME_SPEED="$PROP_NAME_SPEED" 'index($0, PROP_NAME_SPEED) { printf("%.3g %.3g\n", $1, $2) }' | head -n 1 | tr -d "[:blank:]")
+accel=$(xinput --list-props "$MOUSE_NAME" | awk -F ':' -v PROP_NAME_ACCEL="$PROP_NAME_ACCEL" 'index($0, PROP_NAME_ACCEL) { print $2 }' | head -n 1 | tr -d "[:blank:]")
 
 set_speed() {
     if [ "$(bc <<< "$newspeed > 1")" = 1 ]; then
@@ -29,7 +29,7 @@ set_speed() {
 
 reset_speed() {
     if xinput --set-prop "$MOUSE_NAME" "$PROP_NAME_SPEED" 0.0; then
-        notify-send -h string:x-dunst-stack-tag:mouseopt "Mouse speed reset" "Speed: 0.0"
+        notify-send -h string:x-dunst-stack-tag:mouseopt "Mouse speed reset" "Speed: 0 (Default)"
     else
         notify-send -u critical "Couldn't set mouse speed"
     fi
