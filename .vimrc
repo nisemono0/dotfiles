@@ -23,6 +23,7 @@ set incsearch
 set ignorecase
 set smartcase
 set t_Co=256
+set relativenumber
 
 "Cursor settings:
 "SI = INSERT mode
