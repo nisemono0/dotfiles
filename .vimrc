@@ -7,6 +7,7 @@ Plug 'ryanoasis/vim-devicons'
 Plug 'junegunn/vim-easy-align'
 Plug 'cohama/lexima.vim'
 Plug 'dhruvasagar/vim-table-mode'
+Plug 'machakann/vim-highlightedyank'
 "Local
 Plug '~/.config/vim/plugged/minimalist'
 call plug#end()
@@ -60,6 +61,9 @@ let g:airline_symbols.whitespace = ''
 let g:lexima_no_default_rules = 1
 call lexima#set_default_rules()
 call lexima#insmode#map_hook('before', '<CR>', '')
+
+let b:highlightedyank_highlight_duration = 50
+let g:highlightedyank_highlight_in_visual = 0
 
 inoremap <expr> <C-j> pumvisible() ? "\<C-n>" : "\<Down>"
 inoremap <expr> <C-k> pumvisible() ? "\<C-p>" : "\<Up>"
