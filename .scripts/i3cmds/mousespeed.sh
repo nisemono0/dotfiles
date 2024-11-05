@@ -8,7 +8,7 @@ STEP=0.1
 
 [ $# -ne 1 ] && echo "Too few/many arguments, expecting 1" && exit 1
 
-speed=$(xinput --list-props "$MOUSE_NAME" | awk -F ':' -v PROP_NAME_SPEED="$PROP_NAME_SPEED" 'index($0, PROP_NAME_SPEED) { printf("%.3g %.3g\n", $1, $2) }' | head -n 1 | tr -d "[:blank:]")
+speed=$(xinput --list-props "$MOUSE_NAME" | awk -F ':' -v PROP_NAME_SPEED="$PROP_NAME_SPEED" 'index($0, PROP_NAME_SPEED) { printf("%.1f\n", $2) }' | head -n 1 | tr -d "[:blank:]")
 accel=$(xinput --list-props "$MOUSE_NAME" | awk -F ':' -v PROP_NAME_ACCEL="$PROP_NAME_ACCEL" 'index($0, PROP_NAME_ACCEL) { print $2 }' | head -n 1 | tr -d "[:blank:]")
 
 set_speed() {
