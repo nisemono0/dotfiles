@@ -36,7 +36,7 @@ hi LineNr           ctermfg=10      ctermbg=NONE    cterm=NONE      guifg=#5F5F5
 hi MatchParen       ctermfg=NONE    ctermbg=NONE    cterm=underline guifg=NONE          guibg=NONE      gui=underline
 hi MoreMsg          ctermfg=150     ctermbg=NONE    cterm=NONE      guifg=#AFD787       guibg=NONE      gui=NONE
 "Default"hi NonText          ctermfg=234     ctermbg=234     cterm=NONE      guifg=#1C1C1C       guibg=#1C1C1C   gui=NONE
-hi NonText 			ctermfg=NONE 	ctermbg=NONE 	cterm=NONE 		guifg=#282A36		guibg=#282A36	gui=NONE
+hi NonText          ctermfg=NONE    ctermbg=NONE    cterm=NONE      guifg=#282A36       guibg=#282A36   gui=NONE
 hi Normal           ctermfg=255     ctermbg=234     cterm=NONE      guifg=#EEEEEE       guibg=#1C1C1C   gui=NONE
 hi Pmenu            ctermfg=NONE    ctermbg=NONE    cterm=NONE      guifg=NONE          guibg=NONE      gui=NONE
 hi PmenuSel         ctermfg=NONE    ctermbg=59      cterm=NONE      guifg=NONE          guibg=#5F5F5F   gui=NONE
@@ -48,7 +48,7 @@ hi StatusLineNC     ctermfg=255     ctermbg=239     cterm=NONE      guifg=#EEEEE
 hi Title            ctermfg=255     ctermbg=NONE    cterm=NONE      guifg=#EEEEEE       guibg=NONE      gui=NONE
 hi Underlined       ctermfg=NONE    ctermbg=NONE    cterm=NONE      guifg=NONE          guibg=NONE      gui=NONE
 hi VertSplit        ctermfg=239     ctermbg=239     cterm=NONE      guifg=#4E4E4E       guibg=#4E4E4E   gui=NONE
-"hi Visual 			ctermfg=NONE    ctermbg=NONE 	cterm=reverse   guifg=NONE          guibg=#303030   gui=NONE
+"hi Visual           ctermfg=NONE    ctermbg=NONE    cterm=reverse   guifg=NONE          guibg=#303030   gui=NONE
 hi WarningMsg       ctermfg=255     ctermbg=167     cterm=NONE      guifg=#EEEEEE       guibg=#D75F5F   gui=NONE
 hi WildMenu         ctermfg=234     ctermbg=215     cterm=NONE      guifg=#1C1C1C       guibg=#FFAF5F   gui=NONE
 hi NERDTreeUp       ctermfg=167     ctermbg=NONE    cterm=NONE      guifg=#D75F5F       guibg=NONE      gui=NONE
@@ -58,7 +58,7 @@ hi NERDTreeFile     ctermfg=241     ctermbg=NONE    cterm=NONE      guifg=#60606
 hi NERDTreeCWD      ctermfg=167     ctermbg=NONE    cterm=NONE      guifg=#D75F5F       guibg=NONE      gui=NONE
 hi NERDTreeOpenable ctermfg=167     ctermbg=NONE    cterm=NONE      guifg=#D75F5F       guibg=NONE      gui=NONE
 hi NERDTreeClosable ctermfg=167     ctermbg=NONE    cterm=NONE      guifg=#D75F5F       guibg=NONE      gui=NONE
-hi Normal 			ctermfg=NONE	ctermbg=NONE 	cterm=NONE 		guifg=#282A36 		guibg=#282A36 	gui=NONE
+hi Normal           ctermfg=NONE    ctermbg=NONE    cterm=NONE      guifg=#282A36       guibg=#282A36   gui=NONE
 
 """""""""""""""""""""""
 " Syntax Highlighting

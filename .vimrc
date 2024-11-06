@@ -95,11 +95,18 @@ inoremap <C-@> <C-n>
 inoremap <C-Space> <C-n>
 
 map <C-n> :NERDTreeToggle<CR>
+
 nnoremap <C-m> :exec &mouse!="" ? "set mouse=" : "set mouse=a"<CR>
 
 map gb :bnext<CR>
 map gB :bprevious<CR>
 map gbd :bdelete<CR>
+
+nnoremap <C-d> <C-d>zz
+nnoremap <C-u> <C-u>zz
+
+nnoremap n nzzzv
+nnoremap N Nzzzv
 
 nnoremap <silent> <C-L> :nohlsearch<C-R>=has('diff')?'<Bar>diffupdate':''<CR><CR><C-L>
 
