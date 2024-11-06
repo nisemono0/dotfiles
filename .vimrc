@@ -16,6 +16,7 @@ set viminfo+=n~/.config/vim/viminfo
 
 syntax on
 filetype indent on
+
 set ts=4 sw=4
 set number
 set expandtab
@@ -23,8 +24,30 @@ set hlsearch
 set incsearch
 set ignorecase
 set smartcase
-set t_Co=256
 set relativenumber
+set nocompatible
+set backspace=indent,eol,start
+set smarttab
+set nrformats-=octal
+set ttimeout
+set ttimeoutlen=100
+set laststatus=2
+set ruler
+set wildmenu
+set scrolloff=1
+set sidescrolloff=2
+set display+=lastline
+set display+=truncate
+set formatoptions+=j
+set autoread
+set nolangremap
+set list
+set listchars=tab:→\ ,nbsp:␣,trail:•,extends:❯,precedes:❮
+set t_Co=256
+
+if exists(':Man') != 2 && !exists('g:loaded_man') && &filetype !=? 'man' && !has('nvim')
+    runtime ftplugin/man.vim
+endif
 
 "Cursor settings:
 "SI = INSERT mode
@@ -68,7 +91,6 @@ let g:highlightedyank_highlight_in_visual = 0
 inoremap <expr> <C-j> pumvisible() ? "\<C-n>" : "\<Down>"
 inoremap <expr> <C-k> pumvisible() ? "\<C-p>" : "\<Up>"
 inoremap <expr> <TAB> pumvisible() ? "\<C-y>" : "\<TAB>"
-
 inoremap <C-@> <C-n>
 inoremap <C-Space> <C-n>
 
@@ -78,5 +100,7 @@ nnoremap <C-m> :exec &mouse!="" ? "set mouse=" : "set mouse=a"<CR>
 map gb :bnext<CR>
 map gB :bprevious<CR>
 map gbd :bdelete<CR>
+
+nnoremap <silent> <C-L> :nohlsearch<C-R>=has('diff')?'<Bar>diffupdate':''<CR><CR><C-L>
 
 set t_RV=
