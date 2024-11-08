@@ -88,7 +88,6 @@ URxvt*scrollBar:                  false
 URxvt*mouseWheelScrollPage:       false
 URxvt*cursorBlink:                false
 URxvt*saveLines:                  5000
-URxvt*meta8:                      true
 
 ! CTRL+Shift+c/v copy-paste without perls
 URxvt.iso14755:                   false
