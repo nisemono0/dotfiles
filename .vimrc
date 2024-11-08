@@ -119,7 +119,7 @@ let b:highlightedyank_highlight_duration = 50
 let g:highlightedyank_highlight_in_visual = 0
 
 " Toggle NerdTree
-map <C-n> :NERDTreeToggle<CR>
+nnoremap <C-n> :NERDTreeToggle<CR>
 
 " Completion window
 inoremap <C-@> <C-n>
@@ -129,9 +129,11 @@ inoremap <expr> <C-k> pumvisible() ? "\<C-p>" : "\<Up>"
 inoremap <expr> <TAB> pumvisible() ? "\<C-y>" : "\<TAB>"
 
 " Buffer keybinds
-map <Leader>bn :bnext<CR>
-map <Leader>bp :bprevious<CR>
-map <Leader>bd :bdelete<CR>
+nnoremap <leader>bn :bnext<CR>
+nnoremap <leader>bp :bprevious<CR>
+nnoremap <leader>bd :bdelete<CR>
+nnoremap <Tab> :bnext<CR>
+nnoremap <S-Tab> :bprevious<CR>
 
 " Center after moving up/down
 nnoremap <C-u> <C-u>zz
@@ -141,42 +143,52 @@ nnoremap <C-d> <C-d>zz
 nnoremap n nzzzv
 nnoremap N Nzzzv
 
-" Clear search
-nnoremap <silent> <C-L> :nohlsearch<C-R>=has('diff')?'<Bar>diffupdate':''<CR><CR><C-L>
+" Clear search highlight
+nnoremap <silent> <C-c> :nohlsearch<C-R>=has('diff')?'<Bar>diffupdate':''<CR><CR><C-L>
 
 " Toggle UndoTree
-nnoremap <Leader>u :UndotreeToggle<CR>
+nnoremap <leader>u :UndotreeToggle<CR>
 
 " fzf keybinds
-nnoremap <Leader>ff :Files<CR>
-nnoremap <Leader>fg :GFiles<CR>
-nnoremap <Leader>fb :Lines<CR>
-nnoremap <Leader>ft :BLines<CR>
-nnoremap <Leader>fl :BLines<CR>
-nnoremap <Leader>fp :Rg<CR>
-nnoremap <Leader>fB :Buffers<CR>
+nnoremap <leader>ff :Files<CR>
+nnoremap <leader>fg :GFiles<CR>
+nnoremap <leader>fb :Lines<CR>
+nnoremap <leader>ft :BLines<CR>
+nnoremap <leader>fl :BLines<CR>
+nnoremap <leader>fp :Rg<CR>
+nnoremap <leader>fB :Buffers<CR>
 
 " vim-fugitive keybind
-nnoremap <Leader>gs :Git<CR>
+nnoremap <leader>gs :Git<CR>
 
 " Move selection up/down and indent
 vnoremap J :m '>+1<CR>gv=gv
 vnoremap K :m '<-2<CR>gv=gv
 
 " Don't overwrite register
-xnoremap <Leader>p "_dP
-nnoremap <Leader>d "_d
-vnoremap <Leader>d "_d
+xnoremap <leader>p "_dP
+nnoremap <leader>d "_d
+vnoremap <leader>d "_d
 
 " Disable Q
 nnoremap Q <NOP>
 
 " Replace all instances of selected word
-nnoremap <Leader>s :%s/\<<C-r><C-w>\>//gI<Left><Left><Left>
+nnoremap <leader>s :%s/\<<C-r><C-w>\>//gI<Left><Left><Left>
 
 " Make file executable
-nnoremap <Leader>x <CMD>!chmod +x %<CR>
+nnoremap <leader>x <CMD>!chmod +x %<CR>
 
-" Allow use of backspace in normal mode
+" Delete in normal mode
 nnoremap <Backspace> X
+
+" Easy move through split windows
+nnoremap <silent> <C-k> :wincmd k<CR>
+nnoremap <silent> <C-j> :wincmd j<CR>
+nnoremap <silent> <C-h> :wincmd h<CR>
+nnoremap <silent> <C-l> :wincmd l<CR>
+nnoremap <silent> <C-Up> :wincmd k<CR>
+nnoremap <silent> <C-Down> :wincmd j<CR>
+nnoremap <silent> <C-Left> :wincmd h<CR>
+nnoremap <silent> <C-Right> :wincmd l<CR>
 
