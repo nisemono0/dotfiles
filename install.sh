@@ -180,7 +180,7 @@ function install_ohmyzsh () {
     # Get the omz install script and change the default location to ~/.config/oh-my-zsh
     curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh | sed "s/\${ZSH:-\$HOME\/.oh-my-zsh}/\${ZSH:-\$HOME\/.config\/oh-my-zsh}/g" > zsh_install.sh
     chmod +x zsh_install.sh
-    sh zsh_install.sh
+    sh zsh_install.sh --unattended
     echo -e "${WH}Done installing ${YE}oh-my-zsh!${NC}"
 }
 
@@ -202,17 +202,25 @@ function clean_home () {
     home_sys_config="$HOME/$(basename "$sys_configs_path")"
     yay_folder="$HOME/yay"
     git_cp_folder="$HOME/.git"
-    rm -fv "$home_script"
-    rm -fv "$zsh_install_script"
-    rm -frv "$home_pkgs"
-    rm -frv "$home_sys_config"
-    rm -frv "$yay_folder"
-    rm -frv "$git_cp_folder"
+    rm -f "$home_script"
+    rm -f "$zsh_install_script"
+    rm -fr "$home_pkgs"
+    rm -fr "$home_sys_config"
+    rm -fr "$yay_folder"
+    rm -fr "$git_cp_folder"
     echo -e "${WH}Done cleaning ${YE}home directory!${NC}"
 }
 
-# Reminder to modify some scripts
-function post_install_modify () {
+# Post install stuff
+function post_install () {
+    echo -e "${PU}Staring post install...${NC}"
+
+    # Hacky way
+    sudo ln -s /usr/bin/nsxiv /usr/bin/sxiv
+
+    chsh -s /bin/zsh
+    echo -e "${WH}Changed default shell for $USER to ${YE}zsh!${NC}"
+
     to_modify_arr=("i3cmds/mousespeed.sh" "i3cmds/wall-change/wall-web.sh" "polybar/polybar-systemps.sh" "polybar/weather-forecast.sh" "polybar/weather.sh")
     echo -e "${WH}Please modify the following scripts, adding api keys, gpu/cpu names, etc:${NC}"
     for scr in "${to_modify_arr[@]}"; do
@@ -234,10 +242,9 @@ function start_install () {
     install_ohmyzsh
     install_dotfiles
     clean_home
-    # Hacky way
-    sudo ln -s /usr/bin/nsxiv /usr/bin/sxiv
+    post_install
     echo -e "${WH}Finished installing!${NC}"
-    post_install_modify
+    echo -e "${WH}Check if cleanup is needed in home dir!${NC}"
 }
 
 # Start
