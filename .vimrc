@@ -8,7 +8,6 @@ call plug#begin('~/.config/vim/plugged')
     Plug 'ryanoasis/vim-devicons'
     Plug 'junegunn/vim-easy-align'
     Plug 'cohama/lexima.vim'
-    Plug 'dhruvasagar/vim-table-mode'
     Plug 'machakann/vim-highlightedyank'
     Plug 'andymass/vim-matchup'
     Plug 'mbbill/undotree'
@@ -191,4 +190,13 @@ nnoremap <silent> <C-Up> :wincmd k<CR>
 nnoremap <silent> <C-Down> :wincmd j<CR>
 nnoremap <silent> <C-Left> :wincmd h<CR>
 nnoremap <silent> <C-Right> :wincmd l<CR>
+
+" Terminal commands
+nnoremap <leader>tt :terminal<CR>
+nnoremap <leader>tr :terminal<Space>
+nnoremap <leader>tmr :terminal make release<CR>
+nnoremap <leader>tmd :terminal make debug<CR>
+nnoremap <leader>tma :terminal make all<CR>
+nnoremap <leader>tp :terminal python %<CR>
+nnoremap <leader>ts :terminal ./%<CR>
 
