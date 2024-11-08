@@ -62,6 +62,8 @@ alias pacown="pacman -Qo"
 alias aurcheckupdates="yay -Qum"
 # grep -i alias
 alias grepi="grep --color=auto -i"
+# less -i alias
+alias lessi="less -i"
 # cd into dir on ranger exit
 alias ranger_cd=". ranger"
 
