@@ -14,7 +14,7 @@ call plug#begin('~/.config/vim/plugged')
     Plug 'junegunn/fzf.vim'
     Plug 'tpope/vim-fugitive'
     " Local
-    Plug '~/.config/vim/plugged/local-themes'
+    Plug '~/.config/vim/plugged/local-colors'
 call plug#end()
 
 " General
@@ -42,10 +42,11 @@ set ignorecase
 set smartcase
 
 " Look
-colorscheme minimalist
+colorscheme snow
 set laststatus=2
 set ruler
 set wildmenu
+set termwinsize=15x0
 set list
 set listchars=tab:→\ ,nbsp:␣,trail:•,extends:❯,precedes:❮
 
@@ -67,6 +68,8 @@ set updatetime=100
 " Misc
 set nocompatible
 set nolangremap
+set splitright
+set splitbelow
 set backspace=indent,eol,start
 set t_Co=256
 set t_RV=
@@ -180,16 +183,31 @@ nnoremap <leader>x <CMD>!chmod +x %<CR>
 
 " Delete in normal mode
 nnoremap <Backspace> X
+vnoremap <Backspace> x
+
+" Resize windows
+nnoremap <silent> <C-k> :resize -1<CR>
+nnoremap <silent> <C-j> :resize +1<CR>
+nnoremap <silent> <C-h> :vertical resize -1<CR>
+nnoremap <silent> <C-l> :vertical resize +1<CR>
 
 " Easy move through split windows
-nnoremap <silent> <C-k> :wincmd k<CR>
-nnoremap <silent> <C-j> :wincmd j<CR>
-nnoremap <silent> <C-h> :wincmd h<CR>
-nnoremap <silent> <C-l> :wincmd l<CR>
 nnoremap <silent> <C-Up> :wincmd k<CR>
 nnoremap <silent> <C-Down> :wincmd j<CR>
 nnoremap <silent> <C-Left> :wincmd h<CR>
 nnoremap <silent> <C-Right> :wincmd l<CR>
+
+" Move cursor in insert mode
+inoremap <C-k> <Up>
+inoremap <C-j> <Down>
+inoremap <C-h> <Left>
+inoremap <C-l> <Right>
+
+" Don't skip wrapped lines
+nnoremap j gj
+nnoremap gj j
+nnoremap k gk
+nnoremap gk k
 
 " Terminal commands
 nnoremap <leader>tt :terminal<CR>
