@@ -14,7 +14,7 @@ call plug#begin('~/.config/vim/plugged')
     Plug 'junegunn/fzf.vim'
     Plug 'tpope/vim-fugitive'
     " Local
-    Plug '~/.config/vim/plugged/minimalist'
+    Plug '~/.config/vim/plugged/local-themes'
 call plug#end()
 
 " General
