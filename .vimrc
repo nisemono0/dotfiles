@@ -9,6 +9,7 @@ plug#begin('~/.config/vim/plugged')
     Plug 'ryanoasis/vim-devicons'
     Plug 'junegunn/vim-easy-align'
     Plug 'cohama/lexima.vim'
+    Plug 'tpope/vim-commentary'
     Plug 'machakann/vim-highlightedyank'
     Plug 'andymass/vim-matchup'
     Plug 'mbbill/undotree'
@@ -34,7 +35,7 @@ set autoread
 set autochdir
 
 # Indent and line numbers
-filetype indent on
+filetype plugin indent on
 syntax on
 set ts=4 sw=4 sts=4
 set number
@@ -119,8 +120,8 @@ g:airline_symbols.colnr = '㏇'
 g:airline_symbols.whitespace = ''
 
 # Lexima
-g:lexima_no_default_rules = 1
-lexima#set_default_rules()
+g:lexima_no_default_rules = 0
+g:lexima_accept_pum_with_enter = 0
 
 # Highlight yank
 b:highlightedyank_highlight_duration = 50
@@ -132,9 +133,7 @@ nnoremap <C-n> :NERDTreeToggle<CR>
 # Completion window
 inoremap <C-@> <C-n>
 inoremap <C-Space> <C-n>
-inoremap <expr> <C-j> pumvisible() ? '<C-n>' : '<Down>'
 inoremap <expr> <Tab> pumvisible() ? '<C-n>' : '<Tab>'
-inoremap <expr> <C-k> pumvisible() ? '<C-p>' : '<Up>'
 inoremap <expr> <S-Tab> pumvisible() ? '<C-p>' : '<S-Tab>'
 inoremap <expr> <Enter> pumvisible() ? (complete_info().selected == -1 ? '<C-y><CR>' : '<C-y>') : '<CR>'
 
@@ -145,9 +144,11 @@ nnoremap <leader>bd :bdelete<CR>
 nnoremap <Tab> :bnext<CR>
 nnoremap <S-Tab> :bprevious<CR>
 
-# Center after moving up/down
+# Move up/down half a page
 nnoremap <C-u> <C-u>zz
 nnoremap <C-d> <C-d>zz
+inoremap <C-u> <C-o><C-u><C-o>zz
+inoremap <C-d> <C-o><C-d><C-o>zz
 
 # Center after searching
 nnoremap n nzzzv
