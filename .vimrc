@@ -1,10 +1,11 @@
-" Plugins
+vim9script
+
+# Plugins
 set rtp+=~/.config/vim/
-call plug#begin('~/.config/vim/plugged')
-    " Web
+plug#begin('~/.config/vim/plugged')
+    # Web
     Plug 'preservim/nerdtree'
     Plug 'vim-airline/vim-airline'
-    Plug 'davidhalter/jedi-vim'
     Plug 'ryanoasis/vim-devicons'
     Plug 'junegunn/vim-easy-align'
     Plug 'cohama/lexima.vim'
@@ -13,11 +14,17 @@ call plug#begin('~/.config/vim/plugged')
     Plug 'mbbill/undotree'
     Plug 'junegunn/fzf.vim'
     Plug 'tpope/vim-fugitive'
-    " Local
+    Plug 'girishji/vimcomplete'
+    # LSP
+    Plug 'yegappan/lsp'
+    Plug 'hrsh7th/vim-vsnip'
+    Plug 'hrsh7th/vim-vsnip-integ'
+    Plug 'rafamadriz/friendly-snippets'
+    # Local
     Plug '~/.config/vim/plugged/local-colors'
-call plug#end()
+plug#end()
 
-" General
+# General
 set viminfofile=~/.cache/vim/viminfo
 set undodir=~/.cache/vim/undodir
 set noswapfile
@@ -26,7 +33,7 @@ set undofile
 set autoread
 set autochdir
 
-" Indent and line numbers
+# Indent and line numbers
 filetype indent on
 syntax on
 set ts=4 sw=4 sts=4
@@ -35,13 +42,13 @@ set relativenumber
 set smarttab
 set expandtab
 
-" Search
+# Search
 set hlsearch
 set incsearch
 set ignorecase
 set smartcase
 
-" Look
+# Look
 colorscheme snow
 set laststatus=2
 set ruler
@@ -50,22 +57,22 @@ set termwinsize=15x0
 set list
 set listchars=tab:→\ ,nbsp:␣,trail:•,extends:❯,precedes:❮
 
-" Scroll
+# Scroll
 set scrolloff=4
 set sidescrolloff=4
 set display+=lastline
 set display+=truncate
 
-" Format
+# Format
 set formatoptions+=j
 set nrformats-=octal
 
-" Timeout
+# Timeout
 set ttimeout
 set ttimeoutlen=100
 set updatetime=100
 
-" Misc
+# Misc
 set nocompatible
 set nolangremap
 set splitright
@@ -74,84 +81,85 @@ set backspace=indent,eol,start
 set t_Co=256
 set t_RV=
 
-" Display man pages
+# Display man pages
 if exists(':Man') != 2 && !exists('g:loaded_man') && &filetype !=? 'man' && !has('nvim')
     runtime ftplugin/man.vim
 endif
 
-"Cursor settings:
-"SI = INSERT mode
-"SR = REPLACE mode
-"EI = NORMAL mode (ELSE)
-"   1 -> blinking block
-"   2 -> solid block
-"   3 -> blinking underscore
-"   4 -> solid underscore
-"   5 -> blinking vertical bar
-"   6 -> solid vertical bar
-let &t_SI = "\<Esc>[6 q"
-let &t_SR = "\<Esc>[4 q"
-let &t_EI = "\<Esc>[2 q"
+# Cursor settings:
+# SI = INSERT mode
+# SR = REPLACE mode
+# EI = NORMAL mode (ELSE)
+#    1 -> blinking block
+#    2 -> solid block
+#    3 -> blinking underscore
+#    4 -> solid underscore
+#    5 -> blinking vertical bar
+#    6 -> solid vertical bar
+&t_SI = "\<Esc>[6 q"
+&t_SR = "\<Esc>[4 q"
+&t_EI = "\<Esc>[2 q"
 
-" Airline
-let g:airline_theme='minimalist'
-let g:airline_powerline_fonts = 1
-let g:airline#extensions#tabline#enabled = 1
+# Airline
+g:airline_theme = 'minimalist'
+g:airline_powerline_fonts = 1
+g:airline#extensions#tabline#enabled = 1
 if !exists('g:airline_symbols')
-    let g:airline_symbols = {}
+    g:airline_symbols = {}
 endif
-let g:airline_left_sep = ''
-let g:airline_left_sep = ''
-let g:airline_right_sep = ''
-let g:airline_right_sep = ''
-let g:airline_symbols.crypt = '🔒'
-let g:airline_symbols.readonly = '🔒'
-let g:airline_symbols.linenr = '㏑'
-let g:airline_symbols.maxlinenr = ''
-let g:airline_symbols.colnr= '㏇'
-let g:airline_symbols.whitespace = ''
+g:airline_left_sep = ''
+g:airline_left_sep = ''
+g:airline_right_sep = ''
+g:airline_right_sep = ''
+g:airline_symbols.crypt = '🔒'
+g:airline_symbols.readonly = '🔒'
+g:airline_symbols.linenr = '㏑'
+g:airline_symbols.maxlinenr = ''
+g:airline_symbols.colnr = '㏇'
+g:airline_symbols.whitespace = ''
 
-" Lexima
-let g:lexima_no_default_rules = 1
-call lexima#set_default_rules()
-call lexima#insmode#map_hook('before', '<CR>', '')
+# Lexima
+g:lexima_no_default_rules = 1
+lexima#set_default_rules()
 
-" Highlight yank
-let b:highlightedyank_highlight_duration = 50
-let g:highlightedyank_highlight_in_visual = 0
+# Highlight yank
+b:highlightedyank_highlight_duration = 50
+g:highlightedyank_highlight_in_visual = 0
 
-" Toggle NerdTree
+# Toggle NerdTree
 nnoremap <C-n> :NERDTreeToggle<CR>
 
-" Completion window
+# Completion window
 inoremap <C-@> <C-n>
 inoremap <C-Space> <C-n>
-inoremap <expr> <C-j> pumvisible() ? "\<C-n>" : "\<Down>"
-inoremap <expr> <C-k> pumvisible() ? "\<C-p>" : "\<Up>"
-inoremap <expr> <TAB> pumvisible() ? "\<C-y>" : "\<TAB>"
+inoremap <expr> <C-j> pumvisible() ? '<C-n>' : '<Down>'
+inoremap <expr> <Tab> pumvisible() ? '<C-n>' : '<Tab>'
+inoremap <expr> <C-k> pumvisible() ? '<C-p>' : '<Up>'
+inoremap <expr> <S-Tab> pumvisible() ? '<C-p>' : '<S-Tab>'
+inoremap <expr> <Enter> pumvisible() ? (complete_info().selected == -1 ? '<C-y><CR>' : '<C-y>') : '<CR>'
 
-" Buffer keybinds
+# Buffer keybinds
 nnoremap <leader>bn :bnext<CR>
 nnoremap <leader>bp :bprevious<CR>
 nnoremap <leader>bd :bdelete<CR>
 nnoremap <Tab> :bnext<CR>
 nnoremap <S-Tab> :bprevious<CR>
 
-" Center after moving up/down
+# Center after moving up/down
 nnoremap <C-u> <C-u>zz
 nnoremap <C-d> <C-d>zz
 
-" Center after searching
+# Center after searching
 nnoremap n nzzzv
 nnoremap N Nzzzv
 
-" Clear search highlight
+# Clear search highlight
 nnoremap <silent> <C-c> :nohlsearch<C-R>=has('diff')?'<Bar>diffupdate':''<CR><CR><C-L>
 
-" Toggle UndoTree
+# Toggle UndoTree
 nnoremap <leader>u :UndotreeToggle<CR>
 
-" fzf keybinds
+# fzf keybinds
 nnoremap <leader>ff :Files<CR>
 nnoremap <leader>fg :GFiles<CR>
 nnoremap <leader>fb :Lines<CR>
@@ -160,56 +168,56 @@ nnoremap <leader>fl :BLines<CR>
 nnoremap <leader>fp :Rg<CR>
 nnoremap <leader>fB :Buffers<CR>
 
-" vim-fugitive keybind
+# vim-fugitive keybind
 nnoremap <leader>gs :Git<CR>
 
-" Move selection up/down and indent
+# Move selection up/down and indent
 vnoremap J :m '>+1<CR>gv=gv
 vnoremap K :m '<-2<CR>gv=gv
 
-" Don't overwrite register
-xnoremap <leader>p "_dP
-nnoremap <leader>d "_d
-vnoremap <leader>d "_d
+# Don't overwrite register
+xnoremap <leader>p #_dP
+nnoremap <leader>d #_d
+vnoremap <leader>d #_d
 
-" Disable Q
+# Disable Q
 nnoremap Q <NOP>
 
-" Replace all instances of selected word
+# Replace all instances of selected word
 nnoremap <leader>s :%s/\<<C-r><C-w>\>//gI<Left><Left><Left>
 
-" Make file executable
+# Make file executable
 nnoremap <leader>x <CMD>!chmod +x %<CR>
 
-" Delete in normal mode
+# Delete in normal mode
 nnoremap <Backspace> X
 vnoremap <Backspace> x
 
-" Resize windows
+# Resize windows
 nnoremap <silent> <C-k> :resize -1<CR>
 nnoremap <silent> <C-j> :resize +1<CR>
 nnoremap <silent> <C-h> :vertical resize -1<CR>
 nnoremap <silent> <C-l> :vertical resize +1<CR>
 
-" Easy move through split windows
+# Easy move through split windows
 nnoremap <silent> <C-Up> :wincmd k<CR>
 nnoremap <silent> <C-Down> :wincmd j<CR>
 nnoremap <silent> <C-Left> :wincmd h<CR>
 nnoremap <silent> <C-Right> :wincmd l<CR>
 
-" Move cursor in insert mode
+# Move cursor in insert mode
 inoremap <C-k> <Up>
 inoremap <C-j> <Down>
 inoremap <C-h> <Left>
 inoremap <C-l> <Right>
 
-" Don't skip wrapped lines
+# Don't skip wrapped lines
 nnoremap j gj
 nnoremap gj j
 nnoremap k gk
 nnoremap gk k
 
-" Terminal commands
+# Terminal commands
 nnoremap <leader>tt :terminal<CR>
 nnoremap <leader>tr :terminal<Space>
 nnoremap <leader>tmr :terminal make release<CR>
@@ -217,4 +225,82 @@ nnoremap <leader>tmd :terminal make debug<CR>
 nnoremap <leader>tma :terminal make all<CR>
 nnoremap <leader>tp :terminal python %<CR>
 nnoremap <leader>ts :terminal ./%<CR>
+
+# vimcomplete
+var vimcomplete_opts = {
+    completor: {
+        shuffleEqualPriority: true,
+        kindDisplayType: "text"
+    },
+    buffer: {
+        urlComplete: true,
+        envComplete: true
+    },
+    vsnip: {
+        enable: true,
+        priority: 11
+    },
+    vimscript: {
+        enable: true,
+        priority: 11
+    }
+}
+autocmd VimEnter * g:VimCompleteOptionsSet(vimcomplete_opts)
+
+# LSP
+var lsp_opts = {
+    aleSupport: v:false,
+    autoComplete: v:true,
+    autoHighlight: v:false,
+    autoHighlightDiags: v:true,
+    autoPopulateDiags: v:false,
+    completionMatcher: 'case',
+    completionMatcherValue: 1,
+    diagSignErrorText: 'E>',
+    diagSignHintText: 'H>',
+    diagSignInfoText: 'I>',
+    diagSignWarningText: 'W>',
+    echoSignature: v:false,
+    hideDisabledCodeActions: v:false,
+    highlightDiagInline: v:true,
+    hoverInPreview: v:false,
+    ignoreMissingServer: v:false,
+    keepFocusInDiags: v:true,
+    keepFocusInReferences: v:true,
+    completionTextEdit: v:true,
+    diagVirtualTextAlign: 'above',
+    diagVirtualTextWrap: 'default',
+    noNewlineInCompletion: v:false,
+    omniComplete: v:null,
+    outlineOnRight: v:false,
+    outlineWinSize: 20,
+    semanticHighlight: v:true,
+    showDiagInBalloon: v:true,
+    showDiagInPopup: v:true,
+    showDiagOnStatusLine: v:false,
+    showDiagWithSign: v:true,
+    showDiagWithVirtualText: v:false,
+    showInlayHints: v:false,
+    showSignature: v:true,
+    snippetSupport: v:false,
+    ultisnipsSupport: v:false,
+    useBufferCompletion: v:false,
+    usePopupInCodeAction: v:false,
+    useQuickfixForLocations: v:false,
+    vsnipSupport: v:false,
+    bufferCompletionTimeout: 100,
+    customCompletionKinds: v:false,
+    completionKinds: {},
+    filterCompletionDuplicates: v:false
+}
+autocmd User LspSetup call LspOptionsSet(lsp_opts)
+
+# TODO: Add lsp servers
+# var lsp_servers = [{
+#     name: 'clang',
+#     filetype: ['c', 'cpp'],
+#     path: '/usr/bin/clangd',
+#     args: ['--background-index']
+# }]
+# autocmd User LspSetup call LspAddServer(lsp_servers)
 
