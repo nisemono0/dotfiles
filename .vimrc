@@ -27,7 +27,7 @@ plug#end()
 
 # General
 set viminfofile=~/.cache/vim/viminfo
-set undodir=~/.cache/vim/undodir
+set undodir=~/.cache/vim/undo
 set noswapfile
 set nobackup
 set undofile
