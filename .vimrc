@@ -16,7 +16,6 @@ plug#begin('~/.config/vim/plugged')
     Plug 'junegunn/fzf.vim'
     Plug 'tpope/vim-fugitive'
     Plug 'girishji/vimcomplete'
-    # LSP
     Plug 'yegappan/lsp'
     Plug 'hrsh7th/vim-vsnip'
     Plug 'hrsh7th/vim-vsnip-integ'
