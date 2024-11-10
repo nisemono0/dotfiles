@@ -265,7 +265,7 @@ var lsp_opts = {
     hideDisabledCodeActions: v:false,
     highlightDiagInline: v:true,
     hoverInPreview: v:false,
-    ignoreMissingServer: v:false,
+    ignoreMissingServer: v:true,
     keepFocusInDiags: v:true,
     keepFocusInReferences: v:true,
     completionTextEdit: v:true,
@@ -296,12 +296,36 @@ var lsp_opts = {
 }
 autocmd User LspSetup call LspOptionsSet(lsp_opts)
 
-# TODO: Add lsp servers
-# var lsp_servers = [{
-#     name: 'clang',
-#     filetype: ['c', 'cpp'],
-#     path: '/usr/bin/clangd',
-#     args: ['--background-index']
-# }]
-# autocmd User LspSetup call LspAddServer(lsp_servers)
+var lsp_servers = [
+    {
+        name: 'clang',
+        filetype: ['c', 'cpp'],
+        path: '/usr/bin/clangd',
+        args: ['--background-index']
+    },
+    {
+        name: 'python-lsp-server',
+        filetype: ['python', 'py'],
+        path: '/usr/bin/pylsp',
+        args: []
+    },
+    {
+        name: 'bash-language-server',
+        filetype: ['sh'],
+        path: '/usr/bin/bash-language-server',
+        args: ['start']
+    },
+    {
+        name: 'lua-language-server',
+        filetype: ['lua'],
+        path: '/usr/bin/lua-language-server',
+        args: [],
+        workspaceConfig: {
+            Lua: {
+                hit: { enable: true }
+            }
+        }
+    }
+]
+autocmd User LspSetup call LspAddServer(lsp_servers)
 
