@@ -27,9 +27,9 @@ plug#end()
 # General
 set viminfofile=~/.cache/vim/viminfo
 set undodir=~/.cache/vim/undo
+#set undofile
 set noswapfile
 set nobackup
-set undofile
 set autoread
 set autochdir
 
@@ -175,11 +175,6 @@ nnoremap <leader>gs :Git<CR>
 vnoremap J :m '>+1<CR>gv=gv
 vnoremap K :m '<-2<CR>gv=gv
 
-# Don't overwrite register
-xnoremap <leader>p #_dP
-nnoremap <leader>d #_d
-vnoremap <leader>d #_d
-
 # Disable Q
 nnoremap Q <NOP>
 
@@ -247,7 +242,7 @@ var vimcomplete_opts = {
 }
 autocmd VimEnter * g:VimCompleteOptionsSet(vimcomplete_opts)
 
-# LSP
+# LSP Options
 var lsp_opts = {
     aleSupport: v:false,
     autoComplete: v:true,
@@ -295,6 +290,7 @@ var lsp_opts = {
 }
 autocmd User LspSetup call LspOptionsSet(lsp_opts)
 
+# LSP Servers
 var lsp_servers = [
     {
         name: 'clang',
@@ -327,4 +323,39 @@ var lsp_servers = [
     }
 ]
 autocmd User LspSetup call LspAddServer(lsp_servers)
+
+# LSP Keybinds
+nnoremap <leader>ca :LspCodeAction<CR>
+nnoremap <leader>cl :LspCodeLens<CR>
+
+nnoremap <leader>dc :LspDiag current<CR>
+nnoremap <leader>df :LspDiag first<CR>
+nnoremap <leader>dh :LspDiag here<CR>
+nnoremap <leader>dd :LspDiag highlight toggle<CR>
+nnoremap <leader>dn :LspDiag nextWrap<CR>
+nnoremap <leader>dp :LspDiag prevWrap<CR>
+nnoremap <leader>ds :LspDiag show<CR>
+
+nnoremap <leader>gc :LspGotoDeclaration<CR>
+nnoremap <leader>gd :LspGotoDefinition<CR>
+nnoremap <leader>gi :LspGotoImpl<CR>
+nnoremap <leader>gt :LspGotoTypeDef<CR>
+
+nnoremap <leader>h :LspHover<CR>
+
+nnoremap <leader>o :LspOutline<CR>
+
+nnoremap <leader>pc :LspPeekDeclaration<CR>
+nnoremap <leader>pd :LspPeekDefinition<CR>
+nnoremap <leader>pi :LspPeekImpl<CR>
+nnoremap <leader>pr :LspPeekReferences<CR>
+nnoremap <leader>pt :LspPeekTypeDef<CR>
+
+nnoremap <leader>s :LspSwitchSourceHeader<CR>
+
+nnoremap <leader>/ :LspSymbolSearch<CR>
+
+nnoremap <leader>wa :LspWorkspaceAddFolder<Space>
+nnoremap <leader>wl :LspWorkspaceListFolders<CR>
+nnoremap <leader>wd :LspWorkspaceRemoveFolder<Space>
 
