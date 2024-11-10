@@ -3,4 +3,3 @@ lvm2
 python-dnspython
 python-mutagen
 python-pycryptodomex
-python-websockets
