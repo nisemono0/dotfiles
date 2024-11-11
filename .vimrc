@@ -272,7 +272,7 @@ var lsp_opts = {
     semanticHighlight: v:true,
     showDiagInBalloon: v:true,
     showDiagInPopup: v:true,
-    showDiagOnStatusLine: v:false,
+    showDiagOnStatusLine: v:true,
     showDiagWithSign: v:true,
     showDiagWithVirtualText: v:false,
     showInlayHints: v:false,
