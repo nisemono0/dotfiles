@@ -7,6 +7,7 @@ plug#begin('~/.config/vim/plugged')
     Plug 'preservim/nerdtree'
     Plug 'vim-airline/vim-airline'
     Plug 'ryanoasis/vim-devicons'
+    Plug 'sheerun/vim-polyglot'
     Plug 'junegunn/vim-easy-align'
     Plug 'cohama/lexima.vim'
     Plug 'tpope/vim-commentary'
