@@ -5,8 +5,6 @@
 PIDFILE=/tmp/screencast_pid
 CAST_DIR="${HOME}/Videos/Screencast"
 
-mkdir -p "${CAST_DIR}" || { notify-send -u critical "Couldn't create screencast directory"; exit; }
-
 check_screencast() {
     if [ -f "${PIDFILE}" ]; then
         PID=$(cat "${PIDFILE}")
