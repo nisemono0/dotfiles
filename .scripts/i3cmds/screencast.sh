@@ -140,7 +140,7 @@ start_screencast() {
 }
 
 start_preset_screencast() {
-    presets=$(printf "Fullscreen 720p@60fps 22CRF medium preset\\nFullscreen No Scale@60fps 22CRF fast preset\\nRegion No Scale@60fps 22CRF medium preset" | dmenu "${DMENU_ARGS[@]}" -p "Select preset")
+    presets=$(printf "Fullscreen 720p@60fps 21CRF fast preset\\nFullscreen No Scale@60fps 21CRF fast preset\\nRegion No Scale@60fps 21CRF fast preset" | dmenu "${DMENU_ARGS[@]}" -p "Select preset")
     printf -v date "%(%F)T"
     printf -v time "%(%I-%M-%S)T"
     mkdir -p "${CAST_DIR}/${date}"
@@ -148,28 +148,13 @@ start_preset_screencast() {
     output="${CAST_DIR}/${date}/${date}-${time}.${format}"
     sink="$(pactl info | sed -En 's/Default Sink: (.*)/\1/p').monitor"
     case "${presets}" in
-        "Fullscreen 720p@60fps 22CRF medium preset")
+        "Fullscreen 720p@60fps 21CRF fast preset")
             read -r width height <<< "$(xdpyinfo | awk -F'[ x]+' '/dimensions:/{print $3, $4}')"
             x=0
             y=0
             framerate="60"
             scale="-1:720"
-            crf="22"
-            preset="medium"
-            ffmpeg -v 8 -y -f pulse -i "${sink}" -f x11grab -video_size "${width}"x"${height}" \
-                -framerate "${framerate}" -i :0.0+"${x}","${y}" -preset "${preset}" \
-                -crf "${crf}" -vf scale="${scale}" "$output" &
-            notify-send -i video-display "Screencast started" "${width}x${height}+${x}+${y} ${scale}@${framerate}fps ${crf}CRF ${preset} preset"
-            FFMPEG_PID=$!
-            echo ${FFMPEG_PID} > ${PIDFILE}
-            ;;
-        "Fullscreen No Scale@60fps 22CRF fast preset")
-            read -r width height <<< "$(xdpyinfo | awk -F'[ x]+' '/dimensions:/{print $3, $4}')"
-            x=0
-            y=0
-            framerate="60"
-            scale="-1:-1"
-            crf="22"
+            crf="21"
             preset="fast"
             ffmpeg -v 8 -y -f pulse -i "${sink}" -f x11grab -video_size "${width}"x"${height}" \
                 -framerate "${framerate}" -i :0.0+"${x}","${y}" -preset "${preset}" \
@@ -178,13 +163,28 @@ start_preset_screencast() {
             FFMPEG_PID=$!
             echo ${FFMPEG_PID} > ${PIDFILE}
             ;;
-        "Region No Scale@60fps 22CRF medium preset")
+        "Fullscreen No Scale@60fps 21CRF fast preset")
+            read -r width height <<< "$(xdpyinfo | awk -F'[ x]+' '/dimensions:/{print $3, $4}')"
+            x=0
+            y=0
+            framerate="60"
+            scale="-1:-1"
+            crf="21"
+            preset="fast"
+            ffmpeg -v 8 -y -f pulse -i "${sink}" -f x11grab -video_size "${width}"x"${height}" \
+                -framerate "${framerate}" -i :0.0+"${x}","${y}" -preset "${preset}" \
+                -crf "${crf}" -vf scale="${scale}" "$output" &
+            notify-send -i video-display "Screencast started" "${width}x${height}+${x}+${y} ${scale}@${framerate}fps ${crf}CRF ${preset} preset"
+            FFMPEG_PID=$!
+            echo ${FFMPEG_PID} > ${PIDFILE}
+            ;;
+        "Region No Scale@60fps 21CRF fast preset")
             read -r width height x y <<<"$(slop --bordersize 2 --format='%w %h %x %y')"
             ([ -z "$width" ] || [ -z "$height" ] || [ -z "$x" ] || [ -z "$y" ]) && exit
             framerate="60"
             scale="-1:-1"
-            crf="22"
-            preset="medium"
+            crf="21"
+            preset="fast"
             ffmpeg -v 8 -y -f pulse -i "${sink}" -f x11grab -video_size "${width}"x"${height}" \
                 -framerate "${framerate}" -i :0.0+"${x}","${y}" -preset "${preset}" \
                 -crf "${crf}" -vf scale="${scale}" "$output" &
