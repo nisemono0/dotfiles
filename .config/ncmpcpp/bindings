@@ -22,13 +22,19 @@ def_key "{"
 def_key "}"
     scroll_down_artist
 
-def_key "alt-k"
+def_key "ctrl-u"
+    page_up
+
+def_key "u"
     page_up
 
 def_key "page_up"
     page_up
 
-def_key "alt-j"
+def_key "d"
+    page_down
+
+def_key "ctrl-d"
     page_down
 
 def_key "page_down"
@@ -37,13 +43,13 @@ def_key "page_down"
 def_key "home"
     move_home
 
-def_key "ctrl-k"
+def_key "g"
     move_home
 
 def_key "end"
     move_end
 
-def_key "ctrl-j"
+def_key "G"
     move_end
 
 def_key "right"
@@ -74,9 +80,6 @@ def_key "h"
     jump_to_parent_directory
 
 def_key "enter"
-    play_item
-
-def_key "p"
     play_item
 
 def_key "l"
@@ -94,10 +97,10 @@ def_key "space"
 def_key "a"
     add_selected_items
 
-def_key "ctrl-d"
+def_key "D"
     delete_playlist_items
 
-def_key "ctrl-d"
+def_key "D"
     delete_stored_playlist
 
 def_key "="
@@ -169,10 +172,16 @@ def_key ">"
 def_key "'"
     next
 
+def_key "."
+    next
+
 def_key "<"
     previous
 
 def_key ";"
+    previous
+
+def_key ","
     previous
 
 def_key "backspace"
@@ -256,7 +265,10 @@ def_key "i"
 def_key "I"
     show_artist_info
 
-def_key "g"
+def_key "ctrl-j"
+    jump_to_position_in_song
+
+def_key "P"
     jump_to_position_in_song
 
 def_key "ctrl-v"
@@ -291,22 +303,19 @@ def_key "c"
 def_key "c"
     clear_main_playlist
 
-def_key ","
+def_key "alt-k"
     move_sort_order_up
 
-def_key ","
+def_key "alt-k"
     move_selected_items_up
-
-def_key "m"
-    dummy
 
 def_key "M"
     move_selected_items_to
 
-def_key "."
+def_key "alt-j"
     move_sort_order_down
 
-def_key "."
+def_key "alt-j"
     move_selected_items_down
 
 def_key "S"
@@ -315,7 +324,7 @@ def_key "S"
 def_key "o"
     jump_to_playing_song
 
-def_key "G"
+def_key "O"
     jump_to_browser
 
 def_key "E"
@@ -329,3 +338,24 @@ def_key "!"
 
 def_key "q"
     quit
+
+######################
+##### Dummy keys #####
+######################
+def_key "m"
+    dummy
+
+def_key "alt-l"
+    dummy
+
+def_key "ctrl-l"
+    dummy
+
+def_key "alt-h"
+    dummy
+
+def_key "ctrl-h"
+    dummy
+
+def_key "I"
+    dummy
