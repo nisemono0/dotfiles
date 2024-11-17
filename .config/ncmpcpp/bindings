@@ -166,6 +166,9 @@ def_key "s"
 def_key "p"
     pause
 
+def_key "ctrl-p"
+    set_selected_items_priority
+
 def_key ">"
     next
 
