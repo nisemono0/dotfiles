@@ -49,6 +49,9 @@ fi
 
 if [ -n "$weather" ]; then
     weather_temp=$(echo "$weather" | jq ".main.temp" | cut -d "." -f 1)
+    if [ "$weather_temp" = "-0" ]; then
+        weather_temp="0"
+    fi
     weather_icon_temp=$(echo "$weather" | jq -r ".weather[0].icon")
     weather_icon="$(get_icon "$weather_icon_temp")"
     echo "$weather_temp$SYMBOL$weather_icon"
