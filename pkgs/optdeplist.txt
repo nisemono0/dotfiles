@@ -1,5 +1,8 @@
+geoclue
 gnome-themes-extra
+libportal-gtk4
 lvm2
 python-dnspython
 python-mutagen
 python-pycryptodomex
+zip
