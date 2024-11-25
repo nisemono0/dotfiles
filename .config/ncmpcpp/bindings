@@ -97,6 +97,9 @@ def_key "space"
 def_key "a"
     add_selected_items
 
+def_key "`"
+    add_random_items
+
 def_key "D"
     delete_playlist_items
 
@@ -299,6 +302,12 @@ def_key "L"
 
 def_key "H"
     select_item
+
+def_key "C"
+    crop_playlist
+
+def_key "C"
+    crop_main_playlist
 
 def_key "c"
     clear_playlist
