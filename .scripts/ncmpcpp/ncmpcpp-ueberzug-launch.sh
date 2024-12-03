@@ -1,9 +1,11 @@
 #!/bin/sh
 export FIFO_UEBERZUG="/tmp/mpd-ueberzug-${PPID}"
+export IS_COVER_DISPLAYED="$(mktemp /tmp/ncmpcpp-cover-ueberzug.XXXXXX)"
 unset WINDOWID
 
 cleanup() {
     rm "$FIFO_UEBERZUG" 2>/dev/null
+    rm "$IS_COVER_DISPLAYED" 2>/dev/null
     rm /tmp/mpd_cover.jpg 2>/dev/null
     pkill -P $$ 2>/dev/null
     pkill -f ncmpcpp_cover_art.sh

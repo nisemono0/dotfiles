@@ -345,6 +345,10 @@ def_key "E"
 def_key "\\"
     toggle_interface
 
+# Toggle ueberzug cover
+def_key "t"
+    run_external_command "~/.scripts/ncmpcpp/ncmpcpp_cover_art.sh --toggle-cover"
+
 def_key "!"
     toggle_separators_between_albums
 

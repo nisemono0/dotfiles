@@ -5,6 +5,7 @@
 unset WINDOWID
 music_library="$HOME/Music"
 fallback_image="$HOME/.config/ncmpcpp/noart.png"
+ueber_identifier="mpd_cover"
 padding_top=0
 padding_bottom=0
 padding_right=1
@@ -15,7 +16,7 @@ force_square="true"
 square_alignment="center"
 
 left_aligned="false"
-padding_left=
+padding_left=0
 
 # Only set this if the geometries are wrong or ncmpcpp shouts at you to do it.
 # Visually select/highlight a character on your terminal, zoom in an image
@@ -79,7 +80,7 @@ display_cover_image() {
 
     send_to_ueberzug \
         action "add" \
-        identifier "mpd_cover" \
+        identifier "$ueber_identifier" \
         path "$cover_path" \
         x "$ueber_left" \
         y "$padding_top" \
@@ -88,6 +89,25 @@ display_cover_image() {
         synchronously_draw "True" \
         scaler "forced_cover" \
         scaling_position_x "0.5"
+
+    set_cover_status "true"
+}
+
+hide_cover_image() {
+    send_to_ueberzug \
+        action "remove" \
+        identifier "$ueber_identifier" \
+        draw "True"
+
+    set_cover_status "false"
+}
+
+toggle_cover() {
+    if is_cover_displayed; then
+        hide_cover_image
+    else
+        main
+    fi
 }
 
 detect_window_resizes() {
@@ -243,5 +263,22 @@ send_to_ueberzug() {
     IFS=${old_IFS}
 }
 
+set_cover_status() {
+    echo "$*" > "$IS_COVER_DISPLAYED"
+}
 
-main
+is_cover_displayed() {
+    read -r cover_status < "$IS_COVER_DISPLAYED"
+    if [ "$cover_status" = "true" ]; then
+        true
+    elif [ "$cover_status" = "false" ]; then
+        false
+    fi
+}
+
+case "$1" in
+    --song-change) main ;;
+    --toggle-cover) toggle_cover ;;
+    *) exit ;;
+esac
+

@@ -76,4 +76,4 @@ allow_for_physical_item_deletion = "no"
 discard_colors_if_item_is_selected = "yes"
 
 ##### Album art #####
-execute_on_song_change="~/.scripts/ncmpcpp/ncmpcpp_cover_art.sh"
+execute_on_song_change="~/.scripts/ncmpcpp/ncmpcpp_cover_art.sh --song-change"
