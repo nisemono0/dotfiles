@@ -352,7 +352,7 @@ nnoremap <leader>pi :LspPeekImpl<CR>
 nnoremap <leader>pr :LspPeekReferences<CR>
 nnoremap <leader>pt :LspPeekTypeDef<CR>
 
-nnoremap <leader>s :LspSwitchSourceHeader<CR>
+nnoremap <leader>` :LspSwitchSourceHeader<CR>
 
 nnoremap <leader>/ :LspSymbolSearch<CR>
 
