@@ -7,9 +7,9 @@
 
     ### Geometry ###
     width = 450
-    height = 400
+    height = (0, 400)
     origin = top-right
-    offset = 14x42
+    offset = (14, 42)
     scale = 0
     notification_limit = 7
 
