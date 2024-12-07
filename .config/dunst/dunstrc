@@ -51,9 +51,10 @@
 
     ### Icons ###
     icon_position = left
-    min_icon_size = 22
+    min_icon_size = 24
     max_icon_size = 150
-    icon_path = /usr/share/icons/Arc/status/22:/usr/share/icons/Arc/devices/22:/usr/share/icons/Arc/mimetypes/22
+    icon_theme = Arc
+    icon_path = /usr/share/icons/Arc/status/24:/usr/share/icons/Arc/status/symbolic:/usr/share/icons/Arc/devices/24:/usr/share/icons/Arc/mimetypes/24:/usr/share/icons/Arc/mimetypes/symbolic:/usr/share/icons/Arc/panel/22
 
     ### History ###
     sticky_history = yes
@@ -82,14 +83,17 @@
     background = "#34434e"
     foreground = "#c5c5c5"
     timeout = 5
+    default_icon = dialog-information
 
 [urgency_normal]
     background = "#34434e"
     foreground = "#c5c5c5"
     timeout = 5
+    default_icon = notification-symbolic
 
 [urgency_critical]
     background = "#900000"
     foreground = "#FFFFFF"
     frame_color = "#900000"
     timeout = 0
+    default_icon = error
