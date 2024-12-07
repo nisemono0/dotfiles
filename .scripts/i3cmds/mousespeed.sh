@@ -13,14 +13,14 @@ accel=$(xinput --list-props "$MOUSE_NAME" | awk -F ':' -v PROP_NAME_ACCEL="$PROP
 
 set_speed() {
     if [ "$(bc <<< "$newspeed > 1")" = 1 ]; then
-        notify-send -h string:x-dunst-stack-tag:mouseopt "Mouse speed is at max" "Speed: $speed"
+        notify-send -i input-mouse -h string:x-dunst-stack-tag:mouseopt "Mouse speed is at max" "Speed: $speed"
         exit 1
     elif [ "$(bc <<< "$newspeed < -1")" = 1 ]; then
-        notify-send -h string:x-dunst-stack-tag:mouseopt "Mouse speed is at min" "Speed: $speed"
+        notify-send -i input-mouse -h string:x-dunst-stack-tag:mouseopt "Mouse speed is at min" "Speed: $speed"
         exit 1
     else
         if xinput --set-prop "$MOUSE_NAME" "$PROP_NAME_SPEED" "$1"; then
-            notify-send -h string:x-dunst-stack-tag:mouseopt "Mouse speed changed" "Speed: $1"
+            notify-send -i input-mouse -h string:x-dunst-stack-tag:mouseopt "Mouse speed changed" "Speed: $1"
         else
             notify-send -u critical "Couldn't set mouse speed"
         fi
@@ -29,7 +29,7 @@ set_speed() {
 
 reset_speed() {
     if xinput --set-prop "$MOUSE_NAME" "$PROP_NAME_SPEED" 0.0; then
-        notify-send -h string:x-dunst-stack-tag:mouseopt "Mouse speed reset" "Speed: 0 (Default)"
+        notify-send -i input-mouse -h string:x-dunst-stack-tag:mouseopt "Mouse speed reset" "Speed: 0 (Default)"
     else
         notify-send -u critical "Couldn't set mouse speed"
     fi
@@ -38,13 +38,13 @@ reset_speed() {
 toggle_accel() {
     if [ "$accel" = "1,0" ] || [ "$accel" = "1,0,0" ]; then
         if xinput --set-prop "$MOUSE_NAME" "$PROP_NAME_ACCEL" 0, 1; then
-            notify-send -h string:x-dunst-stack-tag:mouseopt "Mouse accel changed" "Accel: Flat (0, 1)"
+            notify-send -i input-mouse -h string:x-dunst-stack-tag:mouseopt "Mouse accel changed" "Accel: Flat (0, 1)"
         else
             notify-send -u critical "Couldn't change mouse accel"
         fi
     elif [ "$accel" = "0,1" ] || [ "$accel" = "0,1,0" ]; then
         if xinput --set-prop "$MOUSE_NAME" "$PROP_NAME_ACCEL" 1, 0; then
-            notify-send -h string:x-dunst-stack-tag:mouseopt "Mouse accel changed" "Accel: Adaptive (1, 0)"
+            notify-send -i input-mouse -h string:x-dunst-stack-tag:mouseopt "Mouse accel changed" "Accel: Adaptive (1, 0)"
         else
             notify-send -u critical "Couldn't change mouse accel"
         fi

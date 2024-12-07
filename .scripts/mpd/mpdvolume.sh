@@ -3,7 +3,7 @@ STEP=5
 
 set_vol() {
     if mpc volume "$1"; then
-        notify-send -h string:x-dunst-stack-tag:mpdvolume "$(mpc status 'mpd volume:%volume%')"
+        notify-send -i audio-volume-high-symbolic -h string:x-dunst-stack-tag:mpdvolume "MPD Volume changed" "$(mpc status 'Volume:%volume%')"
     else
         notify-send -u critical "Couldn't set mpd volume"
     fi

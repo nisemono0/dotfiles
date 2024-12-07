@@ -5,7 +5,7 @@ SEEK_STEP=5
 
 play() {
     if mpc "$1"; then
-        notify-send -h string:x-dunst-stack-tag:mpdsong "Now playing" "$(mpc current)"
+        notify-send -i audio-x-generic-symbolic -h string:x-dunst-stack-tag:mpdsong "Now playing" "$(mpc current)"
     else
         notify-send -u critical "Couldn't play song"
     fi
@@ -13,7 +13,7 @@ play() {
 
 replay_song() {
     if mpc stop && mpc play; then
-        notify-send -h string:x-dunst-stack-tag:mpdsong "Replaying song" "$(mpc current)"
+        notify-send -i audio-x-generic-symbolic -h string:x-dunst-stack-tag:mpdsong "Replaying song" "$(mpc current)"
     else
         notify-send -u critical "Couldn't play song"
     fi
@@ -34,7 +34,7 @@ playsong() {
     [ -z "$songpos" ] && exit
 
     if mpc play "$songpos"; then
-        notify-send -h string:x-dunst-stack-tag:mpdsong "Now playing" "$(mpc current)"
+        notify-send -i audio-x-generic-symbolic -h string:x-dunst-stack-tag:mpdsong "Now playing" "$(mpc current)"
     else
         notify-send -u critical "Couldn't play song"
     fi
@@ -48,7 +48,7 @@ addsongplay() {
 
     if mpc findadd filename "$songfile"; then
         if mpc searchplay filename "$songfile"; then
-            notify-send -h string:x-dunst-stack-tag:mpdsong "Now playing" "$(mpc current)"
+            notify-send -i audio-x-generic-symbolic -h string:x-dunst-stack-tag:mpdsong "Now playing" "$(mpc current)"
         else
             notify-send -u critical "Couldn't play song"
         fi

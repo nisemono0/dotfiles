@@ -6,7 +6,7 @@ kill_proc(){
     case "$confirm" in
         "Yes")
             if kill -9 "${1%% *}" 2>/dev/null; then
-                notify-send "Process killed successfully" -i dialog-information
+                notify-send "Process killed successfully"
             else
                 notify-send -u critical "Something went wrong"
                 exit 1;
