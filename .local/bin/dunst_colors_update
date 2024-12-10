@@ -31,6 +31,8 @@ declare -A theme_attr_dict=(
     ["global-frame_color"]="\"$(xrdb_get 'color1' '#A6A294')\""
     #["global-separator_color"]="\"$(xrdb_get 'color6' 'auto')\""
 
+    ["global-highlight"]="\"$(xrdb_get 'color4' '#FFFFFF')\""
+
     ["urgency_low-background"]="\"$(xrdb_get 'color1' '#5A524F')\""
     ["urgency_low-foreground"]="\"$(xrdb_get 'color7' '#FFFFFF')\""
 
