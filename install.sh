@@ -169,7 +169,7 @@ function install_sysconfigs () {
     sudo -E mkdir -p /usr/share/polkit-1/rules.d/
     cat < "$polkit_rules" | sudo -E tee /usr/share/polkit-1/rules.d/10-udisks.rules 1> /dev/null
     cat < "$modprobe_rule" | sudo -E tee /etc/modprobe.d/nontfs3.conf 1> /dev/null
-    sudo -E pacman -Syu # Update for pacman.conf
+    sudo -E pacman -Syu --noconfirm # Update for pacman.conf
     echo -e "${WH}Done installing ${YE}sys configs!${NC}"
 }
 
