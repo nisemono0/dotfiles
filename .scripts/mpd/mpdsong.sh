@@ -2,10 +2,48 @@
 . $HOME/.dmenurc
 
 SEEK_STEP=5
+DUNST_ICON=""
+FALLBACK_ICON="audio-x-generic-symbolic"
+TMP_IMG="/tmp/mpd_dunst.jpg"
+MUSIC_LIB="$HOME/Music"
+
+find_cover_image() {
+    # First we check if the audio file has an embedded album art
+    ext="$(mpc --format %file% current | sed 's/^.*\.//')"
+    if [ "$ext" = "flac" ]; then
+        # since FFMPEG cannot export embedded FLAC art we use metaflac
+        metaflac --export-picture-to="$TMP_IMG" \
+            "$(mpc --format "$MUSIC_LIB"/%file% current)" &&
+            DUNST_ICON="$TMP_IMG" && return
+    else
+        ffmpeg -y -i "$(mpc --format "$MUSIC_LIB"/%file% | head -n 1)" \
+            "$TMP_IMG" &&
+            DUNST_ICON="$TMP_IMG" && return
+    fi
+
+    # If no embedded art was found we look inside the music file's directory
+    album="$(mpc --format %album% current)"
+    file="$(mpc --format %file% current)"
+    album_dir="${file%/*}"
+    album_dir="$MUSIC_LIB/$album_dir"
+    found_covers="$(find "$album_dir" -type d -exec find {} -maxdepth 1 -type f \
+    -iregex ".*/.*\(${album}\|cover\|folder\|artwork\|front\).*[.]\\(jpe?g\|png\|gif\|bmp\)" \; )"
+    DUNST_ICON="$(echo "$found_covers" | head -n1)"
+    if [ -n "$DUNST_ICON" ]; then
+        return
+    fi
+
+    # If we still failed to find a cover image, we use the fallback
+    if [ -z "$DUNST_ICON" ]; then
+        DUNST_ICON="$FALLBACK_ICON"
+    fi
+}
+
 
 play() {
     if mpc "$1"; then
-        notify-send -i audio-x-generic-symbolic -h string:x-dunst-stack-tag:mpdsong "Now playing" "$(mpc current)"
+        find_cover_image
+        notify-send -i "$DUNST_ICON" -h string:x-dunst-stack-tag:mpdsong "Now playing" "$(mpc current)"
     else
         notify-send -u critical "Couldn't play song"
     fi
@@ -13,7 +51,8 @@ play() {
 
 replay_song() {
     if mpc stop && mpc play; then
-        notify-send -i audio-x-generic-symbolic -h string:x-dunst-stack-tag:mpdsong "Replaying song" "$(mpc current)"
+        find_cover_image
+        notify-send -i "$DUNST_ICON" -h string:x-dunst-stack-tag:mpdsong "Replaying song" "$(mpc current)"
     else
         notify-send -u critical "Couldn't play song"
     fi
@@ -34,7 +73,8 @@ playsong() {
     [ -z "$songpos" ] && exit
 
     if mpc play "$songpos"; then
-        notify-send -i audio-x-generic-symbolic -h string:x-dunst-stack-tag:mpdsong "Now playing" "$(mpc current)"
+        find_cover_image
+        notify-send -i "$DUNST_ICON" -h string:x-dunst-stack-tag:mpdsong "Now playing" "$(mpc current)"
     else
         notify-send -u critical "Couldn't play song"
     fi
@@ -48,7 +88,8 @@ addsongplay() {
 
     if mpc findadd filename "$songfile"; then
         if mpc searchplay filename "$songfile"; then
-            notify-send -i audio-x-generic-symbolic -h string:x-dunst-stack-tag:mpdsong "Now playing" "$(mpc current)"
+            find_cover_image
+            notify-send -i "$DUNST_ICON" -h string:x-dunst-stack-tag:mpdsong "Now playing" "$(mpc current)"
         else
             notify-send -u critical "Couldn't play song"
         fi

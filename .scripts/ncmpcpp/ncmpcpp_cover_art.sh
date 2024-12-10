@@ -1,11 +1,15 @@
 #!/bin/sh
 # Cover art script for ncmpcpp-ueberzug
 
-# SETTINGS
 unset WINDOWID
+
+# CONST
+TMP_IMG="/tmp/ncmpcpp_cover.jpg"
 music_library="$HOME/Music"
 fallback_image="$HOME/.config/ncmpcpp/noart.png"
 ueber_identifier="mpd_cover"
+
+# SETTINGS
 padding_top=0
 padding_bottom=0
 padding_right=1
@@ -48,13 +52,13 @@ find_cover_image() {
     ext="$(mpc --format %file% current | sed 's/^.*\.//')"
     if [ "$ext" = "flac" ]; then
         # since FFMPEG cannot export embedded FLAC art we use metaflac
-        metaflac --export-picture-to=/tmp/mpd_cover.jpg \
+        metaflac --export-picture-to="$TMP_IMG" \
             "$(mpc --format "$music_library"/%file% current)" &&
-            cover_path="/tmp/mpd_cover.jpg" && return
+            cover_path="$TMP_IMG" && return
     else
         ffmpeg -y -i "$(mpc --format "$music_library"/%file% | head -n 1)" \
-            /tmp/mpd_cover.jpg &&
-            cover_path="/tmp/mpd_cover.jpg" && return
+            "$TMP_IMG" &&
+            cover_path="$TMP_IMG" && return
     fi
 
     # If no embedded art was found we look inside the music file's directory
