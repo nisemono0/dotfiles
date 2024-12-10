@@ -221,8 +221,8 @@ function post_install () {
     chsh -s /bin/zsh
     echo -e "${WH}Changed default shell for $USER to ${YE}zsh!${NC}"
 
-    to_modify_arr=("i3cmds/mousespeed.sh" "i3cmds/wall-change/wall-web.sh" "polybar/polybar-systemps.sh" "polybar/weather-forecast.sh" "polybar/weather.sh")
-    echo -e "${WH}Please modify the following scripts, adding api keys, gpu/cpu names, etc:${NC}"
+    to_modify_arr=("i3cmds/mousespeed.sh" "i3cmds/wall-change/wall-web.sh" "polybar/polybar-systemps.sh" "polybar/weather-forecast.sh" "polybar/weather.sh" "mpd/mpdsong.sh" "ncmpcpp/ncmpcpp_cover_art.sh")
+    echo -e "${WH}Please modify the following scripts, adding api keys, gpu/cpu names, custom paths, etc.:${NC}"
     for scr in "${to_modify_arr[@]}"; do
         echo -e "${PU}\t==>$HOME/.scripts/${scr}${NC}"
     done
