@@ -47,6 +47,7 @@ set $mpdsong --no-startup-id ~/.scripts/mpd/mpdsong.sh
 set $dunstdnd --no-startup-id ~/.scripts/dunst/dunst-dnd.sh
 set $backlight --no-startup-id ~/.scripts/i3cmds/backlight.sh
 set $scratchutil --no-startup-id ~/.scripts/i3cmds/i3scratchutil.sh
+set $audioutil --no-startup-id ~/.scripts/i3cmds/audio-util.sh
 
 set_from_resource $fg foreground
 set_from_resource $bg background
