@@ -2,7 +2,7 @@
 . $HOME/.dmenurc
 
 SEEK_STEP=5
-DUNST_ICON=""
+DUNST_ICON="audio-x-generic-symbolic"
 FALLBACK_ICON="audio-x-generic-symbolic"
 TMP_IMG="/tmp/mpd_dunst.jpg"
 MUSIC_LIB="$HOME/Music"
@@ -39,13 +39,24 @@ find_cover_image() {
     fi
 }
 
-
 play() {
     if mpc "$1"; then
         find_cover_image
         notify-send -i "$DUNST_ICON" -h string:x-dunst-stack-tag:mpdsong "Now playing" "$(mpc current)"
     else
         notify-send -u critical "Couldn't play song"
+    fi
+}
+
+seek() {
+    if mpc seek "$1"; then
+        current_song=$(mpc current)
+        song_time=$(mpc status '%currenttime%/%totaltime%')
+        seek_percent=$(mpc status '%percenttime%')
+        seek_percent="${seek_percent//[^0-9]/}"
+        notify-send -i "$DUNST_ICON" -h string:x-dunst-stack-tag:mpdsong -h int:value:"$seek_percent" "$current_song" "$song_time"
+    else
+        notify-send -u critical "Couldn't seek"
     fi
 }
 
@@ -112,8 +123,8 @@ copy_playing() {
 case "$1" in
     --play-next) play "next" ;; # Plays the next song in the playlist
     --play-prev) play "prev" ;; # Plays the previous song in the playlist
-    --seek-forward) mpc seek "+$SEEK_STEP" ;; # Seeks forwards SEEK_STEP seconds
-    --seek-backward) mpc seek "-$SEEK_STEP" ;; # Seek backwards SEEK_STEP seconds
+    --seek-forward) seek "+$SEEK_STEP" ;; # Seeks forwards SEEK_STEP seconds
+    --seek-backward) seek "-$SEEK_STEP" ;; # Seek backwards SEEK_STEP seconds
     --play-song) playsong ;; # Select song to play from the playlist
     --play-song-mp) playsong "mp" ;; # Same as above but moves the pointer to dmenu window
     --add-song-play) addsongplay ;; # Select song to add to the playlist and play it
