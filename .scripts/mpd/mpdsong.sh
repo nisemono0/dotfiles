@@ -54,7 +54,7 @@ seek() {
         song_time=$(mpc status '%currenttime%/%totaltime%')
         seek_percent=$(mpc status '%percenttime%')
         seek_percent="${seek_percent//[^0-9]/}"
-        notify-send -i "$DUNST_ICON" -h string:x-dunst-stack-tag:mpdsong -h int:value:"$seek_percent" "$current_song" "$song_time"
+        notify-send -i "$DUNST_ICON" -h string:x-dunst-stack-tag:mpdsongseek -h int:value:"$seek_percent" "$current_song" "$song_time"
     else
         notify-send -u critical "Couldn't seek"
     fi
@@ -113,7 +113,7 @@ copy_playing() {
     song="$(mpc current)"
     if [ -n "$song" ]; then
         if xclip -selection clipboard <<< "$song"; then
-            notify-send -h string:x-dunst-stack-tag:mpdsong "Copied to clipboard" "$song"
+            notify-send -h string:x-dunst-stack-tag:mpdsongcopy "Copied to clipboard" "$song"
         else
             notify-send -u critical "Couldn't copy to clipboard"
         fi
