@@ -120,7 +120,7 @@ local config = {
     -- Anki
     create_deck = false, -- automatically create a deck for new cards
     allow_duplicates = false, -- allow making notes with the same sentence field
-    deck_name = "Mining::JP - Yomitan + subs2srs", -- name of the deck for new cards
+    deck_name = "Mining::JP - Mining", -- name of the deck for new cards
     model_name = "JP Mining - sub2srs", -- Tools -> Manage note types
     sentence_field = "Expression",
     secondary_field = "Meaning",
