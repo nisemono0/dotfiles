@@ -1,0 +1,71 @@
+#!/bin/bash
+
+print_help_and_exit() {
+    case "$1" in
+        *)
+            echo "Upload files on the internet"
+            echo "Usage: $(basename $0) <file_to_upload> <upload_service>"
+            echo
+            echo "$(basename $0) <file_to_upload> <upload_service>"
+            echo "  upload_service can be:"
+            echo "      oshi, oshiat, 0x0, nullptr"
+            echo "  -h, --help          Print this help"
+            ;;
+    esac
+    exit -1
+}
+
+has_arg_val() {
+    if [ "$1" -le 1 ]; then
+        return 1
+    fi
+    return 0
+}
+
+upload_oshi() {
+    URL="https://oshi.at"
+    curl_command=$(curl -s -F f=@"$INPUT_FILE" "$URL")
+    grep "DL" <<< "$curl_command" | awk '{ print $2 }' | xclip -rmlastnl -selection clipboard
+    echo "$curl_command"
+}
+
+upload_nullptr() {
+    URL="https://0x0.st"
+    curl_command=$(curl -s -F file=@"$INPUT_FILE" "$URL")
+    xclip -rmlastnl -selection clipboard <<< "$curl_command"
+    echo "$curl_command"
+}
+
+[ "$#" -eq 0 ] && print_help_and_exit
+
+SERVICES=("oshi" "oshiat" "0x0" "nullptr")
+UPLOAD_SERVICE=""
+INPUT_FILE=""
+POSITIONAL_ARGS=()
+
+while [ "$#" -gt 0 ]; do
+    case "$1" in
+        "-h" | "--help") print_help_and_exit ;;
+        -*|--*) print_help_and_exit ;;
+        *) POSITIONAL_ARGS+=("$1"); shift ;;
+    esac
+done
+
+if [ "${#POSITIONAL_ARGS[@]}" -eq 2 ]; then
+    INPUT_FILE="${POSITIONAL_ARGS[0]}"
+    UPLOAD_SERVICE="${POSITIONAL_ARGS[1]}"
+    if ! [[ "${SERVICES[@]}" =~ "$UPLOAD_SERVICE" ]]; then
+        print_help_and_exit
+    fi
+else
+    print_help_and_exit
+fi
+
+case "$UPLOAD_SERVICE" in
+    "oshi" | "oshiat") upload_oshi ;;
+    "0x0" | "nullptr") upload_nullptr ;;
+    *) print_help_and_exit ;;
+esac
+
+
+
