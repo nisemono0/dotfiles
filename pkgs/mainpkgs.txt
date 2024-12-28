@@ -156,6 +156,7 @@ ttf-sourcecodepro-nerd
 ttf-symbola
 ttf-ubuntu-font-family
 ueberzug
+umu-launcher
 unrar
 urxvt-perls
 vim
