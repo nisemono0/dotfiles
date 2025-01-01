@@ -1,9 +1,0 @@
-\e{lightred}┌────────────────────────────────────────────────────────────────┐ \e{reset}\e{magenta} OS        \e{halfbright}» \e{reset}\e{cyan}\S{PRETTY_NAME}
-\e{lightred}│\e{reset}\e{red} ▒▒╗    ▒▒╗▒▒▒▒▒▒▒╗▒▒╗      ▒▒▒▒▒▒╗ ▒▒▒▒▒▒╗ ▒▒▒╗   ▒▒▒╗▒▒▒▒▒▒▒╗ \e{lightred}│ \e{reset}\e{magenta} Hostname  \e{halfbright}» \e{reset}\e{cyan}\n
-\e{lightred}│\e{reset}\e{red} ▒▒║    ▒▒║▒▒╔════╝▒▒║     ▒▒╔════╝▒▒╔═══▒▒╗▒▒▒▒╗ ▒▒▒▒║▒▒╔════╝ \e{lightred}│ \e{reset}\e{magenta} Kernel    \e{halfbright}» \e{reset}\e{cyan}\r
-\e{lightred}│\e{reset}\e{red} ▒▒║ ▒╗ ▒▒║▒▒▒▒▒╗  ▒▒║     ▒▒║     ▒▒║   ▒▒║▒▒╔▒▒▒▒╔▒▒║▒▒▒▒▒╗   \e{lightred}│ \e{reset}\e{magenta} Arch      \e{halfbright}» \e{reset}\e{cyan}\m
-\e{lightred}│\e{reset}\e{red} ▒▒║▒▒▒╗▒▒║▒▒╔══╝  ▒▒║     ▒▒║     ▒▒║   ▒▒║▒▒║╚▒▒╔╝▒▒║▒▒╔══╝   \e{lightred}│ \e{reset}\e{magenta} Date      \e{halfbright}» \e{reset}\e{cyan}\d
-\e{lightred}│\e{reset}\e{red} ╚▒▒▒╔▒▒▒╔╝▒▒▒▒▒▒▒╗▒▒▒▒▒▒▒╗╚▒▒▒▒▒▒╗╚▒▒▒▒▒▒╔╝▒▒║ ╚═╝ ▒▒║▒▒▒▒▒▒▒╗ \e{lightred}│ \e{reset}\e{magenta} Time      \e{halfbright}» \e{reset}\e{cyan}\t
-\e{lightred}│\e{reset}\e{red}  ╚══╝╚══╝ ╚══════╝╚══════╝ ╚═════╝ ╚═════╝ ╚═╝     ╚═╝╚══════╝ \e{lightred}│ \e{reset}\e{magenta} Tty       \e{halfbright}» \e{reset}\e{cyan}\l
-\e{lightred}└────────────────────────────────────────────────────────────────┘ \e{reset}\e{magenta} Logged in \e{halfbright}» \e{reset}\e{cyan}\u
-\e{halfbright}

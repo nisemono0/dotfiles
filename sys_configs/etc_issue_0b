@@ -1,0 +1,18 @@
+\e{red}            ______               
+\e{red}       .d$$$******$$$$c.         
+\e{red}    .d$P"            "$$c        
+\e{red}   $$$$$.           .$$$*$.      
+\e{red} .$$ 4$L*$$.     .$$Pd$  '$b     \e{magenta} OS        \e{halfbright}» \e{reset}\e{cyan}\S{PRETTY_NAME}
+\e{red} $F   *$. "$$e.e$$" 4$F   ^$b    \e{magenta} Hostname  \e{halfbright}» \e{reset}\e{cyan}\n
+\e{red}d$     $$   z$$$e   $$     '$.   \e{magenta} Kernel    \e{halfbright}» \e{reset}\e{cyan}\r
+\e{red}$P     `$L$$P` `"$$d$"      $$   \e{magenta} Arch      \e{halfbright}» \e{reset}\e{cyan}\m
+\e{red}$$     e$$F       4$$b.     $$   \e{magenta} Date      \e{halfbright}» \e{reset}\e{cyan}\d
+\e{red}$b  .$$" $$      .$$ "4$b.  $$   \e{magenta} Time      \e{halfbright}» \e{reset}\e{cyan}\t
+\e{red}$$e$P"    $b     d$`    "$$c$F   \e{magenta} Tty       \e{halfbright}» \e{reset}\e{cyan}\l
+\e{red}'$P$$$$$$$$$$$$$$$$$$$$$$$$$$    \e{magenta} Logged in \e{halfbright}» \e{reset}\e{cyan}\u
+\e{red} "$c.      4$.  $$       .$$     
+\e{red}  ^$$.      $$ d$"      d$P      
+\e{red}    "$$c.   `$b$F    .d$P"       
+\e{red}      `4$$$c.$$$..e$$P"          
+\e{red}          `^^^^^^^`
+\e{halfbright}
