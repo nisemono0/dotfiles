@@ -1,5 +1,7 @@
 #!/bin/bash
 
+DUNST_ICON="network-transmit"
+
 print_help_and_exit() {
     case "$1" in
         *)
@@ -24,16 +26,20 @@ has_arg_val() {
 
 upload_oshi() {
     URL="https://oshi.at"
+    notify-send -i "$DUNST_ICON" -h string:x-dunst-stack-tag:uploadoshiat "File upload" "Uploadig $INPUT_FILE to $URL"
     curl_command=$(curl -s -F f=@"$INPUT_FILE" "$URL")
     grep "DL" <<< "$curl_command" | awk '{ print $2 }' | xclip -rmlastnl -selection clipboard
     echo "$curl_command"
+    notify-send -i "$DUNST_ICON" -h string:x-dunst-stack-tag:uploadoshiat "Done uploading" "$curl_command"
 }
 
 upload_nullptr() {
     URL="https://0x0.st"
+    notify-send -i "$DUNST_ICON" -h string:x-dunst-stack-tag:uploadnullptr "File upload" "Uploadig $INPUT_FILE to $URL"
     curl_command=$(curl -s -F file=@"$INPUT_FILE" "$URL")
     xclip -rmlastnl -selection clipboard <<< "$curl_command"
     echo "$curl_command"
+    notify-send -i "$DUNST_ICON" -h string:x-dunst-stack-tag:uploadnullptr "Done uploading" "$curl_command"
 }
 
 [ "$#" -eq 0 ] && print_help_and_exit
@@ -66,6 +72,4 @@ case "$UPLOAD_SERVICE" in
     "0x0" | "nullptr") upload_nullptr ;;
     *) print_help_and_exit ;;
 esac
-
-
 
