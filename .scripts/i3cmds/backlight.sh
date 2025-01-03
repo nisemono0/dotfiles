@@ -1,6 +1,8 @@
 #!/bin/bash
 
+# brightnessctl --list
 CLASS="backlight"
+
 change_brightness(){
     new_value="$(brightnessctl --class="$CLASS" set 10%$1 | grep -i "current brightness" | awk -F "[()]" '{ print $2 }')"
     if [ -n "$new_value" ]; then
