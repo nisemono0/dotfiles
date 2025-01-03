@@ -120,6 +120,15 @@ copy_playing() {
     fi
 }
 
+show_mpd_prio() {
+    songs_prio=$(mpc playlist --with-prio -f "%prio%.[%artist%|%albumartist%|%file%] - %title%" | sort -Vr)
+    if [ -n "$songs_prio" ]; then
+        notify-send -i "$DUNST_ICON" -h string:x-dunst-stack-tag:mpdsongprio "Song priority" "$songs_prio"
+    else
+        notify-send -h string:x-dunst-stack-tag:mpdsongprio "Song priority" "No songs with priority set"
+    fi
+}
+
 case "$1" in
     --play-next) play "next" ;; # Plays the next song in the playlist
     --play-prev) play "prev" ;; # Plays the previous song in the playlist
@@ -129,6 +138,7 @@ case "$1" in
     --play-song-mp) playsong "mp" ;; # Same as above but moves the pointer to dmenu window
     --add-song-play) addsongplay ;; # Select song to add to the playlist and play it
     --add-song-play-mp) addsongplay "mp" ;; # Same as above but moves the pointer to dmenu window
+    --song-prio) show_mpd_prio ;; # Show a notification with set song priority
     --toggle-pause) mpc toggle ;; # Pause/Play toggle
     --stop) mpc stop ;; # Stop playback
     --replay-song) replay_song ;;
