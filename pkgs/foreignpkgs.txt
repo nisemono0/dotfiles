@@ -6,7 +6,7 @@ code-marketplace
 colorz
 dragon-drop
 i3lock-color
-python-ffsubsync-venv
+python-ffsubsync
 python-haishoku
 simple-mtpfs
 urxvt-resize-font-git
