@@ -35,8 +35,9 @@ Usage:
 For complete usage guide, see <https://github.com/Ajatt-Tools/mpvacious/blob/master/README.md>
 ]]
 
+-- Edited from https://github.com/Ajatt-Tools/mpvacious/commit/9e75cbd1916a9167708178fecf5ca3fafe98a868
+
 local mp = require('mp')
-local utils = require('mp.utils')
 local OSD = require('osd_styler')
 local cfg_mgr = require('cfg_mgr')
 local encoder = require('encoder')
@@ -49,8 +50,33 @@ local secondary_sid = require('subtitles.secondary_sid')
 local platform = require('platform.init')
 local forvo = require('utils.forvo')
 local subs_observer = require('subtitles.observer')
-local menu
-
+local menu, quick_menu, quick_menu_card
+local quick_creation_opts = {
+    _n_lines = nil,
+    _n_cards = 1,
+    set_cards = function(self, n)
+        self._n_cards = math.max(0, n)
+    end,
+    set_lines = function(self, n)
+        self._n_lines = math.max(0, n)
+    end,
+    get_cards = function(self)
+        return self._n_cards
+    end,
+    get_lines = function(self)
+        return self._n_lines
+    end,
+    increment_cards = function(self)
+        self:set_cards(self._n_cards + 1)
+    end,
+    decrement_cards = function(self)
+        self:set_cards(self._n_cards - 1)
+    end,
+    clear_options = function(self)
+        self._n_lines = nil
+        self._n_cards = 1
+    end
+}
 ------------------------------------------------------------
 -- default config
 
@@ -72,7 +98,7 @@ local config = {
     secondary_sub_auto_load = false, -- Automatically load secondary subtitle track when a video file is opened.
     secondary_sub_lang = 'eng,en,rus,ru,jp,jpn,ja', -- Language of secondary subs that should be automatically loaded.
     secondary_sub_area = 0.15, -- Hover area. Fraction of the window from the top.
-    secondary_sub_visibility = 'always', -- One of: 'auto', 'never', 'always'. Controls secondary_sid visibility. Alt+V to cycle.
+    secondary_sub_visibility = 'always', -- One of: 'auto', 'never', 'always'. Controls secondary_sid visibility. Ctrl+V to cycle.
 
     -- Snapshots
     snapshot_format = "webp", -- avif, webp or jpg
@@ -167,10 +193,8 @@ local profiles = {
     active = "subs2srs",
 }
 
-
 ------------------------------------------------------------
 -- utility functions
-
 local function _(params)
     return function()
         return pcall(h.unpack(params))
@@ -188,14 +212,14 @@ local codec_support = (function()
     local oac_help = h.subprocess { 'mpv', '--oac=help' }
 
     local function is_audio_supported(codec)
-        return oac_help.status == 0 and oac_help.stdout:match('--oac=' .. codec) ~= nil
+        return oac_help.status == 0 and oac_help.stdout:find('--oac=' .. codec, 1, true) ~= nil
     end
 
     local function is_image_supported(codec)
-        return ovc_help.status == 0 and ovc_help.stdout:match('--ovc=' .. codec) ~= nil
+        return ovc_help.status == 0 and ovc_help.stdout:find('--ovc=' .. codec, 1, true) ~= nil
     end
 
-    return {
+    local inspection_result = {
         snapshot = {
             ['libaom-av1'] = is_image_supported('libaom-av1'),
             libwebp = is_image_supported('libwebp'),
@@ -206,6 +230,12 @@ local codec_support = (function()
             libopus = is_audio_supported('libopus'),
         },
     }
+    for type, codecs in pairs(inspection_result) do
+        for codec, supported in pairs(codecs) do
+            mp.msg.info(string.format("mpv supports %s codec %s: %s", type, codec, supported))
+        end
+    end
+    return inspection_result
 end)()
 
 local function ensure_deck()
@@ -373,7 +403,7 @@ end
 
 local function export_to_anki(gui)
     maybe_reload_config()
-    local sub = subs_observer.collect()
+    local sub = subs_observer.collect_from_current()
 
     if not sub:is_valid() then
         return h.notify("Nothing to export.", "warn", 1)
@@ -398,8 +428,17 @@ end
 
 local function update_last_note(overwrite)
     maybe_reload_config()
-    local sub = subs_observer.collect()
-    local last_note_id = ankiconnect.get_last_note_id()
+    local sub
+    local n_lines = quick_creation_opts:get_lines()
+    local n_cards = quick_creation_opts:get_cards()
+    if n_lines then
+        sub = subs_observer.collect_from_all_dialogues(n_lines)
+    else
+        sub = subs_observer.collect_from_current()
+    end
+    -- this now returns a table
+    local last_note_ids = ankiconnect.get_last_note_ids(n_cards)
+    n_cards = #last_note_ids
 
     if not sub:is_valid() then
         return h.notify("Nothing to export. Have you set the timings?", "warn", 2)
@@ -413,7 +452,9 @@ local function update_last_note(overwrite)
         sub['text'] = nil
     end
 
-    if last_note_id < h.minutes_ago(10) then
+    --first element is the earliest
+
+    if h.is_empty(last_note_ids) or last_note_ids[1] < h.minutes_ago(10) then
         return h.notify("Couldn't find the target note.", "warn", 2)
     end
 
@@ -426,30 +467,32 @@ local function update_last_note(overwrite)
         snapshot.run_async()
         audio.run_async()
     end
-
-    local new_data = construct_note_fields(sub['text'], sub['secondary'], snapshot.filename, audio.filename)
-    local stored_data = ankiconnect.get_note_fields(last_note_id)
-    if stored_data then
-        forvo.set_output_dir(anki_media_dir)
-        new_data = forvo.append(new_data, stored_data)
-        new_data = update_sentence(new_data, stored_data)
-        if not overwrite then
-            if config.append_media then
-                new_data = join_media_fields(new_data, stored_data)
-            else
-                new_data = join_media_fields(stored_data, new_data)
+    for i = 1, n_cards do
+        local new_data = construct_note_fields(sub['text'], sub['secondary'], snapshot.filename, audio.filename)
+        local stored_data = ankiconnect.get_note_fields(last_note_ids[i])
+        if stored_data then
+            forvo.set_output_dir(anki_media_dir)
+            new_data = forvo.append(new_data, stored_data)
+            new_data = update_sentence(new_data, stored_data)
+            if not overwrite then
+                if config.append_media then
+                    new_data = join_media_fields(new_data, stored_data)
+                else
+                    new_data = join_media_fields(stored_data, new_data)
+                end
             end
         end
-    end
 
-    -- If the text is still empty, put some dummy text to let the user know why
-    -- there's no text in the sentence field.
-    if h.is_empty(new_data[config.sentence_field]) then
-        new_data[config.sentence_field] = string.format("mpvacious wasn't able to grab subtitles (%s)", os.time())
-    end
+        -- If the text is still empty, put some dummy text to let the user know why
+        -- there's no text in the sentence field.
+        if h.is_empty(new_data[config.sentence_field]) then
+            new_data[config.sentence_field] = string.format("mpvacious wasn't able to grab subtitles (%s)", os.time())
+        end
 
-    ankiconnect.append_media(last_note_id, new_data, create_media, substitute_fmt(config.note_tag))
+        ankiconnect.append_media(last_note_ids[i], new_data, create_media, substitute_fmt(config.note_tag))
+    end
     subs_observer.clear()
+    quick_creation_opts:clear_options()
 end
 
 ------------------------------------------------------------
@@ -471,6 +514,8 @@ menu.keybindings = {
     { key = 'n', fn = menu:with_update { export_to_anki, false } },
     { key = 'm', fn = menu:with_update { update_last_note, false } },
     { key = 'M', fn = menu:with_update { update_last_note, true } },
+    { key = 'f', fn = menu:with_update { function() quick_creation_opts:increment_cards() end } },
+    { key = 'F', fn = menu:with_update { function() quick_creation_opts:decrement_cards() end } },
     { key = 't', fn = menu:with_update { subs_observer.toggle_autocopy } },
     { key = 'T', fn = menu:with_update { subs_observer.next_autoclip_method } },
     { key = 'i', fn = menu:with_update { menu.hints_state.bump } },
@@ -498,6 +543,7 @@ function menu:print_header(osd)
     osd:item('Animation : '):text(config.animated_snapshot_enabled and "enabled" or "disabled"):newline()
     osd:item('Active profile: '):text(profiles.active):newline()
     osd:item('Deck: '):text(config.deck_name):newline()
+    osd:item('# cards: '):text(quick_creation_opts:get_cards()):newline()
 end
 
 function menu:print_bindings(osd)
@@ -522,10 +568,10 @@ function menu:print_bindings(osd)
         osd:tab():item('n: '):text('Export note'):newline()
         osd:tab():item('g: '):text('GUI export'):newline()
         osd:tab():item('m: '):text('Update the last added note '):italics('(+shift to overwrite)'):newline()
-        osd:tab():item('Shift+m: '):text('Update the last added note (overwrite)'):newline()
+        osd:tab():item('f: '):text('Increment # cards to update '):italics('(+shift to decrement)'):newline()
         osd:tab():item('t: '):text('Toggle clipboard autocopy'):newline()
         osd:tab():item('Ctrl+g: '):text('Toggle animation'):newline()
-        osd:tab():item('T: '):text('Switch to the next clipboard method'):newline()
+        osd:tab():item('Shift+t: '):text('Switch to the next clipboard method'):newline()
         osd:tab():item('p: '):text('Switch to next profile'):newline()
         osd:tab():item('ESC: '):text('Close'):newline()
         osd:italics("Press "):item('i'):italics(" to show global bindings."):newline()
@@ -591,12 +637,86 @@ function menu:make_osd()
 end
 
 ------------------------------------------------------------
+--quick_menu line selection
+local choose_cards = function(i)
+    quick_creation_opts:set_cards(i)
+    quick_menu_card:close()
+    quick_menu:open()
+end
+local choose_lines = function(i)
+    quick_creation_opts:set_lines(i)
+    update_last_note(true)
+    quick_menu:close()
+end
+
+quick_menu = Menu:new()
+quick_menu.keybindings = {}
+for i = 1, 9 do
+    table.insert(quick_menu.keybindings, { key = tostring(i), fn = function()
+        choose_lines(i)
+    end })
+end
+table.insert(quick_menu.keybindings, { key = 'u', fn = function()
+    choose_lines(1)
+end })
+table.insert(quick_menu.keybindings, { key = 'ESC', fn = function()
+    quick_menu:close()
+end })
+table.insert(quick_menu.keybindings, { key = 'q', fn = function()
+    quick_menu:close()
+end })
+function quick_menu:print_header(osd)
+    osd:submenu('quick card creation: line selection'):newline()
+    osd:item('# lines: '):text('Enter 1-9'):newline()
+end
+function quick_menu:print_legend(osd)
+    osd:new_layer():size(config.menu_font_size):font(config.menu_font_name):align(4)
+    self:print_header(osd)
+    menu:warn_formats(osd)
+end
+function quick_menu:make_osd()
+    local osd = OSD:new()
+    self:print_legend(osd)
+    return osd
+end
+
+-- quick_menu card selection
+quick_menu_card = Menu:new()
+quick_menu_card.keybindings = {}
+for i = 1, 9 do
+    table.insert(quick_menu_card.keybindings, { key = tostring(i), fn = function()
+        choose_cards(i)
+    end })
+end
+table.insert(quick_menu_card.keybindings, { key = 'ESC', fn = function()
+    quick_menu_card:close()
+end })
+table.insert(quick_menu_card.keybindings, { key = 'q', fn = function()
+    quick_menu_card:close()
+end })
+function quick_menu_card:print_header(osd)
+    osd:submenu('quick card creation: card selection'):newline()
+    osd:item('# cards: '):text('Enter 1-9'):newline()
+end
+function quick_menu_card:print_legend(osd)
+    osd:new_layer():size(config.menu_font_size):font(config.menu_font_name):align(4)
+    self:print_header(osd)
+    menu:warn_formats(osd)
+end
+function quick_menu_card:make_osd()
+    local osd = OSD:new()
+    self:print_legend(osd)
+    return osd
+end
+
+------------------------------------------------------------
 -- main
 
 local main = (function()
     local main_executed = false
     return function()
         if main_executed then
+            subs_observer.clear_all_dialogs()
             return
         else
             main_executed = true
@@ -616,6 +736,11 @@ local main = (function()
         -- Copy subs to clipboard
         mp.add_key_binding("Ctrl+c", "mpvacious-copy-sub-to-clipboard", subs_observer.copy_current_primary_to_clipboard)
         mp.add_key_binding("Ctrl+Alt+c", "mpvacious-copy-secondary-sub-to-clipboard", subs_observer.copy_current_secondary_to_clipboard)
+
+        -- Open quick card menu
+        mp.add_key_binding("u", "mpvacious-quick-card-menu-open", function() quick_menu:open() end)
+        mp.add_key_binding("Alt+u", "mpvacious-quick-card-sel-menu-open", function() quick_menu_card:open() end)
+
     end
 end)()
 
