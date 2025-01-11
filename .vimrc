@@ -242,6 +242,8 @@ var vimcomplete_opts = {
     }
 }
 autocmd VimEnter * g:VimCompleteOptionsSet(vimcomplete_opts)
+nnoremap <leader>ae :VimCompleteEnable<CR>
+nnoremap <leader>ad :VimCompleteDisable<CR>
 
 # LSP Options
 var lsp_opts = {
