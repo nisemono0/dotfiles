@@ -164,10 +164,10 @@ nnoremap <leader>u :UndotreeToggle<CR>
 nnoremap <leader>ff :Files<CR>
 nnoremap <leader>fg :GFiles<CR>
 nnoremap <leader>fb :Lines<CR>
-nnoremap <leader>ft :BLines<CR>
 nnoremap <leader>fl :BLines<CR>
 nnoremap <leader>fp :Rg<CR>
 nnoremap <leader>fB :Buffers<CR>
+nnoremap <leader>fw :Windows<CR>
 
 # vim-fugitive keybind
 nnoremap <leader>gs :Git<CR>
