@@ -20,7 +20,7 @@ set $browser_private --no-startup-id /usr/bin/firefox --private-window
 set $term --no-startup-id /usr/bin/urxvt
 set $ranger --no-startup-id /usr/bin/urxvt -e /usr/bin/ranger
 set $thunar --no-startup-id /usr/bin/nemo &
-set $ncmpcpp --no-startup-id /usr/bin/urxvt -geometry 75x15 -name ncmpcpp-instance -e ~/.scripts/ncmpcpp/ncmpcpp-ueberzug-launch.sh
+set $ncmpcpp --no-startup-id /usr/bin/urxvt -geometry 75x15 -name ncmpcpp-instance -e ncmpcpp-ueberzug
 set $lockscreen --no-startup-id ~/.scripts/i3cmds/lock-screen.sh
 set $screenshot --no-startup-id ~/.scripts/i3cmds/screenshot.sh
 set $screencast --no-startup-id ~/.scripts/i3cmds/screencast.sh
