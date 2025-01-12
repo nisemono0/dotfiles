@@ -127,6 +127,9 @@ g:lexima_accept_pum_with_enter = 0
 b:highlightedyank_highlight_duration = 50
 g:highlightedyank_highlight_in_visual = 0
 
+# Show registers
+nnoremap <leader>r :registers<CR>
+
 # Toggle NerdTree
 nnoremap <C-n> :NERDTreeToggle<CR>
 
