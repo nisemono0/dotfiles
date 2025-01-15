@@ -1,0 +1,6 @@
+close_on_mouseleave = 1
+#force_lang = ja_JP.utf8
+mainwindow_sticky = 1
+mainwindow_xoffset = -41
+mainwindow_yoffset = 26
+
