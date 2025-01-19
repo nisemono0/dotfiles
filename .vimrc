@@ -326,6 +326,12 @@ var lsp_servers = [
                 hit: { enable: true }
             }
         }
+    },
+    {
+        name: 'dart',
+        filetype: ['dart'],
+        path: '/usr/bin/dart',
+        args: ['language-server', '--client-id', 'vim']
     }
 ]
 autocmd User LspSetup call LspAddServer(lsp_servers)
