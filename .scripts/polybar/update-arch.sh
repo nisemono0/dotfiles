@@ -1,6 +1,6 @@
 #!/bin/sh
 
-total_updates(){
+total_updates() {
     if ! main_updates=$(checkupdates 2> /dev/null | wc -l ); then
         main_updates=0
     fi
@@ -18,7 +18,7 @@ total_updates(){
     fi
 }
 
-detail_updates(){
+detail_updates() {
     echo "=====[Official]====="
     if ! checkupdates; then
         echo "No official updates"
@@ -47,12 +47,37 @@ detail_updates(){
     esac
 }
 
+notify_updates() {
+    notify-send -h string:x-dunst-stack-tag:sysupdates "System updates" "Checking for updates..."
+
+    notify_text=""
+    official_updates="$(checkupdates --nocolor)"
+    aur_updates="$(yay -Qum)"
+
+    if [ -n "$official_updates" ]; then
+        notify_text="${notify_text}===[Official]==="$'\n'"${official_updates}"$'\n'
+    else
+        notify_text="${notify_text}===[Official]==="$'\n'"No official updates"$'\n'
+    fi
+
+    if [ -n "$aur_updates" ]; then
+        notify_text="${notify_text}===[AUR]==="$'\n'"${aur_updates}"$'\n'
+    else
+        notify_text="${notify_text}===[AUR]==="$'\n'"No AUR updates"$'\n'
+    fi
+
+    notify-send -h string:x-dunst-stack-tag:sysupdates "System updates" "${notify_text}"
+}
+
 case "$1" in
     --total)
         total_updates
         ;;
     --detail)
         detail_updates
+        ;;
+    --notify)
+        notify_updates
         ;;
     *)
         exit 1
