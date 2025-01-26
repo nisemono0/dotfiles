@@ -118,7 +118,10 @@ end
 
 local function animated_scale_filter()
     return make_scale_filter(
-        'lanczos', self.config.animated_snapshot_width, self.config.animated_snapshot_height)
+            'lanczos',
+            self.config.animated_snapshot_width,
+            self.config.animated_snapshot_height
+    )
 end
 
 ffmpeg.make_static_snapshot_args = function(source_path, output_path, timestamp)
@@ -185,7 +188,10 @@ ffmpeg.make_animated_snapshot_args = function(source_path, output_path, start_ti
             '-map_metadata', '-1',
             '-loop', '0',
             '-vf', string.format(
-                'fps=%d,%s', self.config.animated_snapshot_fps, animated_scale_filter()),
+                    'fps=%d,%s',
+                    self.config.animated_snapshot_fps,
+                    animated_scale_filter()
+            ),
             h.unpack(encoder_args)
     )
     table.insert(args, output_path)
@@ -240,50 +246,50 @@ local function parse_loudnorm(loudnorm_targets, json_extractor, loudnorm_consume
     end
 end
 
+local function add_filter(filters, filter)
+    if #filters == 0 then
+        filters = filter
+    else
+        filters = string.format('%s,%s', filters, filter)
+    end
+end
+
+local function separate_filters(filters, new_args, args)
+    -- Would've strongly preferred
+    --     if args[i] == '-af' or args[i] == '-filter:a' then
+    --         i = i + 1
+    --         add_filter(args[i])
+    -- but https://lua.org/manual/5.4/manual.html#3.3.5 says that
+    -- "You should not change the value of the control variable during the loop."
+    local expect_filter = false
+    for i = 1, #args do
+        if args[i] == '-af' or args[i] == '-filter:a' then
+            expect_filter = true
+        else
+            if expect_filter then
+                add_filter(filters, args[i])
+            else
+                table.insert(new_args, args[i])
+            end
+            expect_filter = false
+        end
+    end
+end
+
 ffmpeg.append_user_audio_args = function(args)
     local new_args = {}
     local filters = ''
 
-    local function add_filter(flt)
-        if #filters == 0 then
-            filters = flt
-        else
-            filters = string.format('%s,%s', filters, flt)
-        end
-    end
-
-    local function separate_filters(args)
-        -- Would've strongly preferred
-        --     if args[i] == '-af' or arg == '-filter:a' then
-        --         i = i + 1
-        --         add_filter(args[i])
-        -- but https://lua.org/manual/5.4/manual.html#3.3.5 says that
-        -- "You should not change the value of the control variable during the loop."
-        local expect_filter = false
-        for i = 1, #args do
-            if args[i] == '-af' or arg == '-filter:a' then
-                expect_filter = true
-            else
-                if expect_filter then
-                    add_filter(args[i])
-                else
-                    table.insert(new_args, args[i])
-                end
-                expect_filter = false
-            end
-        end
-    end
-
-    separate_filters(args)
+    separate_filters(filters, new_args, args)
     if self.config.tie_volumes then
-        add_filter(string.format("volume=%.1f", mp.get_property_native('volume') / 100.0))
+        add_filter(filters, string.format("volume=%.1f", mp.get_property_native('volume') / 100.0))
     end
 
     local user_args = {}
     for arg in string.gmatch(self.config.ffmpeg_audio_args, "%S+") do
         table.insert(user_args, arg)
     end
-    separate_filters(user_args)
+    separate_filters(filters, new_args, user_args)
 
     if #filters > 0 then
         table.insert(new_args, '-af')
@@ -357,8 +363,10 @@ ffmpeg.make_audio_args = function(
     end
 
     local loudnorm_targets = make_loudnorm_targets()
-    local args = make_ffargs('-loglevel', 'info',
-                             '-af', loudnorm_targets .. ':print_format=json')
+    local args = make_ffargs(
+            '-loglevel', 'info',
+            '-af', loudnorm_targets .. ':print_format=json'
+    )
     table.insert(args, '-f')
     table.insert(args, 'null')
     table.insert(args, '-')
