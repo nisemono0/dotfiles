@@ -122,6 +122,7 @@ g:airline_symbols.whitespace = ''
 # Lexima
 g:lexima_no_default_rules = 0
 g:lexima_accept_pum_with_enter = 0
+g:lexima_map_escape = ''
 
 # Highlight yank
 b:highlightedyank_highlight_duration = 50
@@ -133,12 +134,17 @@ nnoremap <leader>r :registers<CR>
 # Toggle NerdTree
 nnoremap <C-n> :NERDTreeToggle<CR>
 
-# Completion window
+# Completion window and snippet jump
 inoremap <C-@> <C-n>
 inoremap <C-Space> <C-n>
-inoremap <expr> <Tab> pumvisible() ? '<C-n>' : '<Tab>'
-inoremap <expr> <S-Tab> pumvisible() ? '<C-p>' : '<S-Tab>'
-inoremap <expr> <Enter> pumvisible() ? (complete_info().selected == -1 ? '<C-y><CR>' : '<C-y>') : '<CR>'
+inoremap <expr> <Up> pumvisible() ? '<C-p>' : '<Up>'
+inoremap <expr> <Down> pumvisible() ? '<C-n>' : '<Down>'
+inoremap <expr> <Tab> pumvisible() ? '<C-n>' : (vsnip#jumpable(1) ? '<Plug>(vsnip-jump-next)' : '<Tab>')
+inoremap <expr> <S-Tab> pumvisible() ? '<C-p>' : (vsnip#jumpable(-1) ? '<Plug>(vsnip-jump-prev)' : '<S-Tab>')
+inoremap <expr> <Enter> pumvisible() ? (complete_info().selected == -1 ? '<C-e><CR>' : '<Plug>(vimcomplete-skip)<C-y>') : '<CR>'
+inoremap <expr> <Esc> pumvisible() ? '<Plug>(vimcomplete-skip)<C-e>' : '<Esc>'
+snoremap <expr> <Tab> vsnip#jumpable(1) ? '<Plug>(vsnip-jump-next)' : '<Tab>'
+snoremap <expr> <S-Tab> vsnip#jumpable(-1) ? '<Plug>(vsnip-jump-prev)' : '<S-Tab>'
 
 # Buffer keybinds
 nnoremap <leader>bn :bnext<CR>
