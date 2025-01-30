@@ -66,7 +66,7 @@ notify_updates() {
         notify_text="${notify_text}===[AUR]==="$'\n'"No AUR updates"$'\n'
     fi
 
-    notify-send -h string:x-dunst-stack-tag:sysupdates "System updates" "${notify_text}"
+    notify-send -t 0 -h string:x-dunst-stack-tag:sysupdates "System updates" "${notify_text}"
 }
 
 case "$1" in
