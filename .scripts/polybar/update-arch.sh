@@ -69,7 +69,7 @@ notify_updates() {
     fi
 
     notif_action=$(notify-send -t 0 -h string:x-dunst-stack-tag:sysupdates \
-        -A "Main=Update official" -A "AUR=Update AUR" -A "All=Update all" \
+        -A "Main=Update official" -A "AUR=Update AUR" -A "All=Update all" -A "Quit=Quit" \
         "System updates" "${notify_text}")
 
     case "$notif_action" in
