@@ -9,7 +9,7 @@
 android_drives="$(simple-mtpfs -l 2>/dev/null)"
 usb_drives="$(lsblk -rnpo "NAME,LABEL,SIZE,TYPE,MOUNTPOINT" |
     awk '/part $|rom $/ { printf "%s %s (%s)\n",$1,$2,$3 }' |
-    sort -t ' ' -k 2n)"
+    sort -t ' ' -k 2n -r)"
 
 mountusb() {
     chosen="$(echo "$usb_drives" | dmenu "${DMENU_ARGS_CENTER[@]}" -p "Mount" | awk '{print $1}')"
