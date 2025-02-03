@@ -7,7 +7,7 @@
 
     ### Geometry ###
     width = 450
-    height = (0, 400)
+    height = (0, 1000)
     origin = top-right
     offset = (14, 42)
     scale = 0
