@@ -7,7 +7,7 @@ get_input_name() {
     case "$current_input" in
         "1") echo "en" ;;
         "2") echo "jp" ;;
-        *) echo "??" ;;
+        *) echo "en" ;;
     esac
 }
 
