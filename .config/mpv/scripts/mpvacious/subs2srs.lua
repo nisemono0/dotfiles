@@ -372,7 +372,7 @@ local function get_anki_media_dir_path()
     return ankiconnect.get_media_dir_path()
 end
 
-local function export_to_anki(gui)
+local function export_to_anki(gui, reversed)
     maybe_reload_config()
     local sub = subs_observer.collect_from_current()
 
@@ -390,6 +390,12 @@ local function export_to_anki(gui)
 
     snapshot.run_async()
     audio.run_async()
+
+    if reversed then
+        local tmp = sub['text']
+        sub['text'] = sub['secondary']
+        sub['secondary'] = tmp
+    end
 
     local note_fields = construct_note_fields(sub['text'], sub['secondary'], snapshot.filename, audio.filename)
 
@@ -481,8 +487,10 @@ menu.keybindings = {
     { key = 'e', fn = menu:with_update { subs_observer.set_manual_timing, 'end' } },
     { key = 'c', fn = menu:with_update { subs_observer.set_to_current_sub } },
     { key = 'r', fn = menu:with_update { subs_observer.clear_and_notify } },
-    { key = 'g', fn = menu:with_update { export_to_anki, true } },
-    { key = 'n', fn = menu:with_update { export_to_anki, false } },
+    { key = 'g', fn = menu:with_update { export_to_anki, true, false} },
+    { key = 'G', fn = menu:with_update { export_to_anki, true, true } },
+    { key = 'n', fn = menu:with_update { export_to_anki, false, false } },
+    { key = 'N', fn = menu:with_update { export_to_anki, false, true } },
     { key = 'm', fn = menu:with_update { update_last_note, false } },
     { key = 'M', fn = menu:with_update { update_last_note, true } },
     { key = 'f', fn = menu:with_update { function() quick_creation_opts:increment_cards() end } },
@@ -536,8 +544,10 @@ function menu:print_bindings(osd)
         osd:tab():item('Ctrl+Shift+h: '):text('Replay current subtitle'):newline()
         osd:tab():item('Ctrl+Shift+l: '):text('Play untill next subtitle'):newline()
         osd:tab():item('r: '):text('Reset timings'):newline()
-        osd:tab():item('n: '):text('Export note'):newline()
-        osd:tab():item('g: '):text('GUI export'):newline()
+        osd:tab():item('n: '):text('Export note (primary/secondary)'):newline()
+        osd:tab():item('N: '):text('Export note (secondary/primary)'):newline()
+        osd:tab():item('g: '):text('GUI export (primary/secondary)'):newline()
+        osd:tab():item('G: '):text('GUI export (secondary/primary)'):newline()
         osd:tab():item('m: '):text('Update the last added note '):italics('(+shift to overwrite)'):newline()
         osd:tab():item('f: '):text('Increment # cards to update '):italics('(+shift to decrement)'):newline()
         osd:tab():item('t: '):text('Toggle clipboard autocopy'):newline()
