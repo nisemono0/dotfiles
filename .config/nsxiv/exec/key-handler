@@ -65,7 +65,7 @@ case "$1" in
         ;;
     "C-d") # Drag and drop selected image
         read -r file
-        dragon-drop -x "$file"
+        dragon-drop -x "$file" &
         ;;
     "greater") # (>) Rotate clockwise 90 degress and save images
         while read -r file; do magick "$file" -rotate 90 "$file"; done
