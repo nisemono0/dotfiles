@@ -1,6 +1,7 @@
 geoclue
 gnome-themes-extra
 libportal-gtk4
+libxnvctrl
 lvm2
 python-dnspython
 python-mutagen
