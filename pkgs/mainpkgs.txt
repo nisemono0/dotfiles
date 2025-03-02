@@ -125,7 +125,7 @@ python-pillow
 python-pip
 python-pywal
 qbittorrent
-ranger-nise
+ranger
 rxvt-unicode-nise
 samba
 scrot
