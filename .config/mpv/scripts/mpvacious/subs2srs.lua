@@ -317,10 +317,28 @@ local function construct_note_fields(sub_text, secondary_text, snapshot_filename
     return ret
 end
 
-local function join_media_fields(new_data, stored_data)
-    for _, field in pairs { config.audio_field, config.image_field, config.miscinfo_field } do
+local function join_field_content(new_text, old_text, separator)
+    -- By default, join fields with a HTML newline.
+    separator = separator or "<br>"
+
+    if h.is_empty(old_text) then
+        -- If 'old_text' is empty, there's no need to join content with the separator.
+        return new_text
+    end
+
+    if h.is_substr(old_text, new_text) then
+        -- If 'old_text' (field) already contains new_text (sentence, image, audio, etc.),
+        -- there's no need to add 'new_text' to 'old_text'.
+        return old_text
+    end
+
+    return string.format("%s%s%s", old_text, separator, new_text)
+end
+
+local function join_fields(new_data, stored_data)
+    for _, field in pairs { config.audio_field, config.image_field, config.miscinfo_field, config.sentence_field, config.secondary_field } do
         if not h.is_empty(field) then
-            new_data[field] = h.table_get(stored_data, field, "") .. h.table_get(new_data, field, "")
+            new_data[field] = join_field_content(h.table_get(new_data, field, ""), h.table_get(stored_data, field, ""))
         end
     end
     return new_data
@@ -410,14 +428,6 @@ local function export_to_anki(gui, reversed)
     subs_observer.clear()
 end
 
-local function as_callback(fn, ...)
-    --- Convenience utility.
-    local args = {...}
-    return function()
-        return fn(h.unpack(args))
-    end
-end
-
 local function notify_user_on_finish(note_ids)
     --- Run this callback once all notes are changed.
 
@@ -440,7 +450,7 @@ end
 local function change_fields(note_ids, new_data, overwrite)
     --- Run this callback once audio and image files are created.
 
-    local change_notes_countdown = dec_counter.new(#note_ids).on_finish(as_callback(notify_user_on_finish, note_ids))
+    local change_notes_countdown = dec_counter.new(#note_ids).on_finish(h.as_callback(notify_user_on_finish, note_ids))
 
     for _, note_id in pairs(note_ids) do
         local stored_data = ankiconnect.get_note_fields(note_id)
@@ -449,9 +459,9 @@ local function change_fields(note_ids, new_data, overwrite)
             new_data = update_sentence(new_data, stored_data)
             if not overwrite then
                 if config.append_media then
-                    new_data = join_media_fields(new_data, stored_data)
+                    new_data = join_fields(new_data, stored_data)
                 else
-                    new_data = join_media_fields(stored_data, new_data)
+                    new_data = join_fields(stored_data, new_data)
                 end
             end
         end
@@ -752,6 +762,34 @@ function quick_menu_card:make_osd()
     return osd
 end
 
+local function run_tests()
+    h.run_tests()
+    local new_note = {
+        SentKanji = "それは…分からんよ",
+        SentAudio = "[sound:s01e13_02m25s010ms_02m27s640ms.ogg]",
+        SentEng = "Well...",
+        Image = '<img alt="snapshot" src="s01e13_02m25s561ms.avif">'
+    }
+    local old_note = {
+        SentAudio = "[sound:s01e13_02m21s340ms_02m24s140ms.ogg]",
+        Image = '<img alt="snapshot" src="s01e13_02m22s225ms.avif">',
+        VocabAudio = "",
+        Notes = "",
+        VocabDef = "",
+        SentKanji = "勝ちって何に？",
+        SentEng = "What would we win, exactly?",
+    }
+    local result = join_fields(new_note, old_note)
+    local expected = {
+        SentKanji = "勝ちって何に？<br>それは…分からんよ",
+        SentAudio = "[sound:s01e13_02m21s340ms_02m24s140ms.ogg]<br>[sound:s01e13_02m25s010ms_02m27s640ms.ogg]",
+        SentEng = "What would we win, exactly?<br>Well...",
+        Image = '<img alt="snapshot" src="s01e13_02m22s225ms.avif"><br><img alt="snapshot" src="s01e13_02m25s561ms.avif">',
+        Notes = "",
+    }
+    h.assert_equals(result, expected)
+end
+
 ------------------------------------------------------------
 -- main
 
@@ -763,6 +801,13 @@ local main = (function()
             return
         else
             main_executed = true
+        end
+        if os.getenv("MPVACIOUS_TEST") == "TRUE" then
+            -- at this point, other tests in submodules should have been finished.
+            mp.msg.warn("RUNNING TESTS")
+            run_tests()
+            mp.msg.warn("TESTS PASSED")
+            mp.commandv("quit")
         end
 
         cfg_mgr.init(config, profiles)
