@@ -137,7 +137,7 @@ function install_main_packages () {
 # Install AUR packages
 function install_aur_packages () {
     echo -e "${PU}Installing ${YE}AUR packages...${NC}"
-    aurpkgs="$pkgs_path/foreignpkgs.txt"
+    aurpkgs="$pkgs_path/aurpkgs.txt"
     sleep 1
     yay -S --color=always --needed - < "$aurpkgs"
     echo -e "${WH}Done installing ${YE}AUR packages!${NC}"
