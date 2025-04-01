@@ -102,7 +102,7 @@ local config = {
     secondary_sub_auto_load = false, -- Automatically load secondary subtitle track when a video file is opened.
     secondary_sub_lang = 'eng,en,rus,ru,jp,jpn,ja', -- Language of secondary subs that should be automatically loaded.
     secondary_sub_area = 0.2, -- Hover area. Fraction of the window from the top.
-    secondary_sub_visibility = 'auto', -- One of: 'auto', 'never', 'always'. Controls secondary_sid visibility. Alt+V to cycle.
+    secondary_sub_visibility = 'never', -- One of: 'auto', 'never', 'always'. Controls secondary_sid visibility. Alt+V to cycle.
 
     -- Snapshots
     snapshot_format = "webp", -- avif, webp or jpg
@@ -504,7 +504,7 @@ local function update_notes(note_ids, overwrite)
     local snapshot = encoder.snapshot.create_job(sub)
     local audio = encoder.audio.create_job(sub, audio_padding())
     local new_data = construct_note_fields(sub['text'], sub['secondary'], snapshot.filename, audio.filename)
-    local create_files_countdown = dec_counter.new(2).on_finish(as_callback(change_fields, note_ids, new_data, overwrite))
+    local create_files_countdown = dec_counter.new(2).on_finish(h.as_callback(change_fields, note_ids, new_data, overwrite))
 
     snapshot.on_finish(create_files_countdown.decrease).run_async()
     audio.on_finish(create_files_countdown.decrease).run_async()
