@@ -1,5 +1,6 @@
 alass
 anki-bin
+arc-icon-theme
 autocutsel
 code-features
 code-marketplace
