@@ -1,5 +1,6 @@
 7zip
 android-file-transfer
+arc-icon-theme
 archlinux-keyring
 atool
 autoconf
