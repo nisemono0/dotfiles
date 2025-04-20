@@ -162,6 +162,7 @@ local config = {
     append_media = true, -- True to append video media after existing data, false to insert media before
     disable_gui_browse = false, -- Lets you disable anki browser manipulation by mpvacious.
     ankiconnect_url = '127.0.0.1:8765',
+    ankiconnect_api_key = '',
 
     -- Note tagging
     -- The tag(s) added to new notes. Spaces separate multiple tags.
@@ -346,7 +347,7 @@ end
 
 local function update_sentence(new_data, stored_data)
     -- adds support for TSCs
-    -- https://tatsumoto-ren.github.io/blog/discussing-various-card-templates.html#targeted-sentence-cards-or-mpvacious-cards
+    -- https://tatsumoto-ren.github.io/blog/discussing-various-card-templates.html#targeted-sentence-cards
     -- if the target word was marked by yomichan, this function makes sure that the highlighting doesn't get erased.
 
     if h.is_empty(stored_data[config.sentence_field]) then
@@ -447,8 +448,7 @@ local function notify_user_on_finish(note_ids)
     end
 end
 
-local function make_new_note_data(note_id, new_data, overwrite)
-    local stored_data = ankiconnect.get_note_fields(note_id)
+local function make_new_note_data(stored_data, new_data, overwrite)
     if stored_data then
         new_data = forvo.append(new_data, stored_data)
         new_data = update_sentence(new_data, stored_data)
@@ -471,11 +471,10 @@ end
 local function change_fields(note_ids, new_data, overwrite)
     --- Run this callback once audio and image files are created.
     local change_notes_countdown = dec_counter.new(#note_ids).on_finish(h.as_callback(notify_user_on_finish, note_ids))
-
     for _, note_id in pairs(note_ids) do
         ankiconnect.append_media(
                 note_id,
-                make_new_note_data(note_id, h.deep_copy(new_data), overwrite),
+                make_new_note_data(ankiconnect.get_note_fields(note_id), h.deep_copy(new_data), overwrite),
                 substitute_fmt(config.note_tag),
                 change_notes_countdown.decrease
         )
