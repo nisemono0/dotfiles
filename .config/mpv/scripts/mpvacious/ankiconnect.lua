@@ -110,6 +110,7 @@ self.add_note = function(note_fields, tag, gui)
         local note_id, error = self.parse_result(result)
         if not error then
             h.notify(string.format("Note added. ID = %s.", note_id))
+            self.gui_browse("nid:" .. note_id) -- show the added note
         else
             h.notify(string.format("Error: %s.", error), "error", 2)
         end
@@ -191,6 +192,7 @@ self.get_first_field = function(model_name)
 end
 
 self.gui_browse = function(query)
+    --- query is a string, e.g. "deck:current", "nid:12345"
     if not self.config.disable_gui_browse then
         self.execute {
             action = 'guiBrowse',
