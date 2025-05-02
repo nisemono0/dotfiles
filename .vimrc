@@ -91,6 +91,8 @@ endif
 # SI = INSERT mode
 # SR = REPLACE mode
 # EI = NORMAL mode (ELSE)
+# TI = START vim
+# TE = EXIT vim
 #    1 -> blinking block
 #    2 -> solid block
 #    3 -> blinking underscore
@@ -100,6 +102,8 @@ endif
 &t_SI = "\<Esc>[6 q"
 &t_SR = "\<Esc>[4 q"
 &t_EI = "\<Esc>[2 q"
+&t_TI = "\<Esc>[2 q"
+&t_TE = "\<Esc>[6 q"
 
 # Airline
 g:airline_theme = 'minimalist'
