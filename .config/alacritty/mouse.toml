@@ -1,0 +1,16 @@
+[mouse]
+hide_when_typing = false
+
+[[mouse.bindings]]
+mouse = "Right"
+action = "ExpandSelection"
+
+[[mouse.bindings]]
+mouse = "Right"
+mods = "Control"
+action = "ExpandSelection"
+
+[[mouse.bindings]]
+mouse = "Middle"
+mode = "~Vi"
+action = "PasteSelection"

@@ -1,0 +1,14 @@
+[general]
+import = [
+    "window.toml",
+    "scrolling.toml",
+    "font.toml",
+    "colors.toml",
+    "cursor.toml",
+    "mouse.toml",
+    "hints.toml",
+    "keyboard.toml"
+]
+working_directory = "None"
+live_config_reload = true
+ipc_socket = false

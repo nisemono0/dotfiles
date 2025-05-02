@@ -1,0 +1,5 @@
+[cursor]
+style = { shape = "Beam", blinking = "Never" }
+vi_mode_style = { shape = "Block", blinking = "Never" }
+unfocused_hollow = false
+thickness = 0.2
