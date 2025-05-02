@@ -9,6 +9,4 @@ i3lock-color
 python-ffsubsync
 python-haishoku
 simple-mtpfs
-urxvt-resize-font-git
-urxvt-vtwheel
 vesktop-bin

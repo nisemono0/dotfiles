@@ -127,7 +127,6 @@ python-pip
 python-pywal
 qbittorrent
 ranger
-rxvt-unicode-nise
 samba
 scrot
 sed
@@ -158,7 +157,6 @@ ttf-ubuntu-font-family
 ueberzug
 umu-launcher
 unrar
-urxvt-perls
 vim
 w3m
 waifu2x-ncnn-vulkan
