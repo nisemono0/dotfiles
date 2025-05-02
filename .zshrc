@@ -7,6 +7,11 @@ plugins=(git)
 
 source $ZSH/oh-my-zsh.sh
 
+source <(fzf --zsh)
+export FZF_COMPLETION_TRIGGER=''
+bindkey '^T' fzf-completion
+bindkey '^I' $fzf_default_completion
+
 ranger() {
     if [ -z "$RANGER_LEVEL" ]; then
         /usr/bin/ranger "$@"
