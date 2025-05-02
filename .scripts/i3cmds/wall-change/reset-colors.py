@@ -24,11 +24,8 @@ def save_file(data, export_file):
         exit()
 
 
-def set_special(index, color, iterm_name="h", alpha=100):
+def set_special(index, color, iterm_name="h"):
     """Convert a hex color to a special sequence."""
-    if index in [11, 708] and alpha != "100":
-        return "\033]%s;[%s]%s\033\\" % (index, alpha, color)
-
     return "\033]%s;%s\033\\" % (index, color)
 
 
@@ -38,9 +35,6 @@ def set_color(index, color):
 
 
 def create_sequences(colors, vte_fix=False):
-    """Create the escape sequences."""
-    alpha = 100
-
     # Colors 0-15.
     sequences = [set_color(index, colors["colors"]["color%s" % index])
                  for index in range(16)]
@@ -51,7 +45,7 @@ def create_sequences(colors, vte_fix=False):
     # 13 = mouse foreground, 708 = background border color.
     sequences.extend([
         set_special(10, colors["special"]["foreground"], "g"),
-        set_special(11, colors["special"]["background"], "h", alpha),
+        set_special(11, colors["special"]["background"], "h"),
         set_special(12, colors["special"]["cursor"], "l"),
         set_special(13, colors["special"]["foreground"], "j"),
         set_special(17, colors["special"]["foreground"], "k"),
@@ -63,7 +57,7 @@ def create_sequences(colors, vte_fix=False):
 
     if not vte_fix:
         sequences.extend(
-            set_special(708, colors["special"]["background"], "", alpha)
+            set_special(708, colors["special"]["background"], "")
         )
     return "".join(sequences)
 
@@ -71,8 +65,6 @@ def create_sequences(colors, vte_fix=False):
 def get_colors():
     """Create colors dict based on current xrdb loaded colors"""
     colors = {
-        "alpha": "{alpha}",
-
         "special": {
             "background": "{background}",
             "foreground": "{foreground}",
@@ -98,13 +90,10 @@ def get_colors():
         }
     }
 
-    alpha = getoutput("xrdb -query | grep -w 'URxvt.background' | cut -f 2")
-    alpha = alpha[alpha.find("[")+1: alpha.find("]")]
     bg = getoutput("xrdb -query | grep -w '*background' | cut -f 2")
     fg = getoutput("xrdb -query | grep -w '*foreground' | cut -f 2")
     curs = getoutput("xrdb -query | grep -w 'cursorColor' -m 1 | cut -f 2")
 
-    colors["alpha"] = alpha
     colors["special"]["background"] = bg
     colors["special"]["foreground"] = fg
     colors["special"]["cursor"] = curs
