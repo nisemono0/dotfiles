@@ -1,6 +1,6 @@
 [[keyboard.bindings]]
 key = "Space"
-mods = "Shift"
+mods = "Control"
 mode = "~Search"
 action = "ToggleViMode"
 
