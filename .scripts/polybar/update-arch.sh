@@ -1,6 +1,7 @@
 #!/bin/sh
 
-TERM_CMD="urxvt -geometry 100x25 -name notification-updates-arch -e sh -c"
+# TERM_CMD="urxvt -geometry 100x25 -name notification-updates-arch -e sh -c"
+TERM_CMD="alacritty -o 'window.dimensions={columns=100, lines=25}' --class notification-updates-arch -e sh -c"
 
 total_updates() {
     if ! main_updates=$(checkupdates 2> /dev/null | wc -l ); then
@@ -74,13 +75,13 @@ notify_updates() {
 
     case "$notif_action" in
         "Main" )
-            $TERM_CMD "sudo pacman -Syu ; echo 'Press any key to exit' ; read -rsn 1"
+            eval "$TERM_CMD sudo pacman -Syu ; echo 'Press any key to exit' ; read -rsn 1"
             ;;
         "AUR")
-            $TERM_CMD "yay -Sua ; echo 'Press any key to exit' ; read -rsn 1"
+            eval "$TERM_CMD yay -Sua ; echo 'Press any key to exit' ; read -rsn 1"
             ;;
         "All")
-            $TERM_CMD "yay -Syu ; echo 'Press any key to exit' ; read -rsn 1"
+            eval "$TERM_CMD yay -Syu ; echo 'Press any key to exit' ; read -rsn 1"
             ;;
         *) exit ;;
     esac

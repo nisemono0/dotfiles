@@ -16,12 +16,22 @@ set $mod Mod4
 set $Alt Mod1
 
 ##---Vars---##
-set $browser --no-startup-id firefox
-set $browser_private --no-startup-id firefox --private-window
-set $term --no-startup-id urxvt
-set $ranger --no-startup-id urxvt -e ranger
-set $thunar --no-startup-id nemo &
-set $ncmpcpp --no-startup-id urxvt -geometry 75x15 -name ncmpcpp-instance -e ncmpcpp-ueberzug
+# Programs
+set $browser --no-startup-id ~/.scripts/i3cmds/i3browser.sh
+set $guifm --no-startup-id ~/.scripts/i3cmds/i3guifm.sh
+set $ocr --no-startup-id ~/.scripts/i3cmds/i3ocr.sh
+set $wmfocus --no-startup-id ~/.scripts/i3cmds/i3wmfocus.sh
+
+# Terminal
+set $term --no-startup-id ~/.scripts/i3cmds/i3term.sh
+set $tuifm --no-startup-id ~/.scripts/i3cmds/i3tuifm.sh
+set $ncmpcpp --no-startup-id ~/.scripts/i3cmds/i3ncmpcpp.sh
+set $nmtui --no-startup-id ~/.scripts/i3cmds/i3nmtui.sh
+set $pulsemixer --no-startup-id ~/.scripts/i3cmds/i3pulsemixer.sh
+set $htop --no-startup-id ~/.scripts/i3cmds/i3htop.sh
+set $nvtop --no-startup-id ~/.scripts/i3cmds/i3nvtop.sh
+
+# Scripts
 set $lockscreen --no-startup-id ~/.scripts/i3cmds/lock-screen.sh
 set $screenshot --no-startup-id ~/.scripts/i3cmds/screenshot.sh
 set $screencast --no-startup-id ~/.scripts/i3cmds/screencast.sh
@@ -34,21 +44,15 @@ set $wall_slideshow --no-startup-id ~/.scripts/i3cmds/wall-change/wall-slideshow
 set $wall_web --no-startup-id ~/.scripts/i3cmds/wall-change/wall-web.sh
 set $end_session --no-startup-id ~/.scripts/i3cmds/end-session.sh
 set $kill_proc --no-startup-id ~/.scripts/i3cmds/kill-proc.sh
-set $nmtui --no-startup-id urxvt -geometry 75x20 -name nmtui-instance -e nmtui
-set $pulsemixer --no-startup-id urxvt -geometry 100x20 -name pulsemixer-instance -e pulsemixer --color 1
 set $wsutil --no-startup-id ~/.scripts/i3cmds/i3wsutil.sh
 set $mousespeed --no-startup-id ~/.scripts/i3cmds/mousespeed.sh
-set $htop --no-startup-id urxvt -e htop && i3-msg workspace back_and_forth
-set $nvtop --no-startup-id urxvt -e nvtop && i3-msg workspace back_and_forth
 set $togglecomp --no-startup-id ~/.scripts/i3cmds/toggle-comp.sh
-set $transformers_ocr --no-startup-id transformers_ocr
-set $wmfocus --no-startup-id wmfocus
-set $mpdvolume --no-startup-id ~/.scripts/mpd/mpdvolume.sh
-set $mpdsong --no-startup-id ~/.scripts/mpd/mpdsong.sh
-set $dunstdnd --no-startup-id ~/.scripts/dunst/dunst-dnd.sh
 set $backlight --no-startup-id ~/.scripts/i3cmds/backlight.sh
 set $scratchutil --no-startup-id ~/.scripts/i3cmds/i3scratchutil.sh
 set $audioutil --no-startup-id ~/.scripts/i3cmds/audio-util.sh
+set $mpdvolume --no-startup-id ~/.scripts/mpd/mpdvolume.sh
+set $mpdsong --no-startup-id ~/.scripts/mpd/mpdsong.sh
+set $dunstutil --no-startup-id ~/.scripts/dunst/dunst-util.sh
 
 set_from_resource $fg foreground
 set_from_resource $bg background
