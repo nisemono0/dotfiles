@@ -1,6 +1,6 @@
 #!/bin/sh
 
-TERM_CMD="/usr/bin/urxvt -geometry 100x25 -name notification-updates-arch -e sh -c"
+TERM_CMD="urxvt -geometry 100x25 -name notification-updates-arch -e sh -c"
 
 total_updates() {
     if ! main_updates=$(checkupdates 2> /dev/null | wc -l ); then

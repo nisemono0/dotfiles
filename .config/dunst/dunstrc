@@ -64,7 +64,7 @@
 
     ### Misc/Advanced ###
     dmenu = ~/.scripts/dunst/dmenu-dunst.sh
-    browser = /usr/bin/xdg-open
+    browser = xdg-open
     always_run_script = true
     title = Dunst
     class = Dunst
