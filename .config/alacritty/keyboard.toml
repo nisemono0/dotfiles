@@ -95,4 +95,9 @@ action = "SpawnNewInstance"
 [[keyboard.bindings]]
 key = "N"
 mods = "Control|Shift"
-action = "SpawnNewInstance"
+command = { program = "sh", args = ["-c", "~/.scripts/alacritty/new-win.sh --horizontal"] }
+
+[[keyboard.bindings]]
+key = "N"
+mods = "Control|Shift|Alt"
+command = { program = "sh", args = ["-c", "~/.scripts/alacritty/new-win.sh --vertical"] }
