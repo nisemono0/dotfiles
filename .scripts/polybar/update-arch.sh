@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # TERM_CMD="urxvt -geometry 100x25 -name notification-updates-arch -e sh -c"
-TERM_CMD="alacritty -o 'window.dimensions={columns=100, lines=25}' --class notification-updates-arch -e sh -c"
+TERM_CMD="alacritty -o 'window.dimensions={columns=100, lines=25}' -o 'window.class={instance=\"notification-updates-arch\"}' -o 'window.title=\"System updates\"' -e sh -c"
 
 total_updates() {
     if ! main_updates=$(checkupdates 2> /dev/null | wc -l ); then

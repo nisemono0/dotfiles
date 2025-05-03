@@ -11,4 +11,4 @@ import = [
 ]
 working_directory = "None"
 live_config_reload = true
-ipc_socket = false
+ipc_socket = true
