@@ -132,6 +132,11 @@ g:lexima_map_escape = ''
 b:highlightedyank_highlight_duration = 50
 g:highlightedyank_highlight_in_visual = 0
 
+# Update file
+nnoremap <silent> <C-s> :update<CR>
+inoremap <silent> <C-s> <Esc>:update<CR>
+vnoremap <silent> <C-s> <Esc>:update<CR>
+
 # Show registers
 nnoremap <leader>r :registers<CR>
 
