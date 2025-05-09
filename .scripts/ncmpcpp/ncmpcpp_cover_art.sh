@@ -83,25 +83,25 @@ display_cover_image() {
     compute_geometry
 
     send_to_ueberzug \
-        action "add" \
-        identifier "$ueber_identifier" \
-        path "$cover_path" \
-        x "$ueber_left" \
-        y "$padding_top" \
-        height "$ueber_height" \
-        width "$ueber_width" \
-        synchronously_draw "True" \
-        scaler "forced_cover" \
-        scaling_position_x "0.5"
+        '{"action": "add",' \
+        "\"identifier\": \"$ueber_identifier\"," \
+        "\"path\": \"$cover_path\"," \
+        "\"x\": \"$ueber_left\"," \
+        "\"y\": \"$padding_top\"," \
+        "\"height\": \"$ueber_height\"," \
+        "\"width\": \"$ueber_width\"," \
+        '"synchronously_draw": "True",' \
+        '"scaler": "forced_cover",' \
+        '"scaling_position_x": 0.5}'
 
     set_cover_status "true"
 }
 
 hide_cover_image() {
     send_to_ueberzug \
-        action "remove" \
-        identifier "$ueber_identifier" \
-        draw "True"
+        '{"action": "remove",' \
+        "\"identifier\": \"$ueber_identifier\"," \
+        '"draw": "True"}'
 
     set_cover_status "false"
 }
@@ -261,8 +261,8 @@ send_to_ueberzug() {
     # Ueberzug's "simple parser" uses tab-separated
     # keys and values so we separate words with tabs
     # and send the result to the wrapper's FIFO
-    IFS="$(printf "\t")"
-    echo "$*" > "$FIFO_UEBERZUG"
+    IFS="$(printf " ")"
+    echo "$*" >"$FIFO_UEBERZUG"
 
     IFS=${old_IFS}
 }
