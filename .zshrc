@@ -72,7 +72,7 @@ alias grepi="grep --color=auto -i"
 # less -i alias
 alias lessi="less -i"
 # cd into dir on ranger exit
-alias ranger_cd=". ranger"
+alias r=". ranger"
 
 source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
