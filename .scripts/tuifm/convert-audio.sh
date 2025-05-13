@@ -1,5 +1,7 @@
 #!/bin/bash
 
+DUNST_ICON="audio-x-generic-symbolic"
+
 convert_to_flac() {
     file="$1"
     new_file="${file%.*}.flac"

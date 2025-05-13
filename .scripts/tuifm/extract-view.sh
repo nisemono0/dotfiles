@@ -1,12 +1,14 @@
 #!/bin/bash
 
+DUNST_ICON="package-x-generic"
+
 archive="$1"
 tmpdir="$(mktemp -d)"
 filename="$(basename "$archive")"
 file_extension="${filename##*.}"
 file_extension="$(printf "%s" "${file_extension}" | tr '[:upper:]' '[:lower:]')"
 
-notify-send -i "package-x-generic" -h string:x-dunst-stack-tag:extractview "Extracting..." "$filename"
+notify-send -i "$DUNST_ICON" -h string:x-dunst-stack-tag:extractview "Extracting..." "$filename"
 
 view_extracted() {
     find "$tmpdir" -type f | sort -V | nsxiv -i -p
@@ -19,7 +21,7 @@ extract_progress_bar() {
     while IFS= read -r file; do
         progress=$(( (notif_bar_max*current_file)/total_files ))
         ((current_file++))
-        notify-send -i "package-x-generic" -h int:value:"$progress" -h string:x-dunst-stack-tag:extractview "Extracting..." "$filename"
+        notify-send -i "$DUNST_ICON" -h int:value:"$progress" -h string:x-dunst-stack-tag:extractview "Extracting..." "$filename"
     done < <(aunpack -X "$tmpdir" "$archive")
     view_extracted
 }
