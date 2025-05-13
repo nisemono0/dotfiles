@@ -22,7 +22,16 @@ ranger() {
     fi
 }
 
+yazi() {
+    if [ -z "$YAZI_LEVEL"]; then
+        /usr/bin/yazi "$@"
+    else
+        exit
+    fi
+}
+
 if [ -n "$RANGER_LEVEL" ]; then export PS1="(ranger) $PS1"; fi
+if [ -n "$YAZI_LEVEL" ]; then export PS1="(yazi) $PS1"; fi
 
 calc() { awk "BEGIN{ print $* }" ;}
 
