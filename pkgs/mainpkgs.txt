@@ -154,7 +154,7 @@ ttf-ms-win11-auto
 ttf-sourcecodepro-nerd
 ttf-symbola
 ttf-ubuntu-font-family
-ueberzug
+ueberzugpp
 umu-launcher
 unrar
 vim
@@ -180,6 +180,7 @@ xorg-xinit
 xorg-xinput
 xorg-xlsfonts
 xorg-xrandr
+yazi
 yt-dlp
 zsh
 zsh-autosuggestions
