@@ -1,7 +1,11 @@
 #!/bin/bash
 
+DUNST_ICON="audio-x-generic-symbolic"
+
 all_added=true
 for file in "$@"; do
+    file="${file##*/}"
+    notify-send -i "$DUNST_ICON" "Adding to mpd" "$file"
     searchlist="$(mpc search filename "$file")"
     if [ -n "$searchlist" ]; then
         while read -r result; do
@@ -11,13 +15,13 @@ for file in "$@"; do
             fi
         done <<< "$searchlist"
     else
-        notify-send "Couldn't find" "$file"
+        notify-send -i "$DUNST_ICON" "Couldn't find" "$file"
         all_added=false
     fi
 done
 
 if [ "$all_added" = true ]; then
-    notify-send "All files added"
+    notify-send -i "$DUNST_ICON" "All files added"
 else
-    notify-send "Some files couldn't be added"
+    notify-send -i "$DUNST_ICON" "Some files couldn't be added"
 fi
