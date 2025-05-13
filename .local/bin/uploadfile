@@ -10,7 +10,7 @@ print_help_and_exit() {
             echo
             echo "$(basename $0) <file_to_upload> <upload_service>"
             echo "  upload_service can be:"
-            echo "      oshi, oshiat, 0x0, nullptr"
+            echo "      0x0, nullptr"
             echo "  -h, --help          Print this help"
             ;;
     esac
@@ -24,15 +24,6 @@ has_arg_val() {
     return 0
 }
 
-upload_oshi() {
-    URL="https://oshi.at"
-    notify-send -i "$DUNST_ICON" -h string:x-dunst-stack-tag:uploadoshiat "File upload" "Uploadig $INPUT_FILE to $URL"
-    curl_command=$(curl -s -F f=@"$INPUT_FILE" "$URL")
-    grep "DL" <<< "$curl_command" | awk '{ print $2 }' | xclip -rmlastnl -selection clipboard
-    echo "$curl_command"
-    notify-send -i "$DUNST_ICON" -h string:x-dunst-stack-tag:uploadoshiat "Done uploading" "$curl_command"
-}
-
 upload_nullptr() {
     URL="https://0x0.st"
     notify-send -i "$DUNST_ICON" -h string:x-dunst-stack-tag:uploadnullptr "File upload" "Uploadig $INPUT_FILE to $URL"
@@ -44,7 +35,7 @@ upload_nullptr() {
 
 [ "$#" -eq 0 ] && print_help_and_exit
 
-SERVICES=("oshi" "oshiat" "0x0" "nullptr")
+SERVICES=("0x0" "nullptr")
 UPLOAD_SERVICE=""
 INPUT_FILE=""
 POSITIONAL_ARGS=()
@@ -68,7 +59,6 @@ else
 fi
 
 case "$UPLOAD_SERVICE" in
-    "oshi" | "oshiat") upload_oshi ;;
     "0x0" | "nullptr") upload_nullptr ;;
     *) print_help_and_exit ;;
 esac
