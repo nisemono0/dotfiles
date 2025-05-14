@@ -1,0 +1,26 @@
+[[plugin.deps]]
+use = "yazi-rs/plugins:chmod"
+
+[[plugin.deps]]
+use = "yazi-rs/plugins:full-border"
+
+[[plugin.deps]]
+use = "yazi-rs/plugins:smart-enter"
+
+[[plugin.deps]]
+use = "pirafrank/what-size"
+
+[[plugin.deps]]
+use = "AnirudhG07/plugins-yazi:copy-file-contents"
+
+[[plugin.deps]]
+use = "Ape/open-with-cmd"
+
+[[plugin.deps]]
+use = "dedukun/bookmarks"
+
+[[plugin.deps]]
+use = "boydaihungst/compress"
+
+[flavor]
+deps = []
