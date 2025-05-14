@@ -327,6 +327,7 @@ keymap = [
 
     # Pick
     { on = "<Enter>", run = "close --submit", desc = "Submit the pick" },
+    { on = "o",       run = "close --submit", desc = "Submit the pick" },
 
     # Navigation
     { on = [ "g", "g" ], run = "arrow top", desc = "Go to top" },
