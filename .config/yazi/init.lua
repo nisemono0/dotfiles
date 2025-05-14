@@ -13,7 +13,7 @@ require("bookmarks"):setup {
     last_directory = { enable = true, persist = false, mode = "dir" },
     persist = "all",
     desc_format = "full",
-    file_pick_mode = "hover",
+    file_pick_mode = "parent",
     custom_desc_input = false,
     notify = {
         enable = true,
