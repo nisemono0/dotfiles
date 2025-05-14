@@ -28,7 +28,7 @@ require("copy-file-contents"):setup {
 -- Ape/open-with-cmd
 require("open-with-cmd")
 require("bookmarks"):setup {
-    last_directory = { enable = true, persist = false, mode = "dir" },
+    last_directory = { enable = true, persist = false, mode = "jump" },
     persist = "all",
     desc_format = "full",
     file_pick_mode = "parent",
