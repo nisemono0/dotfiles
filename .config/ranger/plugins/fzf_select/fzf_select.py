@@ -46,7 +46,7 @@ class fzf_select(Command):
         env['FZF_DEFAULT_OPTS'] = '--layout=reverse --ansi --no-sort'
         env.pop("WINDOWID")
 
-        fzf_ueberzogen=os.path.expanduser("~/.scripts/ranger/fzf-ueberzogen.sh")
+        fzf_ueberzogen=os.path.expanduser("~/.scripts/tuifm/fzf-ueberzogen.sh")
         fzf = self.fm.execute_command(fzf_ueberzogen, env=env,
                                       universal_newlines=True, stdout=subprocess.PIPE)
         stdout, _ = fzf.communicate()
