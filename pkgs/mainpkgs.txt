@@ -126,7 +126,6 @@ python-pillow
 python-pip
 python-pywal
 qbittorrent
-ranger
 samba
 scrot
 sed
