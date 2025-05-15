@@ -209,6 +209,7 @@ keymap = [
     # Bookmarks
     { on = "m",          run = "plugin bookmarks save",       desc = "Save current position as a bookmark" },
     { on = "`",          run = "plugin bookmarks jump",       desc = "Jump to a bookmark" },
+    { on = "'",          run = "plugin bookmarks jump",       desc = "Jump to a bookmark" },
     { on = [ "u", "m" ], run = "plugin bookmarks delete",     desc = "Delete a bookmark" },
     { on = [ "u", "M" ], run = "plugin bookmarks delete_all", desc = "Delete all bookmarks" },
 
