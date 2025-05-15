@@ -47,6 +47,7 @@ keymap = [
     # Toggle
     { on = "<Space>",    run = [ "toggle", "arrow +1" ], desc = "Toggle the current selection state" },
     { on = [ "v", "a" ], run = "toggle_all --state=on",  desc = "Select all files" },
+    { on = [ "v", "v" ], run = "toggle_all",             desc = "Toggle selection on all files" },
     { on = [ "v", "r" ], run = "toggle_all",             desc = "Invert selection of all files" },
     { on = [ "v", "d" ], run = "toggle_all --state=off", desc = "Deselect all files (in directory)" },
     { on = [ "v", "u" ], run = "escape --select",        desc = "Deselect all files (all directories)"},
