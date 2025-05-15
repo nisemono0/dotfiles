@@ -78,6 +78,7 @@ keymap = [
     { on = [ "p", "_" ],  run = "link --relative",                                    desc = "Symlink the relative path of yanked files" },
     { on = [ "u", "y" ],  run = "unyank",                                             desc = "Cancel the yank status" },
     { on = [ "u", "d" ],  run = "unyank",                                             desc = "Cancel the cut status" },
+    { on = [ "u", "a" ],  run = ["escape --all", "unyank"],                           desc = "Cancel the yank/cut status and deselect all files (all directories)"},
     { on = [ "d", "t" ],  run = "remove",                                             desc = "Trash selected files" },
     { on = [ "d", "D" ],  run = "remove --permanently",                               desc = "Permanently delete selected files" },
     { on = "t",           run = "create",                                             desc = "Create a file (ends with / for directories)" },
