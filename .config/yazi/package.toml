@@ -17,10 +17,10 @@ use = "AnirudhG07/plugins-yazi:copy-file-contents"
 use = "Ape/open-with-cmd"
 
 [[plugin.deps]]
-use = "dedukun/bookmarks"
+use = "boydaihungst/compress"
 
 [[plugin.deps]]
-use = "boydaihungst/compress"
+use = "dedukun/bookmarks"
 
 [flavor]
 deps = []

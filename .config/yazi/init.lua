@@ -2,10 +2,20 @@
 -- Add some ui features
 require("enhanced-ui"):setup()
 
--- Downloaded
+-- Downloaded (w/o setup)
 -- yazi-rs/plugins:chmod
 require("chmod")
 
+-- pirafrank/what-size
+require("what-size")
+
+-- Ape/open-with-cmd
+require("open-with-cmd")
+
+-- boydaihungst/compress
+require("compress")
+
+-- Downloaded (w/ setup)
 -- yazi-rs/plugins:full-border
 require("full-border"):setup {
     -- Available values: ui.border.{ PLAIN, ROUNDED, DOUBLE, THICK, QUADRANT_INSIDE, QUADRANT_OUTSIDE }
@@ -17,16 +27,12 @@ require("smart-enter"):setup {
     open_multi = true
 }
 
--- pirafrank/what-size
-require("what-size")
-
 -- AnirudhG07/plugins-yazi:copy-file-contents
 require("copy-file-contents"):setup {
     notification = true
 }
 
--- Ape/open-with-cmd
-require("open-with-cmd")
+-- dedukun/bookmarks
 require("bookmarks"):setup {
     last_directory = { enable = true, persist = true, mode = "jump" },
     persist = "all",
@@ -44,5 +50,3 @@ require("bookmarks"):setup {
     },
 }
 
--- boydaihungst/compress
-require("compress")
