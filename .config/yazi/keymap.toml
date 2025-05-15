@@ -143,6 +143,8 @@ keymap = [
     # Goto
     { on = [ "g", "/" ], run = "cd /",                     desc = "Go root" },
     { on = [ "g", "m" ], run = "cd /run/media",            desc = "Go /run/media" },
+    { on = [ "g", "M" ], run = "cd /mnt",                  desc = "Go /mnt" },
+    { on = [ "g", "p" ], run = "cd /tmp",                  desc = "Go /tmp" },
     { on = [ "g", "h" ], run = "cd ~",                     desc = "Go home" },
     { on = [ "g", "c" ], run = "cd ~/.config",             desc = "Go ~/.config" },
     { on = [ "g", "f" ], run = "follow",                   desc = "Follow hovered symlink" },
