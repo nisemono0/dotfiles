@@ -2,6 +2,14 @@
 -- Add some ui features
 require("enhanced-ui"):setup()
 
+-- Confirm when quitting multiple tabs
+require("confirm-quit")
+
+-- Move to next/prev parent dir
+require("move-parentdir")
+
+
+
 -- Downloaded (w/o setup)
 -- yazi-rs/plugins:chmod
 require("chmod")
@@ -14,6 +22,8 @@ require("open-with-cmd")
 
 -- boydaihungst/compress
 require("compress")
+
+
 
 -- Downloaded (w/ setup)
 -- yazi-rs/plugins:full-border
