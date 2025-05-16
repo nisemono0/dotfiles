@@ -164,7 +164,7 @@ rules = [
 
     # Fallback
     # { name = "*", fg = "white" },
-    { name = "*/", fg = "blue", bold = true}
+    { name = "*/", fg = "blue", bold = true }
 ]
 
 [icon]
