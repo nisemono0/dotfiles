@@ -93,7 +93,6 @@ ncmpcpp
 nemo
 nemo-fileroller
 nemo-preview
-neofetch
 networkmanager
 nicotine+
 nmap
