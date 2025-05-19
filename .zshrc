@@ -18,7 +18,7 @@ ranger() {
     if [ -z "$RANGER_LEVEL" ]; then
         /usr/bin/ranger "$@"
     else
-        exit
+        exit 0
     fi
 }
 
@@ -27,10 +27,11 @@ yazi() {
         /usr/bin/yazi "$@"
         echo -e -n "\033[6 q"
     else
-        exit
+        exit 0
     fi
 }
 
+# cd into dir on yazi exit
 y() {
     local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd
     yazi "$@" --cwd-file="$tmp"
