@@ -31,6 +31,14 @@ yazi() {
     fi
 }
 
+y() {
+    local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd
+    yazi "$@" --cwd-file="$tmp"
+    IFS= read -r -d '' cwd < "$tmp"
+    [ -n "$cwd" ] && [ "$cwd" != "$PWD" ] && builtin cd -- "$cwd"
+    rm -f -- "$tmp"
+}
+
 if [ -n "$RANGER_LEVEL" ]; then export PS1="(ranger) $PS1"; fi
 if [ -n "$YAZI_LEVEL" ]; then export PS1="(yazi) $PS1"; fi
 
