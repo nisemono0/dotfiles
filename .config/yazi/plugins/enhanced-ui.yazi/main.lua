@@ -8,10 +8,18 @@ local function headerfile()
 end
 
 local function hostname()
-    if ya.target_family() ~= "unix" then
-        return ui.Span("")
-    end
     return ui.Span(ya.user_name() .. "@" .. ya.host_name() .. ":"):fg("blue")
+end
+
+local function disk_space()
+    local df_command = "df -kh --output=avail . | grep -i -v 'Avail' | tr -d '[:space:]'"
+
+    local free_space = io.popen(df_command):read("*all")
+
+    return ui.Line{
+        ui.Span(tostring(free_space)),
+        ui.Span(" free ")
+    }:fg("magenta")
 end
 
 local function mtime()
@@ -38,9 +46,6 @@ end
 
 local function usergroup()
     local h = cx.active.current.hovered
-    if h == nil or ya.target_family() ~= "unix" then
-        return ui.Span("")
-    end
 
     return ui.Line {
         ui.Span(" "), ui.Span(ya.user_name(h.cha.uid) or tostring(h.cha.uid)):fg("magenta"),
@@ -53,6 +58,7 @@ end
 local function setup()
     Header:children_add(headerfile, 1200, Header.LEFT)
     Header:children_add(hostname, 200, Header.LEFT)
+    Header:children_add(disk_space, 900, Header.RIGHT)
 
     Status:children_add(mtime, 1300, Status.RIGHT)
     Status:children_add(symlink, 3100, Status.LEFT)
