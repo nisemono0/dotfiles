@@ -86,6 +86,13 @@ image_alloc      = 536870912 # 512MB
 image_bound      = [ 0, 0 ]
 
 [plugin]
+# Plugin fetchers/previewers
+prepend_preloaders = [
+    { mime = "application/zip", run = "mangathumb" },
+]
+prepend_previewers = [
+    { mime = "application/zip", run = "mangathumb" },
+]
 fetchers = [
     # Mimetype
     { id = "mime", name = "*", run = "mime", prio = "high" },

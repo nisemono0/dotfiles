@@ -8,6 +8,9 @@ require("confirm-quit")
 -- Move to next/prev parent dir
 require("move-parentdir")
 
+-- Preview 1st image in zip files
+require("mangathumb")
+
 
 
 -- Downloaded (w/o setup)
