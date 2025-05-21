@@ -24,6 +24,7 @@ dosfstools
 dunst
 efibootmgr
 fakeroot
+fastfetch
 fcitx
 fcitx-configtool
 fcitx-mozc
@@ -156,7 +157,6 @@ ueberzugpp
 umu-launcher
 unrar
 vim
-w3m
 waifu2x-ncnn-vulkan
 weechat
 wget

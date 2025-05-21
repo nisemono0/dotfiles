@@ -6,7 +6,6 @@ code-marketplace
 colorz
 dragon-drop
 i3lock-color
-neofetch
 python-ffsubsync
 python-haishoku
 simple-mtpfs
