@@ -58,7 +58,7 @@ end
 local function setup()
     Header:children_add(headerfile, 1200, Header.LEFT)
     Header:children_add(hostname, 200, Header.LEFT)
-    Header:children_add(disk_space, 900, Header.RIGHT)
+    -- Header:children_add(disk_space, 900, Header.RIGHT)
 
     Status:children_add(mtime, 1300, Status.RIGHT)
     Status:children_add(symlink, 3100, Status.LEFT)
