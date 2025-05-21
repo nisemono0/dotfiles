@@ -1,0 +1,79 @@
+{
+    "logo": {
+        "type": "small",
+        "padding": {
+            "top": 2,
+            "left": 2,
+            "right": 2
+        }
+    },
+    "display": {
+        "separator": "  ",
+        "brightColor": true,
+        "constants": [
+            "───────────────────────────────────────" // {$1}
+        ],
+        "key": {
+            "type": "both",
+            "paddingLeft": 2
+        }
+    },
+    "modules": [
+        {
+            "type": "custom",
+            "format": "┌{$1}┐",
+            "outputColor": "blue"
+        },
+        {
+            "key": "CPU     ",
+            "type": "cpu",
+            "format": "{name}"
+        },
+        {
+            "key": "GPU     ",
+            "type": "gpu",
+            "format": "{name}"
+        },
+        {
+            "key": "Memory  ",
+            "type": "memory",
+            "format": "{used} / {total}"
+        },
+        {
+            "key": "Display ",
+            "type": "display",
+            "format": "{width}x{height} @ {refresh-rate}Hz"
+        },
+        {
+            "type": "custom",
+            "format": "├{$1}┤",
+            "outputColor": "blue"
+        },
+        {
+            "key": "OS      ",
+            "type": "os",
+            "format": "{pretty-name}"
+        },
+        {
+            "key": "Kernel  ",
+            "type": "kernel",
+            "format": "{release}"
+        },
+        {
+            "key": "WM      ",
+            "type": "wm"
+        },
+        {
+            "key": "Shell   ",
+            "type": "shell",
+        },
+        {
+            "type": "terminal"
+        },
+        {
+            "type": "custom",
+            "format": "└{$1}┘",
+            "outputColor": "blue"
+        }
+    ]
+}
