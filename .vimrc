@@ -317,7 +317,7 @@ var lsp_servers = [
         name: 'clang',
         filetype: ['c', 'cpp'],
         path: '/usr/bin/clangd',
-        args: ['--background-index']
+        args: ['--background-index', '-header-insertion=never']
     },
     {
         name: 'python-lsp-server',
