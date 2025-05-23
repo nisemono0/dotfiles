@@ -151,7 +151,7 @@ inoremap <expr> <Down> pumvisible() ? '<C-n>' : '<Down>'
 inoremap <expr> <Tab> pumvisible() ? '<C-n>' : (vsnip#jumpable(1) ? '<Plug>(vsnip-jump-next)' : '<Tab>')
 inoremap <expr> <S-Tab> pumvisible() ? '<C-p>' : (vsnip#jumpable(-1) ? '<Plug>(vsnip-jump-prev)' : '<S-Tab>')
 inoremap <expr> <Enter> pumvisible() ? (complete_info().selected == -1 ? '<C-e><CR>' : '<Plug>(vimcomplete-skip)<C-y>') : '<CR>'
-inoremap <expr> <Esc> pumvisible() ? '<Plug>(vimcomplete-skip)<C-e>' : '<Esc>'
+inoremap <expr> <Esc> pumvisible() ? '<Plug>(vimcomplete-skip)<C-y>' : '<Esc>'
 snoremap <expr> <Tab> vsnip#jumpable(1) ? '<Plug>(vsnip-jump-next)' : '<Tab>'
 snoremap <expr> <S-Tab> vsnip#jumpable(-1) ? '<Plug>(vsnip-jump-prev)' : '<S-Tab>'
 
@@ -244,15 +244,26 @@ nnoremap <leader>ts :terminal ./%<CR>
 var vimcomplete_opts = {
     completor: {
         shuffleEqualPriority: true,
-        kindDisplayType: "text"
+        postfixClobber: true,
+        postfixHighlight: true,
+        kindDisplayType: "text",
+        noNewlineInCompletion: true,
+        noNewlineInCompletionEver: true
     },
     buffer: {
+        enable: true,
         urlComplete: true,
-        envComplete: true
+        envComplete: true,
+        priority: 10
+    },
+    lsp: {
+        enable: true,
+        keywordOnly: false,
+        priority: 20
     },
     vsnip: {
         enable: true,
-        priority: 11
+        priority: 15
     },
     vimscript: {
         enable: true,
@@ -265,49 +276,56 @@ nnoremap <leader>ad :VimCompleteDisable<CR>
 
 # LSP Options
 var lsp_opts = {
-    aleSupport: v:false,
-    autoComplete: v:true,
-    autoHighlight: v:false,
-    autoHighlightDiags: v:true,
-    autoPopulateDiags: v:false,
+    aleSupport: false,
+    autoComplete: true,
+    autoHighlight: false,
+    autoHighlightDiags: true,
+    autoPopulateDiags: false,
     completionMatcher: 'case',
     completionMatcherValue: 1,
     diagSignErrorText: 'E>',
     diagSignHintText: 'H>',
     diagSignInfoText: 'I>',
     diagSignWarningText: 'W>',
-    echoSignature: v:false,
-    hideDisabledCodeActions: v:false,
-    highlightDiagInline: v:true,
-    hoverInPreview: v:false,
-    ignoreMissingServer: v:true,
-    keepFocusInDiags: v:true,
-    keepFocusInReferences: v:true,
-    completionTextEdit: v:true,
+    echoSignature: false,
+    hideDisabledCodeActions: false,
+    highlightDiagInline: true,
+    hoverInPreview: false,
+    ignoreMissingServer: true,
+    keepFocusInDiags: true,
+    keepFocusInReferences: true,
+    completionTextEdit: true,
     diagVirtualTextAlign: 'above',
     diagVirtualTextWrap: 'default',
-    noNewlineInCompletion: v:false,
-    omniComplete: v:null,
-    outlineOnRight: v:false,
+    noNewlineInCompletion: false,
+    omniComplete: null,
+    outlineOnRight: false,
     outlineWinSize: 20,
-    semanticHighlight: v:true,
-    showDiagInBalloon: v:true,
-    showDiagInPopup: v:true,
-    showDiagOnStatusLine: v:true,
-    showDiagWithSign: v:true,
-    showDiagWithVirtualText: v:false,
-    showInlayHints: v:false,
-    showSignature: v:true,
-    snippetSupport: v:false,
-    ultisnipsSupport: v:false,
-    useBufferCompletion: v:false,
-    usePopupInCodeAction: v:false,
-    useQuickfixForLocations: v:false,
-    vsnipSupport: v:true,
+    popupBorder: true,
+    popupBorderHighlight: 'Title',
+    popupBorderHighlightPeek: 'Special',
+    popupBorderSignatureHelp: false,
+    popupHighlightSignatureHelp: 'Pmenu',
+    popupHighlight: 'Normal',
+    semanticHighlight: false,
+    showDiagInBalloon: true,
+    showDiagInPopup: true,
+    showDiagOnStatusLine: true,
+    showDiagWithSign: true,
+    showDiagWithVirtualText: false,
+    showInlayHints: false,
+    showSignature: true,
+    snippetSupport: false,
+    ultisnipsSupport: false,
+    useBufferCompletion: false,
+    usePopupInCodeAction: false,
+    useQuickfixForLocations: false,
+    vsnipSupport: true,
     bufferCompletionTimeout: 100,
-    customCompletionKinds: v:false,
+    customCompletionKinds: false,
     completionKinds: {},
-    filterCompletionDuplicates: v:false
+    filterCompletionDuplicates: false,
+    condensedCompletionMenu: false
 }
 autocmd User LspSetup call LspOptionsSet(lsp_opts)
 
@@ -317,7 +335,13 @@ var lsp_servers = [
         name: 'clang',
         filetype: ['c', 'cpp'],
         path: '/usr/bin/clangd',
-        args: ['--background-index', '-header-insertion=never']
+        args: ['--background-index', '-j=2', '--clang-tidy', '--completion-style=detailed', '-header-insertion=never']
+    },
+    {
+        name: 'ccls',
+        filetype: ['c', 'cpp'],
+        path: '/usr/bin/ccls',
+        args: []
     },
     {
         name: 'python-lsp-server',
