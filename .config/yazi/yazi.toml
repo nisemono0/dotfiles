@@ -89,9 +89,11 @@ image_bound      = [ 0, 0 ]
 # Plugin fetchers/previewers
 prepend_preloaders = [
     { mime = "application/zip", run = "mangathumb" },
+    { mime = "audio/*", run = "audio-preview" },
 ]
 prepend_previewers = [
     { mime = "application/zip", run = "mangathumb" },
+    { mime = "audio/*", run = "audio-preview" },
 ]
 fetchers = [
     # Mimetype

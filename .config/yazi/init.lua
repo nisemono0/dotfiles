@@ -8,6 +8,9 @@ require("confirm-quit")
 -- Move to next/prev parent dir
 require("move-parentdir")
 
+-- Preview audio files as spectrograms
+require("audio-preview")
+
 -- Preview 1st image in zip files
 require("mangathumb")
 
