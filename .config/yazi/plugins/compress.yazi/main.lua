@@ -1,4 +1,4 @@
---- @since 25.2.7
+--- @since 25.4.8
 
 local supported_encryption = {
 	"%.zip$",
@@ -91,11 +91,11 @@ local selected_or_hovered = function()
 		local cha, err = fs.cha(url)
 
 		if cha then
-			local parent_path = tostring(type(url.parent) == "function" and url:parent() or url.parent)
+			local parent_path = tostring(url.parent)
 			if not result[parent_path] then
 				result[parent_path] = {}
 			end
-			table.insert(result[parent_path], quote(type(url.name) == "function" and url:name() or url.name))
+			table.insert(result[parent_path], quote(url.name))
 		else
 			notify_error(string.format("Failed to get metadata for %s: %s", path, err), "error")
 			return
@@ -137,7 +137,7 @@ end
 return {
 	entry = function(_, job)
 		-- Exit visual mode
-		ya.manager_emit("escape", { visual = true })
+		ya.mgr_emit("escape", { visual = true })
 		local secure = job.args.secure
 		local decrypt_password, input_pw_event
 		local files_to_archive = selected_or_hovered()
@@ -182,7 +182,7 @@ return {
 		local output_fpath = pathJoin(get_cwd(), output_name)
 		local output_furl = Url(output_fpath)
 		local output_fcha, _ = fs.cha(output_furl)
-		local output_fname_without_ext = type(output_furl.stem) == "function" and output_furl:stem() or output_furl.stem
+		local output_fname_without_ext = output_furl.stem
 
 		-- Use appropriate archive command
 		local archive_commands = {
@@ -418,7 +418,7 @@ return {
 		if compress_cmd then
 			local compress_output, compress_success, compress_code = run_command(
 				compress_cmd .. " " .. table.concat(compress_args, " ") .. " " .. quote(output_fname_without_ext),
-				tostring(type(output_furl.parent) == "function" and output_furl:parent() or output_furl.parent)
+				tostring(output_furl.parent)
 			)
 			if not compress_success then
 				notify_error(
