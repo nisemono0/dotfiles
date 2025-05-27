@@ -5,6 +5,7 @@ set rtp+=~/.config/vim/
 plug#begin('~/.config/vim/plugged')
     # Web
     Plug 'preservim/nerdtree'
+    Plug 'chriszarate/yazi.vim'
     Plug 'vim-airline/vim-airline'
     Plug 'ryanoasis/vim-devicons'
     Plug 'sheerun/vim-polyglot'
@@ -142,6 +143,10 @@ nnoremap <leader>r :registers<CR>
 
 # Toggle NerdTree
 nnoremap <C-n> :NERDTreeToggle<CR>
+
+# Open Yazi
+nnoremap <silent> _ :Yazi<CR>
+nnoremap <silent> - :YaziWorkingDirectory<CR>
 
 # Completion window and snippet jump
 inoremap <C-@> <C-n>
