@@ -228,7 +228,7 @@ keymap = [
     { on = [ "e", "v" ], run = """shell '~/.scripts/tuifm/extract-view.sh "$1"'""", desc = "Extract and view images inside archive" },
 
     # Copy image to clipboard
-    { on = [ "y", "i" ], run = """shell '~/.scripts/tuifm/img-xclip.sh "$1"'""", desc = "Copy selected image to clipboard" },
+    { on = [ "y", "i" ], run = """shell --orphan '~/.scripts/tuifm/img-xclip.sh "$1"'""", desc = "Copy selected image to clipboard" },
 
     # View spectrogram with sox
     { on = [ "<C-a>", "s", "s" ], run = """shell '~/.scripts/tuifm/sox-spectrogram.sh "$1"'""",      desc = "Display spectrogram of audio file" },
@@ -245,10 +245,10 @@ keymap = [
     { on = [ "<C-a>", "c" ],      run = """shell '~/.scripts/tuifm/convert-audio.sh "aac-128" "$@"'""", desc = "Convert audio file(s) to aac 128kbs" },
 
     # Dragon drop
-    { on = [ "<C-d>", "a" ], run = """shell 'dragon-drop -a -T "$@"'""",    desc = "Drag and drop all files" },
-    { on = [ "<C-d>", "s" ], run = """shell 'dragon-drop -T "$@"'""",       desc = "Drag and drop single file" },
-    { on = [ "<C-d>", "z" ], run = """shell 'dragon-drop -a -x -T "$@"'""", desc = "Drag and drop all files (close)" },
-    { on = [ "<C-d>", "x" ], run = """shell 'dragon-drop -x -T "$@"'""",    desc = "Drag and drop single file (close)" },
+    { on = [ "<C-d>", "a" ], run = """shell --orphan 'dragon-drop -a -T "$@"'""",    desc = "Drag and drop all files" },
+    { on = [ "<C-d>", "s" ], run = """shell --orphan 'dragon-drop -T "$@"'""",       desc = "Drag and drop single file" },
+    { on = [ "<C-d>", "z" ], run = """shell --orphan 'dragon-drop -a -x -T "$@"'""", desc = "Drag and drop all files (close)" },
+    { on = [ "<C-d>", "x" ], run = """shell --orphan 'dragon-drop -x -T "$@"'""",    desc = "Drag and drop single file (close)" },
 
     # Upload file
     { on = [ "<C-u>", "n" ], run = """shell 'uploadfile "$1" "nullptr"'""", desc = "Upload file to 0x0.st" },
