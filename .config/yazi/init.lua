@@ -14,6 +14,9 @@ require("audio-preview")
 -- Preview 1st image in zip files
 require("mangathumb")
 
+-- Open files with command
+require("open-with-cmd")
+
 
 
 -- Downloaded (w/o setup)
@@ -22,9 +25,6 @@ require("chmod")
 
 -- pirafrank/what-size
 require("what-size")
-
--- Ape/open-with-cmd
-require("open-with-cmd")
 
 -- boydaihungst/compress
 require("compress")
