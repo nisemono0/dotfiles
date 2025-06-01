@@ -207,6 +207,7 @@ keymap = [
 
     # Open with prompt command
     { on = "<A-o>", run = "plugin open-with-cmd", desc = "Open with command in the terminal" },
+    { on = "<A-O>", run = "plugin open-with-cmd block", desc = "Open with command in the terminal (block)" },
 
     # Bookmarks
     { on = "m",          run = "plugin bookmarks save",       desc = "Save current position as a bookmark" },
