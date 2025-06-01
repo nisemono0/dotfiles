@@ -1,4 +1,4 @@
-[manager]
+[mgr]
 keymap = [
     # Help
     { on = "<F1>", run = "help", desc = "Open help" },
@@ -222,7 +222,7 @@ keymap = [
     # Archive compress/extract
     { on = [ "e", "x" ], run = """shell 'ya pub extract --list "$@"'""", desc = "Extract selected archive(s)" },
     { on = [ "e", "c" ], run = "plugin compress",                        desc = "Compress selected file(s)" },
-    { on = [ "e", "C" ], run = "plugin compress -- --secure",            desc = "Compress selected file(s) with password" },
+    { on = [ "e", "C" ], run = "plugin compress -p",                     desc = "Compress selected file(s) with password" },
 
     # Extract view archive
     { on = [ "e", "v" ], run = """shell '~/.scripts/tuifm/extract-view.sh "$1"'""", desc = "Extract and view images inside archive" },
