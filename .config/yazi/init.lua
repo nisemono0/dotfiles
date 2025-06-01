@@ -1,4 +1,4 @@
--- Local
+-- Mine
 -- Add some ui features
 require("enhanced-ui"):setup()
 

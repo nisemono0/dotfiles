@@ -8,6 +8,9 @@ use = "yazi-rs/plugins:full-border"
 use = "yazi-rs/plugins:smart-enter"
 
 [[plugin.deps]]
+use = "KKV9/compress"
+
+[[plugin.deps]]
 use = "pirafrank/what-size"
 
 [[plugin.deps]]
@@ -17,10 +20,22 @@ use = "AnirudhG07/plugins-yazi:copy-file-contents"
 use = "Ape/open-with-cmd"
 
 [[plugin.deps]]
-use = "boydaihungst/compress"
+use = "dedukun/bookmarks"
 
 [[plugin.deps]]
-use = "dedukun/bookmarks"
+use = "nisemono0/yazi-plugins:enhanced-ui"
+
+[[plugin.deps]]
+use = "nisemono0/yazi-plugins:confirm-quit"
+
+[[plugin.deps]]
+use = "nisemono0/yazi-plugins:move-parentdir"
+
+[[plugin.deps]]
+use = "nisemono0/yazi-plugins:audio-preview"
+
+[[plugin.deps]]
+use = "nisemono0/yazi-plugins:mangathumb"
 
 [flavor]
 deps = []
