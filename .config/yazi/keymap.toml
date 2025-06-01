@@ -220,9 +220,11 @@ keymap = [
     { on = "S", run = """shell '"$SHELL"' --block""", desc = "Open $SHELL here" },
 
     # Archive compress/extract
-    { on = [ "e", "x" ], run = """shell 'ya pub extract --list "$@"'""", desc = "Extract selected archive(s)" },
-    { on = [ "e", "c" ], run = "plugin compress",                        desc = "Compress selected file(s)" },
-    { on = [ "e", "C" ], run = "plugin compress -p",                     desc = "Compress selected file(s) with password" },
+    { on = [ "e", "x" ],      run = """shell 'ya pub extract --list "$@"'""", desc = "Extract selected archive(s)" },
+    { on = [ "e", "c", "c" ], run = "plugin compress",                        desc = "Compress selected file(s)" },
+    { on = [ "e", "c", "l" ], run = "plugin compress -l",                     desc = "Compress selected file(s) with level" },
+    { on = [ "e", "C", "C" ], run = "plugin compress -p",                     desc = "Compress selected file(s) with password" },
+    { on = [ "e", "C", "l" ], run = "plugin compress -pl",                    desc = "Compress selected file(s) with password and level" },
 
     # Extract view archive
     { on = [ "e", "v" ], run = """shell '~/.scripts/tuifm/extract-view.sh "$1"'""", desc = "Extract and view images inside archive" },
