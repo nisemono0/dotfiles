@@ -127,6 +127,7 @@ python-pip
 python-pywal
 qbittorrent
 samba
+screenkey
 scrot
 sed
 siji-ng
