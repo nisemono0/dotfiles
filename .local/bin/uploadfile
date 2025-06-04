@@ -1,5 +1,11 @@
 #!/bin/bash
 
+
+if ! command -v curl >/dev/null 2>&1 || ! command -v xclip >/dev/null 2>&1; then
+    echo "curl and xclip needs to be installed"
+    exit -1
+fi
+
 DUNST_ICON="network-transmit"
 
 print_help_and_exit() {

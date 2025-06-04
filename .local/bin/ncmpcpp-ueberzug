@@ -1,4 +1,10 @@
 #!/bin/sh
+
+if ! command -v ncmpcpp >/dev/null 2>&1 || ! command -v ueberzug >/dev/null 2>&1; then
+    echo "ncmpcpp and ueberzug needs to be installed"
+    exit -1
+fi
+
 export FIFO_UEBERZUG="/tmp/mpd-ueberzug-${PPID}"
 export IS_COVER_DISPLAYED="$(mktemp /tmp/ncmpcpp-cover-ueberzug.XXXXXX)"
 unset WINDOWID

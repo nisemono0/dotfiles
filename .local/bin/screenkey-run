@@ -1,7 +1,7 @@
 #!/bin/bash
 
-if ! command -v slop >/dev/null 2>&1; then
-    echo "slop needs to be installed"
+if ! command -v slop >/dev/null 2>&1 || ! command -v screenkey >/dev/null 2>&1; then
+    echo "slop and screenkey needs to be installed"
     exit -1
 fi
 
