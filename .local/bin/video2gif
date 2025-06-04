@@ -2,16 +2,21 @@
 
 # http://blog.pkh.me/p/21-high-quality-gif-with-ffmpeg.html
 
+if ! command -v ffmpeg >/dev/null 2>&1; then
+    echo "ffmpeg needs to be installed"
+    exit -1
+fi
+
 print_help_and_exit() {
     case "$1" in
         "scale")
-            echo "-s, --scale n         Set the scale, n is an int number"
+            echo "  -s, --scale n       Set the scale, n is an int number"
             ;;
         "stats-mode")
-            echo "-m, --stats-mode m    Set the mode for palettegen (full, diff)"
+            echo "  -m, --stats-mode m  Set the mode for palettegen (full, diff)"
             ;;
         "dither")
-            echo "-d, --dither f [n]    Set the dither for the gif (none, bayer, floyd_steinberg, sierra2, sierra2_4a)"
+            echo "  -d, --dither f [n]  Set the dither for the gif (none, bayer, floyd_steinberg, sierra2, sierra2_4a)"
             echo "                      n is only needed if bayer dither is used, controls bayer_scale, int number"
             ;;
         *)
