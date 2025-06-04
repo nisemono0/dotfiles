@@ -17,9 +17,6 @@ use = "pirafrank/what-size"
 use = "AnirudhG07/plugins-yazi:copy-file-contents"
 
 [[plugin.deps]]
-use = "dedukun/bookmarks"
-
-[[plugin.deps]]
 use = "nisemono0/yazi-plugins:enhanced-ui"
 
 [[plugin.deps]]
@@ -36,6 +33,9 @@ use = "nisemono0/yazi-plugins:mangathumb"
 
 [[plugin.deps]]
 use = "nisemono0/yazi-plugins:open-with-cmd"
+
+[[plugin.deps]]
+use = "nisemono0/bookmarks"
 
 [flavor]
 deps = []

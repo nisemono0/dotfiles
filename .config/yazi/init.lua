@@ -50,11 +50,12 @@ require("copy-file-contents"):setup {
 
 -- dedukun/bookmarks
 require("bookmarks"):setup {
-    last_directory = { enable = true, persist = true, mode = "jump" },
+    last_directory = { enable = true, persist = true, mode = "jump", key = "`" },
     persist = "all",
     desc_format = "full",
     file_pick_mode = "parent",
     custom_desc_input = false,
+    show_keys = true,
     notify = {
         enable = true,
         timeout = 1.5,
