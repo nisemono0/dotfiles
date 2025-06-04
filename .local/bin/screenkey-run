@@ -1,0 +1,96 @@
+#!/bin/bash
+
+if ! command -v slop >/dev/null 2>&1; then
+    echo "slop needs to be installed"
+    exit -1
+fi
+
+
+print_help_and_exit() {
+    case "$1" in
+        "position")
+            echo "  -p, --position  <str>    Run screenkey at position (default: bottom)"
+            echo "                           Options: {bottom, center, top}"
+            ;;
+        "timeout")
+            echo "  -t, --timeout   <num>    Set timeout in seconds (default: 0.8)"
+            ;;
+        "fontsize")
+            echo "  -f, --font-size <str>    Set font size (default: small)"
+            echo "                           Options: {small, medium, large}"
+            ;;
+        "opacity")
+            echo "  -o, --opacity   <num>    Set window opacity (default: 0.8)"
+            echo "                           In range [0.0, 1.0]"
+            ;;
+        *)
+            echo "Run screenkey with selection"
+            echo "Usage: $(basename $0)"
+            echo
+            echo "$(basename $0) [-h] [-s] [-p s] [-t n] [-f s] [-o n]"
+            echo "  -h, --help               Print this help"
+            echo "  -s, --slop               Select window using slop"
+            echo "                           Uses fullscreen if not specified"
+            echo "  -p, --position  <str>    Run screenkey at position (default: bottom)"
+            echo "                           Options: {bottom, center, top}"
+            echo "  -t, --timeout   <num>    Set timeout in seconds (default: 0.8)"
+            echo "  -f, --font-size <str>    Set font size (default: small)"
+            echo "                           Options: {small, medium, large}"
+            echo "  -o, --opacity   <num>    Set window opacity (default: 0.8)"
+            echo "                           In range [0.0, 1.0]"
+            ;;
+    esac
+    exit -1
+}
+
+POSITION="bottom"
+TIMEOUT="0.8"
+FONT_SIZE="small"
+OPACITY="0.8"
+SLOP=false
+
+has_arg_val() {
+    if [ "$1" -le 1 ]; then
+        return 1
+    fi
+    return 0
+}
+
+while [ "$#" -gt 0 ]; do
+    case "$1" in
+        "-h" | "--help") print_help_and_exit ;;
+        "-p" | "--position")
+            has_arg_val "$#" || print_help_and_exit "position"
+            POSITION="$2"
+            shift 2
+            ;;
+        "-t" | "--timeout")
+            has_arg_val "$#" || print_help_and_exit "timeout"
+            TIMEOUT="$2"
+            shift 2
+            ;;
+        "-f" | "--font-size")
+            has_arg_val "$#" || print_help_and_exit "fontsize"
+            FONT_SIZE="$2"
+            shift 2
+            ;;
+        "-o" | "--opacity")
+            has_arg_val "$#" || print_help_and_exit "opacity"
+            OPACITY="$2"
+            shift 2
+            ;;
+        "-s" | "--slop")
+            SLOP="true"
+            shift 1
+            ;;
+        -*|--*) print_help_and_exit ;;
+        *) POSITIONAL_ARGS+=("$1"); shift ;;
+    esac
+done
+
+if [ "$SLOP" = true ]; then
+    screenkey --no-systray --font-size "${FONT_SIZE}" --timeout "${TIMEOUT}" --position "${POSITION}" --opacity "${OPACITY}" --geometry "$(slop --bordersize 2 -n -f '%g')"
+else
+    screenkey --no-systray --font-size "${FONT_SIZE}" --timeout "${TIMEOUT}" --position "${POSITION}" --opacity "${OPACITY}"
+fi
+
