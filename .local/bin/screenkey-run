@@ -10,7 +10,7 @@ print_help_and_exit() {
     case "$1" in
         "position")
             echo "  -p, --position  <str>    Run screenkey at position (default: bottom)"
-            echo "                           Options: {bottom, center, top}"
+            echo "                           Options: {bottom, center, top, fixed}"
             ;;
         "timeout")
             echo "  -t, --timeout   <num>    Set timeout in seconds (default: 0.8)"
@@ -32,7 +32,7 @@ print_help_and_exit() {
             echo "  -s, --slop               Select window using slop"
             echo "                           Uses fullscreen if not specified"
             echo "  -p, --position  <str>    Run screenkey at position (default: bottom)"
-            echo "                           Options: {bottom, center, top}"
+            echo "                           Options: {bottom, center, top, fixed}"
             echo "  -t, --timeout   <num>    Set timeout in seconds (default: 0.8)"
             echo "  -f, --font-size <str>    Set font size (default: small)"
             echo "                           Options: {small, medium, large}"
