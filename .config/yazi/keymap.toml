@@ -84,6 +84,7 @@ keymap = [
     { on = [ "d", "E" ],  run = "shell 'trash-empty'",                                desc = "Empty trash directory" },
     { on = [ "d", "D" ],  run = "remove --permanently",                               desc = "Permanently delete selected files" },
     { on = "t",           run = "create",                                             desc = "Create a file (ends with / for directories)" },
+    { on = "T",           run = "create --dir",                                       desc = "Create a directory" },
     { on = "a",           run = "rename --cursor=before_ext",                         desc = "Rename selected file(s) (cursor before extension)" },
     { on = "A",           run = "rename --cursor=end",                                desc = "Rename selected file(s) (cursor at end)" },
     { on = "I",           run = "rename --cursor=start",                              desc = "Rename selected file(s) (cursor at start)" },
