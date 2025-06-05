@@ -24,7 +24,7 @@ print_help_and_exit() {
             echo "                           In range [0.0, 1.0]"
             ;;
         *)
-            echo "Run screenkey with selection"
+            echo "Run screenkey"
             echo "Usage: $(basename $0)"
             echo
             echo "$(basename $0) [-h] [-s] [-p s] [-t n] [-f s] [-o n]"
