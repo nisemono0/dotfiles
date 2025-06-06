@@ -128,7 +128,7 @@ show_ffmpeg_notif() {
         mouse_notif="No"
     fi
 
-    notify-send -i video-display "Screencast started" \
+    notify-send -i "$DUNST_ICON" "Screencast started" \
         "Path: ${CAST_DIR}\nVideo: ${width}x${height}+${x}+${y} ${scale}@${framerate}fps\nEncode: ${crf}CRF ${preset} preset\nAudio: ${audio}\nMouse: ${mouse_notif}"
 }
 
