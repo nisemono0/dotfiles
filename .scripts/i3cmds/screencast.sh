@@ -167,7 +167,7 @@ start_screencast() {
 }
 
 start_preset_screencast() {
-    presets=$(printf "Fullscreen 720p@60fps 21CRF fast preset audio nomouse\\nFullscreen No Scale@60fps 21CRF fast preset audio mouse\\nRegion No Scale@60fps 21CRF fast preset audio mouse\\nRegion No Scale@60fps 21CRF fast preset audio nomouse" | dmenu "${DMENU_ARGS[@]}" -p "Select preset")
+    presets=$(printf "Fullscreen 720p@60fps 21CRF fast preset audio nomouse\\nFullscreen 720p@60fps 21CRF fast preset audio mouse\\nFullscreen No Scale@60fps 21CRF fast preset audio mouse\\nRegion No Scale@60fps 21CRF fast preset audio mouse\\nRegion No Scale@60fps 21CRF fast preset audio nomouse" | dmenu "${DMENU_ARGS[@]}" -p "Select preset")
     [ -z "${presets}" ] && exit 1
 
     format="mp4"
@@ -184,6 +184,25 @@ start_preset_screencast() {
             audio="Yes"
             sink="$(pactl info | sed -En 's/Default Sink: (.*)/\1/p').monitor"
             mouse=0
+            create_output
+
+            ffmpeg -v 8 -y -f pulse -i "${sink}" -f x11grab -draw_mouse "${mouse}" -video_size "${width}"x"${height}" \
+                -framerate "${framerate}" -i :0.0+"${x}","${y}" -preset "${preset}" \
+                -crf "${crf}" -vf scale="${scale}" "$output" &
+            FFMPEG_PID=$!
+            echo ${FFMPEG_PID} > ${PIDFILE}
+            ;;
+        "Fullscreen 720p@60fps 21CRF fast preset audio mouse")
+            read -r width height <<< "$(xdpyinfo | awk -F'[ x]+' '/dimensions:/{print $3, $4}')"
+            x=0
+            y=0
+            framerate="60"
+            scale="-1:720"
+            crf="21"
+            preset="fast"
+            audio="Yes"
+            sink="$(pactl info | sed -En 's/Default Sink: (.*)/\1/p').monitor"
+            mouse=1
             create_output
 
             ffmpeg -v 8 -y -f pulse -i "${sink}" -f x11grab -draw_mouse "${mouse}" -video_size "${width}"x"${height}" \
