@@ -36,6 +36,7 @@ set $lockscreen --no-startup-id ~/.scripts/i3cmds/lock-screen.sh
 set $screenshot --no-startup-id ~/.scripts/i3cmds/screenshot.sh
 set $screencast --no-startup-id ~/.scripts/i3cmds/screencast.sh
 set $dmenubind --no-startup-id ~/.scripts/i3cmds/dmenu-bind.sh
+set $i3desktopdmenubind --no-startup-id ~/.scripts/i3cmds/i3desktop-dmenu-bind.sh
 set $mountmenu --no-startup-id ~/.scripts/i3cmds/mountmenu.sh
 set $umountmenu --no-startup-id ~/.scripts/i3cmds/umountmenu.sh
 set $sinkselect --no-startup-id ~/.scripts/i3cmds/sink-select.sh
