@@ -42,6 +42,7 @@ gawk
 gcc
 gdb
 gettext
+gimp
 git
 grep
 groff
@@ -57,6 +58,7 @@ imagemagick
 inetutils
 jq
 keepassxc
+kvantum
 kvantum-qt5
 kvantum-theme-materia
 lib32-gamemode
