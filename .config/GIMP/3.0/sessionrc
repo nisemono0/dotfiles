@@ -50,7 +50,7 @@
                 (aux-info
                     (current-page "GimpColorSelect"))))
         (book
-            (position 728)
+            (position 548)
             (current-page 0)
             (dockable "gimp-layer-list"
                 (tab-style icon)
@@ -75,8 +75,8 @@
     (position 2559 856))
 (session-info "toplevel"
     (factory-entry "gimp-preferences-dialog")
-    (position 323 157)
-    (size 1268 760))
+    (position 320 154)
+    (size 1194 616))
 (session-info "toplevel"
     (factory-entry "gimp-levels-tool-dialog")
     (position 432 32)
