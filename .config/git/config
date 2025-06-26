@@ -1,0 +1,14 @@
+[credential]
+	helper = store
+[core]
+	editor = vim
+[http]
+	postBuffer = 524288000
+[diff]
+	tool = vimdiff
+[difftool]
+	prompt = false
+[merge]
+	tool = vimdiff
+[mergetool]
+	prompt = false
