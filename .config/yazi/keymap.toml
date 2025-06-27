@@ -103,8 +103,11 @@ keymap = [
     { on = "<Backspace>", run = "hidden toggle",                                      desc = "Toggle the visibility of hidden files" },
     { on = [ "s", "f" ],  run = "search --via=fd",                                    desc = "Search files by name via fd" },
     { on = [ "s", "r" ],  run = "search --via=rg",                                    desc = "Search files by content via ripgrep" },
-    { on = "<C-s>", run = "escape --find --filter --search",                          desc = "Cancel the ongoing search" },
-    { on = "<C-f>", run = "plugin fzf",                                               desc = "Jump to a file/directory via fzf" },
+    { on = "<C-f>",       run = "plugin fzf",                                         desc = "Jump to a file/directory via fzf" },
+    { on = "<C-s>",       run = "escape --find --filter --search",                    desc = "Cancel all ongoing searches" },
+    { on = [ "u", "S" ],  run = "escape --find --filter --search",                    desc = "Cancel all ongoing searches" },
+    { on = [ "u", "s" ],  run = "escape --find --search",                             desc = "Cancel the ongoing find/search" },
+    { on = [ "u", "f" ],  run = "escape --filter",                                    desc = "Cancel the ongoing filter" },
 
     # Linemode
     { on = [ "M", "s" ], run = "linemode size",        desc = "Linemode: size" },
