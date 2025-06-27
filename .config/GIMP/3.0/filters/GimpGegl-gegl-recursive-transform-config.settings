@@ -1,0 +1,24 @@
+# settings
+
+(GimpGegl-gegl-recursive-transform-config "2025-06-27 21:45:22"
+    (time 1751049922)
+    (transform "matrix (1, 0, 0, 0, 1, 0, 0, 0, 1)")
+    (first-iteration 1)
+    (iterations 0)
+    (fade-color
+        (color "R'G'B'A float" 16 "\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0" 0))
+    (fade-opacity 1)
+    (paste-below no)
+    (sampler-type cubic))
+(GimpGegl-gegl-recursive-transform-config "Non Destructive Transform"
+    (time 0)
+    (transform "matrix (1, 0, 0, 0, 1, 0, 0, 0, 1)")
+    (first-iteration 1)
+    (iterations 0)
+    (fade-color
+        (color "R'G'B'A float" 16 "\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0" 0))
+    (fade-opacity 1)
+    (paste-below no)
+    (sampler-type cubic))
+
+# end of settings
