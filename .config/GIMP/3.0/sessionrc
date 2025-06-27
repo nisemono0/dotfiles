@@ -75,8 +75,8 @@
     (position 2559 856))
 (session-info "toplevel"
     (factory-entry "gimp-preferences-dialog")
-    (position 320 154)
-    (size 1194 616))
+    (position 317 151)
+    (size 1131 676))
 (session-info "toplevel"
     (factory-entry "gimp-levels-tool-dialog")
     (position 432 32)
@@ -87,19 +87,23 @@
     (size 562 606))
 (session-info "toplevel"
     (factory-entry "gimp-file-export-dialog")
-    (position 232 32)
-    (size 1688 1197))
+    (position 338 172)
+    (size 1049 638))
 (session-info "toplevel"
     (factory-entry "gimp-keyboard-shortcuts-dialog")
     (position 2092 602)
     (size 1417 1416))
 (session-info "toplevel"
     (factory-entry "gimp-file-open-dialog")
-    (position 1257 32)
-    (size 1688 1197))
+    (position 197 148)
+    (size 1470 755))
 (session-info "toplevel"
     (factory-entry "gimp-brightness-contrast-tool-dialog")
     (position 91 439))
+(session-info "toplevel"
+    (factory-entry "gimp-file-save-dialog")
+    (position 222 160)
+    (size 1470 755))
 
 (hide-docks no)
 (single-window-mode yes)
