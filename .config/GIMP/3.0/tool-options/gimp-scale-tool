@@ -1,5 +1,12 @@
 # GIMP gimp-scale-tool options
 
 (composited-preview yes)
+(preview-opacity 0.69999999999999996)
+(constrain-move yes)
+(constrain-scale no)
+(constrain-rotate yes)
+(constrain-shear no)
+(constrain-perspective yes)
+(cornersnap yes)
 
 # end of gimp-scale-tool options

@@ -1009,7 +1009,7 @@
 (action "tools-size-increase")
 # (action "dialogs-navigation")
 # (action "filters-color-balance")
-(action "tools-unified-transform")
+(action "tools-unified-transform" "<Primary>u")
 # (action "filters-cubism")
 # (action "tools-force-increase")
 # (action "tools-by-color-select-short")
