@@ -4,6 +4,7 @@ autocutsel
 code-features
 code-marketplace
 colorz
+downgrade
 dragon-drop
 i3lock-color
 python-ffsubsync
