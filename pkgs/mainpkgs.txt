@@ -147,7 +147,6 @@ tree
 ttf-arphic-uming
 ttf-croscore
 ttf-fantasque-sans-mono
-ttf-font-awesome
 ttf-inconsolata
 ttf-indic-otf
 ttf-liberation
@@ -167,6 +166,7 @@ which
 wine-staging
 winetricks
 wmfocus
+woff2-font-awesome
 wqy-zenhei
 xcalib
 xclip-git
