@@ -254,9 +254,9 @@ function start_install () {
     install_aur_helper
     install_main_packages
     install_aur_packages
+    install_optdeps
     install_cpu_ucode
     install_gpu_drivers
-    install_optdeps
     install_ohmyzsh
     install_dotfiles
     clean_home
