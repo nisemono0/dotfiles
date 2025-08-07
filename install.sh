@@ -34,36 +34,54 @@ function install_aur_helper () {
 
 # Install GPU drivers
 function install_gpu_drivers () {
-    echo -e "${YE}[!!!] ${PU}This will install open source drivers ${YE}[!!!] ${NC}"
-    echo -e "${YE}[!!!] ${PU}You should check the wiki/manually install them ${YE}[!!!] ${NC}"
+    echo -e "${YE}[!!!] ${PU}This will install GPU drivers ${YE}[!!!] ${NC}"
+    echo -e "${YE}[!!!] ${PU}This will also install vulkan support ${YE}[!!!] ${NC}"
+    echo -e "${YE}[!!!] ${PU}You should check the wiki/manually install them (Nvidia especially, f* them) ${YE}[!!!] ${NC}"
     echo -en "${PU}Do you want to install ${YE}GPU drivers (will install multilib packages as well) (y/n): ${NC}"
     read -r gpudrv
     if [ "${gpudrv}" = "y" ] || [ "${gpudrv}" = "" ]; then
-        sudo -E pacman -S --noconfirm --color=always --needed mesa lib32-mesa
         PS3="${PU}Please select your ${YE}GPU:${NC}"
-        options=("AMD" "Nvidia" "Intel GPU")
+        options=("AMD" "Nvidia (Nouveau)" "Nvidia (Open)" "Intel GPU")
         select sel in "${options[@]}"
         do
             case $sel in
                 "AMD")
                     echo -e "${PU}Installing ${YE}AMD drivers...${NC}"
                     sleep 1
-                    sudo -E pacman -S --noconfirm --color=always --needed xf86-video-amdgpu vulkan-radeon lib32-vulkan-radeon libva-mesa-driver lib32-libva-mesa-driver mesa-vdpau lib32-mesa-vdpau
+                    sudo -E pacman -S --noconfirm --color=always --needed mesa lib32-mesa
+                    sudo -E pacman -S --noconfirm --color=always --needed xf86-video-amdgpu
+                    sudo -E pacman -S --noconfirm --color=always --needed vulkan-icd-loader lib32-vulkan-icd-loader
+                    sudo -E pacman -S --noconfirm --color=always --needed vulkan-radeon lib32-vulkan-radeon
                     echo -e "${WH}Done !${NC}"
                     break
                     ;;
-                "Nvidia")
-                    echo -e "${PU}Installing ${YE}Nvidia drivers...${NC}"
+                "Nvidia (Nouveau)")
+                    echo -e "${PU}Installing ${YE}Nvidia (Nouveau) drivers...${NC}"
                     sleep 1
-                    yay -S --color=always --needed nouveau-fw
-                    sudo -E pacman -S --noconfirm --color=always --needed xf86-video-nouveau vulkan-nouveau lib32-vulkan-nouveau libva-mesa-driver lib32-libva-mesa-driver mesa-vdpau lib32-mesa-vdpau
+                    yay -S --color=always --needed nouveau-fw # Needed for hardware video acceleration
+                    sudo -E pacman -S --noconfirm --color=always --needed mesa lib32-mesa
+                    sudo -E pacman -S --noconfirm --color=always --needed xf86-video-nouveau
+                    sudo -E pacman -S --noconfirm --color=always --needed vulkan-icd-loader lib32-vulkan-icd-loader
+                    sudo -E pacman -S --noconfirm --color=always --needed vulkan-nouveau lib32-vulkan-nouveau
+                    echo -e "${WH}Done !${NC}"
+                    break
+                    ;;
+                "Nvidia (Open)")
+                    echo -e "${PU}Installing ${YE}Nvidia (Open) drivers...${NC}"
+                    sleep 1
+                    sudo -E pacman -S --noconfirm --color=always --needed nvidia-open
+                    sudo -E pacman -S --noconfirm --color=always --needed vulkan-icd-loader lib32-vulkan-icd-loader
+                    sudo -E pacman -S --noconfirm --color=always --needed nvidia-utils lib32-nvidia-utils
                     echo -e "${WH}Done !${NC}"
                     break
                     ;;
                 "Intel GPU")
                     echo -e "${PU}Installing ${YE}Intel GPU drivers...${NC}"
                     sleep 1
-                    sudo -E pacman -S --noconfirm --color=always --needed xf86-video-intel vulkan-intel lib32-vulkan-intel
+                    sudo -E pacman -S --noconfirm --color=always --needed mesa lib32-mesa
+                    sudo -E pacman -S --noconfirm --color=always --needed xf86-video-intel
+                    sudo -E pacman -S --noconfirm --color=always --needed vulkan-icd-loader lib32-vulkan-icd-loader
+                    sudo -E pacman -S --noconfirm --color=always --needed vulkan-intel lib32-vulkan-intel
                     PS3="${PU}Please select your ${YE}Intel chip:${NC}"
                     chip_opts=("Broadwell (2014) and newer" "GMA 4500 (2008) up to Coffee Lake (2017)")
                     select chip_sel in "${chip_opts[@]}"
@@ -234,10 +252,10 @@ function start_install () {
     sleep 1
     install_sysconfigs
     install_aur_helper
-    install_gpu_drivers
-    install_cpu_ucode
     install_main_packages
     install_aur_packages
+    install_cpu_ucode
+    install_gpu_drivers
     install_optdeps
     install_ohmyzsh
     install_dotfiles
