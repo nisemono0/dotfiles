@@ -27,11 +27,11 @@ reset_wallpaper(){
 }
 
 set_wal_options(){
-    case $(printf "haishoku\\nwal\\ncolorz\\ncolorthief" | dmenu "${DMENU_ARGS[@]}" -p "Select backend") in
+    case $(printf "haishoku\\nwal\\ncolorz\\nfast_colorthief" | dmenu "${DMENU_ARGS[@]}" -p "Select backend") in
         "haishoku") backend="haishoku" ;;
         "wal") backend="wal" ;;
         "colorz") backend="colorz" ;;
-        "colorthief") backend="colorthief" ;;
+        "fast_colorthief") backend="fast_colorthief" ;;
         *) exit ;;
     esac
 
