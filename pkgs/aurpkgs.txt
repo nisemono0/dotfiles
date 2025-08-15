@@ -7,7 +7,9 @@ colorz
 downgrade
 dragon-drop
 i3lock-color
+python-fast-colorthief
 python-ffsubsync
 python-haishoku
+python-pywal16
 simple-mtpfs
 vesktop-bin
