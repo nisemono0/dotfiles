@@ -17,40 +17,40 @@ set $Alt Mod1
 
 ##---Vars---##
 # Programs
-set $browser --no-startup-id ~/.scripts/i3cmds/i3browser.sh
-set $guifm --no-startup-id ~/.scripts/i3cmds/i3guifm.sh
-set $ocr --no-startup-id ~/.scripts/i3cmds/i3ocr.sh
-set $wmfocus --no-startup-id ~/.scripts/i3cmds/i3wmfocus.sh
+set $browser --no-startup-id ~/.scripts/wmcmds/wm-browser.sh
+set $guifm --no-startup-id ~/.scripts/wmcmds/wm-guifm.sh
+set $ocr --no-startup-id ~/.scripts/wmcmds/wm-ocr.sh
+set $wmfocus --no-startup-id ~/.scripts/wmcmds/wm-wmfocus.sh
 
 # Terminal
-set $term --no-startup-id ~/.scripts/i3cmds/i3term.sh
-set $tuifm --no-startup-id ~/.scripts/i3cmds/i3tuifm.sh
-set $ncmpcpp --no-startup-id ~/.scripts/i3cmds/i3ncmpcpp.sh
-set $nmtui --no-startup-id ~/.scripts/i3cmds/i3nmtui.sh
-set $pulsemixer --no-startup-id ~/.scripts/i3cmds/i3pulsemixer.sh
-set $htop --no-startup-id ~/.scripts/i3cmds/i3htop.sh
-set $nvtop --no-startup-id ~/.scripts/i3cmds/i3nvtop.sh
+set $term --no-startup-id ~/.scripts/wmcmds/wm-term.sh
+set $tuifm --no-startup-id ~/.scripts/wmcmds/wm-tuifm.sh
+set $ncmpcpp --no-startup-id ~/.scripts/wmcmds/wm-ncmpcpp.sh
+set $nmtui --no-startup-id ~/.scripts/wmcmds/wm-nmtui.sh
+set $pulsemixer --no-startup-id ~/.scripts/wmcmds/wm-pulsemixer.sh
+set $htop --no-startup-id ~/.scripts/wmcmds/wm-htop.sh
+set $nvtop --no-startup-id ~/.scripts/wmcmds/wm-nvtop.sh
 
 # Scripts
-set $lockscreen --no-startup-id ~/.scripts/i3cmds/lock-screen.sh
-set $screenshot --no-startup-id ~/.scripts/i3cmds/screenshot.sh
-set $screencast --no-startup-id ~/.scripts/i3cmds/screencast.sh
-set $dmenubind --no-startup-id ~/.scripts/i3cmds/dmenu-bind.sh
-set $i3desktopdmenubind --no-startup-id ~/.scripts/i3cmds/i3desktop-dmenu-bind.sh
-set $mountmenu --no-startup-id ~/.scripts/i3cmds/mountmenu.sh
-set $umountmenu --no-startup-id ~/.scripts/i3cmds/umountmenu.sh
-set $sinkselect --no-startup-id ~/.scripts/i3cmds/sink-select.sh
-set $wall_change --no-startup-id ~/.scripts/i3cmds/wall-change/wall-change.sh
-set $wall_slideshow --no-startup-id ~/.scripts/i3cmds/wall-change/wall-slideshow.sh
-set $wall_web --no-startup-id ~/.scripts/i3cmds/wall-change/wall-web.sh
-set $end_session --no-startup-id ~/.scripts/i3cmds/end-session.sh
-set $kill_proc --no-startup-id ~/.scripts/i3cmds/kill-proc.sh
-set $wsutil --no-startup-id ~/.scripts/i3cmds/i3wsutil.sh
-set $mousespeed --no-startup-id ~/.scripts/i3cmds/mousespeed.sh
-set $togglecomp --no-startup-id ~/.scripts/i3cmds/toggle-comp.sh
-set $backlight --no-startup-id ~/.scripts/i3cmds/backlight.sh
-set $scratchutil --no-startup-id ~/.scripts/i3cmds/i3scratchutil.sh
-set $audioutil --no-startup-id ~/.scripts/i3cmds/audio-util.sh
+set $lockscreen --no-startup-id lock-screen
+set $screenshot --no-startup-id ~/.scripts/wmcmds/wm-screenshot.sh
+set $screencast --no-startup-id ~/.scripts/wmcmds/wm-screencast.sh
+set $dmenubind --no-startup-id ~/.scripts/wmcmds/wm-dmenu-bind.sh
+set $i3desktopdmenubind --no-startup-id ~/.scripts/wmcmds/wm-desktop-dmenu-bind.sh
+set $mountmenu --no-startup-id mountmenu
+set $umountmenu --no-startup-id umountmenu
+set $sinkselect --no-startup-id sink-select
+set $wall_change --no-startup-id ~/.scripts/wmcmds/wall-change/wall-change.sh
+set $wall_slideshow --no-startup-id ~/.scripts/wmcmds/wall-change/wall-slideshow.sh
+set $wall_web --no-startup-id ~/.scripts/wmcmds/wall-change/wall-web.sh
+set $end_session --no-startup-id ~/.scripts/wmcmds/wm-end-session.sh
+set $kill_proc --no-startup-id kill-proc
+set $wsutil --no-startup-id ~/.scripts/wmcmds/wm-wsutil.sh
+set $mousespeed --no-startup-id ~/.scripts/wmcmds/wm-mousespeed.sh
+set $togglecomp --no-startup-id ~/.scripts/wmcmds/wm-toggle-comp.sh
+set $backlight --no-startup-id ~/.scripts/wmcmds/wm-backlight.sh
+set $scratchutil --no-startup-id ~/.scripts/wmcmds/wm-scratchutil.sh
+set $audioutil --no-startup-id ~/.scripts/wmcmds/wm-audio-util.sh
 set $mpdvolume --no-startup-id ~/.scripts/mpd/mpdvolume.sh
 set $mpdsong --no-startup-id ~/.scripts/mpd/mpdsong.sh
 set $dunstutil --no-startup-id ~/.scripts/dunst/dunst-util.sh
