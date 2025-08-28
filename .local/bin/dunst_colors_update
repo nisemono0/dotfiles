@@ -33,11 +33,13 @@ declare -A theme_attr_dict=(
 
     ["global-highlight"]="\"$(xrdb_get 'color4' '#FFFFFF')\""
 
-    ["urgency_low-background"]="\"$(xrdb_get 'color1' '#5A524F')\""
+    ["urgency_low-background"]="\"$(xrdb_get 'color2' '#5A524F')\""
     ["urgency_low-foreground"]="\"$(xrdb_get 'color7' '#FFFFFF')\""
+    ["urgency_low-frame_color"]="\"$(xrdb_get 'color2' '#A6A294')\""
 
     ["urgency_normal-background"]="\"$(xrdb_get 'color1' '#5A524F')\""
     ["urgency_normal-foreground"]="\"$(xrdb_get 'color7' '#FFFFFF')\""
+    ["urgency_normal-frame_color"]="\"$(xrdb_get 'color1' '#A6A294')\""
 )
 
 # Attributes dictionary keys.
