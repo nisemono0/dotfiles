@@ -20,7 +20,7 @@
     progress_bar_min_width = 150
     progress_bar_max_width = 450
     progress_bar_frame_width = 2
-    highlight = "#8f525d"
+    highlight = "#898c99"
 
     ### Notifications ###
     indicate_hidden = yes
@@ -31,7 +31,7 @@
     horizontal_padding = 3
     text_icon_padding = 3
     frame_width = 3
-    frame_color = "#6c4853"
+    frame_color = "#242733"
     separator_color = auto
     sort = yes
     idle_threshold = 120
@@ -82,14 +82,16 @@
     per_monitor_dpi = true
 
 [urgency_low]
-    background = "#6c4853"
+    background = "#303444"
     foreground = "#c1c3c5"
+    frame_color = "#303444"
     timeout = 5
-    default_icon = dialog-information
+    default_icon = notification-symbolic
 
 [urgency_normal]
-    background = "#6c4853"
+    background = "#242733"
     foreground = "#c1c3c5"
+    frame_color = "242733"
     timeout = 5
     default_icon = notification-symbolic
 
