@@ -1032,6 +1032,16 @@ local function unbind_mouse()
     mp.remove_key_binding("_console_mbtn_right")
 end
 
+local function after_cur_matches_completion()
+    local token = line:sub(completion_pos)
+
+    for _, completion in pairs(completion_buffer) do
+        if completion == token:sub(1, #completion) then
+            return true
+        end
+    end
+end
+
 -- Run the current command or select the current item
 local function submit()
     if searching_history then
@@ -1050,7 +1060,8 @@ local function submit()
                         utils.format_json({matches[focused_match].index}))
         end
     else
-        if selected_completion_index == 0 and autoselect_completion then
+        if selected_completion_index == 0 and autoselect_completion
+           and not after_cur_matches_completion() then
             cycle_through_completions()
         end
 
@@ -1362,6 +1373,21 @@ local function paste(clip)
     handle_edit()
 end
 
+local function copy()
+    if not selectable_items then
+        mp.set_property("clipboard/text", line)
+        mp.msg.info("Input line copied")
+    elseif matches[1] then
+        mp.set_property("clipboard/text", matches[focused_match].text)
+
+        if terminal_output() then
+            mp.msg.info("Item copied")
+        else
+            mp.osd_message("Item copied")
+        end
+    end
+end
+
 local function text_input(info)
     if info.key_text and (info.event == "press" or info.event == "down"
                           or info.event == "repeat")
@@ -1490,6 +1516,7 @@ local function get_bindings()
         { "ctrl+k",      del_to_eol                             },
         { "ctrl+l",      clear_log_buffer                       },
         { "ctrl+u",      del_to_start                           },
+        { "ctrl+y",      copy,                                  },
         { "ctrl+v",      function() paste(true) end             },
         { "meta+v",      function() paste(true) end             },
         { "ctrl+bs",     del_word                               },
