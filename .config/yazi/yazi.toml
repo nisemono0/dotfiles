@@ -37,7 +37,8 @@ reveal = [
     { run = 'xdg-open "$(dirname "$1")"', desc = "Reveal (xdg-open)", for = "linux" }
 ]
 archive = [
-    { run = 'als "$@" | less', block = true, orphan = false, desc = "List archive content into less", for = "linux" }
+    { run = 'als "$@" | less', block = true, orphan = false, desc = "List archive content into less", for = "linux" },
+    { run = 'mpv "$@"', block = false, orphan = true, desc = "Open archive with mpv", for = "linux" }
 ]
 extract = [
     { run = 'ya pub extract --list "$@"', desc = "Extract here", for = "unix" }
