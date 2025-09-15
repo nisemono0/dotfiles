@@ -3,6 +3,7 @@ alacritty
 android-file-transfer
 arc-icon-theme
 archlinux-keyring
+aria2
 atool
 autoconf
 automake
