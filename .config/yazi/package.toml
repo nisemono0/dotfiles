@@ -37,5 +37,8 @@ use = "nisemono0/yazi-plugins:open-with-cmd"
 [[plugin.deps]]
 use = "nisemono0/bookmarks"
 
+[[plugin.deps]]
+use = "nisemono0/yazi-plugins:simple-mediainfo"
+
 [flavor]
 deps = []

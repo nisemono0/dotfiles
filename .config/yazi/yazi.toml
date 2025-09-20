@@ -90,6 +90,7 @@ prepend_preloaders = [
 ]
 prepend_previewers = [
     { mime = "application/zip", run = "mangathumb" },
+    # { mime = "audio/*", run = "simple-mediainfo" },
     { mime = "audio/*", run = "audio-preview" },
 ]
 fetchers = [

@@ -17,6 +17,9 @@ require("mangathumb")
 -- Open files with command
 require("open-with-cmd")
 
+-- Preview media files
+require("simple-mediainfo")
+
 
 
 -- Downloaded (w/o setup)
