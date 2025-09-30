@@ -1,4 +1,4 @@
-//!DESC scale antiringing
+//!DESC Scale antiringing
 //!HOOK POSTKERNEL
 //!BIND PREKERNEL
 //!BIND HOOKED
