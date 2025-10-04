@@ -1,0 +1,68 @@
+#!/bin/bash
+
+# Requires nsxiv
+# This script takes an image as an argument and opens
+# all images in that directory, starting nsxiv at the
+# given image
+
+
+if ! command -v nsxiv >/dev/null 2>&1; then
+    echo "nsxiv needs to be installed"
+    exit 1
+fi
+
+print_help() {
+    echo "Usage: $(basename $0) <image_file>"
+    exit 1
+}
+
+is_img_extension() {
+    grep -iE '\.(jpe?g|png|gif|svg|webp|tiff|heif|avif|ico|bmp)$'
+}
+
+list_images_sorted() {
+    find "$1" -maxdepth 1 -type f | is_img_extension | sort -V
+}
+
+get_image_count() {
+    wc -l <<< "$1"
+}
+
+get_image_pos() {
+    img_pos=1
+    while IFS= read -r line; do
+        if [ "$line" == "$1" ]; then
+            break
+        fi
+        ((img_pos++))
+    done <<< "$2"
+    echo "$img_pos"
+}
+
+open_images() {
+    dirpath="$1"
+    img_file="$2"
+
+    img_filelist=$(list_images_sorted "$dirpath")
+    img_filecount=$(get_image_count "$img_filelist")
+    img_filepos=$(get_image_pos "$img_file" "$img_filelist")
+
+    if [ "$img_filepos" -gt "$img_filecount" ]; then
+        echo "Image position number higher than total images number"
+        exit 1
+    fi
+
+    nsxiv -p -a -n "$img_filepos" -i <<< "$img_filelist"
+}
+
+[ -z "$1" ] && print_help
+[ ! -e "$1" ] && print_help
+
+sel_file=$(readlink -f "$1")
+if is_img_extension <<< "$sel_file" > /dev/null; then
+    dirpath="${sel_file%/*}"
+    open_images "$dirpath" "$sel_file"
+else
+    print_help
+fi
+
