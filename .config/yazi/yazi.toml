@@ -37,7 +37,7 @@ reveal = [
     { run = 'xdg-open "$(dirname "$1")"', desc = "Reveal (xdg-open)", for = "linux" }
 ]
 archive = [
-    { run = 'als "$@" | less',            block = true,          orphan = false, desc = "List archive content into less", for = "linux" },
+    { run = 'als "$1" | less',            block = true,          orphan = false, desc = "List archive content into less", for = "linux" },
     { run = 'ya pub extract --list "$@"', desc = "Extract here", for = "unix" },
     { run = 'mpv "$@"',                   block = false,         orphan = true,  desc = "Open archive with mpv",          for = "linux" }
 ]
@@ -46,11 +46,11 @@ play = [
     { run = 'mediainfo "$1" | less',   block = true,  orphan = false, desc = "mediainfo", for = "unix" },
 ]
 image = [
-    { run = 'nsxiv -p -a "$@"',                                                                                                            block = false, orphan = true,  desc = "nsxiv (selection)",   for = "linux" },
-    { run = '''find "." -maxdepth 1 -type f | grep -iE '\.(jpe?g|png|gif|svg|webp|tiff|heif|avif|ico|bmp)$' | sort -V | nsxiv -p -a -i''', block = false, orphan = true,  desc = "nsxiv (all, sorted)", for = "linux" },
-    { run = 'mpv "$@"',                                                                                                                    block = false, orphan = true,  desc = "mpv (selection)", for = "linux" },
-    { run = 'gimp "$@"',                                                                                                                   block = false, orphan = true,  desc = "GIMP",                for = "linux" },
-    { run = 'mediainfo "$1" | less',                                                                                                       block = true,  orphan = false, desc = "mediainfo",           for = "unix" },
+    { run = 'nsxiv -p -a "$@"',      block = false, orphan = true,  desc = "nsxiv (selection)", for = "linux" },
+    { run = 'nsxiv-open-all "$0"',   block = false, orphan = true,  desc = "nsxiv (all)",       for = "linux" },
+    { run = 'mpv "$@"',              block = false, orphan = true,  desc = "mpv (selection)",   for = "linux" },
+    { run = 'gimp "$@"',             block = false, orphan = true,  desc = "GIMP",              for = "linux" },
+    { run = 'mediainfo "$1" | less', block = true,  orphan = false, desc = "mediainfo",         for = "unix" },
 ]
 
 [open]
