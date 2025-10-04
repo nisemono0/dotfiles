@@ -11,7 +11,7 @@ file_extension="$(printf "%s" "${file_extension}" | tr '[:upper:]' '[:lower:]')"
 notify-send -i "$DUNST_ICON" -h string:x-dunst-stack-tag:extractview "Extracting..." "$filename"
 
 view_extracted() {
-    find "$tmpdir" -type f | sort -V | nsxiv -i -p
+    find "$tmpdir" -type f | sort -V | nsxiv -i -p -a
 }
 
 extract_progress_bar() {
