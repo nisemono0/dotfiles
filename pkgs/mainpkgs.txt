@@ -88,6 +88,7 @@ man-pages
 mangohud
 materia-gtk-theme
 mediainfo
+mission-center
 mkvtoolnix-cli
 mkvtoolnix-gui
 mpc
