@@ -27,7 +27,7 @@
         {
             "key": "CPU     ",
             "type": "cpu",
-            "format": "{name}"
+            "format": "{name} ({cores-online})"
         },
         {
             "key": "GPU     ",
