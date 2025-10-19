@@ -74,6 +74,19 @@ set ttimeout
 set ttimeoutlen=100
 set updatetime=100
 
+# Autocompletion
+# set autocomplete
+# set complete=.,w,b,u,o
+# set completeopt=menu,menuone,noselect,fuzzy,popup
+set pumheight=8
+# Command autocompletion
+autocmd CmdlineChanged [:\/\?] call wildtrigger()
+set wildmode=noselect:lastused,full
+set wildoptions=pum
+# Keep normal command history navigation
+cnoremap <expr> <Up> wildmenumode() ? '<C-E><Up>' : '<Up>'
+cnoremap <expr> <Down> wildmenumode() ? '<C-E><Down>' : '<Down>'
+
 # Misc
 set nocompatible
 set nolangremap
@@ -304,6 +317,7 @@ var lsp_opts = {
     diagVirtualTextWrap: 'default',
     noNewlineInCompletion: false,
     omniComplete: null,
+    omniCompleteAllowBare: false,
     outlineOnRight: false,
     outlineWinSize: 20,
     popupBorder: true,
@@ -330,7 +344,7 @@ var lsp_opts = {
     customCompletionKinds: false,
     completionKinds: {},
     filterCompletionDuplicates: false,
-    condensedCompletionMenu: false
+    condensedCompletionMenu: false,
 }
 autocmd User LspSetup call LspOptionsSet(lsp_opts)
 
@@ -404,6 +418,8 @@ nnoremap <leader>pt :LspPeekTypeDef<CR>
 nnoremap <leader>` :LspSwitchSourceHeader<CR>
 
 nnoremap <leader>/ :LspSymbolSearch<CR>
+
+nnoremap <leader>ks :LspShowSignature<CR>
 
 nnoremap <leader>wa :LspWorkspaceAddFolder<Space>
 nnoremap <leader>wl :LspWorkspaceListFolders<CR>
