@@ -38,6 +38,8 @@ print_help_and_exit() {
             echo "                           Options: {small, medium, large}"
             echo "  -o, --opacity   <num>    Set window opacity (default: 0.8)"
             echo "                           In range [0.0, 1.0]"
+            echo "  -a, --area               Select area where to display inputs;"
+            echo "                           Equivalent to: -s -p fixed -o 0 -f small"
             ;;
     esac
     exit -1
@@ -81,6 +83,13 @@ while [ "$#" -gt 0 ]; do
             ;;
         "-s" | "--slop")
             SLOP="true"
+            shift 1
+            ;;
+        "-a" | "--area")
+            SLOP="true"
+            POSITION="fixed"
+            FONT_SIZE="small"
+            OPACITY="0"
             shift 1
             ;;
         -*|--*) print_help_and_exit ;;
