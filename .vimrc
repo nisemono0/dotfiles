@@ -299,7 +299,7 @@ var lsp_opts = {
     autoHighlight: false,
     autoHighlightDiags: true,
     autoPopulateDiags: false,
-    completionMatcher: 'case',
+    completionMatcher: 'fuzzy',
     completionMatcherValue: 1,
     diagSignErrorText: 'E>',
     diagSignHintText: 'H>',
