@@ -17,7 +17,6 @@ plug#begin('~/.config/vim/plugged')
     Plug 'mbbill/undotree'
     Plug 'junegunn/fzf.vim'
     Plug 'tpope/vim-fugitive'
-    Plug 'girishji/vimcomplete'
     Plug 'yegappan/lsp'
     Plug 'hrsh7th/vim-vsnip'
     Plug 'hrsh7th/vim-vsnip-integ'
@@ -58,6 +57,7 @@ set wildmenu
 set termwinsize=15x0
 set list
 set listchars=tab:→\ ,nbsp:␣,trail:•,extends:❯,precedes:❮
+set pumheight=8
 
 # Scroll
 set scrolloff=4
@@ -75,10 +75,12 @@ set ttimeoutlen=100
 set updatetime=100
 
 # Autocompletion
-# set autocomplete
-# set complete=.,w,b,u,o
-# set completeopt=menu,menuone,noselect,fuzzy,popup
-set pumheight=8
+set autocomplete
+set autocompletetimeout=100
+set autocompletedelay=100
+set complete=o,.,Fvsnip#completefunc,w,b,u
+set completeopt=menu,preview,popup,fuzzy,nosort,noselect
+
 # Command autocompletion
 autocmd CmdlineChanged [:\/\?] call wildtrigger()
 set wildmode=noselect:lastused,full
@@ -166,11 +168,9 @@ inoremap <C-@> <C-n>
 inoremap <C-Space> <C-n>
 inoremap <expr> <Up> pumvisible() ? '<C-p>' : '<Up>'
 inoremap <expr> <Down> pumvisible() ? '<C-n>' : '<Down>'
-inoremap <expr> <Tab> pumvisible() ? '<C-n>' : (vsnip#jumpable(1) ? '<Plug>(vsnip-jump-next)' : '<Tab>')
-inoremap <expr> <S-Tab> pumvisible() ? '<C-p>' : (vsnip#jumpable(-1) ? '<Plug>(vsnip-jump-prev)' : '<S-Tab>')
-inoremap <expr> <Enter> pumvisible() ? (complete_info().selected == -1 ? '<C-e><CR>' : '<Plug>(vimcomplete-skip)<C-y>') : '<CR>'
-inoremap <expr> <Esc> pumvisible() ? '<Plug>(vimcomplete-skip)<C-y>' : '<Esc>'
+inoremap <expr> <Tab> vsnip#jumpable(1) ? '<Plug>(vsnip-jump-next)' : (pumvisible() ? '<C-n>' : '<Tab>')
 snoremap <expr> <Tab> vsnip#jumpable(1) ? '<Plug>(vsnip-jump-next)' : '<Tab>'
+inoremap <expr> <S-Tab> vsnip#jumpable(-1) ? '<Plug>(vsnip-jump-prev)' : (pumvisible() ? '<C-p>' : '<S-Tab>')
 snoremap <expr> <S-Tab> vsnip#jumpable(-1) ? '<Plug>(vsnip-jump-prev)' : '<S-Tab>'
 
 # Buffer keybinds
@@ -238,8 +238,8 @@ nnoremap <silent> <C-Left> :wincmd h<CR>
 nnoremap <silent> <C-Right> :wincmd l<CR>
 
 # Move cursor in insert mode
-inoremap <C-k> <Up>
-inoremap <C-j> <Down>
+inoremap <expr> <C-k> pumvisible() ? '<C-p>' : '<Up>'
+inoremap <expr> <C-j> pumvisible() ? '<C-n>' : '<Down>'
 inoremap <C-h> <Left>
 inoremap <C-l> <Right>
 
@@ -258,45 +258,11 @@ nnoremap <leader>tma :terminal make all<CR>
 nnoremap <leader>tp :terminal python %<CR>
 nnoremap <leader>ts :terminal ./%<CR>
 
-# vimcomplete
-var vimcomplete_opts = {
-    completor: {
-        shuffleEqualPriority: true,
-        postfixClobber: true,
-        postfixHighlight: true,
-        kindDisplayType: "text",
-        noNewlineInCompletion: true,
-        noNewlineInCompletionEver: true
-    },
-    buffer: {
-        enable: true,
-        urlComplete: true,
-        envComplete: true,
-        priority: 10
-    },
-    lsp: {
-        enable: true,
-        keywordOnly: false,
-        priority: 20
-    },
-    vsnip: {
-        enable: true,
-        priority: 15
-    },
-    vimscript: {
-        enable: true,
-        priority: 11
-    }
-}
-autocmd VimEnter * g:VimCompleteOptionsSet(vimcomplete_opts)
-nnoremap <leader>ae :VimCompleteEnable<CR>
-nnoremap <leader>ad :VimCompleteDisable<CR>
-
 # LSP Options
 var lsp_opts = {
     aleSupport: false,
-    autoComplete: true,
-    autoHighlight: false,
+    autoComplete: false,
+    autoHighlight: true,
     autoHighlightDiags: true,
     autoPopulateDiags: false,
     completionMatcher: 'fuzzy',
@@ -316,7 +282,7 @@ var lsp_opts = {
     diagVirtualTextAlign: 'above',
     diagVirtualTextWrap: 'default',
     noNewlineInCompletion: false,
-    omniComplete: null,
+    omniComplete: true,
     omniCompleteAllowBare: false,
     outlineOnRight: false,
     outlineWinSize: 20,
@@ -326,7 +292,7 @@ var lsp_opts = {
     popupBorderSignatureHelp: false,
     popupHighlightSignatureHelp: 'Pmenu',
     popupHighlight: 'Normal',
-    semanticHighlight: false,
+    semanticHighlight: true,
     showDiagInBalloon: true,
     showDiagInPopup: true,
     showDiagOnStatusLine: true,
