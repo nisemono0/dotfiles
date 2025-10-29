@@ -23,5 +23,5 @@ mkfifo "$FIFO_UEBERZUG" >/dev/null
 trap cleanup EXIT 2>/dev/null
 tail --follow "$FIFO_UEBERZUG" | ueberzug layer --no-cache --silent --parser json >/dev/null 2>&1 &
 
-ncmpcpp
+ncmpcpp --config='~/.config/ncmpcpp/config.coverart' --bindings='~/.config/ncmpcpp/bindings.coverart'
 cleanup

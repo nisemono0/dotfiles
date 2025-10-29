@@ -33,7 +33,7 @@ playlist_disable_highlight_delay = "1"
 message_delay_time = "1"
 
 ##### Display #####
-song_columns_list_format = "(30)[blue]{a|A|f}(64)[magenta]{t|f:Title} (5)[green]{l}"
+song_columns_list_format = "(27)[blue]{a|A|f}(37)[magenta]{t|f:Title} (5)[green]{l}"
 alternative_header_first_line_format = "$b$1$aqqu$/a$9 $6{%t}|{%f}$9 $1$atqq$/a$9$/b"
 alternative_header_second_line_format = "$5{%b}|{%a}|{%A}|{???}$9"
 song_status_format = "{$(blue)%a$(end) $(white)-$(end) $(magenta)%t$(end)}|{$(blue)%A$(end) $(white)-$(end) $(magenta)%t$(end)}|{$(magenta)%f$(end)}"
@@ -76,4 +76,4 @@ allow_for_physical_item_deletion = "no"
 discard_colors_if_item_is_selected = "yes"
 
 ##### Album art #####
-# execute_on_song_change="~/.scripts/ncmpcpp/ncmpcpp_cover_art.sh --song-change"
+execute_on_song_change="~/.scripts/ncmpcpp/ncmpcpp_cover_art.sh --song-change"
