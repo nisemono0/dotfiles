@@ -90,6 +90,8 @@ alias aurcheckupdates="yay -Qum"
 alias grepi="grep --color=auto -i"
 # less -i alias
 alias lessi="less -i"
+# normal yazi alias
+alias yz="yazi"
 # cd into dir on ranger exit
 alias r=". ranger"
 
