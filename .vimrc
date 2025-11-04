@@ -294,6 +294,7 @@ var lsp_opts = {
     popupHighlightSignatureHelp: 'Pmenu',
     popupHighlight: 'Normal',
     semanticHighlight: true,
+    semanticHighlightDelay: 500,
     showDiagInBalloon: true,
     showDiagInPopup: true,
     showDiagOnStatusLine: true,
@@ -321,7 +322,7 @@ var lsp_servers = [
         name: 'clang',
         filetype: ['c', 'cpp'],
         path: '/usr/bin/clangd',
-        args: ['--background-index', '-j=2', '--clang-tidy', '--completion-style=detailed', '-header-insertion=never']
+        args: ['--background-index', '-j=4', '--clang-tidy', '--completion-style=detailed', '-header-insertion=never']
     },
     {
         name: 'ccls',
