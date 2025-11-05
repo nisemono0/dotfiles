@@ -46,7 +46,8 @@ hi  LineNrAbove     ctermfg=240          ctermbg=NONE cterm=NONE
 hi  LineNrBelow     ctermfg=240          ctermbg=NONE cterm=NONE
 hi  NonText         ctermfg=240          ctermbg=NONE cterm=NONE
 hi  EndOfBuffer     ctermfg=240          ctermbg=NONE cterm=NONE
-hi  SpecialKey      ctermfg=240          ctermbg=NONE cterm=NONE
+" hi  SpecialKey      ctermfg=240          ctermbg=NONE cterm=NONE
+hi SpecialKey       ctermfg=59           ctermbg=237  cterm=NONE
 hi  FoldColumn      ctermfg=240          ctermbg=NONE cterm=NONE
 "hi  Visual          ctermfg=109          ctermbg=234  cterm=reverse
 "hi  VisualNOS       ctermfg=234          ctermbg=66   cterm=NONE
@@ -58,8 +59,10 @@ hi  PmenuKind       ctermfg=66           ctermbg=237  cterm=NONE
 hi  PmenuKindSel    ctermfg=66           ctermbg=240  cterm=NONE
 hi  PmenuExtra      ctermfg=243          ctermbg=237  cterm=NONE
 hi  PmenuExtraSel   ctermfg=247          ctermbg=240  cterm=NONE
-hi  PmenuMatch      ctermfg=215          ctermbg=237  cterm=NONE
-hi  PmenuMatchSel   ctermfg=215          ctermbg=240  cterm=NONE
+" hi  PmenuMatch      ctermfg=215          ctermbg=237  cterm=NONE
+" hi  PmenuMatchSel   ctermfg=215          ctermbg=240  cterm=NONE
+hi  PmenuMatch      ctermfg=NONE         ctermbg=NONE  cterm=bold,underline
+hi  PmenuMatchSel   ctermfg=NONE         ctermbg=NONE  cterm=bold,underline
 hi  SignColumn      ctermfg=NONE         ctermbg=NONE cterm=NONE
 hi  Error           ctermfg=131          ctermbg=234  cterm=reverse
 hi  ErrorMsg        ctermfg=131          ctermbg=234  cterm=reverse
@@ -67,7 +70,7 @@ hi  ModeMsg         ctermfg=NONE         ctermbg=NONE cterm=bold
 hi  MoreMsg         ctermfg=71           ctermbg=NONE cterm=NONE
 hi  Question        ctermfg=180          ctermbg=NONE cterm=NONE
 hi  WarningMsg      ctermfg=168          ctermbg=NONE cterm=NONE
-hi  Todo            ctermfg=253          ctermbg=NONE cterm=bold
+hi  Todo            ctermfg=253          ctermbg=NONE cterm=bold,reverse
 hi  MatchParen      ctermfg=199          ctermbg=NONE cterm=bold
 "hi  Search          ctermfg=74           ctermbg=234  cterm=reverse
 "hi  IncSearch       ctermfg=215          ctermbg=234  cterm=reverse
@@ -98,10 +101,14 @@ hi  Directory       ctermfg=109          ctermbg=NONE cterm=bold
 hi  Conceal         ctermfg=240          ctermbg=NONE cterm=NONE
 hi  Ignore          ctermfg=NONE         ctermbg=NONE cterm=NONE
 hi  Debug           ctermfg=66           ctermbg=NONE cterm=NONE
-hi  DiffAdd         ctermfg=71           ctermbg=NONE cterm=reverse
-hi  DiffChange      ctermfg=67           ctermbg=NONE cterm=reverse
-hi  DiffText        ctermfg=139          ctermbg=NONE cterm=reverse
-hi  DiffDelete      ctermfg=131          ctermbg=NONE cterm=reverse
+" hi  DiffAdd         ctermfg=71           ctermbg=NONE cterm=reverse
+hi  DiffAdd         ctermfg=108           ctermbg=236 cterm=NONE,reverse
+" hi  DiffChange      ctermfg=67           ctermbg=NONE cterm=reverse
+hi  DiffChange      ctermfg=NONE           ctermbg=237 cterm=NONE
+" hi  DiffText        ctermfg=139          ctermbg=NONE cterm=reverse
+hi  DiffText        ctermfg=137          ctermbg=236 cterm=NONE,reverse
+" hi  DiffDelete      ctermfg=131          ctermbg=NONE cterm=reverse
+hi  DiffDelete      ctermfg=138          ctermbg=236 cterm=NONE,reverse
 hi  Added           ctermfg=77           ctermbg=NONE cterm=NONE
 hi  Changed         ctermfg=215          ctermbg=NONE cterm=NONE
 hi  Removed         ctermfg=167          ctermbg=NONE cterm=NONE

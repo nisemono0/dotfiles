@@ -24,11 +24,13 @@ hi    LineNr           ctermfg=10               ctermbg=NONE cterm=NONE
 hi    FoldColumn       ctermfg=242              ctermbg=234  cterm=NONE
 hi    Folded           ctermfg=242              ctermbg=234  cterm=NONE
 hi    MatchParen       ctermfg=229              ctermbg=234  cterm=NONE
-hi    SignColumn       ctermfg=242              ctermbg=234  cterm=NONE
+hi    SignColumn       ctermfg=242              ctermbg=NONE  cterm=NONE
 hi    Pmenu            ctermfg=250              ctermbg=238  cterm=NONE
 hi    PmenuSbar        ctermfg=NONE             ctermbg=240  cterm=NONE
 hi    PmenuSel         ctermfg=249              ctermbg=236  cterm=NONE,reverse
 hi    PmenuThumb       ctermfg=66               ctermbg=66   cterm=NONE
+hi    PmenuMatch       ctermfg=NONE             ctermbg=NONE cterm=bold,underline
+hi    PmenuMatchSel    ctermfg=NONE             ctermbg=NONE cterm=bold,underline
 hi    ErrorMsg         ctermfg=131              ctermbg=235  cterm=reverse
 hi    ModeMsg          ctermfg=NONE             ctermbg=NONE cterm=NONE
 hi    MoreMsg          ctermfg=66               ctermbg=NONE cterm=NONE
@@ -49,10 +51,14 @@ hi    StatusLineTermNC ctermfg=101              ctermbg=238  cterm=NONE
 "hi    VisualNOS        ctermfg=NONE             ctermbg=NONE cterm=underline
 hi    VertSplit        ctermfg=238              ctermbg=238  cterm=NONE
 hi    WildMenu         ctermfg=235              ctermbg=110  cterm=NONE
-hi    DiffAdd          ctermfg=111              ctermbg=236  cterm=reverse
-hi    DiffChange       ctermfg=188              ctermbg=236  cterm=reverse
-hi    DiffDelete       ctermfg=222              ctermbg=236  cterm=reverse
-hi    DiffText         ctermfg=145              ctermbg=236  cterm=reverse
+" hi    DiffAdd          ctermfg=111              ctermbg=236  cterm=reverse
+hi    DiffAdd          ctermfg=108              ctermbg=236  cterm=NONE,reverse
+" hi    DiffChange       ctermfg=188              ctermbg=236  cterm=reverse
+hi    DiffChange       ctermfg=NONE              ctermbg=237  cterm=NONE
+" hi    DiffDelete       ctermfg=222              ctermbg=236  cterm=reverse
+hi    DiffDelete       ctermfg=138              ctermbg=236  cterm=NONE,reverse
+" hi    DiffText         ctermfg=145              ctermbg=236  cterm=reverse
+hi    DiffText         ctermfg=137              ctermbg=236  cterm=NONE,reverse
 "hi    IncSearch        ctermfg=235              ctermbg=131  cterm=NONE
 "hi    Search           ctermfg=235              ctermbg=229  cterm=NONE
 hi    Directory        ctermfg=73               ctermbg=NONE cterm=NONE
@@ -74,7 +80,7 @@ hi    PreProc          ctermfg=66               ctermbg=NONE cterm=NONE
 hi    Special          ctermfg=65               ctermbg=NONE cterm=NONE
 hi    Statement        ctermfg=110              ctermbg=NONE cterm=NONE
 hi    String           ctermfg=108              ctermbg=NONE cterm=NONE
-hi    Todo             ctermfg=NONE             ctermbg=NONE cterm=reverse
+hi    Todo             ctermfg=NONE             ctermbg=NONE cterm=bold,reverse
 hi    Type             ctermfg=103              ctermbg=NONE cterm=NONE
 hi    Underlined       ctermfg=66               ctermbg=NONE cterm=underline
 hi    Function         ctermfg=229              ctermbg=NONE cterm=NONE

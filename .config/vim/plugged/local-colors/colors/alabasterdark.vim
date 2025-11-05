@@ -78,13 +78,14 @@ exe "hi! MatchParen"  "ctermfg=".s:blue  "ctermbg=".s:none  "cterm=".s:none
 " exe "hi! VisualNOS"   "ctermfg=".s:cyan  "ctermbg=".s:none  "cterm=".s:none
 exe "hi! NonText"     "ctermfg=".s:none  "ctermbg=".s:none  "cterm=".s:none
 
-exe "hi! Todo"        "ctermfg=".s:yellow  "ctermbg=".s:none   "cterm=".s:none
+exe "hi! Todo"        "ctermfg=".s:yellow  "ctermbg=".s:none   "cterm=bold,reverse"
 exe "hi! Underlined"  "ctermfg=".s:none    "ctermbg=".s:none   "cterm=".s:none
 exe "hi! Error"       "ctermfg=".s:red     "ctermbg=".s:black  "cterm=".s:none
 exe "hi! ErrorMsg"    "ctermfg=".s:black   "ctermbg=".s:red    "cterm=".s:none
 exe "hi! WarningMsg"  "ctermfg=".s:yellow  "ctermbg=".s:black  "cterm=".s:none
 exe "hi! Ignore"      "ctermfg=".s:none    "ctermbg=".s:none   "cterm=".s:none
-exe "hi! SpecialKey"  "ctermfg=".s:none    "ctermbg=".s:none   "cterm=".s:none
+" exe "hi! SpecialKey"  "ctermfg=".s:none    "ctermbg=".s:none   "cterm=".s:none
+exe "hi! SpecialKey"  "ctermfg=59"         "ctermbg=237"       "cterm=".s:none
 
 " ------------------
 " - Variable types -
@@ -139,32 +140,36 @@ exe "hi! Typedef"         "ctermfg=".s:none  "ctermbg=".s:none  "cterm=".s:none
 " - Diff -
 " --------
 " exe "hi! DiffAdd"         "ctermfg=".s:none  "ctermbg=".s:none  "cterm=".s:none
-" exe "hi! DiffAdd"         "ctermfg=108"      "ctermbg=236"      "cterm=none,reverse"
-exe "hi! DiffAdd"         "ctermfg=255"      "ctermbg=64"      "cterm=bold"
+exe "hi! DiffAdd"         "ctermfg=108"      "ctermbg=236"      "cterm=none,reverse"
+" exe "hi! DiffAdd"         "ctermfg=255"      "ctermbg=64"      "cterm=bold"
 " exe "hi! DiffChange"      "ctermfg=".s:none  "ctermbg=".s:none  "cterm=".s:none
-" exe "hi! DiffChange"      "ctermfg=".s:none  "ctermbg=237"      "cterm=".s:none
-exe "hi! DiffChange"      "ctermfg=137"  "ctermbg=236"      "cterm=".s:none
+exe "hi! DiffChange"      "ctermfg=".s:none  "ctermbg=237"      "cterm=".s:none
+" exe "hi! DiffChange"      "ctermfg=137"  "ctermbg=236"      "cterm=".s:none
 " exe "hi! DiffDelete"      "ctermfg=".s:none  "ctermbg=".s:none  "cterm=".s:none
-" exe "hi! DiffDelete"      "ctermfg=138"      "ctermbg=236"      "cterm=NONE,reverse"
-exe "hi! DiffDelete"      "ctermfg=236"      "ctermbg=167"      "cterm=NONE"
+exe "hi! DiffDelete"      "ctermfg=138"      "ctermbg=236"      "cterm=NONE,reverse"
+" exe "hi! DiffDelete"      "ctermfg=236"      "ctermbg=167"      "cterm=NONE"
 " exe "hi! DiffText"        "ctermfg=".s:none  "ctermbg=".s:none  "cterm=".s:none
 exe "hi! DiffText"        "ctermfg=137"      "ctermbg=236"      "cterm=NONE,reverse"
 
 " -------------------
 " - Completion menu -
 " -------------------
-exe "hi! Pmenu"           "ctermfg=".s:none  "ctermbg=".s:none  "cterm=".s:none
-exe "hi! PmenuSel"        "ctermfg=".s:none  "ctermbg=".s:none  "cterm=".s:none
-exe "hi! PmenuSbar"       "ctermfg=".s:none  "ctermbg=".s:none  "cterm=".s:none
+exe "hi! Pmenu"           "ctermfg=".s:none  "ctermbg=".s:green "cterm=".s:none
+exe "hi! PmenuSel"        "ctermfg=".s:none  "ctermbg=".s:blue  "cterm=".s:none
+exe "hi! PmenuSbar"       "ctermfg=".s:black "ctermbg=".s:white "cterm=".s:none
+exe "hi! PmenuKind"       "ctermfg=".s:cyan  "ctermbg=".s:green "cterm=".s:none
+exe "hi! PmenuKindSel"    "ctermfg=".s:cyan  "ctermbg=".s:blue  "cterm=".s:none
 exe "hi! PmenuThumb"      "ctermfg=".s:none  "ctermbg=".s:none  "cterm=".s:none
+exe "hi! PmenuMatch"      "ctermfg=".s:none  "ctermbg=".s:none  "cterm=bold,underline"
+exe "hi! PmenuMatchSel"   "ctermfg=".s:none  "ctermbg=".s:none  "cterm=bold,underline"
 
 " ------------
 " - Spelling -
 " ------------
-exe "hi! SpellBad"        "ctermfg=".s:none  "ctermbg=".s:none  "cterm=".s:none
-exe "hi! SpellCap"        "ctermfg=".s:none  "ctermbg=".s:none  "cterm=".s:none
-exe "hi! SpellLocal"      "ctermfg=".s:none  "ctermbg=".s:none  "cterm=".s:none
-exe "hi! SpellRare"       "ctermfg=".s:none  "ctermbg=".s:none  "cterm=".s:none
+exe "hi! SpellBad"        "ctermfg=".s:red  "ctermbg=".s:none  "cterm=underline,reverse"
+exe "hi! SpellCap"        "ctermfg=".s:red  "ctermbg=".s:none  "cterm=underline,reverse"
+exe "hi! SpellLocal"      "ctermfg=".s:red  "ctermbg=".s:none  "cterm=underline,reverse"
+exe "hi! SpellRare"       "ctermfg=".s:red  "ctermbg=".s:none  "cterm=underline,reverse"
 
 exe "hi! jsVariableDef"   "ctermfg=".s:blue     "ctermbg=".s:none  "cterm=".s:none
 exe "hi! clojureKeyword"  "ctermfg=".s:magenta  "ctermbg=".s:none  "cterm=".s:none
