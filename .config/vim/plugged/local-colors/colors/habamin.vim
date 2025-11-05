@@ -52,8 +52,10 @@ hi  FoldColumn      ctermfg=240          ctermbg=NONE cterm=NONE
 "hi  Visual          ctermfg=109          ctermbg=234  cterm=reverse
 "hi  VisualNOS       ctermfg=234          ctermbg=66   cterm=NONE
 hi  Pmenu           ctermfg=NONE         ctermbg=237  cterm=NONE
-hi  PmenuThumb      ctermfg=NONE         ctermbg=243  cterm=NONE
-hi  PmenuSbar       ctermfg=NONE         ctermbg=NONE cterm=NONE
+" hi  PmenuThumb      ctermfg=NONE         ctermbg=243  cterm=NONE
+hi  PmenuThumb      ctermfg=249          ctermbg=249  cterm=NONE
+" hi  PmenuSbar       ctermfg=NONE         ctermbg=NONE cterm=NONE
+hi  PmenuSbar       ctermfg=240          ctermbg=240  cterm=NONE
 hi  PmenuSel        ctermfg=NONE         ctermbg=240  cterm=NONE
 hi  PmenuKind       ctermfg=66           ctermbg=237  cterm=NONE
 hi  PmenuKindSel    ctermfg=66           ctermbg=240  cterm=NONE

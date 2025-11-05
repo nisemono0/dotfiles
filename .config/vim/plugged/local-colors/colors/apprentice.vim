@@ -27,9 +27,11 @@ hi    Folded           ctermfg=242              ctermbg=234  cterm=NONE
 hi    MatchParen       ctermfg=252              ctermbg=240  cterm=bold
 hi    SignColumn       ctermfg=242              ctermbg=NONE cterm=NONE
 hi    Pmenu            ctermfg=250              ctermbg=238  cterm=NONE
-hi    PmenuSbar        ctermfg=NONE             ctermbg=240  cterm=NONE
+" hi    PmenuSbar        ctermfg=NONE             ctermbg=240  cterm=NONE
+hi    PmenuSbar        ctermfg=240             ctermbg=240  cterm=NONE
 hi    PmenuSel         ctermfg=249              ctermbg=236  cterm=NONE,reverse
-hi    PmenuThumb       ctermfg=66               ctermbg=66   cterm=NONE
+" hi    PmenuThumb       ctermfg=66               ctermbg=66   cterm=NONE
+hi    PmenuThumb       ctermfg=249               ctermbg=249   cterm=NONE
 hi    PmenuMatch       ctermfg=NONE             ctermbg=NONE cterm=bold,underline
 hi    PmenuMatchSel    ctermfg=NONE             ctermbg=NONE cterm=bold,underline
 hi    ErrorMsg         ctermfg=131              ctermbg=235  cterm=reverse

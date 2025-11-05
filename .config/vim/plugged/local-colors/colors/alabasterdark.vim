@@ -155,12 +155,17 @@ exe "hi! DiffText"        "ctermfg=137"      "ctermbg=236"      "cterm=NONE,reve
 " -------------------
 " - Completion menu -
 " -------------------
-exe "hi! Pmenu"           "ctermfg=".s:none  "ctermbg=".s:green "cterm=".s:none
-exe "hi! PmenuSel"        "ctermfg=".s:none  "ctermbg=".s:blue  "cterm=".s:none
-exe "hi! PmenuSbar"       "ctermfg=".s:black "ctermbg=".s:white "cterm=".s:none
-exe "hi! PmenuKind"       "ctermfg=".s:cyan  "ctermbg=".s:green "cterm=".s:none
-exe "hi! PmenuKindSel"    "ctermfg=".s:cyan  "ctermbg=".s:blue  "cterm=".s:none
-exe "hi! PmenuThumb"      "ctermfg=".s:none  "ctermbg=".s:none  "cterm=".s:none
+" exe "hi! Pmenu"           "ctermfg=".s:none  "ctermbg=".s:green "cterm=".s:none
+exe "hi! Pmenu"           "ctermfg=".s:none  "ctermbg=237" "cterm=".s:none
+exe "hi! PmenuSel"        "ctermfg=".s:none  "ctermbg=".s:red  "cterm=".s:none
+" exe "hi! PmenuSbar"       "ctermfg=".s:black "ctermbg=".s:white "cterm=".s:none
+exe "hi! PmenuSbar"       "ctermfg=240"      "ctermbg=240"      "cterm=".s:none
+" exe "hi! PmenuKind"       "ctermfg=".s:cyan  "ctermbg=".s:green "cterm=".s:none
+exe "hi! PmenuKind"       "ctermfg=".s:cyan  "ctermbg=237" "cterm=".s:none
+" exe "hi! PmenuKindSel"    "ctermfg=".s:cyan  "ctermbg=".s:blue  "cterm=".s:none
+exe "hi! PmenuKindSel"    "ctermfg=".s:cyan  "ctermbg=".s:red  "cterm=".s:none
+" exe "hi! PmenuThumb"      "ctermfg=".s:none  "ctermbg=".s:none  "cterm=".s:none
+exe "hi! PmenuThumb"      "ctermfg=249"      "ctermbg=249"      "cterm=".s:none
 exe "hi! PmenuMatch"      "ctermfg=".s:none  "ctermbg=".s:none  "cterm=bold,underline"
 exe "hi! PmenuMatchSel"   "ctermfg=".s:none  "ctermbg=".s:none  "cterm=bold,underline"
 
