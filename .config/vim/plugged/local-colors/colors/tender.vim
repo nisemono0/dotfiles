@@ -21,9 +21,9 @@ hi CursorColumn                 guifg=NONE                 ctermfg=NONE guibg=#3
 hi CursorLine                   guifg=NONE                 ctermfg=NONE guibg=#323232 ctermbg=236  gui=NONE      cterm=NONE
 hi CursorLineNr                 guifg=#73cef4              ctermfg=81   guibg=NONE    ctermbg=NONE gui=NONE      cterm=NONE
 hi Directory                    guifg=#b3deef              ctermfg=153  guibg=NONE    ctermbg=NONE gui=NONE      cterm=NONE
-hi DiffAdd                      guifg=NONE                 ctermfg=NONE guibg=#464632 ctermbg=238  gui=NONE      cterm=NONE
-hi DiffChange                   guifg=NONE                 ctermfg=NONE guibg=#335261 ctermbg=239  gui=NONE      cterm=NONE
-hi DiffDelete                   guifg=#f43753              ctermfg=203  guibg=#79313c ctermbg=237  gui=NONE      cterm=NONE
+hi DiffAdd                      guifg=NONE                 ctermfg=255  guibg=#464632 ctermbg=64   gui=NONE      cterm=bold
+hi DiffChange                   guifg=NONE                 ctermfg=137  guibg=#335261 ctermbg=236  gui=NONE      cterm=NONE
+hi DiffDelete                   guifg=#f43753              ctermfg=236  guibg=#79313c ctermbg=167  gui=NONE      cterm=NONE
 hi DiffText                     guifg=NONE                 ctermfg=NONE guibg=NONE    ctermbg=NONE gui=reverse   cterm=reverse
 hi ErrorMsg                     guifg=#f43753              ctermfg=131  guibg=NONE    ctermbg=NONE gui=reverse   cterm=reverse
 hi VertSplit                    guifg=#282828              ctermfg=235  guibg=#282828 ctermbg=235  gui=NONE      cterm=NONE

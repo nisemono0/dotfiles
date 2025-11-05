@@ -1,4 +1,4 @@
-" Name:         habamax
+" Name:         habamin
 " Description:  Hubba hubba hubba.
 " Author:       Maxim Kim <habamax@gmail.com>
 " Maintainer:   Maxim Kim <habamax@gmail.com>

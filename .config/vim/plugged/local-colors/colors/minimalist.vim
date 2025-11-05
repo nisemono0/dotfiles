@@ -24,8 +24,8 @@ hi CursorColumn     ctermfg=NONE ctermbg=233  cterm=NONE      guifg=NONE    guib
 hi CursorLine       ctermfg=NONE ctermbg=233  cterm=NONE      guifg=NONE    guibg=#121212 gui=NONE
 hi CursorLineNr     ctermfg=59   ctermbg=233  cterm=NONE      guifg=#5F5F5F guibg=#121212 gui=NONE
 hi DiffAdd          ctermfg=255  ctermbg=64   cterm=bold      guifg=#EEEEEE guibg=#5F8700 gui=bold
-hi DiffChange       ctermfg=NONE ctermbg=NONE cterm=NONE      guifg=NONE    guibg=NONE    gui=NONE
-hi DiffDelete       ctermfg=167  ctermbg=NONE cterm=NONE      guifg=#D75F5F guibg=NONE    gui=NONE
+hi DiffChange       ctermfg=137 ctermbg=236   cterm=NONE      guifg=NONE    guibg=NONE    gui=NONE
+hi DiffDelete       ctermfg=236  ctermbg=167  cterm=NONE      guifg=#D75F5F guibg=NONE    gui=NONE
 hi DiffText         ctermfg=255  ctermbg=24   cterm=bold      guifg=#EEEEEE guibg=#005F87 gui=bold
 hi Directory        ctermfg=179  ctermbg=NONE cterm=NONE      guifg=#D7AF5F guibg=NONE    gui=NONE
 hi ErrorMsg         ctermfg=255  ctermbg=167  cterm=NONE      guifg=#EEEEEE guibg=#D75F5F gui=NONE
