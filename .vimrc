@@ -50,7 +50,7 @@ set ignorecase
 set smartcase
 
 # Look
-colorscheme snow
+colorscheme habamin
 set laststatus=2
 set ruler
 set wildmenu
@@ -392,4 +392,8 @@ nnoremap <leader>ks :LspShowSignature<CR>
 nnoremap <leader>wa :LspWorkspaceAddFolder<Space>
 nnoremap <leader>wl :LspWorkspaceListFolders<CR>
 nnoremap <leader>wd :LspWorkspaceRemoveFolder<Space>
+
+nnoremap <leader>ls :LspServer start<CR>
+nnoremap <leader>le :LspServer stop<CR>
+nnoremap <leader>lr :LspServer restart<CR>
 
