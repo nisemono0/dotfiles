@@ -23,8 +23,9 @@ hi    EndOfBuffer      ctermfg=240              ctermbg=NONE cterm=NONE
 hi    LineNr           ctermfg=10               ctermbg=NONE cterm=NONE
 hi    FoldColumn       ctermfg=242              ctermbg=234  cterm=NONE
 hi    Folded           ctermfg=242              ctermbg=234  cterm=NONE
-hi    MatchParen       ctermfg=229              ctermbg=234  cterm=NONE
-hi    SignColumn       ctermfg=242              ctermbg=NONE  cterm=NONE
+" hi    MatchParen       ctermfg=229              ctermbg=234  cterm=NONE
+hi    MatchParen       ctermfg=252              ctermbg=240  cterm=bold
+hi    SignColumn       ctermfg=242              ctermbg=NONE cterm=NONE
 hi    Pmenu            ctermfg=250              ctermbg=238  cterm=NONE
 hi    PmenuSbar        ctermfg=NONE             ctermbg=240  cterm=NONE
 hi    PmenuSel         ctermfg=249              ctermbg=236  cterm=NONE,reverse
@@ -64,10 +65,10 @@ hi    DiffText         ctermfg=137              ctermbg=236  cterm=NONE,reverse
 hi    Directory        ctermfg=73               ctermbg=NONE cterm=NONE
 hi    debugPC          ctermfg=NONE             ctermbg=67   cterm=NONE
 hi    debugBreakpoint  ctermfg=NONE             ctermbg=131  cterm=NONE
-hi    SpellBad         ctermfg=131              ctermbg=NONE cterm=undercurl
-hi    SpellCap         ctermfg=73               ctermbg=NONE cterm=undercurl
-hi    SpellLocal       ctermfg=65               ctermbg=NONE cterm=undercurl
-hi    SpellRare        ctermfg=208              ctermbg=NONE cterm=undercurl
+hi    SpellBad         ctermfg=167              ctermbg=NONE cterm=underline
+hi    SpellCap         ctermfg=215              ctermbg=NONE cterm=underline
+hi    SpellLocal       ctermfg=77               ctermbg=NONE cterm=underline
+hi    SpellRare        ctermfg=176              ctermbg=NONE cterm=underline
 hi    ColorColumn      ctermfg=NONE             ctermbg=234  cterm=NONE
 hi    Terminal         ctermfg=NONE             ctermbg=NONE cterm=NONE
 hi    Comment          ctermfg=242              ctermbg=NONE cterm=NONE

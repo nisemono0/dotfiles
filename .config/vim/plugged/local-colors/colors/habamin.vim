@@ -71,7 +71,8 @@ hi  MoreMsg         ctermfg=71           ctermbg=NONE cterm=NONE
 hi  Question        ctermfg=180          ctermbg=NONE cterm=NONE
 hi  WarningMsg      ctermfg=168          ctermbg=NONE cterm=NONE
 hi  Todo            ctermfg=253          ctermbg=NONE cterm=bold,reverse
-hi  MatchParen      ctermfg=199          ctermbg=NONE cterm=bold
+" hi  MatchParen      ctermfg=199          ctermbg=NONE cterm=bold
+hi MatchParen       ctermfg=252          ctermbg=240  cterm=bold
 "hi  Search          ctermfg=74           ctermbg=234  cterm=reverse
 "hi  IncSearch       ctermfg=215          ctermbg=234  cterm=reverse
 "hi  CurSearch       ctermfg=215          ctermbg=234  cterm=reverse

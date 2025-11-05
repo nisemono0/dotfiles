@@ -73,7 +73,8 @@ exe "hi! MoreMsg"       "ctermfg=".s:none     "ctermbg=".s:none  "cterm=".s:none
 " --------------
 " - Visual aid -
 " --------------
-exe "hi! MatchParen"  "ctermfg=".s:blue  "ctermbg=".s:none  "cterm=".s:none
+" exe "hi! MatchParen"  "ctermfg=".s:blue  "ctermbg=".s:none  "cterm=".s:none
+exe "hi! MatchParen"  "ctermfg=252"  "ctermbg=240" "cterm=bold"
 " exe "hi! Visual"      "ctermfg=".s:cyan  "ctermbg=".s:none  "cterm=".s:none
 " exe "hi! VisualNOS"   "ctermfg=".s:cyan  "ctermbg=".s:none  "cterm=".s:none
 exe "hi! NonText"     "ctermfg=".s:none  "ctermbg=".s:none  "cterm=".s:none

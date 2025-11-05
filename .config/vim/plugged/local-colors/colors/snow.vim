@@ -51,7 +51,7 @@ hi DiffChanged      ctermfg=NONE ctermbg=237  guifg=NONE    guibg=#363a3e guisp=
 " hi DiffChange       ctermfg=137  ctermbg=236  guifg=NONE    guibg=#363a3e guisp=NONE    cterm=NONE           gui=NONE
 " hi DiffChanged      ctermfg=137  ctermbg=236  guifg=NONE guibg=#2c2d30 guisp=NONE    cterm=NONE           gui=NONE
 hi Folded           ctermfg=NONE ctermbg=237  guifg=NONE    guibg=#363a3e guisp=NONE    cterm=NONE           gui=NONE
-hi MatchParen       ctermfg=252  ctermbg=240  guifg=#cbd2d9 guibg=#535c65 guisp=NONE    cterm=NONE           gui=NONE
+hi MatchParen       ctermfg=252  ctermbg=240  guifg=#cbd2d9 guibg=#535c65 guisp=NONE    cterm=bold           gui=NONE
 hi Pmenu            ctermfg=249  ctermbg=237  guifg=#afb7c0 guibg=#363a3e guisp=NONE    cterm=NONE           gui=NONE
 hi StatusLineNC     ctermfg=249  ctermbg=237  guifg=#afb7c0 guibg=#363a3e guisp=NONE    cterm=NONE           gui=NONE
 hi StatusLineTermNC ctermfg=249  ctermbg=237  guifg=#afb7c0 guibg=#363a3e guisp=NONE    cterm=NONE           gui=NONE
