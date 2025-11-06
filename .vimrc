@@ -33,6 +33,7 @@ set noswapfile
 set nobackup
 set autoread
 set autochdir
+set hidden
 
 # Indent and line numbers
 filetype plugin indent on
@@ -177,7 +178,7 @@ snoremap <expr> <S-Tab> vsnip#jumpable(-1) ? '<Plug>(vsnip-jump-prev)' : '<S-Tab
 nnoremap <leader>bn :bnext<CR>
 nnoremap <leader>bp :bprevious<CR>
 nnoremap <leader>bd :bdelete<CR>
-nnoremap <leader>q :bdelete<CR>
+nnoremap <leader>q :w<CR> :bdelete<CR>
 nnoremap <Tab> :bnext<CR>
 nnoremap <S-Tab> :bprevious<CR>
 
