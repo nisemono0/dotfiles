@@ -85,7 +85,7 @@ set completeopt=menu,preview,popup,fuzzy,nosort,noselect
 # Command autocompletion
 autocmd CmdlineChanged [:\/\?] call wildtrigger()
 set wildmode=noselect:lastused,full
-set wildoptions=pum
+set wildoptions=pum,fuzzy
 # Keep normal command history navigation
 cnoremap <expr> <Up> wildmenumode() ? '<C-E><Up>' : '<Up>'
 cnoremap <expr> <Down> wildmenumode() ? '<C-E><Down>' : '<Down>'
