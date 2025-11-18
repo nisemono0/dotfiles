@@ -161,8 +161,10 @@ nnoremap <leader>r :registers<CR>
 nnoremap <C-n> :NERDTreeToggle<CR>
 
 # Open Yazi
-nnoremap <silent> _ :Yazi<CR>
-nnoremap <silent> - :YaziWorkingDirectory<CR>
+nnoremap <silent> - :Yazi<CR>
+nnoremap <silent> _ :YaziWorkingDirectory<CR>
+nnoremap <silent> <leader>ys :vsplit \| :Yazi<CR>
+nnoremap <silent> <leader>yh :split \| :Yazi<CR>
 
 # Completion window and snippet jump
 inoremap <C-@> <C-n>
@@ -178,7 +180,7 @@ snoremap <expr> <S-Tab> vsnip#jumpable(-1) ? '<Plug>(vsnip-jump-prev)' : '<S-Tab
 nnoremap <leader>bn :bnext<CR>
 nnoremap <leader>bp :bprevious<CR>
 nnoremap <leader>bd :bdelete<CR>
-nnoremap <leader>q :w<CR> :bdelete<CR>
+nnoremap <leader>q :w \| :bdelete<CR>
 nnoremap <Tab> :bnext<CR>
 nnoremap <S-Tab> :bprevious<CR>
 
