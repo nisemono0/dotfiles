@@ -7,7 +7,6 @@ plug#begin('~/.config/vim/plugged')
     Plug 'chriszarate/yazi.vim'
     Plug 'ycm/poplar.vim'
     Plug 'vim-airline/vim-airline'
-    Plug 'noscript/elevator.vim'
     Plug 'ryanoasis/vim-devicons'
     Plug 'sheerun/vim-polyglot'
     Plug 'junegunn/vim-easy-align'
@@ -149,10 +148,6 @@ g:lexima_map_escape = ''
 # Highlight yank
 g:hlyanked_hlgroup = 'Visual'
 g:hlyanked_timeout = 50
-
-# Scrollbar
-g:elevator#timeout_msec = 0
-g:elevator#highlight = "Search"
 
 # Update file
 nnoremap <silent> <C-s> :update<CR>
