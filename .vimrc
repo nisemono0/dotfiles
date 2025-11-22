@@ -4,15 +4,16 @@ vim9script
 set rtp+=~/.config/vim/
 plug#begin('~/.config/vim/plugged')
     # Web
-    Plug 'preservim/nerdtree'
     Plug 'chriszarate/yazi.vim'
+    Plug 'ycm/poplar.vim'
     Plug 'vim-airline/vim-airline'
+    Plug 'noscript/elevator.vim'
     Plug 'ryanoasis/vim-devicons'
     Plug 'sheerun/vim-polyglot'
     Plug 'junegunn/vim-easy-align'
     Plug 'cohama/lexima.vim'
     Plug 'tpope/vim-commentary'
-    Plug 'machakann/vim-highlightedyank'
+    Plug 'ubaldot/vim-highlight-yanked'
     Plug 'andymass/vim-matchup'
     Plug 'mbbill/undotree'
     Plug 'junegunn/fzf.vim'
@@ -145,9 +146,9 @@ g:lexima_no_default_rules = 0
 g:lexima_accept_pum_with_enter = 0
 g:lexima_map_escape = ''
 
-# Highlight yank
-b:highlightedyank_highlight_duration = 50
-g:highlightedyank_highlight_in_visual = 0
+# # Highlight yank
+g:hlyanked_hlgroup = 'Visual'
+g:hlyanked_timeout = 50
 
 # Update file
 nnoremap <silent> <C-s> :update<CR>
@@ -157,13 +158,21 @@ vnoremap <silent> <C-s> <Esc>:update<CR>
 # Show registers
 nnoremap <leader>r :registers<CR>
 
-# Toggle NerdTree
-nnoremap <C-n> :NERDTreeToggle<CR>
+# Show poplar and poplar config
+nnoremap <silent> <C-n> :Poplar<CR>
+highlight! link PoplarMenu Normal
+highlight! link PoplarMenuSel CursorLine
+g:poplar = {
+    keys: {
+        TREE_OPEN: 'o',
+        PIN_OPEN: 'o',
+    }
+}
 
 # Open Yazi
 nnoremap <silent> - :Yazi<CR>
-nnoremap <silent> _ :YaziWorkingDirectory<CR>
-nnoremap <silent> <leader>ys :vsplit \| :Yazi<CR>
+nnoremap <silent> _ :vsplit \| :Yazi<CR>
+nnoremap <silent> <leader>yv :vsplit \| :Yazi<CR>
 nnoremap <silent> <leader>yh :split \| :Yazi<CR>
 
 # Completion window and snippet jump
