@@ -158,6 +158,14 @@ vnoremap <silent> <C-s> <Esc>:update<CR>
 # Show registers
 nnoremap <leader>r :registers<CR>
 
+# Yank/Paste to/from clipboard (needs gvim on arch)
+nnoremap <C-y><C-y> "+yy
+nnoremap <C-y> "+y
+vnoremap <C-y> "+y
+
+nnoremap <C-p> "+p
+vnoremap <C-p> "+p
+
 # Show poplar and poplar config
 nnoremap <silent> <C-n> :Poplar<CR>
 highlight! link PoplarMenu Normal
