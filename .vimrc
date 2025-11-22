@@ -146,9 +146,13 @@ g:lexima_no_default_rules = 0
 g:lexima_accept_pum_with_enter = 0
 g:lexima_map_escape = ''
 
-# # Highlight yank
+# Highlight yank
 g:hlyanked_hlgroup = 'Visual'
 g:hlyanked_timeout = 50
+
+# Scrollbar
+g:elevator#timeout_msec = 0
+g:elevator#highlight = "Search"
 
 # Update file
 nnoremap <silent> <C-s> :update<CR>
