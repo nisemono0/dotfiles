@@ -27,7 +27,7 @@ set $term --no-startup-id ~/.scripts/wmcmds/wm-term.sh
 set $tuifm --no-startup-id ~/.scripts/wmcmds/wm-tuifm.sh
 set $ncmpcpp --no-startup-id ~/.scripts/wmcmds/wm-ncmpcpp.sh
 set $nmtui --no-startup-id ~/.scripts/wmcmds/wm-nmtui.sh
-set $pulsemixer --no-startup-id ~/.scripts/wmcmds/wm-pulsemixer.sh
+set $audiomixer --no-startup-id ~/.scripts/wmcmds/wm-audiomixer.sh
 set $htop --no-startup-id ~/.scripts/wmcmds/wm-htop.sh
 set $nvtop --no-startup-id ~/.scripts/wmcmds/wm-nvtop.sh
 

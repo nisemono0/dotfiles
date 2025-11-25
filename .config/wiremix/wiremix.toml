@@ -1,0 +1,33 @@
+fps = 60.0
+mouse = true
+peaks = "auto"
+char_set = "default"
+theme = "default"
+tab = "playback"
+max_volume_percent = 100
+enforce_max_volume = true
+
+
+keybindings = [
+    { key = { Char = "=" }, action = { SetRelativeVolume = 0.01 } },
+    { key = { Char = "-" }, action = { SetRelativeVolume = -0.01 } },
+    { key = { Char = "o" }, action = "ActivateDropdown" },
+]
+
+
+[themes.default]
+meter_inactive = { fg = "DarkGray" }
+meter_active = { fg = "LightBlue" }
+meter_overload = { fg = "Cyan" }
+meter_center_inactive = { fg = "DarkGray" }
+meter_center_active = { fg = "LightBlue" }
+
+
+[char_sets.default]
+default_device = "*"
+default_stream = "*"
+volume_empty = "─"
+volume_filled = "━"
+dropdown_border = "Plain"
+help_border = "Plain"
+
