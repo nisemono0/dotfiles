@@ -39,7 +39,6 @@ set $dmenubind --no-startup-id ~/.scripts/wmcmds/wm-dmenu-bind.sh
 set $i3desktopdmenubind --no-startup-id ~/.scripts/wmcmds/wm-desktop-dmenu-bind.sh
 set $mountmenu --no-startup-id mountmenu
 set $umountmenu --no-startup-id umountmenu
-set $sinkselect --no-startup-id sink-select
 set $wall_change --no-startup-id ~/.scripts/wmcmds/wall-change/wall-change.sh
 set $wall_slideshow --no-startup-id ~/.scripts/wmcmds/wall-change/wall-slideshow.sh
 set $wall_web --no-startup-id ~/.scripts/wmcmds/wall-change/wall-web.sh
