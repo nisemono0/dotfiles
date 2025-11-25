@@ -31,3 +31,8 @@ volume_filled = "━"
 dropdown_border = "Plain"
 help_border = "Plain"
 
+[names]
+stream = [ "{node:node.name}: {node:media.name}" ]
+endpoint = [ "{device:device.description}", "{node:node.description}" ]
+device = [ "{device:device.description}", "{device:device.nick}" ]
+
