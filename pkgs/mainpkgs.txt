@@ -120,11 +120,10 @@ pamixer
 parallel
 patch
 picom
+pipewire-alsa
+pipewire-pulse
 pkgconf
 polybar
-pulseaudio
-pulseaudio-alsa
-pulsemixer
 python-mpd2
 python-pillow
 python-pip
@@ -165,6 +164,7 @@ wget
 which
 wine-staging
 winetricks
+wiremix
 wmfocus
 woff2-font-awesome
 wqy-zenhei
