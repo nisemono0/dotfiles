@@ -239,8 +239,8 @@ function post_install () {
     chsh -s /bin/zsh
     echo -e "${WH}Changed default shell for $USER to ${YE}zsh!${NC}"
 
-    to_modify_arr=("wmcmds/wm-backlight/sh" "wmcmds/wm-toggle-comp.sh" "wmcmds/wm-mousespeed.sh" "wmcmds/wall-change/wall-web.sh" "polybar/polybar-systemps.sh" "polybar/weather-forecast.sh" "polybar/weather.sh" "mpd/mpdsong.sh" "ncmpcpp/ncmpcpp_cover_art.sh" "startup/monitor-setup.sh")
-    echo -e "${WH}Please modify the following scripts, add api keys, gpu/cpu names, custom paths, etc.:${NC}"
+    to_modify_arr=("scripts/wmcmds/wm-backlight" "scripts/wmcmds/wm-toggle-comp" "scripts/wmcmds/wm-mousespeed" "scripts/wmcmds/wall-change/wall-web" "scripts/polybar/polybar-systemps" "scripts/polybar/weather-forecast" "scripts/polybar/weather" "scripts/mpd/mpdsong" "scripts/ncmpcpp/ncmpcpp_cover_art.sh" "scripts/startup/monitor-setup" "config/pipewire/pipewire.conf.d")
+    echo -e "${WH}Please modify the following scripts/configs; add api keys, gpu/cpu names, custom paths, etc.:${NC}"
     for scr in "${to_modify_arr[@]}"; do
         echo -e "${PU}\t==>$HOME/.scripts/${scr}${NC}"
     done
