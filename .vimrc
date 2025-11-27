@@ -341,7 +341,10 @@ var lsp_servers = [
         name: 'clang',
         filetype: ['c', 'cpp'],
         path: '/usr/bin/clangd',
-        args: ['--background-index', '-j=4', '--clang-tidy', '--completion-style=detailed', '-header-insertion=never']
+        args: [
+            '--background-index', '-j=4', '--clang-tidy', '--completion-style=detailed',
+            '-header-insertion=never', '--function-arg-placeholders=0'
+        ]
     },
     {
         name: 'ccls',
