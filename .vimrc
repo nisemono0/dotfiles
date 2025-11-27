@@ -324,7 +324,7 @@ var lsp_opts = {
     snippetSupport: false,
     ultisnipsSupport: false,
     useBufferCompletion: false,
-    usePopupInCodeAction: false,
+    usePopupInCodeAction: true,
     useQuickfixForLocations: false,
     vsnipSupport: true,
     bufferCompletionTimeout: 100,
