@@ -17,6 +17,7 @@ bison
 bleachbit
 brightnessctl
 code
+croc
 cups
 debugedit
 dmenu-nise
