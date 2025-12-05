@@ -53,7 +53,6 @@ gsimplecal
 gvim
 gzip
 highlight
-hlib-git
 hsetroot
 htop
 i3-wm
@@ -129,6 +128,7 @@ python-mpd2
 python-pillow
 python-pip
 qbittorrent
+relib-git
 samba
 screenkey
 scrot
