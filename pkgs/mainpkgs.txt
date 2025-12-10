@@ -182,6 +182,7 @@ xorg-xinit
 xorg-xinput
 xorg-xlsfonts
 xorg-xrandr
+xorg-xset
 yazi
 yt-dlp
 zsh
