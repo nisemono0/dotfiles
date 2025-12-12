@@ -6,6 +6,11 @@ code-marketplace
 colorz
 downgrade
 dragon-drop
+fcitx
+fcitx-configtool
+fcitx-mozc
+fcitx-qt5
+fcitx-qt6
 i3lock-color
 python-fast-colorthief
 python-ffsubsync
