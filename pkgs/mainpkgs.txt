@@ -16,6 +16,8 @@ binutils
 bison
 bleachbit
 brightnessctl
+clang
+cmake
 code
 croc
 cups
@@ -119,6 +121,7 @@ pipewire-alsa
 pipewire-pulse
 pkgconf
 polybar
+python-lsp-server
 python-mpd2
 python-pillow
 python-pip
