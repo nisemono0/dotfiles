@@ -53,6 +53,7 @@ highlight
 hsetroot
 htop
 i3-wm
+ibus
 imagemagick
 inetutils
 jq
