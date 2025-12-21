@@ -54,6 +54,7 @@ hsetroot
 htop
 i3-wm
 ibus
+ibus-mozc-with-jp-dict
 imagemagick
 inetutils
 jq

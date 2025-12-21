@@ -7,7 +7,6 @@ colorz
 downgrade
 dragon-drop
 i3lock-color
-ibus-mozc-with-jp-dict
 python-fast-colorthief
 python-ffsubsync
 python-haishoku
