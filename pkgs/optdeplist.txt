@@ -1,6 +1,7 @@
 geoclue
 gnome-themes-extra
 libportal-gtk4
+libwebp-utils
 libxnvctrl
 lvm2
 python-dnspython
