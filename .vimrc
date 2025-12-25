@@ -10,6 +10,7 @@ plug#begin('~/.config/vim/plugged')
     Plug 'ryanoasis/vim-devicons'
     Plug 'sheerun/vim-polyglot'
     Plug 'junegunn/vim-easy-align'
+    Plug 'obcat/vim-sclow'
     Plug 'cohama/lexima.vim'
     Plug 'tpope/vim-commentary'
     Plug 'ubaldot/vim-highlight-yanked'
@@ -148,6 +149,9 @@ g:lexima_map_escape = ''
 # Highlight yank
 g:hlyanked_hlgroup = 'Visual'
 g:hlyanked_timeout = 50
+
+# Scrollbar
+g:sclow_hide_full_length = 1
 
 # Update file
 nnoremap <silent> <C-s> :update<CR>
