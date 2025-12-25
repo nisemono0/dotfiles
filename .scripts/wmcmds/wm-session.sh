@@ -17,6 +17,14 @@ reb(){
     esac
 }
 
+lock_screen() {
+    sel=$(printf "Yes\\nNo" | dmenu "${DMENU_ARGS[@]}" -p "Are you sure you want to lock the screen") || exit 1
+    case "$sel" in
+        "Yes") lock-screen ;;
+        *) exit ;;
+    esac
+}
+
 sleep_toram(){
     sel=$(printf "Yes\\nNo" | dmenu "${DMENU_ARGS[@]}" -p "Are you sure you want to sleep") || exit 1
     case "$sel" in
@@ -33,10 +41,11 @@ exit_i3(){
     esac
 }
 
-selected=$(printf "Shutdown\\nReboot\\nSleep (RAM)\\nLogout" | dmenu "${DMENU_ARGS[@]}" -p "End session") || exit 1
+selected=$(printf "Shutdown\\nReboot\\nLock screen\\nSleep (RAM)\\nLogout" | dmenu "${DMENU_ARGS[@]}" -p "End session") || exit 1
 case "$selected" in
     "Shutdown") shut ;;
     "Reboot") reb ;;
+    "Lock screen") lock_screen ;;
     "Sleep (RAM)") sleep_toram ;;
     "Logout") exit_i3 ;;
     *) exit ;;

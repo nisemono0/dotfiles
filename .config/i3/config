@@ -42,7 +42,7 @@ set $umountmenu --no-startup-id umountmenu
 set $wall_change --no-startup-id ~/.scripts/wmcmds/wall-change/wall-change.sh
 set $wall_slideshow --no-startup-id ~/.scripts/wmcmds/wall-change/wall-slideshow.sh
 set $wall_web --no-startup-id ~/.scripts/wmcmds/wall-change/wall-web.sh
-set $end_session --no-startup-id ~/.scripts/wmcmds/wm-end-session.sh
+set $wm_session --no-startup-id ~/.scripts/wmcmds/wm-session.sh
 set $kill_proc --no-startup-id kill-proc
 set $wsutil --no-startup-id ~/.scripts/wmcmds/wm-wsutil.sh
 set $mousespeed --no-startup-id ~/.scripts/wmcmds/wm-mousespeed.sh
