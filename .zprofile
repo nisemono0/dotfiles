@@ -6,7 +6,7 @@
 # For programs to work with ime
 export XIM=ibus
 export XIM_PROGRAM=ibus
-export XMODIFIERS=@im=ibus
+export XMODIFIERS="@im=ibus"
 export GTK_IM_MODULE=ibus
 export QT_IM_MODULE=ibus
 export SDL_IM_MODULE=ibus
