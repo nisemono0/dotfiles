@@ -97,7 +97,6 @@ mpv
 ncmpcpp
 nemo
 nemo-fileroller
-nemo-preview
 networkmanager
 nicotine+
 nmap
