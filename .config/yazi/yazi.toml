@@ -26,31 +26,31 @@ ueberzug_offset = [ 0, 0, 0, 0 ]
 
 [opener]
 edit = [
-    { run = '${EDITOR:-vi} "%s"', block = true,  orphan = false, desc = "$EDITOR",      for = "unix" },
-    { run = 'code "%s"',          block = false, orphan = true,  desc = "code",         for = "unix" },
-    { run = 'code -w "%s"',       block = true,  orphan = true,  desc = "code (block)", for = "unix" }
+    { run = '${EDITOR:-vi} %s', block = true,  orphan = false, desc = "$EDITOR",      for = "unix" },
+    { run = 'code %s',          block = false, orphan = true,  desc = "code",         for = "unix" },
+    { run = 'code -w %s',       block = true,  orphan = true,  desc = "code (block)", for = "unix" }
 ]
 open = [
-    { run = 'xdg-open "%s1"', desc = "Open (xdg-open)", for = "linux" }
+    { run = 'xdg-open %s1', desc = "Open (xdg-open)", for = "linux" }
 ]
 reveal = [
-    { run = 'xdg-open "$(dirname "%s1")"', desc = "Reveal (xdg-open)", for = "linux" }
+    { run = 'xdg-open %s1', desc = "Reveal (xdg-open)", for = "linux" }
 ]
 archive = [
-    { run = 'als "%s1" | less',            block = true,          orphan = false, desc = "List archive content into less", for = "linux" },
-    { run = 'ya pub extract --list "%s"', desc = "Extract here", for = "unix" },
-    { run = 'mpv "%s"',                   block = false,         orphan = true,  desc = "Open archive with mpv",          for = "linux" }
+    { run = 'als %s1 | less',            block = true,          orphan = false, desc = "List archive content into less", for = "linux" },
+    { run = 'ya pub extract --list %s', desc = "Extract here", for = "unix" },
+    { run = 'mpv %s',                   block = false,         orphan = true,  desc = "Open archive with mpv",          for = "linux" }
 ]
 play = [
-    { run = 'mpv --force-window "%s"', block = false, orphan = true,  for = "unix" },
-    { run = 'mediainfo "%s1" | less',   block = true,  orphan = false, desc = "mediainfo", for = "unix" },
+    { run = 'mpv --force-window %s', block = false, orphan = true,  for = "unix" },
+    { run = 'mediainfo %s1 | less',   block = true,  orphan = false, desc = "mediainfo", for = "unix" },
 ]
 image = [
-    { run = 'nsxiv -p -a "%s"',      block = false, orphan = true,  desc = "nsxiv (selection)", for = "linux" },
-    { run = 'nsxiv-open-all "%s1"',   block = false, orphan = true,  desc = "nsxiv (all)",       for = "linux" },
-    { run = 'mpv "%s"',              block = false, orphan = true,  desc = "mpv (selection)",   for = "linux" },
-    { run = 'gimp "%s"',             block = false, orphan = true,  desc = "GIMP",              for = "linux" },
-    { run = 'mediainfo "%s1" | less', block = true,  orphan = false, desc = "mediainfo",         for = "unix" },
+    { run = 'nsxiv -p -a %s',      block = false, orphan = true,  desc = "nsxiv (selection)", for = "linux" },
+    { run = 'nsxiv-open-all %s1',   block = false, orphan = true,  desc = "nsxiv (all)",       for = "linux" },
+    { run = 'mpv %s',              block = false, orphan = true,  desc = "mpv (selection)",   for = "linux" },
+    { run = 'gimp %s',             block = false, orphan = true,  desc = "GIMP",              for = "linux" },
+    { run = 'mediainfo %s1 | less', block = true,  orphan = false, desc = "mediainfo",         for = "unix" },
 ]
 
 [open]
