@@ -68,7 +68,7 @@ keymap = [
     # Operation
     { on = "o",           run = "open",                                               desc = "Open selected files" },
     { on = "O",           run = "open --interactive",                                 desc = "Open selected files interactively" },
-    { on = "E",           run = """shell '${EDITOR:-vi} "$@"' --block""",             desc = "Run $EDITOR or vi on file(s)" },
+    { on = "E",           run = """shell '${EDITOR:-vi} "%s"' --block""",             desc = "Run $EDITOR or vi on file(s)" },
     { on = "<Enter>",     run = "open",                                               desc = "Open selected files" },
     { on = "<S-Enter>",   run = "open --interactive",                                 desc = "Open selected files interactively" },
     { on = [ "y", "y" ],  run = "yank",                                               desc = "Yank selected files" },
@@ -96,9 +96,9 @@ keymap = [
     { on = [ "r", "s" ],  run = "rename --empty=stem --cursor=start",                 desc = "Rename selected file(s) (remove stem, cursor at start)" },
     { on = [ "r", "e" ],  run = "rename --empty=ext --cursor=end",                    desc = "Rename selected file(s) (remove extension, cursor at end)" },
     { on = ":",           run = "shell --interactive",                                desc = "Run a shell command" },
-    { on = "@",           run = """shell ' "$@"' --interactive --cursor=0""",         desc = "Run a shell command" },
+    { on = "@",           run = """shell ' "%s"' --interactive --cursor=0""",         desc = "Run a shell command" },
     { on = ";",           run = "shell --block --interactive",                        desc = "Run a shell command (block until finishes)" },
-    { on = "<A-@>",       run = """shell ' "$@"' --block --interactive --cursor=0""", desc = "Run a shell command (block until finishes)" },
+    { on = "<A-@>",       run = """shell ' "%s"' --block --interactive --cursor=0""", desc = "Run a shell command (block until finishes)" },
     { on = ".",           run = "hidden toggle",                                      desc = "Toggle the visibility of hidden files" },
     { on = "<Backspace>", run = "hidden toggle",                                      desc = "Toggle the visibility of hidden files" },
     { on = [ "s", "f" ],  run = "search --via=fd",                                    desc = "Search files by name via fd" },
@@ -225,7 +225,7 @@ keymap = [
     { on = "S", run = """shell '"$SHELL"' --block""", desc = "Open $SHELL here" },
 
     # Archive compress/extract
-    { on = [ "e", "x" ],      run = """shell 'ya pub extract --list "$@"'""", desc = "Extract selected archive(s)" },
+    { on = [ "e", "x" ],      run = """shell 'ya pub extract --list "%s"'""", desc = "Extract selected archive(s)" },
     { on = [ "e", "c", "c" ], run = "plugin compress",                        desc = "Compress selected file(s)" },
     { on = [ "e", "c", "l" ], run = "plugin compress -l",                     desc = "Compress selected file(s) with level" },
     { on = [ "e", "C", "C" ], run = "plugin compress -p",                     desc = "Compress selected file(s) with password" },
@@ -239,23 +239,23 @@ keymap = [
 
     # View spectrogram with sox
     { on = [ "<C-a>", "s", "s" ], run = """shell '~/.scripts/tuifm/sox-spectrogram.sh "$1"'""",      desc = "Display spectrogram of audio file" },
-    { on = [ "<C-a>", "s", "d" ], run = """shell '~/.scripts/tuifm/sox-spectrogram-diff.sh "$@"'""", desc = "Display spectrogram difference of 2 audio files" },
+    { on = [ "<C-a>", "s", "d" ], run = """shell '~/.scripts/tuifm/sox-spectrogram-diff.sh "%s"'""", desc = "Display spectrogram difference of 2 audio files" },
 
     # Add to playlist
-    { on = [ "<C-a>", "a" ], run = """shell '~/.scripts/tuifm/add-to-playlist.sh "$@"'""", desc = "Add audio file(s) to mpd playlist" },
+    { on = [ "<C-a>", "a" ], run = """shell '~/.scripts/tuifm/add-to-playlist.sh "%s"'""", desc = "Add audio file(s) to mpd playlist" },
 
     # Convert audio
-    { on = [ "<C-a>", "f" ],      run = """shell '~/.scripts/tuifm/convert-audio.sh "flac" "$@"'""",    desc = "Convert audio file(s) to flac" },
-    { on = [ "<C-a>", "m", "1" ], run = """shell '~/.scripts/tuifm/convert-audio.sh "mp3-192" "$@"'""", desc = "Convert audio file(s) to mp3 192kbs" },
-    { on = [ "<C-a>", "m", "2" ], run = """shell '~/.scripts/tuifm/convert-audio.sh "mp3-256" "$@"'""", desc = "Convert audio file(s) to mp3 256kbs" },
-    { on = [ "<C-a>", "m", "3" ], run = """shell '~/.scripts/tuifm/convert-audio.sh "mp3-320" "$@"'""", desc = "Convert audio file(s) to mp3 320kbs" },
-    { on = [ "<C-a>", "c" ],      run = """shell '~/.scripts/tuifm/convert-audio.sh "aac-128" "$@"'""", desc = "Convert audio file(s) to aac 128kbs" },
+    { on = [ "<C-a>", "f" ],      run = """shell '~/.scripts/tuifm/convert-audio.sh "flac" "%s"'""",    desc = "Convert audio file(s) to flac" },
+    { on = [ "<C-a>", "m", "1" ], run = """shell '~/.scripts/tuifm/convert-audio.sh "mp3-192" "%s"'""", desc = "Convert audio file(s) to mp3 192kbs" },
+    { on = [ "<C-a>", "m", "2" ], run = """shell '~/.scripts/tuifm/convert-audio.sh "mp3-256" "%s"'""", desc = "Convert audio file(s) to mp3 256kbs" },
+    { on = [ "<C-a>", "m", "3" ], run = """shell '~/.scripts/tuifm/convert-audio.sh "mp3-320" "%s"'""", desc = "Convert audio file(s) to mp3 320kbs" },
+    { on = [ "<C-a>", "c" ],      run = """shell '~/.scripts/tuifm/convert-audio.sh "aac-128" "%s"'""", desc = "Convert audio file(s) to aac 128kbs" },
 
     # Dragon drop
-    { on = [ "<C-d>", "a" ], run = """shell --orphan 'dragon-drop -a -T "$@"'""",    desc = "Drag and drop all files" },
-    { on = [ "<C-d>", "s" ], run = """shell --orphan 'dragon-drop -T "$@"'""",       desc = "Drag and drop single file" },
-    { on = [ "<C-d>", "z" ], run = """shell --orphan 'dragon-drop -a -x -T "$@"'""", desc = "Drag and drop all files (close)" },
-    { on = [ "<C-d>", "x" ], run = """shell --orphan 'dragon-drop -x -T "$@"'""",    desc = "Drag and drop single file (close)" },
+    { on = [ "<C-d>", "a" ], run = """shell --orphan 'dragon-drop -a -T "%s"'""",    desc = "Drag and drop all files" },
+    { on = [ "<C-d>", "s" ], run = """shell --orphan 'dragon-drop -T "%s"'""",       desc = "Drag and drop single file" },
+    { on = [ "<C-d>", "z" ], run = """shell --orphan 'dragon-drop -a -x -T "%s"'""", desc = "Drag and drop all files (close)" },
+    { on = [ "<C-d>", "x" ], run = """shell --orphan 'dragon-drop -x -T "%s"'""",    desc = "Drag and drop single file (close)" },
 
     # Upload file
     { on = [ "<C-u>", "n" ], run = """shell 'uploadfile "$1" "nullptr"'""", desc = "Upload file to 0x0.st" },
@@ -437,9 +437,10 @@ keymap = [
     { on = "p", run = "paste",                                             desc = "Paste copied characters after the cursor" },
     { on = "P", run = "paste --before",                                    desc = "Paste copied characters before the cursor" },
 
-    # Undo/Redo
-    { on = "u",     run = "undo", desc = "Undo the last operation" },
-    { on = "<C-r>", run = "redo", desc = "Redo the last operation" },
+    # Undo/Redo/Casefy
+    { on = "u",     run = [ "undo", "casefy lower" ], desc = "Undo, or lowercase if in visual mode" },
+    { on = "U",     run = "casefy upper",             desc = "Uppercase" },
+    { on = "<C-r>", run = "redo",                     desc = "Redo the last operation" },
 ]
 
 [confirm]

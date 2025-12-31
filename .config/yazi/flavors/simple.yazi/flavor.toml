@@ -1,9 +1,8 @@
+[app]
+overall = {}
+
 [mgr]
 cwd = { fg = "green" }
-
-# Hovered
-hovered         = { reversed = true }
-preview_hovered = { reversed = true }
 
 # Find
 find_keyword  = { fg = "yellow", bold = true, italic = true, underline = true }
@@ -50,6 +49,12 @@ select_alt  = { fg = "red", bg = "gray" }
 # Unset mode
 unset_main = { bg = "red", bold = true }
 unset_alt  = { fg = "red", bg = "gray" }
+
+[indicator]
+parent  = { reversed = true }
+current = { reversed = true }
+preview = { reversed = true }
+padding = { open = "█", close = "█" }
 
 [status]
 overall   = {}
@@ -128,7 +133,7 @@ icon_command = ""
 [tasks]
 border  = { fg = "blue" }
 title   = {}
-hovered = { fg = "magenta", underline = true }
+hovered = { fg = "magenta", reversed = true }
 
 [help]
 on      = { fg = "cyan" }
@@ -155,16 +160,16 @@ rules = [
     # { mime = "inode/empty", fg = "red" },
 
     # Special files
-    { name = "*", is = "orphan", bg = "red" },
-    { name = "*", is = "exec"  , fg = "green" },
+    { url = "*", is = "orphan", bg = "red" },
+    { url = "*", is = "exec"  , fg = "green" },
 
     # Dummy files
-    { name = "*", is = "dummy", bg = "red", bold = true },
-    { name = "*/", is = "dummy", bg = "red", bold = true },
+    { url = "*", is = "dummy", bg = "red", bold = true },
+    { url = "*/", is = "dummy", bg = "red", bold = true },
 
     # Fallback
-    # { name = "*", fg = "white" },
-    { name = "*/", fg = "blue", bold = true }
+    # { url = "*", fg = "white" },
+    { url = "*/", fg = "blue", bold = true }
 ]
 
 [icon]
