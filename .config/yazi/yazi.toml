@@ -85,6 +85,14 @@ image_bound      = [ 0, 0 ]
 suppress_preload = false
 
 [plugin]
+# Plugin spotters
+prepend_spotters = [
+    # Audio
+    { mime = 'audio/mpegurl', run = 'code' }, # ignore .m3u files
+    { mime = "audio/*", run = "spot-audio" },
+    # Video
+    { mime = "video/*", run = "spot-video" }
+]
 # Plugin fetchers/previewers
 prepend_preloaders = [
     { mime = "application/zip", run = "mangathumb" },

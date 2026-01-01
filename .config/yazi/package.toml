@@ -40,5 +40,14 @@ use = "nisemono0/bookmarks"
 [[plugin.deps]]
 use = "nisemono0/yazi-plugins:simple-mediainfo"
 
+[[plugin.deps]]
+use = "AminurAlam/yazi-plugins:spot"
+
+[[plugin.deps]]
+use = "AminurAlam/yazi-plugins:spot-audio"
+
+[[plugin.deps]]
+use = "AminurAlam/yazi-plugins:spot-video"
+
 [flavor]
 deps = []
