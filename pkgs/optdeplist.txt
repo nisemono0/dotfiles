@@ -1,3 +1,4 @@
+bash-completion
 geoclue
 libportal-gtk4
 libwebp-utils
