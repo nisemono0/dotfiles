@@ -66,7 +66,7 @@ keymap = [
     { on = "<Tab>", run = "spot", desc = "Spot hovered file" },
 
     # Operation
-    { on = "o",           run = "open",                                               desc = "Open selected files" },
+    { on = "o",           run = "plugin smart-enter",                                 desc = "Open selected files or enter directories" },
     { on = "O",           run = "open --interactive",                                 desc = "Open selected files interactively" },
     { on = "E",           run = "shell '${EDITOR:-vi} %s' --block",                   desc = "Run $EDITOR or vi on file(s)" },
     { on = "<Enter>",     run = "open",                                               desc = "Open selected files" },
