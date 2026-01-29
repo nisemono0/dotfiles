@@ -7,4 +7,3 @@ lvm2
 python-dnspython
 python-mutagen
 python-pycryptodomex
-yt-dlp-ejs
