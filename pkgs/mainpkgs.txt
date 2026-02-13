@@ -1,6 +1,7 @@
 7zip
 alacritty
 android-file-transfer
+anki
 arc-icon-theme
 archlinux-keyring
 aria2
