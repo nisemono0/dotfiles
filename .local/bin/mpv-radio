@@ -1,0 +1,32 @@
+#!/bin/bash
+
+# Requires mpv
+# Runs mpv with some options to listen to
+# m3u radios in terminal w/o a gui window
+
+
+if ! command -v mpv >/dev/null 2>&1; then
+    echo "mpv needs to be installed"
+    exit 1
+fi
+
+print_help() {
+    echo "Usage: $(basename $0) <m3u_radio_file>"
+    exit 1
+}
+
+[ -z "$1" ] && print_help
+[ ! -e "$1" ] && print_help
+
+radio_file=$(readlink -f "$1")
+
+mpv \
+    --no-force-window \
+    --vo=null \
+    --no-video \
+    --no-cache \
+    --quiet \
+    --load-scripts=no \
+    --volume=30 \
+    "${radio_file}"
+
