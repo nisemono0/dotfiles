@@ -3,6 +3,7 @@ geoclue
 libportal-gtk4
 libwebp-utils
 libxnvctrl
+llvm
 lvm2
 python-dnspython
 python-mutagen
