@@ -19,39 +19,31 @@ save_screenshot() {
         full)
             if scrot --format png "$scr"; then
                 notify-send "Saved screenshot as ${scr/*\/}" -i "${scr}"
-            else
-                notify-send -u critical "Error saving screenshot"
             fi
             ;;
         area)
             if [ "$FREEZE_SCR" = "true" ]; then
                 if scrot -s -f -l mode=classic,width=2,color=white "$scr"; then
                     notify-send "Saved screenshot as ${scr/*\/}" -i "${scr}"
-                else
-                    notify-send -u critical "Error saving screenshot"
                 fi
             else
                 if scrot -s -l mode=edge,width=2,color=white "$scr"; then
                     notify-send "Saved screenshot as ${scr/*\/}" -i "${scr}"
-                else
-                    notify-send -u critical "Error saving screenshot"
                 fi
             fi
             ;;
         full_delay)
             delay_time=$(printf "1\\n2\\n3\\n4\\n5" | dmenu "${DMENU_ARGS_CENTER[@]}" -p "Delay time (s)")
+            [ -z "$delay_time" ] && exit 1
             if scrot --format png -d "$delay_time" "$scr"; then
                 notify-send "Saved screenshot as ${scr/*\/}" -i "${scr}"
-            else
-                notify-send -u critical "Error saving screenshot"
             fi
             ;;
         area_delay)
             delay_time=$(printf "1\\n2\\n3\\n4\\n5" | dmenu "${DMENU_ARGS_CENTER[@]}" -p "Delay time (s)")
+            [ -z "$delay_time" ] && exit 1
             if scrot -s -l mode=edge,width=2,color=white -d "$delay_time" "$scr"; then
                 notify-send "Saved screenshot as ${scr/*\/}" -i "${scr}"
-            else
-                notify-send -u critical "Error saving screenshot"
             fi
             ;;
         *)
@@ -69,8 +61,6 @@ save_clipboard() {
                 xclip -selection clipboard -target image/png -i "$scr" &> /dev/null && \
                     notify-send "Screenshot saved in clipboard" -i "$scr" && \
                     rm -- "$scr"
-            else
-                notify-send -u critical "Error saving screenshot"
             fi
             ;;
         area)
@@ -79,37 +69,31 @@ save_clipboard() {
                     xclip -selection clipboard -target image/png -i "$scr" &> /dev/null && \
                         notify-send "Screenshot saved in clipboard" -i "$scr" && \
                         rm -- "$scr"
-                else
-                    notify-send -u critical "Error saving screenshot"
                 fi
             else
                 if scrot -s -l mode=edge,width=2,color=white --overwrite --format png "$scr"; then
                     xclip -selection clipboard -target image/png -i "$scr" &> /dev/null && \
                         notify-send "Screenshot saved in clipboard" -i "$scr" && \
                         rm -- "$scr"
-                else
-                    notify-send -u critical "Error saving screenshot"
                 fi
             fi
             ;;
         full_delay)
             delay_time=$(printf "1\\n2\\n3\\n4\\n5" | dmenu "${DMENU_ARGS_CENTER[@]}" -p "Delay time (s)")
+            [ -z "$delay_time" ] && exit 1
             if scrot --overwrite --format png -d "$delay_time" "$scr"; then
                 xclip -selection clipboard -target image/png -i "$scr" &> /dev/null && \
                     notify-send "Screenshot saved in clipboard" -i "$scr" && \
                     rm -- "$scr"
-            else
-                notify-send -u critical "Error saving screenshot"
             fi
             ;;
         area_delay)
             delay_time=$(printf "1\\n2\\n3\\n4\\n5" | dmenu "${DMENU_ARGS_CENTER[@]}" -p "Delay time (s)")
+            [ -z "$delay_time" ] && exit 1
             if scrot -s -l mode=edge,width=2,color=white --overwrite --format png -d "$delay_time" "$scr"; then
                 xclip -selection clipboard -target image/png -i "$scr" &> /dev/null && \
                     notify-send "Screenshot saved in clipboard" -i "$scr" && \
                     rm -- "$scr"
-            else
-                notify-send -u critical "Error saving screenshot"
             fi
             ;;
         *)
