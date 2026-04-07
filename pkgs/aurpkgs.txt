@@ -6,6 +6,7 @@ colorz
 downgrade
 dragon-drop
 i3lock-color
+lib32-gst-plugins-base-libs
 nemo-preview
 python-fast-colorthief
 python-ffsubsync
