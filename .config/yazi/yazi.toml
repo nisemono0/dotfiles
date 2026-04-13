@@ -85,6 +85,11 @@ image_bound      = [ 0, 0 ]
 suppress_preload = false
 
 [plugin]
+# Plugin fetchers
+prepend_fetchers = [
+    { id = "git", url = "*", run = "git" },
+    { id = "git", url = "*/", run = "git" },
+]
 # Plugin spotters
 prepend_spotters = [
     # Audio

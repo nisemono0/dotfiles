@@ -49,5 +49,8 @@ use = "AminurAlam/yazi-plugins:spot-audio"
 [[plugin.deps]]
 use = "AminurAlam/yazi-plugins:spot-video"
 
+[[plugin.deps]]
+use = "yazi-rs/plugins:git"
+
 [flavor]
 deps = []
