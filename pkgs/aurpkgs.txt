@@ -15,4 +15,3 @@ python-haishoku
 python-pywal16
 simple-mtpfs
 vesktop-bin
-xpano-git
