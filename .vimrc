@@ -201,6 +201,7 @@ nnoremap <leader>bn :bnext<CR>
 nnoremap <leader>bp :bprevious<CR>
 nnoremap <leader>bd :bdelete<CR>
 nnoremap <leader>q :w \| :bdelete<CR>
+nnoremap <leader>Q :bdelete!<CR>
 nnoremap <Tab> :bnext<CR>
 nnoremap <S-Tab> :bprevious<CR>
 
