@@ -23,8 +23,10 @@ lib32-vulkan-radeon
 libva-mesa-driver
 linux
 linux-firmware
+linux-git
 linux-hardened
 linux-lts
+linux-mainline
 linux-zen
 mesa
 mesa-vdpau
