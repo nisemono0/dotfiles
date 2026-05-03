@@ -76,6 +76,10 @@ set ttimeout
 set ttimeoutlen=100
 set updatetime=100
 
+# Folds
+set foldmethod=syntax
+set foldlevel=99
+
 # Autocompletion
 set autocomplete
 set autocompletetimeout=100
