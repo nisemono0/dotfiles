@@ -1,6 +1,7 @@
 7zip
 alacritty
 android-file-transfer
+anistitch-git
 anki
 arc-icon-theme
 archlinux-keyring
@@ -184,7 +185,6 @@ xorg-xinput
 xorg-xlsfonts
 xorg-xrandr
 xorg-xset
-xpano
 yazi
 yt-dlp
 zsh

@@ -1,6 +1,5 @@
 alass
 autocutsel
-autopanorama-bin
 code-features
 code-marketplace
 colorz
