@@ -87,8 +87,8 @@ suppress_preload = false
 [plugin]
 # Plugin fetchers
 prepend_fetchers = [
-    { id = "git", url = "*", run = "git" },
-    { id = "git", url = "*/", run = "git" },
+    { url = "*", run = "git", group = "git" },
+    { url = "*/", run = "git", group = "git" },
 ]
 # Plugin spotters
 prepend_spotters = [
@@ -110,9 +110,9 @@ prepend_previewers = [
 ]
 fetchers = [
     # Mimetype
-    { id = "mime", url = "*/",         run = "mime.dir", prio = "high" },
-    { id = "mime", url = "local://*",  run = "mime.local", prio = "high" },
-    { id = "mime", url = "remote://*", run = "mime.remote", prio = "high" },
+    { url = "*/",         run = "mime.dir", prio = "high", group = "mime" },
+    { url = "local://*",  run = "mime.local", prio = "high", group = "mime" },
+    { url = "remote://*", run = "mime.remote", prio = "high", group = "mime" },
 ]
 spotters = [
     { url = "*/", run = "folder" },
