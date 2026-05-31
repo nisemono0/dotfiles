@@ -555,6 +555,8 @@ exts = [
     { name = "hex", text = "", fg = "#89b4fa" },
     { name = "hh", text = "", fg = "#cba6f7" },
     { name = "hpp", text = "", fg = "#cba6f7" },
+    { name = "ipp", text = "", fg = "#cba6f7" },
+    { name = "tpp", text = "", fg = "#cba6f7" },
     { name = "hrl", text = "", fg = "#f38ba8" },
     { name = "hs", text = "", fg = "#cba6f7" },
     { name = "htm", text = "", fg = "#fab387" },
