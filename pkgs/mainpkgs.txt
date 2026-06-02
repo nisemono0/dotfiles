@@ -107,6 +107,7 @@ noto-fonts-emoji
 noto-fonts-extra
 nsxiv
 ntfs-3g
+ntfsprogs
 nvtop
 os-prober
 otf-ipafont
