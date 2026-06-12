@@ -2,15 +2,11 @@ alass
 autocutsel
 code-features
 code-marketplace
-colorz
 downgrade
 dragon-drop
 i3lock-color
 lib32-gst-plugins-base-libs
 nemo-preview
-python-fast-colorthief
 python-ffsubsync
-python-haishoku
-python-pywal16
 simple-mtpfs
 vesktop-bin

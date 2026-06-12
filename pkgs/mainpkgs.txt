@@ -21,6 +21,7 @@ brightnessctl
 clang
 cmake
 code
+colorz-nise
 croc
 cups
 debugedit
@@ -124,10 +125,13 @@ pipewire-alsa
 pipewire-pulse
 pkgconf
 polybar
+python-fast-colorthief-nise
+python-haishoku-nise
 python-lsp-server
 python-mpd2
 python-pillow
 python-pip
+python-pywal16-nise
 qbittorrent
 relib-git
 rz-cutter
