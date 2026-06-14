@@ -11,12 +11,14 @@ DUNST_ICON="network-transmit"
 print_help_and_exit() {
     case "$1" in
         *)
-            echo "Upload files on the internet"
+            echo "Upload files to the internet"
             echo "Usage: $(basename $0) <file_to_upload> <upload_service>"
             echo
             echo "$(basename $0) <file_to_upload> <upload_service>"
             echo "  upload_service can be:"
-            echo "      0x0, nullptr"
+            echo "      0x0, nullptr (0x0.st)"
+            echo "      catbox       (catbox.moe)"
+            echo "      litterbox    (litterbox.catbox.moe)"
             echo "  -h, --help          Print this help"
             ;;
     esac
@@ -39,9 +41,27 @@ upload_nullptr() {
     notify-send -i "$DUNST_ICON" -h string:x-dunst-stack-tag:uploadnullptr "Done uploading" "$curl_command"
 }
 
+upload_catbox() {
+    URL="https://catbox.moe/user/api.php"
+    notify-send -i "$DUNST_ICON" -h string:x-dunst-stack-tag:uploadnullptr "File upload" "Uploadig $INPUT_FILE to $URL"
+    curl_command=$(curl -s -F "reqtype=fileupload" -F "fileToUpload=@$INPUT_FILE" "$URL")
+    xclip -rmlastnl -selection clipboard <<< "$curl_command"
+    echo "$curl_command"
+    notify-send -i "$DUNST_ICON" -h string:x-dunst-stack-tag:uploadnullptr "Done uploading" "$curl_command"
+}
+
+upload_litterbox() {
+    URL="https://litterbox.catbox.moe/resources/internals/api.php"
+    notify-send -i "$DUNST_ICON" -h string:x-dunst-stack-tag:uploadnullptr "File upload" "Uploadig $INPUT_FILE to $URL"
+    curl_command=$(curl -s -F "reqtype=fileupload" -F "time=72h" -F "fileToUpload=@$INPUT_FILE" "$URL")
+    xclip -rmlastnl -selection clipboard <<< "$curl_command"
+    echo "$curl_command"
+    notify-send -i "$DUNST_ICON" -h string:x-dunst-stack-tag:uploadnullptr "Done uploading" "$curl_command"
+}
+
 [ "$#" -eq 0 ] && print_help_and_exit
 
-SERVICES=("0x0" "nullptr")
+SERVICES=("0x0" "nullptr" "catbox" "litterbox")
 UPLOAD_SERVICE=""
 INPUT_FILE=""
 POSITIONAL_ARGS=()
@@ -66,6 +86,8 @@ fi
 
 case "$UPLOAD_SERVICE" in
     "0x0" | "nullptr") upload_nullptr ;;
+    "catbox") upload_catbox ;;
+    "litterbox") upload_litterbox ;;
     *) print_help_and_exit ;;
 esac
 
