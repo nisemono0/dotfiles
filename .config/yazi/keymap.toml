@@ -260,6 +260,8 @@ keymap = [
 
     # Upload file
     { on = [ "<C-u>", "n" ], run = "shell 'uploadfile %s1 nullptr'", desc = "Upload file to 0x0.st" },
+    { on = [ "<C-u>", "c" ], run = "shell 'uploadfile %s1 catbox'", desc = "Upload file to catbox.moe" },
+    { on = [ "<C-u>", "l" ], run = "shell 'uploadfile %s1 litterbox'", desc = "Upload file to litterbox.catbox.moe" },
 ]
 
 [tasks]
