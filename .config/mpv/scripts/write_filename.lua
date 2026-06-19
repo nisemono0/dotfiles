@@ -23,6 +23,10 @@ function get_savefile()
     return opt.out_file
 end
 
+function get_current_timestamp()
+    return mp.format_time(mp.get_property("time-pos"), "%H_%M_%S")
+end
+
 function text_exists(file, text)
     for line in file:lines() do
         if text == line then
@@ -52,8 +56,30 @@ function write_filename()
     end
 end
 
+function write_filename_timestamp()
+    save_file = get_savefile()
+
+    playing_file = get_current_timestamp() .. "_" .. get_playing_file()
+
+    file = io.open(save_file, "a+")
+    if file == nil then
+        format_msg = string.format("Could not open: \"%s\"", save_file)
+        mp.osd_message(format_msg, opt.message_duration)
+        msg.error(format_msg)
+    else
+        if not text_exists(file, playing_file) then
+            file:write(playing_file, "\n")
+            file:flush()
+            format_msg = string.format("Wrote \"%s\" to \"%s\"", playing_file, save_file)
+            mp.osd_message(format_msg, opt.message_duration)
+        end
+        file:close()
+    end
+end
+
 if opt.write_on_load then
     mp.register_event("file-loaded", write_filename)
 end
 
 mp.add_key_binding("w", "write_filename", write_filename)
+mp.add_key_binding("Alt+w", "write_filename_timestamp", write_filename_timestamp)
