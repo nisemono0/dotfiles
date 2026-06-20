@@ -81,6 +81,7 @@ lib32-openal
 lib32-v4l-utils
 libreoffice-still
 libtool
+lldb
 lutris
 lxsession
 m4
