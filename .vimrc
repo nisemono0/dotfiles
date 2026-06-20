@@ -304,6 +304,8 @@ var lsp_opts = {
     hideDisabledCodeActions: false,
     highlightDiagInline: true,
     hoverInPreview: false,
+    completionInPreview: false,
+    closePreviewOnComplete: true,
     ignoreMissingServer: true,
     keepFocusInDiags: true,
     keepFocusInReferences: true,
@@ -311,6 +313,7 @@ var lsp_opts = {
     diagVirtualTextAlign: 'above',
     diagVirtualTextWrap: 'default',
     noNewlineInCompletion: false,
+    maxDiagnostics: 200,
     omniComplete: true,
     omniCompleteAllowBare: false,
     outlineOnRight: false,
@@ -330,6 +333,7 @@ var lsp_opts = {
     showDiagWithVirtualText: false,
     showInlayHints: false,
     showSignature: true,
+    showSignatureDocs: false,
     snippetSupport: false,
     ultisnipsSupport: false,
     useBufferCompletion: false,
@@ -341,6 +345,7 @@ var lsp_opts = {
     completionKinds: {},
     filterCompletionDuplicates: false,
     condensedCompletionMenu: false,
+    documentationFormat: ['markdown', 'plaintext'],
 }
 autocmd User LspSetup call LspOptionsSet(lsp_opts)
 
