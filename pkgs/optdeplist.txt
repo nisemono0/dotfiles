@@ -4,7 +4,6 @@ libportal-gtk4
 libwebp-utils
 libxnvctrl
 lvm2
-python-dnspython
 python-mutagen
 python-pycryptodomex
 rtkit
