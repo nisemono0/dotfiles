@@ -1,0 +1,32 @@
+#!/bin/bash
+
+if ! command -v ibus >/dev/null 2>&1; then
+    echo "ibus needs to be installed"
+    exit -1
+fi
+
+
+# ibus list-engine
+EN_ENGINE="xkb:us::eng"
+JP_ENGINE="mozc-jp"
+
+# Icons
+EN_ICON="indicator-keyboard-En"
+JP_ICON="indicator-keyboard-Ja"
+
+case "$(ibus engine)" in
+    "$EN_ENGINE") # Switch to JP ime
+        ibus engine "$JP_ENGINE"
+        notify-send -i "$JP_ICON" \
+            -h string:x-dunst-stack-tag:imetoggle \
+            "IBus IME" "Using Japanese input"
+        ;;
+    "$JP_ENGINE") # Switch to EN ime
+        ibus engine "$EN_ENGINE"
+        notify-send -i "$EN_ICON" \
+            -h string:x-dunst-stack-tag:imetoggle \
+            "IBus IME" "Using English input"
+        ;;
+    *) exit ;;
+esac
+
