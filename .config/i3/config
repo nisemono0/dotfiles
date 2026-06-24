@@ -53,6 +53,7 @@ set $audioutil --no-startup-id ~/.scripts/wmcmds/wm-audio-util.sh
 set $mpdvolume --no-startup-id ~/.scripts/mpd/mpdvolume.sh
 set $mpdsong --no-startup-id ~/.scripts/mpd/mpdsong.sh
 set $dunstutil --no-startup-id ~/.scripts/dunst/dunst-util.sh
+set $ime_toggle --no-startup-id ime-toggle
 
 set_from_resource $fg foreground
 set_from_resource $bg background
