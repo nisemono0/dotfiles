@@ -84,12 +84,14 @@ alias pacls="pacman -Qn"
 alias paclsaur="pacman -Qm"
 # Show package owner of file
 alias pacown="pacman -Qo"
+# Show package info
+alias pacinfo="pacman -Qi"
 # Check aur updates
 alias aurcheckupdates="yay -Qum"
 # grep -i alias
-alias grepi="grep --color=auto -i"
+alias igrep="grep --color=auto -i"
 # less -i alias
-alias lessi="less -i"
+alias iless="less -i"
 # normal yazi alias
 alias yz="yazi"
 # cd into dir on ranger exit
