@@ -86,6 +86,8 @@ alias paclsaur="pacman -Qm"
 alias pacown="pacman -Qo"
 # Show package info
 alias pacinfo="pacman -Qi"
+# Show package contents
+alias paccont="pacman -Ql"
 # Check aur updates
 alias aurcheckupdates="yay -Qum"
 # grep -i alias
