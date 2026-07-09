@@ -62,24 +62,39 @@ local function copy_subtitle(prop)
     )
 end
 
-local function autocopy_handler()
+local function autocopy_primary_sub_handler()
     copy_subtitle("sub-text")
 end
 
-local function toggle_sub_autocopy()
+local function autocopy_secondary_sub_handler()
+    copy_subtitle("secondary-sub-text")
+end
+
+local function stop_autocopy()
+    mp.unobserve_property(autocopy_primary_sub_handler)
+    mp.unobserve_property(autocopy_secondary_sub_handler)
+    autocopy_subs = false
+    mp.osd_message("Autocopy subtitle disabled")
+end
+
+local function toggle_sub_autocopy(sub_type)
     if autocopy_subs then
-        mp.unobserve_property(autocopy_handler)
-        mp.osd_message("Autocopy subtitle disabled")
-        autocopy_subs = false
-    else
-        mp.observe_property("sub-text", "string", autocopy_handler)
-        mp.osd_message("Autocopy subtitle enabled")
+        stop_autocopy()
+    elseif sub_type == "primary" then
+        mp.observe_property("sub-text", "string", autocopy_primary_sub_handler)
         autocopy_subs = true
+        mp.osd_message("Autocopy primary subtitle enabled")
+    elseif sub_type == "secondary" then
+        mp.observe_property("secondary-sub-text", "string", autocopy_secondary_sub_handler)
+        autocopy_subs = true
+        mp.osd_message("Autocopy secondary subtitle enabled")
+    else
+        mp.osd_message("Couldn't start subtitle autocopy")
     end
 end
 
-
 mp.add_key_binding("Ctrl+c", "copy-primary-sub", function() copy_subtitle("sub-text") end)
 mp.add_key_binding("Alt+c", "copy-secondary-sub", function() copy_subtitle("secondary-sub-text") end)
-mp.add_key_binding("Ctrl+Alt+c", "toggle-sub-autocopy", toggle_sub_autocopy)
+mp.add_key_binding("Ctrl+Alt+c", "toggle-primary-sub-autocopy", function() toggle_sub_autocopy("primary") end)
+mp.add_key_binding("Alt+C", "toggle-secondary-sub-autocopy", function() toggle_sub_autocopy("secondary") end)
 
