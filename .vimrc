@@ -356,8 +356,8 @@ var lsp_servers = [
         filetype: ['c', 'cpp'],
         path: '/usr/bin/clangd',
         args: [
-            '--background-index', '-j=4', '--clang-tidy', '--completion-style=detailed',
-            '-header-insertion=never', '--function-arg-placeholders=0'
+            '--background-index', '-j=6', '--clang-tidy', '--completion-style=detailed',
+            '--header-insertion=never', '--function-arg-placeholders=0'
         ]
     },
     {
