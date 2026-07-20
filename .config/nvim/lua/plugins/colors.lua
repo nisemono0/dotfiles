@@ -1,5 +1,4 @@
 -- TODO: Edit the habamin theme
--- TODO: Edit the alabasterdark theme
 
 -- Local: Habamin
 -- return {
@@ -36,28 +35,49 @@
 -- }
 
 -- Catppuccin
+-- return {
+--     {
+--         "catppuccin/nvim",
+--         opts = {
+--             transparent_background = true,
+--             float = {
+--                 transparent = true,
+--                 solid = false,
+--             },
+--             term_colors = false,
+--             no_italic = true,
+--             no_bold = true,
+--             no_underline = false
+--         },
+--     },
+--     {
+--         "LazyVim/LazyVim",
+--         opts = {
+--             colorscheme = "catppuccin-mocha"
+--         },
+--     },
+-- }
+
+
+-- Vague
 return {
     {
-        "catppuccin/nvim",
+        "vague-theme/vague.nvim",
         opts = {
-            transparent_background = true,
-            float = {
-                transparent = true,
-                solid = false,
-            },
-            term_colors = false,
-            no_italic = true,
-            no_bold = true,
-            no_underline = false
-        },
+            transparent = true,
+            bold = false,
+            italic = false
+        }
     },
+
     {
         "LazyVim/LazyVim",
         opts = {
-            colorscheme = "catppuccin-mocha"
+            colorscheme = "vague",
         },
     },
 }
+
 
 -- Alabaster
 -- return {

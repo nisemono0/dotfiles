@@ -52,6 +52,12 @@ opt.shiftwidth = 4
 -- Number of spaces tabs count for
 opt.tabstop = 4
 
+-- Timeoutlen
+opt.timeoutlen = 200
+
+-- Updatetime
+opt.updatetime = 200
+
 -- Undo file
 opt.undofile = false
 
