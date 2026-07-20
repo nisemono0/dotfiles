@@ -35,58 +35,75 @@
 --     }
 -- }
 
-
 -- Catppuccin
--- return {
---     {
---         "catppuccin/nvim",
---         opts = {
---             transparent_background = true,
---             float = {
---                 transparent = true,
---                 solid = false,
---             },
---             term_colors = false,
---             no_italic = true,
---             no_bold = true,
---             no_underline = false
---         },
---     },
---     {
---         "LazyVim/LazyVim",
---         opts = {
---             colorscheme = "catppuccin-mocha"
---         },
---     },
--- }
-
-
--- Rose pine
 return {
     {
-        "rose-pine/neovim",
-        name = "rose-pine",
+        "catppuccin/nvim",
         opts = {
-            variant = "auto",
-            dark_variant = "main",
-            -- Comment to use the theme's term colors
-            enable = {
-                terminal = false
+            transparent_background = true,
+            float = {
+                transparent = true,
+                solid = false,
             },
-            styles = {
-                bold = false,
-                italic = false,
-                transparency = true,
-            },
-        }
+            term_colors = false,
+            no_italic = true,
+            no_bold = true,
+            no_underline = false
+        },
     },
     {
         "LazyVim/LazyVim",
         opts = {
-            colorscheme = "rose-pine"
-        }
-    }
+            colorscheme = "catppuccin-mocha"
+        },
+    },
 }
+
+-- Alabaster
+-- return {
+--     {
+--         'mcncl/alabaster.nvim',
+--         name = "alabaster",
+--         opts = {
+--             style = "dark",
+--             transparent = true,
+--             italic_comments = false
+--         }
+--     },
+--     {
+--         "LazyVim/LazyVim",
+--         opts = {
+--             colorscheme = "alabaster"
+--         }
+--     }
+-- }
+
+-- Rose pine
+-- return {
+--     {
+--         "rose-pine/neovim",
+--         name = "rose-pine",
+--         opts = {
+--             variant = "auto",
+--             dark_variant = "main",
+--             -- Comment to use the theme's term colors
+--             enable = {
+--                 terminal = false
+--             },
+--             styles = {
+--                 bold = false,
+--                 italic = false,
+--                 transparency = true,
+--             },
+--         }
+--     },
+--     {
+--         "LazyVim/LazyVim",
+--         opts = {
+--             colorscheme = "rose-pine"
+--         }
+--     }
+-- }
 
 
 -- Everforest
@@ -128,4 +145,4 @@ return {
 --         }
 --     }
 -- }
---
+
