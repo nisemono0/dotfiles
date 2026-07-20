@@ -100,6 +100,7 @@ mpv
 ncmpcpp
 nemo
 nemo-fileroller
+neovim
 networkmanager
 nicotine+
 nmap
@@ -128,7 +129,6 @@ pkgconf
 polybar
 python-fast-colorthief-nise
 python-haishoku-nise
-python-lsp-server
 python-mpd2
 python-pillow
 python-pip
