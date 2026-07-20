@@ -17,6 +17,8 @@
 --         opts = {
 --             style = "night",
 --             transparent = true,
+--             -- Comment to use the theme's term colors
+--             terminal_colors = false,
 --             styles = {
 --                 comments = { italic = false },
 --                 keywords = { italic = false },
@@ -34,22 +36,28 @@
 -- }
 
 
--- Alabaster
+-- Catppuccin
 -- return {
 --     {
---         "mcncl/alabaster.nvim",
---         name = "alabaster",
+--         "catppuccin/nvim",
 --         opts = {
---             style = "dark",
---             transparent = true
---         }
+--             transparent_background = true,
+--             float = {
+--                 transparent = true,
+--                 solid = false,
+--             },
+--             term_colors = false,
+--             no_italic = true,
+--             no_bold = true,
+--             no_underline = false
+--         },
 --     },
 --     {
 --         "LazyVim/LazyVim",
 --         opts = {
---             colorscheme = "alabaster"
---         }
---     }
+--             colorscheme = "catppuccin-mocha"
+--         },
+--     },
 -- }
 
 
@@ -61,6 +69,10 @@ return {
         opts = {
             variant = "auto",
             dark_variant = "main",
+            -- Comment to use the theme's term colors
+            enable = {
+                terminal = false
+            },
             styles = {
                 bold = false,
                 italic = false,
@@ -84,6 +96,7 @@ return {
 --         name = "everforest",
 --         opts = {
 --             italics = false,
+--             disable_italic_comments = true,
 --             transparent_background_level = 2,
 --         }
 --     },
@@ -102,7 +115,8 @@ return {
 --         "EdenEast/nightfox.nvim",
 --         opts = {
 --             options = {
---                 transparent = true
+--                 transparent = true,
+--                 terminal_colors = false
 --             }
 --         }
 --     },
@@ -114,4 +128,4 @@ return {
 --         }
 --     }
 -- }
-
+--
