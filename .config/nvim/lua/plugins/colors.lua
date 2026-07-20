@@ -10,20 +10,12 @@
 -- }
 
 
--- Local: Alabaster dark
--- return {
---     "LazyVim/LazyVim",
---     opts = {
---         colorscheme = "alabasterdark"
---     }
--- }
-
-
 -- Tokyonight
 -- return {
 --     {
 --         "folke/tokyonight.nvim",
 --         opts = {
+--             style = "night",
 --             transparent = true,
 --             styles = {
 --                 comments = { italic = false },
@@ -70,7 +62,7 @@ return {
             variant = "auto",
             dark_variant = "main",
             styles = {
-                bold = true,
+                bold = false,
                 italic = false,
                 transparency = true,
             },
