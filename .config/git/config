@@ -1,7 +1,7 @@
 [credential]
 	helper = store
 [core]
-	editor = vim
+	editor = nvim
 [http]
 	postBuffer = 524288000
 [diff]

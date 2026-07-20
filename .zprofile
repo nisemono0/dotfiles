@@ -26,7 +26,7 @@ export ZSH_COMPDUMP="${XDG_CACHE_HOME:-$HOME/.cache}/zcompdump-${HOST}-${ZSH_VER
 export PATH="$PATH:${$(find ~/.local/bin -type d -printf %p:)%%:}"
 
 export BROWSER="firefox"
-export EDITOR="vim"
+export EDITOR="nvim"
 
 # Load .zshrc file
 [[ -f ~/.zshrc ]] && . ~/.zshrc
