@@ -11,7 +11,7 @@ set notermguicolors
 set background=dark
 
 hi clear
-source $VIMRUNTIME/colors/vim.lua " Nvim: revert to Vim default color scheme
+" source $VIMRUNTIME/colors/vim.lua " Nvim: revert to Vim default color scheme
 let g:colors_name = 'habamin'
 
 let s:t_Co = &t_Co
