@@ -7,7 +7,7 @@ plugins=(git)
 
 source $ZSH/oh-my-zsh.sh
 
-FZF_CTRL_T_COMMAND= FZF_ALT_C_COMMAND= source <(fzf --zsh)
+source <(fzf --zsh)
 export FZF_COMPLETION_TRIGGER=''
 bindkey '^T' fzf-completion
 bindkey '^I' $fzf_default_completion
