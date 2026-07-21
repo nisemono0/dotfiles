@@ -5,8 +5,9 @@
 local map = vim.keymap.set
 
 -- Yank/Paste to/from clipboard
+map("n", "<C-y>", '"+y', { desc = "Yank to system clipboard" })
 map("n", "<C-y><C-y>", '"+yy', { desc = "Yank line to system clipboard" })
-map("v", "<C-y>", '"+yy', { desc = "Yank selection to system clipboard" })
+map("v", "<C-y>", '"+y', { desc = "Yank selection to system clipboard" })
 
 map("n", "<C-p>", '"+p', { desc = "Paste from system clipboard after cursor" })
 map("v", "<C-p>", '"+p', { desc = "Replace selection with system clipboard" })
