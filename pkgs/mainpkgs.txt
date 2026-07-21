@@ -50,7 +50,6 @@ grep
 groff
 grub
 gsimplecal
-gvim
 gzip
 highlight
 hsetroot

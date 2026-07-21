@@ -6,4 +6,5 @@ libxnvctrl
 lvm2
 python-mutagen
 python-pycryptodomex
+qt6-tools
 rtkit
