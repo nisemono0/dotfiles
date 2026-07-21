@@ -5,10 +5,11 @@
 [http]
 	postBuffer = 524288000
 [diff]
-	tool = vimdiff
+	tool = nvimdiff
 [difftool]
 	prompt = false
 [merge]
-	tool = vimdiff
+	tool = nvimdiff
 [mergetool]
 	prompt = false
+
