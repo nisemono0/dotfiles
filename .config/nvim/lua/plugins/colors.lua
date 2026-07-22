@@ -159,6 +159,17 @@ return {
         --     },
         -- },
 
+        -- Neopywal (for pywal16/wallust)
+        -- {
+        --     "RedsXDD/neopywal.nvim",
+        --     opt = {
+        --         transparent_background = true,
+        --         no_italic = true,
+        --         no_bold = true,
+        --     }
+        --
+        -- },
+
         -- Set theme
         {
             "LazyVim/LazyVim",
@@ -175,6 +186,7 @@ return {
                 -- koda-dark, koda-moss
                 -- posterpole
                 -- kanagawa-dragon, kanagawa-wave
+                -- neopywal
                 colorscheme = "kanso-mist"
             }
         }
