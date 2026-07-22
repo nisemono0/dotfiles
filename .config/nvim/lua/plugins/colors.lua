@@ -114,8 +114,50 @@ return {
                 italics = false,
                 transparent = true,
                 foreground = "saturated",
+                terminalColors = false
             }
         },
+
+        -- Koda
+        -- {
+        --     "oskarnurm/koda.nvim",
+        --     opts = {
+        --         transparent = true,
+        --         styles = {
+        --             functions = { bold = false },
+        --         }
+        --     }
+        -- },
+
+        -- Posterpole
+        -- {
+        --     "ilof2/posterpole.nvim",
+        --     opts = {
+        --         transparent = true,
+        --     },
+        -- },
+
+        -- Kanagawa
+        -- {
+        --     "rebelot/kanagawa.nvim",
+        --     opts = {
+        --         commentStyle = { italic = false },
+        --         functionStyle = { italic = false },
+        --         keywordStyle = { italic = false},
+        --         statementStyle = { bold = false },
+        --         transparent = true,
+        --         terminalColors = false,
+        --         colors = {
+        --             theme = {
+        --                 all = {
+        --                     ui = {
+        --                         bg_gutter = "none"
+        --                     }
+        --                 }
+        --             }
+        --         }
+        --     },
+        -- },
 
         -- Set theme
         {
@@ -130,6 +172,9 @@ return {
                 -- nightfox, duskfox, nordfox, terafox, carbonfox
                 -- rusty
                 -- kanso-zen, kanso-mist, kanso-ink
+                -- koda-dark, koda-moss
+                -- posterpole
+                -- kanagawa-dragon, kanagawa-wave
                 colorscheme = "kanso-mist"
             }
         }
