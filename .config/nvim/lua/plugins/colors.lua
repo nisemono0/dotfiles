@@ -110,11 +110,21 @@ return {
         {
             "webhooked/kanso.nvim",
             opts = {
-                bold = false,
+                bold = true,
                 italics = false,
                 transparent = true,
                 foreground = "saturated",
-                terminalColors = false
+                terminalColors = false,
+                overrides = function(colors)
+                    return {
+                        CurSearch = {
+                            reverse = true
+                        },
+                        MatchParen = {
+                            bg = colors.palette.gray5
+                        },
+                    }
+                end,
             }
         },
 
