@@ -25,7 +25,10 @@ local opt = vim.opt
 opt.clipboard = ""
 
 -- Highlight current line
-opt.cursorline = false
+opt.cursorline = true
+
+-- Type of highlight on current line
+opt.cursorlineopt = "number"
 
 -- Show some invisible characters
 opt.list = true
