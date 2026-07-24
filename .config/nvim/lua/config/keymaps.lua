@@ -43,3 +43,7 @@ map("i", "<C-k>", "<Up>", { desc = "Move up" })
 -- Substitution with the exact word unde cursor
 map("n", "<C-c>", [[:%s/\<<C-r><C-w>\>//gc<Left><Left><Left>]], { desc = "Substitute exact word under cursor" })
 
+-- Scroll terminal
+map("t", "<C-u>", "<C-\\><C-n><C-u>", { desc = "Scroll terminal up" })
+map("t", "<C-d>", "<C-\\><C-n><C-d>", { desc = "Scroll terminal down" })
+
