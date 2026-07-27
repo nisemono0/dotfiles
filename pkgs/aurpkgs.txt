@@ -1,7 +1,5 @@
 alass
 autocutsel
-code-features
-code-marketplace
 downgrade
 dragon-drop
 i3lock-color
