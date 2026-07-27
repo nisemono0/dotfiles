@@ -27,8 +27,6 @@ ueberzug_offset = [ 0, 0, 0, 0 ]
 [opener]
 edit = [
     { run = '${EDITOR:-vi} %s', block = true,  orphan = false, desc = "$EDITOR",      for = "unix" },
-    { run = 'code %s',          block = false, orphan = true,  desc = "code",         for = "unix" },
-    { run = 'code -w %s',       block = true,  orphan = true,  desc = "code (block)", for = "unix" }
 ]
 open = [
     { run = 'xdg-open %s1', desc = "Open (xdg-open)", for = "linux" }
