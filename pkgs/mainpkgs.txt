@@ -95,6 +95,7 @@ mkvtoolnix-gui
 mpc
 mpd
 mpv
+mpv-mpris
 ncmpcpp
 nemo
 nemo-fileroller
