@@ -190,11 +190,8 @@ keymap = [
     { on = "<C-9>", run = "tab_switch 8", desc = "Switch to ninth tab" },
     { on = "<A-9>", run = "tab_switch 8", desc = "Switch to ninth tab" },
 
-    { on = "<BackTab>", run = "tab_switch -1 --relative", desc = "Switch to previous tab" },
-    { on = "<Tab>",     run = "tab_switch +1 --relative", desc = "Switch to next tab" },
-
-    { on = "<C-BackTab>", run = "tab_swap -1", desc = "Swap current tab with previous tab" },
-    { on = "<C-Tab>",     run = "tab_swap +1", desc = "Swap current tab with next tab" },
+    { on = "<C-S-Tab>", run = "tab_switch -1 --relative", desc = "Switch to previous tab" },
+    { on = "<C-Tab>",   run = "tab_switch +1 --relative", desc = "Switch to next tab" },
 
     # Tasks
     { on = "w", run = "tasks:show", desc = "Show task manager" },
