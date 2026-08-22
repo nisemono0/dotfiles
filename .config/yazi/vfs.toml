@@ -1,1 +1,4 @@
-[services]
+[trash."*"]
+kind = "hub"
+run  = "trash"
+

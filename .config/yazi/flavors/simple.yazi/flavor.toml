@@ -75,6 +75,7 @@ progress_normal = { fg = "blue", bg = "black" }
 progress_error  = { fg = "red", bg = "black" }
 
 [which]
+border          = { fg = "blue" }
 cols            = 3
 mask            = { bg = "black" }
 cand            = { fg = "lightcyan" }
@@ -142,6 +143,18 @@ run     = { fg = "magenta" }
 desc    = {}
 hovered = { reversed = true, bold = true }
 footer  = { fg = "black", bg = "white" }
+
+# Git plugin
+[git]
+unknown_sign = ""
+ignored_sign = "I"
+untracked_sign = "?"
+unstaged_sign = "M"
+staged_sign = "S"
+added_sign = "A"
+deleted_sign = "D"
+updated_sign = "U"
+clean_sign = " "
 
 [filetype]
 rules = [

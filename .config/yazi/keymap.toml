@@ -84,7 +84,7 @@ keymap = [
     { on = [ "d", "E" ],  run = "shell 'trash-empty'",                                desc = "Empty trash directory" },
     { on = [ "d", "D" ],  run = "remove --permanently",                               desc = "Permanently delete selected files" },
     { on = "t",           run = "create",                                             desc = "Create a file (ends with / for directories)" },
-    { on = "T",           run = "create --dir",                                       desc = "Create a directory" },
+    { on = "T",           run = "bulk_create",                                        desc = "Bulk create files" },
     { on = "a",           run = "rename --cursor=before_ext",                         desc = "Rename selected file(s) (cursor before extension)" },
     { on = "A",           run = "rename --cursor=end",                                desc = "Rename selected file(s) (cursor at end)" },
     { on = "I",           run = "rename --cursor=start",                              desc = "Rename selected file(s) (cursor at start)" },
@@ -119,7 +119,7 @@ keymap = [
 
     # Copy
     { on = [ "y", "p" ], run = "copy path",             desc = "Copy the absolute path" },
-    { on = [ "y", "d" ], run = "copy dirname",          desc = "Copy the directory path" },
+    { on = [ "y", "d" ], run = "copy dirpath",          desc = "Copy the directory path" },
     { on = [ "y", "n" ], run = "copy filename",         desc = "Copy the filename" },
     { on = [ "y", "." ], run = "copy name_without_ext", desc = "Copy the filename without extension" },
 
@@ -155,8 +155,7 @@ keymap = [
     { on = [ "g", "h" ], run = "cd ~",                     desc = "Go home" },
     { on = [ "g", "c" ], run = "cd ~/.config",             desc = "Go ~/.config" },
     { on = [ "g", "f" ], run = "follow",                   desc = "Follow hovered symlink" },
-    { on = [ "g", "t" ], run = "tab_switch +1 --relative", desc = "Switch to next tab" },
-    { on = [ "g", "t" ], run = "tab_switch -1 --relative", desc = "Switch to previous tab" },
+    { on = [ "g", "t" ], run = "plugin trash",             desc = "Go to trash bin" },
     { on = [ "c", "d" ], run = "cd --interactive",         desc = "Jump interactively" },
 
     # Tabs
@@ -393,16 +392,16 @@ keymap = [
     { on = "<C-f>",   run = "move 1",  desc = "Move forward a character" },
 
     # Word-wise movement
-    { on = "b",         run = "backward",                    desc = "Move back to the start of the current or previous word" },
-    { on = "B",         run = "backward --far",              desc = "Move back to the start of the current or previous WORD" },
-    { on = "w",         run = "forward",                     desc = "Move forward to the start of the next word" },
-    { on = "W",         run = "forward --far",               desc = "Move forward to the start of the next WORD" },
-    { on = "e",         run = "forward --end-of-word",       desc = "Move forward to the end of the current or next word" },
-    { on = "E",         run = "forward --far --end-of-word", desc = "Move forward to the end of the current or next WORD" },
-    { on = "<A-b>",     run = "backward",                    desc = "Move back to the start of the current or previous word" },
-    { on = "<A-f>",     run = "forward --end-of-word",       desc = "Move forward to the end of the current or next word" },
-    { on = "<C-Left>",  run = "backward",                    desc = "Move back to the start of the current or previous word" },
-    { on = "<C-Right>", run = "forward --end-of-word",       desc = "Move forward to the end of the current or next word" },
+    { on = "b",         run = "backward",                   desc = "Move back to the start of the current or previous word" },
+    { on = "B",         run = "backward wide",              desc = "Move back to the start of the current or previous WORD" },
+    { on = "w",         run = "forward",                    desc = "Move forward to the start of the next word" },
+    { on = "W",         run = "forward wide",               desc = "Move forward to the start of the next WORD" },
+    { on = "e",         run = "forward --end-of-word",      desc = "Move forward to the end of the current or next word" },
+    { on = "E",         run = "forward wide --end-of-word", desc = "Move forward to the end of the current or next WORD" },
+    { on = "<A-b>",     run = "backward lean",              desc = "Move back to the start of the current or previous word" },
+    { on = "<A-f>",     run = "forward lean --end-of-word", desc = "Move forward to the end of the current or next word" },
+    { on = "<C-Left>",  run = "backward lean",              desc = "Move back to the start of the current or previous word" },
+    { on = "<C-Right>", run = "forward lean --end-of-word", desc = "Move forward to the end of the current or next word" },
 
     # Line-wise movement
     { on = "0",      run = "move bol",        desc = "Move to the BOL" },
