@@ -64,7 +64,6 @@ kvantum
 kvantum-qt5
 kvantum-theme-materia
 lib32-gamemode
-lib32-giflib
 lib32-gnutls
 lib32-gtk3
 lib32-libpulse
@@ -75,8 +74,6 @@ lib32-libxslt
 lib32-mangohud
 lib32-mpg123
 lib32-ocl-icd
-lib32-openal
-lib32-v4l-utils
 libreoffice-still
 libtool
 lldb
