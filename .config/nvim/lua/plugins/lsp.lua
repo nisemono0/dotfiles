@@ -14,7 +14,10 @@ return {
             ['*'] = {
                 keys = {
                     -- Disabled since C-k is set to move Up in insert mode
-                    { "<C-k>", false, mode = "i" }
+                    -- Set it to <c-i> instead
+                    { "<C-k>", false, mode = "i" },
+                    { "<c-i>", function() return vim.lsp.buf.signature_help() end, mode = "i", desc = "Signature Help", has = "signatureHelp" },
+                    { "<c-i>", function() return vim.lsp.buf.hover() end, mode = "n", desc = "Hover" },
                 }
             },
             clangd = {
