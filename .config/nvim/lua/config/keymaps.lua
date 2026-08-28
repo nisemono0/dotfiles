@@ -37,8 +37,8 @@ map("t", "<C-w><C-w>", [[<C-\><C-n><C-w><C-w>]], { desc = "Switch window from te
 -- Move cursor in insert mode
 map("i", "<C-h>", "<Left>", { desc = "Move left" })
 map("i", "<C-l>", "<Right>", { desc = "Move right" })
-map("i", "<C-j>", "<Down>", { desc = "Move down" })
-map("i", "<C-k>", "<Up>", { desc = "Move up" })
+-- map("i", "<C-j>", "<Down>", { desc = "Move down" })
+-- map("i", "<C-k>", "<Up>", { desc = "Move up" })
 
 -- Substitution with the exact word unde cursor
 map("n", "<C-c>", [[:%s/\<<C-r><C-w>\>//gc<Left><Left><Left>]], { desc = "Substitute exact word under cursor" })
