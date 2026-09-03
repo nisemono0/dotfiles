@@ -6,7 +6,7 @@ FREEZE_SCR=""
 [ $# -gt 2 ] && echo "Too few/many arguments, expecting at least 1" && exit 1
 
 save_screenshot() {
-    scr_dir="${HOME}/Pictures/Screenshot"
+    scr_dir="${HOME}/Pictures/Screenshots"
     mkdir -p "$scr_dir" || { notify-send -u critical "Couldn't create screenshot directory"; exit; }
 
     printf -v date "%(%F)T"
