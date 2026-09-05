@@ -2,6 +2,7 @@
 alacritty
 android-file-transfer
 anistitch-git
+anitrack
 anki
 arc-icon-theme
 archlinux-keyring
