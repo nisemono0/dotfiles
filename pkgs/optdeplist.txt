@@ -7,3 +7,4 @@ lvm2
 python-mutagen
 python-pycryptodomex
 rtkit
+ttf-nerd-fonts-symbols
