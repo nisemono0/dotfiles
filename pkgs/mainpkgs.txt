@@ -20,6 +20,7 @@ bison
 bleachbit
 brightnessctl
 clang
+clazy
 cmake
 colorz-nise
 croc
@@ -129,6 +130,7 @@ python-pillow
 python-pip
 python-pywal16-nise
 qbittorrent
+qt6-tools
 relib-git
 ripgrep
 rz-cutter
