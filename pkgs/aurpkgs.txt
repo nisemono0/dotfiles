@@ -3,12 +3,6 @@ autocutsel
 downgrade
 dragon-drop
 i3lock-color
-lib32-giflib
-lib32-gst-plugins-base-libs
-lib32-libxslt
-lib32-mpg123
-lib32-openal
-lib32-v4l-utils
 nemo-preview
 python-ffsubsync
 simple-mtpfs
