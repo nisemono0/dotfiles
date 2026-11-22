@@ -1,5 +1,6 @@
 bash-completion
 geoclue
+gst-plugins-good
 libportal-gtk4
 libwebp-utils
 libxnvctrl
